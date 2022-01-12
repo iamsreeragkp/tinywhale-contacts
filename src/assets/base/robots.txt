@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Disallow: /cgi-bin/
+Sitemap: https://dashboard.tinywhale.com/sitemap.xml
