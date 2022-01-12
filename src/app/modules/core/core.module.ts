@@ -34,7 +34,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     { provide: APP_CONFIG, useValue: AppConfig },
     { provide: ROUTES_CONFIG, useValue: RoutesConfig },
     { provide: ENDPOINTS_CONFIG, useValue: EndpointsConfig },
-    { provide: ErrorHandler, useClass: SentryErrorHandler },
+    // { provide: ErrorHandler, useClass: SentryErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true, deps: [StorageService] },
     { provide: HTTP_INTERCEPTORS, useClass: TimingInterceptor, multi: true },
     StorageService,
