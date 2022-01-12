@@ -13,7 +13,6 @@ import {
 import { HeroRemoveComponent } from '../../components/hero-remove/hero-remove.component';
 import { Router } from '@angular/router';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { NgxScrollToFirstInvalidModule } from '@ismaestro/ngx-scroll-to-first-invalid';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ROUTES_CONFIG, RoutesConfig } from '../../../../configs/routes.config';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,13 +34,7 @@ describe('HeroesListPageComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          MockModule(NgxScrollToFirstInvalidModule),
-        ],
+        imports: [RouterTestingModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule],
         declarations: [
           MockComponent(HeroRemoveComponent),
           MockComponent(LoadingPlaceholderComponent),

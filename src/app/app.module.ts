@@ -15,7 +15,6 @@ registerLocaleData(localeEs, 'es');
   imports: [
     CommonModule,
     HttpClientModule,
-    HttpClientModule,
     CoreModule,
     RootModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

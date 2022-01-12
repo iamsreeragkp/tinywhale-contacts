@@ -5,7 +5,6 @@ export let APP_CONFIG = new InjectionToken('app.config');
 export const AppConfig: any = {
   topHeroesLimit: 5,
   snackBarDuration: 3000,
-  repositoryURL: 'https://github.com/ismaestro/angular8-example-app',
   sentryDSN: 'https://www.tinywhale.com/errorlogs',
   cspDirectives: {
     defaultSrc: [
