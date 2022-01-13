@@ -1,9 +1,6 @@
 import { Observable } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { AppConfig } from '../../configs/app.config';
 import { map } from 'rxjs/operators';
-import { UtilsService } from '../../shared/services/utils.service';
-import jwt_decode from 'jwt-decode';
 import { StorageService } from '../../shared/services/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.config';
@@ -13,7 +10,6 @@ import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.confi
 })
 export class AuthService {
   constructor(
-    private utilsService: UtilsService,
     private storageService: StorageService,
     private http: HttpClient,
     @Inject(ENDPOINTS_CONFIG) private endpoints: EndpointsType
@@ -21,12 +17,12 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     try {
-      const token = this.storageService.getCookie('accessToken');
+      const token = this.storageService.getToken();
       if (token) {
-        return !!jwt_decode(token);
+        return true;
       }
       return false;
-    } catch (Error) {
+    } catch (error) {
       return false;
     }
   }

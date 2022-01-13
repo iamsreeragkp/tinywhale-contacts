@@ -8,7 +8,7 @@ const basePaths = {
 };
 
 const routesNames = {
-  home: '',
+  home: 'home',
   error404: '404',
   hero: {
     myHeroes: 'my-heroes',
@@ -17,12 +17,12 @@ const routesNames = {
   auth: {
     signUp: 'sign-up',
     logIn: 'log-in',
-  }
+  },
 };
 
 export const getHeroDetail = (id: string) => `/${basePaths.hero}/${id}`;
 
-export const RoutesConfig: any = {
+export const RoutesConfig = {
   basePaths,
   routesNames,
   routes: {
@@ -30,13 +30,11 @@ export const RoutesConfig: any = {
     error404: `/${routesNames.error404}`,
     hero: {
       myHeroes: `/${basePaths.hero}/${routesNames.hero.myHeroes}`,
-      detail: getHeroDetail
+      detail: getHeroDetail,
     },
     auth: {
       signUp: `/${basePaths.auth}/${routesNames.auth.signUp}`,
       logIn: `/${basePaths.auth}/${routesNames.auth.logIn}`,
-    }
-  }
+    },
+  },
 };
-
-

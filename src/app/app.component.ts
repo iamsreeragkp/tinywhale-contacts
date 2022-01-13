@@ -1,9 +1,7 @@
-import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { RoutesConfig } from './configs/routes.config';
 import { UtilsHelperService } from './modules/core/services/utils-helper.service';
+import { StorageService } from './shared/services/storage.service';
 
 declare const Modernizr: any;
 
@@ -15,40 +13,20 @@ export class AppComponent implements OnInit {
   isOnline: boolean;
 
   constructor(
-    private meta: Meta,
-    private router: Router,
-    private renderer: Renderer2,
+    private storageService: StorageService,
     @Inject(DOCUMENT) doc: Document,
     @Inject(LOCALE_ID) locale: string
   ) {
     this.isOnline = navigator.onLine;
-    renderer.setAttribute(doc.documentElement, 'lang', locale);
   }
 
   ngOnInit() {
-    this.onEvents();
     this.checkBrowser();
+    this.setLogin();  // setToken
   }
 
-  onEvents() {
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        switch (event.urlAfterRedirects) {
-          case '/':
-            this.meta.updateTag({
-              name: 'description',
-              content: 'Home meta description',
-            });
-            break;
-          case '/' + RoutesConfig.routesNames.hero.basePath:
-            this.meta.updateTag({
-              name: 'description',
-              content: 'Heroes meta description',
-            });
-            break;
-        }
-      }
-    });
+  setLogin() {
+    this.storageService.setToken();
   }
 
   checkBrowser() {
