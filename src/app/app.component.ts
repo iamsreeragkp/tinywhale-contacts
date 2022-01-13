@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.checkBrowser();
-    // this.setLogin();  // setToken
+    this.setLogin();  // setToken
   }
 
   setLogin() {
