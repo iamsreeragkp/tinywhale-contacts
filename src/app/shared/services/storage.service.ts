@@ -5,11 +5,21 @@ import Cookies from 'js-cookie';
   providedIn: 'root',
 })
 export class StorageService {
+  constructor() {}
 
-  constructor() {
+  getToken() {
+    return localStorage.getItem('accessToken') ?? '';
   }
 
-  getCookie(name: string): string | undefined  {
+  setToken() {
+    return localStorage.setItem('accessToken', 'fdsfsdfd');
+  }
+
+  removeToken() {
+    return localStorage.removeItem('accessToken');
+  }
+
+  getCookie(name: string): string | undefined {
     return Cookies.get(name);
   }
 

@@ -6,9 +6,11 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { AuthStoreModule } from './store/auth-store.module';
+import { AuthComponent } from './auth.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, SharedModule, AuthRoutingModule, AuthStoreModule],
-  declarations: [SignUpPageComponent, LogInPageComponent],
+  declarations: [SignUpPageComponent, LogInPageComponent, AuthComponent],
+  providers: [],
 })
 export class AuthModule {}
