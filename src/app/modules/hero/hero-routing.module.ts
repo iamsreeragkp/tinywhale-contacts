@@ -9,26 +9,18 @@ import { AuthGuard } from '../auth/auth.guard';
 const heroRoutes = RoutesConfig.routesNames.hero;
 
 const heroesRoutes: Routes = [
+  { path: '', redirectTo: RoutesConfig.routes.hero.myHeroes },
   { path: heroRoutes.myHeroes, component: MyHeroesPageComponent, canActivate: [AuthGuard] },
   {
     path: heroRoutes.detail,
     component: HeroDetailPageComponent,
-    resolve: { hero: HeroResolver }
-  }
+    resolve: { hero: HeroResolver },
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(heroesRoutes)
-  ],
-  exports: [
-    RouterModule
-  ],
-  providers: [
-    HeroResolver,
-    AuthGuard
-  ]
+  imports: [RouterModule.forChild(heroesRoutes)],
+  exports: [RouterModule],
+  providers: [HeroResolver, AuthGuard],
 })
-
-export class HeroRoutingModule {
-}
+export class HeroRoutingModule {}

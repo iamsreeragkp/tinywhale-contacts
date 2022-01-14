@@ -69,6 +69,7 @@
     "jwt-decode": "^3.1.2",
     "ng-animate": "1.0.0",
     "ng-lazyload-image": "9.1.0",
+    "ngu-carousel": "^1.5.3",
     "ngx-cookie": "5.0.2",
     "ngx-logger": "5.0.4",
     "postcss": "^8.4.5",

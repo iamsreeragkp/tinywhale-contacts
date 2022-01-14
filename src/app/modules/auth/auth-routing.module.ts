@@ -14,6 +14,7 @@ const authenticationRoutes: Routes = [
     component: AuthComponent,
     canActivate: [RootGuard],
     children: [
+      { path: '', pathMatch: 'full', redirectTo: RoutesConfig.routes.auth.logIn },
       { path: authRoutes.signUp, component: SignUpPageComponent },
       { path: authRoutes.logIn, component: LogInPageComponent },
       { path: '**', redirectTo: RoutesConfig.routes.error404 },

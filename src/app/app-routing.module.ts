@@ -11,6 +11,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./modules/root/root.module').then(m => m.RootModule),
   },
+  { path: '**', redirectTo: RoutesConfig.routes.error404 },
 ];
 
 @NgModule({
