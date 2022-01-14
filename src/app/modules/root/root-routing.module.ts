@@ -25,9 +25,9 @@ const rootRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       { path: routesNames.error404, component: Error404PageComponent },
+      { path: '**', redirectTo: RoutesConfig.routes.error404 },
     ],
   },
-  // { path: '**', redirectTo: RoutesConfig.routes.error404 },
 ];
 
 @NgModule({
