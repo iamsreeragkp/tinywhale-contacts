@@ -13,10 +13,15 @@ const rootRoutes: Routes = [
     path: '',
     component: RootComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: RoutesConfig.routes.home },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: RoutesConfig.routes.home,
+      },
       {
         path: RoutesConfig.basePaths.hero,
         loadChildren: () => import('../hero/hero.module').then(m => m.HeroModule),
+        canActivate: [AuthGuard],
       },
       {
         path: routesNames.home,
@@ -25,7 +30,6 @@ const rootRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       { path: routesNames.error404, component: Error404PageComponent },
-      { path: '**', redirectTo: RoutesConfig.routes.error404 },
     ],
   },
 ];
