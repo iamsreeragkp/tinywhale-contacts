@@ -3,9 +3,9 @@ import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss'],
+  selector: 'app-root',
+  templateUrl: './root.component.html',
+  styleUrls: ['./root.component.scss'],
   animations: [
     trigger('fadeIn', [
       transition(
@@ -17,6 +17,6 @@ import { fadeIn } from 'ng-animate';
     ]),
   ],
 })
-export class AuthComponent {
+export class RootComponent {
   constructor() {}
 }

@@ -10,6 +10,7 @@ import { RootModule } from './modules/root/root.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
+import { RootGuard } from './modules/root/root.guard';
 
 registerLocaleData(localeEs, 'es');
 
@@ -25,6 +26,7 @@ registerLocaleData(localeEs, 'es');
   declarations: [AppComponent],
   providers: [
     AuthGuard,
+    RootGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }, // For HttpInterceptors
   ],
   bootstrap: [AppComponent],

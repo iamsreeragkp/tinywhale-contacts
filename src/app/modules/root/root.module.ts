@@ -8,29 +8,24 @@ import { RootRoutingModule } from './root-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RootComponent } from './root.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    SharedModule,
-    RootRoutingModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule, RootRoutingModule],
   declarations: [
     HomePageComponent,
     Error404PageComponent,
     HeaderComponent,
     SearchBarComponent,
-    FooterComponent
+    FooterComponent,
+    RootComponent,
   ],
   exports: [
     HomePageComponent,
     Error404PageComponent,
     HeaderComponent,
     SearchBarComponent,
-    FooterComponent
-  ]
+    FooterComponent,
+  ],
 })
-
-export class RootModule {
-}
+export class RootModule {}
