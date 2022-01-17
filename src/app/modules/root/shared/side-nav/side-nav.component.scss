@@ -1,0 +1,46 @@
+.side-nav {
+  box-shadow: 0px 0px 20px #dce1e3;
+  .nav-text {
+    font-family: Poppins !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: #154f5b;
+  }
+  .nav-link{
+      height: 4.5rem;
+  }
+
+  svg {
+   .color-fill {
+     fill: #6b9eb6 !important;
+}
+}
+.active-border{
+    display: none;
+}
+
+}
+.nav-item{
+    & :hover{
+        .active-border{
+            display: block;
+            background: #12B5C1;
+        }
+        .color-fill{
+            fill: #12B5C1 !important;
+        }
+    }
+}
+// <!--Active item Condition --!>
+
+// .active-item{
+//     .active-border{
+//         display: block;
+//         background: #12B5C1;
+//     }
+//     .color-fill{
+//         fill: #12B5C1 !important;
+//     }
+// }
