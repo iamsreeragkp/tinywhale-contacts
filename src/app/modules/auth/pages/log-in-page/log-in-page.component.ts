@@ -64,4 +64,13 @@ export class LogInPageComponent {
       });
     }
   }
+
+  async onSubmitGoogleSignIn() {
+    try {
+      const data = await this.authService.googleSignIn();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

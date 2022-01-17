@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
 import { RootGuard } from './modules/root/root.guard';
+import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
 
 registerLocaleData(localeEs, 'es');
 
@@ -22,12 +23,26 @@ registerLocaleData(localeEs, 'es');
     RootModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
+    SocialLoginModule,
   ],
   declarations: [AppComponent],
   providers: [
     AuthGuard,
     RootGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }, // For HttpInterceptors
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: true,
+        providers: [
+          // Google Authentication setup
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.google_client_id),
+          },
+        ],
+      },
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { StorageService } from '../../shared/services/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.config';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class AuthService {
   constructor(
     private storageService: StorageService,
     private http: HttpClient,
+    private socialAuthService: SocialAuthService,
     @Inject(ENDPOINTS_CONFIG) private endpoints: EndpointsType
   ) {}
 
@@ -70,5 +72,13 @@ export class AuthService {
           }
         })
       );
+  }
+
+  public googleSignIn() {
+    return this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  public googleSignOut() {
+    return this.socialAuthService.signOut();
   }
 }

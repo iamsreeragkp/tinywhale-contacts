@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  google_client_id:'1025457966729-b27f3148m3opbin11qljpjiii1rj52c8.apps.googleusercontent.com'
 };
 
 /*
