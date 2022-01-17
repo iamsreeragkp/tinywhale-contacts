@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       // bagroundColor:{
-      //   primarybaground:"#12B5C1"
+      //   primary-baground:"#12B5C1"
       // }
     },
   },
