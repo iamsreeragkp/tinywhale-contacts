@@ -17,6 +17,7 @@ const routesNames = {
   auth: {
     signUp: 'sign-up',
     logIn: 'log-in',
+    forgotPassword:'forgot-password',
   },
 };
 

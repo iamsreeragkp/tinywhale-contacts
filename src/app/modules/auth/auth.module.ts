@@ -7,10 +7,11 @@ import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { AuthStoreModule } from './store/auth-store.module';
 import { AuthComponent } from './auth.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, SharedModule, AuthRoutingModule, AuthStoreModule],
-  declarations: [SignUpPageComponent, LogInPageComponent, AuthComponent],
+  declarations: [SignUpPageComponent, LogInPageComponent, AuthComponent, ForgotPasswordComponent],
   providers: [],
 })
 export class AuthModule {}
