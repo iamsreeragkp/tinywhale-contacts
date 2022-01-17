@@ -9,6 +9,13 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { HeroLoadingComponent } from './components/hero-loading/hero-loading.component';
 import { HeroCardComponent } from './components/hero-card/hero-card.component';
+import { LogoComponent } from './svgs/logo/logo.component';
+import { BasicinfoComponent } from './svgs/basic info/basicinfo.component';
+import { AddserviceComponent } from './svgs/addservice/addservice.component';
+import { PaymentComponent } from './svgs/payment/payment.component';
+import {CompleteiconComponent } from './svgs/completeicon/completeicon.component';
+import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
+
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
@@ -18,6 +25,12 @@ import { HeroCardComponent } from './components/hero-card/hero-card.component';
     CapitalizeFirstPipe,
     HeroLoadingComponent,
     HeroCardComponent,
+    LogoComponent,
+    BasicinfoComponent,
+    AddserviceComponent,
+    PaymentComponent,
+    CompleteiconComponent,
+    WarningiconComponent,
   ],
   exports: [
     CommonModule,
@@ -28,6 +41,12 @@ import { HeroCardComponent } from './components/hero-card/hero-card.component';
     LazyLoadImageModule,
     HeroLoadingComponent,
     HeroCardComponent,
+    LogoComponent,
+    BasicinfoComponent,
+    AddserviceComponent,
+    PaymentComponent,
+    CompleteiconComponent ,
+    WarningiconComponent,
   ],
 })
 export class SharedModule {}
