@@ -15,7 +15,8 @@ import { AddserviceComponent } from './svgs/addservice/addservice.component';
 import { PaymentComponent } from './svgs/payment/payment.component';
 import {CompleteiconComponent } from './svgs/completeicon/completeicon.component';
 import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
-
+import { FormwarningComponent } from './svgs/formwarning/formwarning.component'
+import { FormrightComponent } from './svgs/formright/formright.component'
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
@@ -31,6 +32,8 @@ import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
     PaymentComponent,
     CompleteiconComponent,
     WarningiconComponent,
+    FormwarningComponent,
+    FormrightComponent,
   ],
   exports: [
     CommonModule,
@@ -47,6 +50,8 @@ import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
     PaymentComponent,
     CompleteiconComponent ,
     WarningiconComponent,
+    FormwarningComponent,
+    FormrightComponent,
   ],
 })
 export class SharedModule {}
