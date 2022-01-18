@@ -5,6 +5,8 @@ import { StorageService } from '../../shared/services/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.config';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { Auth } from './store/auth.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,8 @@ export class AuthService {
     @Inject(ENDPOINTS_CONFIG) private endpoints: EndpointsType
   ) {}
 
+  private authApi = environment.api_end_point;
+
   isLoggedIn(): boolean {
     try {
       const token = this.storageService.getToken();
@@ -27,6 +31,18 @@ export class AuthService {
     } catch (error) {
       return false;
     }
+  }
+
+  signUpUser(payload: Auth): Observable<any> {
+    return this.http.post(`${this.authApi}/auth/signup`, payload);
+  }
+
+  loginUser(payload: Auth): Observable<any> {
+    return this.http.post(`${this.authApi}/auth/login`, payload);
+  }
+
+  checkDomainAvailability(subdomain: string): Observable<any> {
+    return this.http.get(`${this.authApi}/store/check/${subdomain}`);
   }
 
   signUp(

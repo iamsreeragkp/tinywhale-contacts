@@ -1,33 +1,62 @@
 <div class="sign-up">
   <header class="header">
-    <h1 class="title not-italic font-normal leading-9 mb-4">Get Started</h1>
+    <h1 class="title not-italic font-normal leading-9 mb-0">Get Started</h1>
     <p class="content not-italic font-normal text-base">
-      Already have an account? <span class="goto-login">Sign in</span>
+      Already have an account? <span class="goto-login" (click)="navigateToSignIn()">Sign in</span>
     </p>
   </header>
   <main>
-    <form class="form-signup w-full" action="">
+    <form class="form-signup w-full" [formGroup]="signUpForm">
       <div class="input-field error-active">
         <div class="relative">
           <input
-            class="input-signup w-full focus:outline-none bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-signup w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
             type="text"
+            placeholder="abc.tinywhale.com"
+            formControlName="domain"
+            (ngModelChange)="search$.next($event)"
           />
-          <!-- <div class=" warning absolute"><app-formwarning></app-formwarning></div> -->
-          <div class="right absolute"><app-formright></app-formright></div>
+          <ng-container *ngIf="signUpForm.get('domain')?.value">
+            <div *ngIf="isDomainAvailable" class="warning absolute">
+              <app-formwarning></app-formwarning>
+            </div>
+            <div *ngIf="!isDomainAvailable" class="right absolute">
+              <app-formright></app-formright>
+            </div>
+          </ng-container>
         </div>
-        <p class="error not-italic font-normal text-xs leading-3 mt-1">Domain not available</p>
+        <p *ngIf="isDomainAvailable" class="error not-italic font-normal text-xs leading-3 mt-1">
+          Domain not available
+        </p>
       </div>
       <div class="input-field error-active">
         <div class="relative">
           <input
-            class="input-signup w-full focus:outline-none bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
             type="text"
+            placeholder="Enter Email"
+            formControlName="email"
           />
-          <div class="warning absolute"><app-formwarning></app-formwarning></div>
-          <!-- <div class=" right absolute"><app-formright></app-formright></div> -->
+          <div class="warning absolute" *ngIf="email?.errors?.['email']">
+            <app-formwarning></app-formwarning>
+          </div>
+          <div
+            class="right absolute"
+            *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['email'] ? true : false"
+          >
+            <app-formright></app-formright>
+          </div>
         </div>
-        <p class="error not-italic font-normal text-xs leading-3 mt-1">
+        <p
+          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['required']"
+          class="error not-italic font-normal text-xs leading-3 mt-1"
+        >
+          Email is required
+        </p>
+        <p
+          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['email']"
+          class="error not-italic font-normal text-xs leading-3 mt-1"
+        >
           Please enter a valid email address
         </p>
       </div>
@@ -35,18 +64,22 @@
     <div class="flex flex-col">
       <button
         class="continue text-white w-full py-3 px-8 not-italic font-normal text-base leading-6 rounded-full"
+        (click)="onSubmitSignUp()"
+        [disabled]="!signUpForm.valid"
       >
         Continue
       </button>
       <div class="or-class text-center my-4 text-base not-italic font-normal">or</div>
       <button
         class="continue-with-google text-white w-full py-3 px-8 not-italic font-normal text-baseleading-6 rounded-full"
+        [disabled]="isDomainAvailable ? true : false"
+        (click)="onSubmitGoogleSignIn()"
       >
         Continue with Google
       </button>
     </div>
   </main>
-  <footer class="footer  absolute bottom-7  font-normal not-italic text-xs text-center">
-    By continuing, you agree to our <a href=""> <u>Terms & Conditions</u></a>
+  <footer class="footer font-normal not-italic text-xs text-center mt-64">
+    By continuing, you agree to our Terms & Conditions
   </footer>
 </div>

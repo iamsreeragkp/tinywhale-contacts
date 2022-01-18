@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   setLogin() {
-    this.storageService.setToken();
+    // this.storageService.setToken();
   }
 
   checkBrowser() {

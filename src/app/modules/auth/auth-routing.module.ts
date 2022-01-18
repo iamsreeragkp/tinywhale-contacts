@@ -14,7 +14,7 @@ const authenticationRoutes: Routes = [
   {
     path: '',
     component: AuthComponent,
-    canActivate: [RootGuard],
+    // canActivate: [RootGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: RoutesConfig.routes.auth.logIn },
       { path: authRoutes.signUp, component: SignUpPageComponent },

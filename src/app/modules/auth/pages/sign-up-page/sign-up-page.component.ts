@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +6,19 @@ import { AuthService } from '../../auth.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { RoutesConfig } from '../../../../configs/routes.config';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/shared/services/storage.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  skipWhile,
+  Subject,
+  takeUntil,
+} from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { IAuthState } from '../../store/auth.reducers';
+import { logIn, searchDomain, signUp } from '../../store/auth.actions';
+import { getDomainData } from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -22,60 +35,95 @@ import { Router } from '@angular/router';
     ]),
   ],
 })
-export class SignUpPageComponent {
-  signUpForm: FormGroup;
-  firstName = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-  lastName = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [
-    Validators.required,
-    Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$'),
-  ]);
-  hide = true;
+export class SignUpPageComponent implements OnInit, OnDestroy {
+  signUpForm!: FormGroup;
+  searchDomain: any;
+  isDomainAvailable: boolean = false;
+
+  search$ = new Subject<string>();
+  ngUnsubscribe = new Subject<any>();
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private utilsService: UtilsService
+    private storageService: StorageService,
+    private store: Store<IAuthState>
   ) {
-    this.signUpForm = this.formBuilder.group({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      password: this.password,
+    this.signUpForm = this.createSignupForm();
+  }
+
+  ngOnInit() {
+    this.search$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(val => {
+      if (val) {
+        this.store.dispatch(searchDomain({ searchDomain: val }));
+      } else {
+        this.isDomainAvailable = false;
+      }
+    });
+    this.store.pipe(select(getDomainData), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      if (data && data?.Availability === false) {
+        this.isDomainAvailable = true;
+      } else {
+        this.isDomainAvailable = false;
+      }
     });
   }
 
-  getErrorMessage(field: any): string | void {
-    // @ts-ignore
-    const classField: any = this[field];
-    if (classField?.hasError('required')) {
-      return 'You must enter a value';
-    } else if (classField?.hasError('email')) {
-      return 'Not a valid email';
-    } else if (classField?.hasError('pattern')) {
-      return 'Not a valid password';
+  createSignupForm() {
+    return new FormGroup({
+      domain: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+    });
+  }
+
+  onSubmitSignUp() {
+    const { email, domain } = this.signUpForm.value;
+    const payload = {
+      email,
+      domain,
+    };
+    console.log('payload', payload);
+  }
+
+  async onSubmitGoogleSignIn() {
+    try {
+      const data = await this.authService.googleSignIn();
+      console.log(data);
+      if (data && data?.response?.['access_token']) {
+        const { email, firstName, id, idToken, lastName } = data;
+        const payload = {
+          email,
+          firstName,
+          id,
+          idToken,
+          lastName,
+        };
+        console.log('payload', payload);
+        const google_access_token = data?.response?.['access_token'];
+        this.storageService.setGoogleAccessToken(google_access_token);
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  sendForm() {
-    if (this.signUpForm.valid) {
-      const formValue = this.signUpForm.value;
-      this.authService
-        .signUp(formValue.firstName, formValue.lastName, formValue.email, formValue.password)
-        .subscribe((response: any) => {
-          if (!response.errors) {
-            this.router.navigate([RoutesConfig.routes.auth.logIn]).then(() => {
-              // this.utilsService.showSnackBar('Cool! Now try to log in!', 'info-snack-bar');
-            });
-          } else if (response.errors[0].code === 10000) {
-            // this.utilsService.showSnackBar(
-            //   'This email is not available. Try again, with a different one.',
-            //   'warning-snack-bar'
-            // );
-          }
-        });
-    }
+  navigateToSignIn() {
+    this.router.navigateByUrl('/auth/log-in');
+  }
+
+  get email() {
+    return this.signUpForm.get('email');
+  }
+
+  get domain() {
+    return this.signUpForm.get('domain');
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next(false);
   }
 }

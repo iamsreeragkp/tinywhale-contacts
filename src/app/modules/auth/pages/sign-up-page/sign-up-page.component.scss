@@ -1,5 +1,5 @@
 .sign-up {
-  
+
   .header{
     margin-bottom: 34px;
     .title {
@@ -30,27 +30,27 @@
     .error{
       display: none;
     }
-    
+
   }
-  // .error-active{
-  //   .input-signup{
-  //     border: 2px solid #FF725E;
-  //   }
-  //   .error{
-  //     display: block;
-  //     font-family: Poppins;
-  //     line-height: 18px;
-  //     color: #FF725E;
-  //   }
-  // }
-  
+  .error-active{
+    // .input-signup{
+    //   border: 2px solid #FF725E;
+    // }
+    .error{
+      display: block;
+      font-family: Poppins;
+      line-height: 18px;
+      color: #FF725E;
+    }
   }
+  }
+
   .continue{
     background: #12B5C1;
     font-family: Baloo;
 
   }
-  .continue-with-google{   
+  .continue-with-google{
    background: #154F5B;
     font-family: Baloo;
   }

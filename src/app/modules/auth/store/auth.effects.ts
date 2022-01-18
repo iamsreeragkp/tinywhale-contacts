@@ -1,36 +1,83 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { StorageService } from 'src/app/shared/services/storage.service';
 import { AuthService } from '../auth.service';
-import * as AuthActions from './auth.actions';
+import {
+  logIn,
+  logInError,
+  logInSuccess,
+  searchDomain,
+  searchDomainFail,
+  searchDomainSuccess,
+  signUp,
+  signUpError,
+  signUpSuccess,
+} from './auth.actions';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router,
+    private storageService: StorageService
+  ) {}
+
+  // signUp
 
   signUp$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.signUp),
-      switchMap(({ email, password, firstName, lastName }) =>
-        this.authService.signUp(firstName, lastName, email, password).pipe(
-          map(({ accessToken, refreshToken }) =>
-            AuthActions.signUpSuccess({ accessToken, refreshToken })
-          ),
-          catchError(() => of(AuthActions.signUpError()))
+      ofType(signUp),
+      switchMap(({ user }) =>
+        this.authService.signUpUser(user).pipe(
+          map(({ response }) => signUpSuccess({ user: response })),
+          catchError(error => of(signUpError({ error: error })))
         )
       )
     )
   );
 
-  logIn$ = createEffect(() =>
+  // logIn
+
+  login$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.logIn),
-      switchMap(({ email, password }) =>
-        this.authService.logIn(email, password).pipe(
-          map(({ accessToken, refreshToken }) =>
-            AuthActions.logInSuccess({ accessToken, refreshToken })
-          ),
-          catchError(() => of(AuthActions.logInError()))
+      ofType(logIn),
+      switchMap(({ user }) =>
+        this.authService.loginUser(user).pipe(
+          map(response => logInSuccess({ user: response })),
+          catchError(error => of(logInError({ error: error })))
+        )
+      )
+    )
+  );
+
+  loginRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(...[logInSuccess]),
+        tap((action: any) => {
+          if (action) {
+            const access_token = action?.user?.['access-token'];
+            this.storageService.setAccessToken(access_token);
+            this.router.navigate(['/home']);
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  //search Domain
+
+  searchDomain$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(searchDomain),
+      mergeMap(action =>
+        this.authService.checkDomainAvailability(action.searchDomain).pipe(
+          map((domain: any) => searchDomainSuccess({ domainItem: domain })),
+          catchError(err => of(searchDomainFail({ error: err })))
         )
       )
     )
