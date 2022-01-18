@@ -1,29 +1,53 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
+import { Auth } from './auth.interface';
 
 export const userFeatureKey = 'AuthState';
 
 export interface IAuthState {
-  accessToken?: string;
-  refreshToken?: string;
+  user: Auth[];
+  error: any;
+  isAuthenticated: boolean;
+  searchDomain: any;
 }
 
-export const initialHeroState: IAuthState = {
-  accessToken: undefined,
-  refreshToken: undefined,
+export const initialAuthState: IAuthState = {
+  user: [],
+  error: '',
+  isAuthenticated: false,
+  searchDomain: null,
 };
 
 export const reducer = createReducer(
-  initialHeroState,
-  on(AuthActions.signUpSuccess, (state, { accessToken, refreshToken }) => ({
+  initialAuthState,
+  on(AuthActions.signUpSuccess, (state, { user }) => ({
     ...state,
-    accessToken,
-    refreshToken,
+    user: user,
+    isAuthenticated: true,
+    error: '',
   })),
-  on(AuthActions.signUpError, state => ({
+  on(AuthActions.logInSuccess, (state, { user }) => ({
     ...state,
-    accessToken: undefined,
-    refreshToken: undefined,
+    user: user,
+    isAuthenticated: true,
+    error: '',
+  })),
+  on(AuthActions.signUpError, AuthActions.logInError, state => ({
+    ...state,
+    user: [],
+    isAuthenticated: false,
+  })),
+  on(AuthActions.searchDomainSuccess, (state, { domainItem }) => ({
+    ...state,
+    user: [],
+    isAuthenticated: false,
+    searchDomain: domainItem,
+  })),
+  on(AuthActions.searchDomainFail, (state, { error }) => ({
+    ...state,
+    user: [],
+    isAuthenticated: false,
+    error: error,
   }))
 );
 

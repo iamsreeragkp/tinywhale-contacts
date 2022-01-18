@@ -11,12 +11,16 @@ export class StorageService {
     return localStorage.getItem('accessToken') ?? '';
   }
 
-  setToken() {
-    return localStorage.setItem('accessToken', 'fdsfsdfd');
+  setAccessToken(token: string) {
+    return localStorage.setItem('accessToken', token);
   }
 
   removeToken() {
     return localStorage.removeItem('accessToken');
+  }
+
+  setGoogleAccessToken(token: string) {
+    return localStorage.setItem('accessToken', `Bearer ${token}`);
   }
 
   getCookie(name: string): string | undefined {

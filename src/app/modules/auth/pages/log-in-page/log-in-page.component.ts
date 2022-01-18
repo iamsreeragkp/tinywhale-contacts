@@ -6,6 +6,10 @@ import { AuthService } from '../../auth.service';
 import { RoutesConfig } from '../../../../configs/routes.config';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../../../shared/services/utils.service';
+import { StorageService } from 'src/app/shared/services/storage.service';
+import { IAuthState } from '../../store/auth.reducers';
+import { Store } from '@ngrx/store';
+import { logIn } from '../../store/auth.actions';
 
 @Component({
   selector: 'app-log-in-page',
@@ -23,54 +27,62 @@ import { UtilsService } from '../../../../shared/services/utils.service';
   ],
 })
 export class LogInPageComponent {
-  @ViewChild('loginForm') loginForm: any;
+  // @ViewChild('loginForm') loginForm: any;
 
-  logInForm: FormGroup;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required]);
-  hide = true;
+  logInForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private utilsService: UtilsService
+    private storageService: StorageService,
+    private store: Store<IAuthState>
   ) {
-    this.logInForm = this.formBuilder.group({
-      email: this.email,
-      password: this.password,
+    this.logInForm = this.createLoginForm();
+  }
+
+  createLoginForm() {
+    return new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     });
   }
 
-  getErrorMessage(field: string): string | void {
-    // @ts-ignore
-    const classField = this[field];
-    if (classField?.hasError('required')) {
-      return 'You must enter a value';
-    } else if (classField?.hasError('email')) {
-      return 'Not a valid email';
-    }
-  }
-
-  sendForm() {
-    if (this.logInForm.valid) {
-      const formValue = this.logInForm.value;
-      this.authService.logIn(formValue.email, formValue.password).subscribe((response: any) => {
-        if (!response.errors) {
-          this.router.navigate([RoutesConfig.routes.hero.myHeroes]);
-        } else if (response.errors[0].code === 11000) {
-          // this.utilsService.showSnackBar('Nice! Let\'s create some heroes', 'info-snack-bar');
-        }
-      });
-    }
+  onSubmitLogin() {
+    const { email, password } = this.logInForm.value;
+    const payload = {
+      email,
+      password,
+    };
+    console.log('payload login', payload);
+    this.store.dispatch(logIn({ user: payload }));
   }
 
   async onSubmitGoogleSignIn() {
     try {
       const data = await this.authService.googleSignIn();
       console.log(data);
+      if (data && data?.response?.['access_token']) {
+        const google_access_token = data?.response?.['access_token'];
+        this.storageService.setGoogleAccessToken(google_access_token);
+        this.router.navigate(['/home']);
+      } else {
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  navigateToSignUp() {
+    this.router.navigateByUrl('/auth/sign-up');
+  }
+
+  get email() {
+    return this.logInForm.get('email');
+  }
+
+  get password() {
+    return this.logInForm.get('password');
   }
 }

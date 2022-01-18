@@ -12,7 +12,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const token = this.storageService.getToken();
     const customReq = request.clone({
       setHeaders: {
-        'x-auth-token': `Bearer ${token}`, // Setting header
+        'Authorization': `${token}`, // Setting header
       },
     });
     return next.handle(customReq).pipe(

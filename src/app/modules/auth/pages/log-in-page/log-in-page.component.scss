@@ -1,5 +1,5 @@
 .login {
-  
+
   .header{
     margin-bottom: 34px;
     .title {
@@ -30,9 +30,20 @@
     .error{
       display: none;
     }
-    
+
   }
-  
+  .error-active{
+    .input-signup{
+      border: 2px solid #FF725E;
+    }
+    .error{
+      display: block;
+      font-family: Poppins;
+      line-height: 18px;
+      color: #FF725E;
+    }
+  }
+
   // .error-active{
   //   .input-login{
   //     border: 2px solid #FF725E;
@@ -44,7 +55,7 @@
   //     color: #FF725E;
   //   }
   // }
-  
+
   }
   .goto-forgotpassword{
     font-family: Poppins;
@@ -57,7 +68,7 @@
     font-family: Baloo;
 
   }
-  .continue-with-google{   
+  .continue-with-google{
    background: #154F5B;
     font-family: Baloo;
   }
