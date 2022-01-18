@@ -1,5 +1,3 @@
-import { HeaderComponent } from './modules/root/shared/header/header.component';
-import { SearchBarComponent } from './modules/root/shared/search-bar/search-bar.component';
 import { FooterComponent } from './modules/root/shared/footer/footer.component';
 import { of } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
@@ -20,12 +18,7 @@ describe('AppComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule],
-        declarations: [
-          MockComponent(HeaderComponent),
-          MockComponent(SearchBarComponent),
-          MockComponent(FooterComponent),
-          AppComponent,
-        ],
+        declarations: [MockComponent(FooterComponent), AppComponent],
         providers: [
           { provide: Meta, useValue: {} },
           {

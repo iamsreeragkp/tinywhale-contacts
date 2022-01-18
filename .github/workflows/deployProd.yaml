@@ -1,0 +1,66 @@
+name: front end prod
+
+on:
+  push:
+    branches:
+      [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Get npm cache
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm get cache)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-
+
+      - run: npm ci
+      - run: npm run build:prod
+
+      - name: zip build folder
+        run: tar cvzf build.tar.gz build
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PROD_SSH_KEY }}
+          name: id_rsa # optional
+          known_hosts: ${{ secrets.PROD_KNOWN_HOSTS }}
+          # config: ${{ secrets.CONFIG }} # ssh_config; optional
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: scp to ec2instance
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@ec2-15-207-109-127.ap-south-1.compute.amazonaws.com
+          scp build.tar.gz ubuntu@ec2-15-207-109-127.ap-south-1.compute.amazonaws.com:/home/ubuntu/
+
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ec2-15-207-109-127.ap-south-1.compute.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: 22
+          script: bash deploy-client.sh
+
+
+      # - name: Release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: npx semantic-release
