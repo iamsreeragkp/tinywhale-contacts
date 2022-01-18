@@ -17,6 +17,8 @@ import {CompleteiconComponent } from './svgs/completeicon/completeicon.component
 import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
 import { FormwarningComponent } from './svgs/formwarning/formwarning.component'
 import { FormrightComponent } from './svgs/formright/formright.component'
+import { PasswordCorrectComponent } from './svgs/passwordcorrect/passwordcorrect.component';
+import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning.component';
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
@@ -34,6 +36,8 @@ import { FormrightComponent } from './svgs/formright/formright.component'
     WarningiconComponent,
     FormwarningComponent,
     FormrightComponent,
+    PasswordCorrectComponent,
+    PasswordWarningComponent,
   ],
   exports: [
     CommonModule,
@@ -52,6 +56,8 @@ import { FormrightComponent } from './svgs/formright/formright.component'
     WarningiconComponent,
     FormwarningComponent,
     FormrightComponent,
+    PasswordCorrectComponent,
+    PasswordWarningComponent,
   ],
 })
 export class SharedModule {}
