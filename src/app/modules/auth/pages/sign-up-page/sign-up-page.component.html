@@ -10,9 +10,10 @@
       <div class="input-field error-active">
         <div class="relative">
           <input
-            class="input-signup w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-signup w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
             type="text"
             placeholder="abc.tinywhale.com"
+            [ngClass]="{'border-red': isDomainAvailable}"
             formControlName="domain"
             (ngModelChange)="search$.next($event)"
           />
@@ -32,9 +33,11 @@
       <div class="input-field error-active">
         <div class="relative">
           <input
-            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
             type="text"
             placeholder="Enter Email"
+            [ngClass]="{'border-red': email?.errors?.['email']}"
+
             formControlName="email"
           />
           <div class="warning absolute" *ngIf="email?.errors?.['email']">

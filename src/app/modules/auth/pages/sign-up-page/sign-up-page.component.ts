@@ -83,7 +83,7 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
       email,
       domain,
     };
-    console.log('payload', payload);
+    this.router.navigate(['/auth/create-password'],{queryParams:{email:email,domain:domain}})
   }
 
   async onSubmitGoogleSignIn() {
@@ -102,6 +102,8 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
         console.log('payload', payload);
         const google_access_token = data?.response?.['access_token'];
         this.storageService.setGoogleAccessToken(google_access_token);
+        // this.router.navigate(['/home']);
+
       } else {
         return;
       }
