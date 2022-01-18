@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,15 +12,15 @@ import { LogoComponent } from './svgs/logo/logo.component';
 import { BasicinfoComponent } from './svgs/basic info/basicinfo.component';
 import { AddserviceComponent } from './svgs/addservice/addservice.component';
 import { PaymentComponent } from './svgs/payment/payment.component';
-import {CompleteiconComponent } from './svgs/completeicon/completeicon.component';
+import { CompleteiconComponent } from './svgs/completeicon/completeicon.component';
 import { WarningiconComponent } from './svgs/warningicon/warningicon.component';
-import { FormwarningComponent } from './svgs/formwarning/formwarning.component'
-import { FormrightComponent } from './svgs/formright/formright.component'
+import { FormwarningComponent } from './svgs/formwarning/formwarning.component';
+import { FormrightComponent } from './svgs/formright/formright.component';
 import { PasswordCorrectComponent } from './svgs/passwordcorrect/passwordcorrect.component';
 import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
@@ -41,7 +40,6 @@ import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning
   ],
   exports: [
     CommonModule,
-    FlexLayoutModule,
     SpinnerComponent,
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,
@@ -52,7 +50,7 @@ import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning
     BasicinfoComponent,
     AddserviceComponent,
     PaymentComponent,
-    CompleteiconComponent ,
+    CompleteiconComponent,
     WarningiconComponent,
     FormwarningComponent,
     FormrightComponent,
