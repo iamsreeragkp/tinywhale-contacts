@@ -6,6 +6,7 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { AuthComponent } from './auth.component';
 import { RootGuard } from '../root/root.guard';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { CreatePasswordComponent } from './pages/create-password/create-password.component';
 
 const authRoutes = RoutesConfig.routesNames.auth;
 
@@ -19,6 +20,7 @@ const authenticationRoutes: Routes = [
       { path: authRoutes.signUp, component: SignUpPageComponent },
       { path: authRoutes.logIn, component: LogInPageComponent },
       { path: authRoutes.forgotPassword, component: ForgotPasswordComponent },
+      { path: authRoutes.createPassword, component: CreatePasswordComponent },
       { path: '**', redirectTo: RoutesConfig.routes.error404 },
     ],
   },

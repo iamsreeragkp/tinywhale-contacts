@@ -18,6 +18,7 @@ const routesNames = {
     signUp: 'sign-up',
     logIn: 'log-in',
     forgotPassword:'forgot-password',
+    createPassword:'create-password',
   },
 };
 
