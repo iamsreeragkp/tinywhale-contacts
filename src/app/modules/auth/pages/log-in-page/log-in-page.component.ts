@@ -10,6 +10,7 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 import { IAuthState } from '../../store/auth.reducers';
 import { Store } from '@ngrx/store';
 import { logIn } from '../../store/auth.actions';
+import { Type } from '../../store/auth.interface';
 
 @Component({
   selector: 'app-log-in-page',
@@ -54,7 +55,6 @@ export class LogInPageComponent {
       email,
       password,
     };
-    console.log('payload login', payload);
     this.store.dispatch(logIn({ user: payload }));
   }
 
@@ -63,9 +63,14 @@ export class LogInPageComponent {
       const data = await this.authService.googleSignIn();
       console.log(data);
       if (data && data?.response?.['access_token']) {
-        const google_access_token = data?.response?.['access_token'];
-        this.storageService.setGoogleAccessToken(google_access_token);
-        this.router.navigate(['/home']);
+        const { email, idToken } = data;
+        const payload = {
+          email,
+          idToken,
+          type:Type.GOOGLE,
+        };
+        console.log('payload', payload);
+        this.store.dispatch(logIn({ user: payload }));
       } else {
         return;
       }

@@ -30,7 +30,7 @@ export class AuthEffects {
   signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signUp),
-      switchMap(({ user }) =>
+      mergeMap(({ user }) =>
         this.authService.signUpUser(user).pipe(
           map(({ response }) => signUpSuccess({ user: response })),
           catchError(error => of(signUpError({ error: error })))
@@ -62,6 +62,20 @@ export class AuthEffects {
             const access_token = action?.user?.['access-token'];
             this.storageService.setAccessToken(access_token);
             this.router.navigate(['/home']);
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  signUpRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(...[signUpSuccess]),
+        tap((action: any) => {
+          if (action) {
+            this.router.navigate(['/auth/log-in']);
           }
         })
       );

@@ -33,9 +33,9 @@
 
   }
   .error-active{
-    // .input-signup{
-    //   border: 2px solid #FF725E;
-    // }
+    .border-red{
+      border: 2px solid #FF725E;
+    }
     .error{
       display: block;
       font-family: Poppins;
