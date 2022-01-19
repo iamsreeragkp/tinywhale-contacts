@@ -21,3 +21,10 @@ export const getDomainData=createSelector(
     return state.searchDomain
   }
 )
+
+export const getKey=createSelector(
+  getDamainFeatureSelector,
+  state=>{
+    return state.otp;
+  }
+)
