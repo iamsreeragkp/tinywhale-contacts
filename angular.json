@@ -45,7 +45,8 @@
             "styles": [
               "src/assets/css/reset.css",
               "src/assets/css/loading.css",
-              "src/app/styles/global.scss"
+              "src/app/styles/global.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/app/shared/styles"]

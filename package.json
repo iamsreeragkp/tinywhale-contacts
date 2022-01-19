@@ -72,6 +72,7 @@
     "ng-lazyload-image": "9.1.0",
     "ngx-cookie": "5.0.2",
     "ngx-logger": "5.0.4",
+    "ngx-toastr": "^14.2.1",
     "postcss": "^8.4.5",
     "rxjs": "7.4.0",
     "swiper": "^7.4.1",

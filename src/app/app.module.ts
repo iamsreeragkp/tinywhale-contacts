@@ -12,6 +12,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
 import { RootGuard } from './modules/root/root.guard';
 import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(localeEs, 'es');
 
@@ -24,6 +25,7 @@ registerLocaleData(localeEs, 'es');
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     SocialLoginModule,
+    ToastrModule.forRoot(),
   ],
   declarations: [AppComponent],
   providers: [

@@ -4,6 +4,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
+
 import {
   logIn,
   logInError,
@@ -22,7 +24,8 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private router: Router,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private toastrService: ToastrService
   ) {}
 
   // signUp
@@ -62,6 +65,7 @@ export class AuthEffects {
             const access_token = action?.user?.['access-token'];
             this.storageService.setAccessToken(access_token);
             this.router.navigate(['/home']);
+            this.toastrService.success('Login Success', 'Success');
           }
         })
       );
@@ -76,6 +80,8 @@ export class AuthEffects {
         tap((action: any) => {
           if (action) {
             this.router.navigate(['/auth/log-in']);
+            this.toastrService.success('Signup Success', 'Success');
+
           }
         })
       );
