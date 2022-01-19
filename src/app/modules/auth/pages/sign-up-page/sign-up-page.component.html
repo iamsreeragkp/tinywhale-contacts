@@ -9,14 +9,15 @@
     <form class="form-signup w-full" [formGroup]="signUpForm">
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
-          <input
-            class="input-signup w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
-            type="text"
-            placeholder="abc.tinywhale.com"
-            [ngClass]="{'border-red': isDomainAvailable}"
-            formControlName="domain"
-            (ngModelChange)="search$.next($event)"
-          />
+          <div class="input-signup truncate relative overflow-hidden  w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none" (click)="domainName.focus()" [ngClass]="{'border-red': isDomainAvailable}"
+          
+          >
+            <input #domainName type="text" (ngModelChange)="search$.next($event)" class=" domain-input-width  absolute w-full  focus:outline-none border-none bg-transparent min-w-0  p-0 pr-5" 
+            formControlName="domain"/>
+            <Span class="domain-input-width inline-block leading-none invisible truncate">{{signUpForm?.get('domain')?.value}}</Span>
+            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' . tinywhale.com':'abc.tinywhale.com'}}</span>
+
+          </div>
           <ng-container *ngIf="signUpForm.get('domain')?.value">
             <div *ngIf="isDomainAvailable" class="warning absolute">
               <app-formwarning></app-formwarning>
@@ -33,7 +34,7 @@
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
-            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
+            class="input-signup hello w-full  bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
             type="text"
             placeholder="Enter Email"
             [ngClass]="{'border-red': email?.errors?.['email']}"

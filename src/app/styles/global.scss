@@ -122,3 +122,7 @@ pre {
 .swiper{
   @apply h-full w-full;
 }
+.swiper-button-prev, .swiper-button-next  {
+  display: none !important;
+  
+}
