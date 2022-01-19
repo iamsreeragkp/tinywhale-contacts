@@ -43,17 +43,18 @@
       color: #FF725E;
     }
   }
-  // .error-active{
-  //   .input-login{
-  //     border: 2px solid #FF725E;
-  //   }
+
+  .error-active{
+    .border-red{
+      border: 2px solid #FF725E;
+    }
   //   .error{
   //     display: block;
   //     font-family: Poppins;
   //     line-height: 18px;
   //     color: #FF725E;
   //   }
-  // }
+  }
 
   }
   .goto-forgotpassword{

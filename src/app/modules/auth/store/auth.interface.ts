@@ -10,3 +10,7 @@ export enum AccountType {
   CUSTOMER = 'CUSTOMER',
   BUSINESS = 'BUSINESS',
 }
+
+export enum Type{
+  GOOGLE="GOOGLE"
+}
