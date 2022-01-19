@@ -1,4 +1,30 @@
+
 .auth-layout{
   padding: 5.5rem 8.75rem 1.94rem 8.75rem !important;
-  min-height: 100vh;
+  min-height: 100vh !important;
+}
+.swiper-demo{
+  background: #12B5C1;
+  .swiper-content{
+    padding-bottom: 72px;
+    .content{
+  font-family: Poppins;
+  font-size: 21px;
+  line-height: 28px;
+  
+    }
+    .name-content{
+      font-family: Poppins;
+     line-height: 24px;
+    }
+    .swiper-button{
+      font-family: Baloo;
+      line-height: 25px;
+       text-align: center;
+        color: #12B5C1;
+
+    }
+  }
+  
+
 }

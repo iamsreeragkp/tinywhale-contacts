@@ -19,5 +19,7 @@ import { fadeIn } from 'ng-animate';
   ],
 })
 export class AuthComponent {
+  slides=[1,2,3];
+  
   constructor() {}
 }

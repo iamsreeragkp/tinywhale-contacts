@@ -18,6 +18,8 @@ import { FormwarningComponent } from './svgs/formwarning/formwarning.component';
 import { FormrightComponent } from './svgs/formright/formright.component';
 import { PasswordCorrectComponent } from './svgs/passwordcorrect/passwordcorrect.component';
 import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning.component';
+import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
+
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
@@ -37,6 +39,8 @@ import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning
     FormrightComponent,
     PasswordCorrectComponent,
     PasswordWarningComponent,
+    SwiperlogoComponent,
+    
   ],
   exports: [
     CommonModule,
@@ -56,6 +60,7 @@ import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning
     FormrightComponent,
     PasswordCorrectComponent,
     PasswordWarningComponent,
+    SwiperlogoComponent,
   ],
 })
 export class SharedModule {}

@@ -2,12 +2,12 @@
   <header class="header">
     <h1 class="title not-italic font-normal leading-9 mb-4">Sign in</h1>
     <p class="content not-italic font-normal text-base">
-      Don’t have an account? <span class="goto-signup" (click)="navigateToSignUp()">Sign up</span>
+      Don’t have an account? <span class="goto-signup cursor-pointer" (click)="navigateToSignUp()">Sign up</span>
     </p>
   </header>
   <main>
     <form class="form-login w-full" [formGroup]="logInForm">
-      <div class="input-field error-active">
+      <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
@@ -28,18 +28,18 @@
         </div>
         <p
           *ngIf="(email?.touched) && email?.invalid && email?.errors?.['required']"
-          class="error not-italic font-normal text-xs leading-3 mt-1"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Email is required
         </p>
         <p
           *ngIf="(email?.touched) && email?.invalid && email?.errors?.['email']"
-          class="error not-italic font-normal text-xs leading-3 mt-1"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Please enter a valid email address
         </p>
       </div>
-      <div class="input-field error-active">
+      <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
@@ -60,20 +60,20 @@
         </div>
         <p
           *ngIf="(password?.touched) && password?.invalid && password?.errors?.['required']"
-          class="error not-italic font-normal text-xs leading-3 mt-1"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Password is required
         </p>
         <p
           *ngIf="(password?.touched) && password?.invalid && password?.errors?.['minlength']"
-          class="error not-italic font-normal text-xs leading-3 mt-1"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Password Min length is 8
         </p>
       </div>
     </form>
     <a
-      class="goto-forgotpassword not-italic font-normal text-base"
+      class="goto-forgotpassword not-italic font-normal cursor-pointer text-base"
       [routerLink]="['../forgot-password']"
     >
       Forgot Password?</a
