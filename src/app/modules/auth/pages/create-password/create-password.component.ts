@@ -30,7 +30,7 @@ export class CreatePasswordComponent implements OnInit {
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern('[0-9A-Za-z]+'),
+        Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d).*$/),
       ]),
     });
   }
@@ -38,10 +38,10 @@ export class CreatePasswordComponent implements OnInit {
   onSubmitSignUpFinal() {
     const { password } = this.passwordForm.value;
     const signupPayload = {
-      email: this.formFieldDatas.email,
-      custom_domain: this.formFieldDatas.domain,
+      email: localStorage.getItem('email'),
+      custom_domain: localStorage.getItem('domain'),
       password: password,
-      name: this.formFieldDatas.email,
+      name: localStorage.getItem('email'),
       account_type: AccountType.BUSINESS,
     };
     this.store.dispatch(signUp({ user: signupPayload }));

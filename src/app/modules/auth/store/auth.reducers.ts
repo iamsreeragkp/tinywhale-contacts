@@ -22,30 +22,30 @@ export const reducer = createReducer(
   initialAuthState,
   on(AuthActions.signUpSuccess, (state, { user }) => ({
     ...state,
-    user: user,
+    users: user,
     isAuthenticated: true,
     error: '',
   })),
   on(AuthActions.logInSuccess, (state, { user }) => ({
     ...state,
-    user: user,
+    users: user,
     isAuthenticated: true,
     error: '',
   })),
   on(AuthActions.signUpError, AuthActions.logInError, state => ({
     ...state,
-    user: [],
+    users: [],
     isAuthenticated: false,
   })),
   on(AuthActions.searchDomainSuccess, (state, { domainItem }) => ({
     ...state,
-    user: [],
+    users: [],
     isAuthenticated: false,
     searchDomain: domainItem,
   })),
   on(AuthActions.searchDomainFail, (state, { error }) => ({
     ...state,
-    user: [],
+    users: [],
     isAuthenticated: false,
     error: error,
   }))

@@ -1,7 +1,7 @@
-import { Component} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
-
+import Swiper, { Navigation, Pagination } from 'swiper';
 
 @Component({
   selector: 'app-auth',
@@ -18,8 +18,16 @@ import { fadeIn } from 'ng-animate';
     ]),
   ],
 })
-export class AuthComponent {
-  slides=[1,2,3];
-  
-  constructor() {}
+export class AuthComponent implements OnInit {
+  slides = [1, 2, 3];
+  @ViewChild('newSwiper') newSwiper: any;
+
+  constructor() {
+    Swiper.use([Navigation, Pagination]);
+  }
+  ngOnInit() {
+    setTimeout(function () {
+      var swiper = new Swiper('.swiper-container');
+    }, 500);
+  }
 }
