@@ -10,12 +10,21 @@ import {
   logIn,
   logInError,
   logInSuccess,
+  passwordReset,
+  passwordResetFail,
+  passwordResetSuccess,
   searchDomain,
   searchDomainFail,
   searchDomainSuccess,
+  setOtp,
+  setOtpFail,
+  setOtpSuccess,
   signUp,
   signUpError,
   signUpSuccess,
+  verifyOtp,
+  verifyOtpFail,
+  verifyOtpSuccess,
 } from './auth.actions';
 
 @Injectable()
@@ -56,6 +65,42 @@ export class AuthEffects {
     )
   );
 
+  sendOtp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setOtp),
+      switchMap(({ email }) =>
+        this.authService.sendOtp(email).pipe(
+          map(res => setOtpSuccess({ response: res })),
+          catchError(error => of(setOtpFail({ error: error })))
+        )
+      )
+    )
+  );
+
+  verifyOtp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(verifyOtp),
+      switchMap(({ data }) =>
+        this.authService.verifyOtp(data).pipe(
+          map(res => verifyOtpSuccess({ response: res })),
+          catchError(error => of(verifyOtpFail({ error: error })))
+        )
+      )
+    )
+  );
+
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(passwordReset),
+      switchMap(({ password }) =>
+        this.authService.resetPassword(password).pipe(
+          map(res => passwordResetSuccess({ response: res })),
+          catchError(error => of(passwordResetFail({ error: error })))
+        )
+      )
+    )
+  );
+
   loginRedirect$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -81,7 +126,6 @@ export class AuthEffects {
           if (action) {
             this.router.navigate(['/auth/log-in']);
             this.toastrService.success('Signup Success', 'Success');
-
           }
         })
       );
