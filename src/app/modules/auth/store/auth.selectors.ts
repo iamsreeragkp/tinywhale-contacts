@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { IAppState } from '../../core/reducers';
 import { IAuthState } from './auth.reducers';
 
-const getDamainFeatureSelector = createFeatureSelector<IAuthState>('auth');
+const getAuthFeatureSelector = createFeatureSelector<IAuthState>('auth');
 
 
 export const selectaccessToken = createSelector(
@@ -16,21 +16,28 @@ export const selectrefreshToken = createSelector(
 );
 
 export const getDomainData=createSelector(
-  getDamainFeatureSelector,
+  getAuthFeatureSelector,
   state=>{
     return state.searchDomain
   }
 )
 
 export const getKey=createSelector(
-  getDamainFeatureSelector,
+  getAuthFeatureSelector,
   state=>{
     return state.otp;
   }
 )
 export const getError=createSelector(
-  getDamainFeatureSelector,
+  getAuthFeatureSelector,
   state=>{
     return state.error;
+  }
+)
+
+export const getLogInError=createSelector(
+  getAuthFeatureSelector,
+  state=>{
+    return state.logInError;
   }
 )

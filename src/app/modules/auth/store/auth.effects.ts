@@ -26,7 +26,6 @@ import {
   verifyOtpFail,
   verifyOtpSuccess,
 } from './auth.actions';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
@@ -76,7 +75,7 @@ export class AuthEffects {
       switchMap(({ user }) =>
         this.authService.loginUser(user).pipe(
           map(response => logInSuccess({ user: response })),
-          catchError(error => of(logInError({ error: error })))
+          catchError(error => of(logInError({ error: error?.error?.message ?? error?.message })))
         )
       )
     )

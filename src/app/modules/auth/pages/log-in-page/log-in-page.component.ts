@@ -1,16 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
-import { RoutesConfig } from '../../../../configs/routes.config';
 import { Router } from '@angular/router';
-import { UtilsService } from '../../../../shared/services/utils.service';
-import { StorageService } from 'src/app/shared/services/storage.service';
 import { IAuthState } from '../../store/auth.reducers';
-import { Store } from '@ngrx/store';
-import { logIn } from '../../store/auth.actions';
+import { select, Store } from '@ngrx/store';
+import { logIn, logInError } from '../../store/auth.actions';
 import { Type } from '../../store/auth.interface';
+import { filter, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { getLogInError } from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-log-in-page',
@@ -27,19 +26,34 @@ import { Type } from '../../store/auth.interface';
     ]),
   ],
 })
-export class LogInPageComponent {
+export class LogInPageComponent implements OnInit, OnDestroy {
   // @ViewChild('loginForm') loginForm: any;
 
   logInForm!: FormGroup;
+  loginError$: Observable<string>;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private storageService: StorageService,
     private store: Store<IAuthState>
   ) {
     this.logInForm = this.createLoginForm();
+    this.loginError$ = this.store.pipe(select(getLogInError));
+  }
+  
+  ngOnInit() {
+    this.subscriptions();
+  }
+
+  subscriptions() {
+    this.loginError$.pipe(takeUntil(this.ngUnsubscribe), filter(val => !!val)).subscribe(err => {
+      this.logInForm.setErrors({ loginFail: err });
+      this.store.dispatch(logInError({ error: undefined }));
+      this.logInForm.valueChanges.pipe(take(1), tap(() => {
+        this.logInForm.setErrors({ loginFail: null });
+      }));
+    });
   }
 
   createLoginForm() {
@@ -89,5 +103,10 @@ export class LogInPageComponent {
 
   get password() {
     return this.logInForm.get('password');
+  }
+  
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
