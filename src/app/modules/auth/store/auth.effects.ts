@@ -40,22 +40,35 @@ export class AuthEffects {
 
   // signUp
 
+  // signUp$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(signUp),
+  //     switchMap(({ userData }) =>
+  //       this.authService.signUpUser(userData).pipe(
+  //         tap((data: any) => {
+  //           // set token here
+  //         }),
+  //         map(({ responses }) => signUpSuccess({ response: responses })),
+  //         catchError(error => of(signUpError({ error: error })))
+  //       )
+  //     )
+  //   )
+  // );
+
   signUp$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(signUp),
-      switchMap(({ user }) =>
-        this.authService.signUpUser(user).pipe(
-          tap((data: any) => {
-            // set token here
-          }),
-          map(({ response }) => signUpSuccess({ user: response })),
-          catchError(error => of(signUpError({ error: error })))
-        )
+  this.actions$.pipe(
+    ofType(signUp),
+    switchMap(({ userData }) =>
+      this.authService.signUpUser(userData).pipe(
+        map(responses => signUpSuccess({ response: responses })),
+        catchError(error => of(signUpError({ error: error })))
       )
     )
-  );
+  )
+);
 
   // logIn
+
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -109,10 +122,15 @@ export class AuthEffects {
   loginRedirect$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(...[logInSuccess]),
+        ofType(...[logInSuccess,signUpSuccess]),
         tap((action: any) => {
-          if (action) {
+          if (action?.user?.['access-token']) {
             const access_token = action?.user?.['access-token'];
+            this.storageService.setAccessToken(access_token);
+            this.router.navigate(['/home']);
+          }
+          if(action?.response?.['access-token']){
+            const access_token = action?.response?.['access-token'];
             this.storageService.setAccessToken(access_token);
             this.router.navigate(['/home']);
           }

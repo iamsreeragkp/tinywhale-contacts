@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
@@ -18,6 +18,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   isOtpVisible = false;
   otpKey: any;
   fields = ['otp_0', 'otp_1', 'otp_2', 'otp_3', 'otp_4', 'otp_5'];
+  @ViewChildren('formRow') rows: any;
+
 
   ngUnsubscribe = new Subject<any>();
 
@@ -115,6 +117,19 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     //   otp: finalOtp,
     // };
     // this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
+  }
+
+
+  keyUpEvent(event:any, index:any){
+    let pos = index;
+    if (event.keyCode === 8 && event.which === 8) {
+     pos = index - 1 ;
+    } else {
+     pos = index + 1 ;
+    }
+    if (pos > -1 && pos < this.fields.length ) {
+     this.rows._results[pos].nativeElement.focus();
+    }
   }
 
   backToReset() {

@@ -14,9 +14,9 @@
             type="email"
             placeholder="Enter Email"
             formControlName="email"
-            [ngClass]="{'border-red': email?.errors?.['email']}"
+            [ngClass]="{'border-red': email?.errors?.['pattern']}"
           />
-          <div class="warning absolute" *ngIf="email?.errors?.['email']">
+          <div class="warning absolute" *ngIf="email?.errors?.['pattern']">
             <app-formwarning></app-formwarning>
           </div>
           <div
@@ -33,7 +33,7 @@
           Email is required
         </p>
         <p
-          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['email']"
+          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['pattern']"
           class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Please enter a valid email address

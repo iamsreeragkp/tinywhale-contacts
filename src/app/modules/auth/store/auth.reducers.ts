@@ -5,10 +5,11 @@ import { Auth, Otp } from './auth.interface';
 export const userFeatureKey = 'AuthState';
 
 export interface IAuthState {
-  user: Auth[];
+  user: any;
   error: any;
   isAuthenticated: boolean;
   searchDomain: any;
+  userData:any;
   otp: any;
   verifyOtp: any;
   resetPassword: any;
@@ -22,13 +23,14 @@ export const initialAuthState: IAuthState = {
   otp: null,
   verifyOtp: [],
   resetPassword: null,
+  userData:[]
 };
 
 export const reducer = createReducer(
   initialAuthState,
-  on(AuthActions.signUpSuccess, (state, { user }) => ({
+  on(AuthActions.signUpSuccess, (state, { response }) => ({
     ...state,
-    users: user,
+    userData: response,
     isAuthenticated: true,
     error: '',
   })),

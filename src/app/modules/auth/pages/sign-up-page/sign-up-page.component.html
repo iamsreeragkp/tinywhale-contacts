@@ -15,7 +15,7 @@
             <input #domainName type="text" (ngModelChange)="search$.next($event)" class=" domain-input-width  absolute w-full  focus:outline-none border-none bg-transparent min-w-0  p-0 pr-5"
             formControlName="domain"/>
             <Span class="domain-input-width inline-block leading-none invisible truncate">{{signUpForm?.get('domain')?.value}}</Span>
-            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' . tinywhale.com':'abc.tinywhale.com'}}</span>
+            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' .tinywhale.com':'Your Company Name'}}</span>
 
           </div>
           <ng-container *ngIf="signUpForm.get('domain')?.touched">
@@ -30,7 +30,10 @@
             </div>
           </ng-container>
         </div>
-        <p *ngIf="isDomainAvailable" class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
+        <p *ngIf="(domain?.touched) &&  domain?.errors?.['required']" class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
+          Domain is required
+        </p>
+        <p *ngIf="!domain?.errors?.['required'] && isDomainAvailable" class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           Domain not available
         </p>
       </div>
@@ -40,15 +43,15 @@
             class="input-signup hello w-full  bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
             type="text"
             placeholder="Enter Email"
-            [ngClass]="{'border-red': email?.errors?.['email']}"
+            [ngClass]="{'border-red': email?.errors?.['pattern']}"
             formControlName="email"
           />
-          <div class="warning absolute" *ngIf="email?.errors?.['email']">
+          <div class="warning absolute" *ngIf="email?.errors?.['pattern']">
             <app-formwarning></app-formwarning>
           </div>
           <div
             class="right absolute"
-            *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['email'] ? true : false"
+            *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['pattern'] ? true : false"
           >
             <app-formright></app-formright>
           </div>
@@ -60,7 +63,7 @@
           Email is required
         </p>
         <p
-          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['email']"
+          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['pattern']"
           class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
         >
           Please enter a valid email address

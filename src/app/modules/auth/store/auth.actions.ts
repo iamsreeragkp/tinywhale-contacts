@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { Auth, Otp } from './auth.interface';
 
-export const signUp = createAction('[AuthModule] SIGN UP', props<{ user: any }>());
+export const signUp = createAction('[AuthModule] SIGN UP', props<{ userData: any }>());
 
-export const signUpSuccess = createAction('[AuthModule] SIGN UP SUCCESS', props<{ user: Auth[] }>());
+export const signUpSuccess = createAction('[AuthModule] SIGN UP SUCCESS', props<{ response: any }>());
 
 export const signUpError = createAction('[AuthModule] SIGN UP ERROR',props<{error: String}>());
 

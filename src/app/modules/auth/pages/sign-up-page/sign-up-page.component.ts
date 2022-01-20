@@ -57,19 +57,27 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.search$.pipe(tap(()=>{this.isChecking=true}),debounceTime(500), distinctUntilChanged()).subscribe(val => {
-      if (val) {
-        this.store.dispatch(searchDomain({ searchDomain: val }));
-      } else {
-        this.isChecking=false;
-        this.isDomainAvailable = false;
-      }
-    });
+    this.search$
+      .pipe(
+        tap(() => {
+          (this.isChecking = true);
+          this.domain?.markAsTouched();
+        }),
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+      .subscribe(val => {
+        if (val) {
+          this.store.dispatch(searchDomain({ searchDomain: val }));
+        } else {
+          this.isChecking = false;
+          this.isDomainAvailable = false;
+        }
+      });
     this.store.pipe(select(getDomainData), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       this.isChecking = false;
       if (data && data?.Availability === false) {
         this.isDomainAvailable = true;
-
       } else {
         this.isDomainAvailable = false;
       }
@@ -78,8 +86,11 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
 
   createSignupForm() {
     return new FormGroup({
-      domain: new FormControl('', [Validators.required,Validators.minLength(1)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      domain: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ]),
     });
   }
 
@@ -89,7 +100,7 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
       email,
       domain,
     };
-    if(this.signUpForm.valid && payload){
+    if (this.signUpForm.valid && payload) {
       this.setValueToLocalStorage(email, domain);
       this.router.navigate(['/auth/create-password']);
     }
@@ -101,10 +112,10 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   }
 
   async onSubmitGoogleSignIn() {
-    if(this.isDomainAvailable || !this.domain?.value){
-      this.isDomainAvailable=true;
+    if (this.isDomainAvailable || !this.domain?.value) {
+      this.isDomainAvailable = true;
       this.domain?.markAsTouched();
-      return
+      return;
     }
     try {
       const data = await this.authService.googleSignIn();
@@ -118,7 +129,7 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
           custom_domain: this.domain?.value,
           type: Type.GOOGLE,
         };
-        this.store.dispatch(signUp({ user: payload }));
+        this.store.dispatch(signUp({ userData: payload }));
 
         // const google_access_token = data?.response?.['access_token'];
         // this.storageService.setGoogleAccessToken(google_access_token);

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { passwordReset, signUp } from '../../store/auth.actions';
 import { AccountType } from '../../store/auth.interface';
@@ -48,7 +48,7 @@ export class CreatePasswordComponent implements OnInit {
       name: localStorage.getItem('email'),
       account_type: AccountType.BUSINESS,
     };
-    this.store.dispatch(signUp({ user: signupPayload }));
+    this.store.dispatch(signUp({ userData: signupPayload }));
   }
 
   onSubmitReset(){
