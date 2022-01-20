@@ -101,6 +101,11 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   }
 
   async onSubmitGoogleSignIn() {
+    if(this.isDomainAvailable || !this.domain?.value){
+      this.isDomainAvailable=true;
+      this.domain?.markAsTouched();
+      return
+    }
     try {
       const data = await this.authService.googleSignIn();
       console.log(data);

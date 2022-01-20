@@ -14,3 +14,10 @@ export enum AccountType {
 export enum Type{
   GOOGLE="GOOGLE"
 }
+
+export interface Otp {
+  email:string;
+  key?:any;
+  otp?:number;
+  password?:any;
+}

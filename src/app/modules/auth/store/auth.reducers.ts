@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
-import { Auth } from './auth.interface';
+import { Auth, Otp } from './auth.interface';
 
 export const userFeatureKey = 'AuthState';
 
@@ -9,6 +9,9 @@ export interface IAuthState {
   error: any;
   isAuthenticated: boolean;
   searchDomain: any;
+  otp: any;
+  verifyOtp: any;
+  resetPassword: any;
 }
 
 export const initialAuthState: IAuthState = {
@@ -16,6 +19,9 @@ export const initialAuthState: IAuthState = {
   error: '',
   isAuthenticated: false,
   searchDomain: null,
+  otp: null,
+  verifyOtp: [],
+  resetPassword: null,
 };
 
 export const reducer = createReducer(
@@ -43,11 +49,38 @@ export const reducer = createReducer(
     isAuthenticated: false,
     searchDomain: domainItem,
   })),
-  on(AuthActions.searchDomainFail, (state, { error }) => ({
+  on(
+    AuthActions.searchDomainFail,
+    AuthActions.setOtpFail,
+    AuthActions.verifyOtpFail,
+    AuthActions.passwordResetFail,
+    (state, { error }) => ({
+      ...state,
+      user: [],
+      isAuthenticated: false,
+      error: error,
+    })
+  ),
+  on(AuthActions.setOtpSuccess, (state, { response }) => ({
     ...state,
-    users: [],
+    otp: response,
+    user: [],
     isAuthenticated: false,
-    error: error,
+    error: '',
+  })),
+  on(AuthActions.verifyOtpSuccess, (state, { response }) => ({
+    ...state,
+    verifyOtp: response,
+    user: [],
+    isAuthenticated: false,
+    error: '',
+  })),
+  on(AuthActions.passwordResetSuccess, (state, { response }) => ({
+    ...state,
+    resetPassword: response,
+    user: [],
+    isAuthenticated: false,
+    error: '',
   }))
 );
 

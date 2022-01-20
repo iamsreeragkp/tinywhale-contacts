@@ -1,7 +1,7 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { StorageService } from '../../../shared/services/storage.service';
 import { ToastrService } from 'ngx-toastr';
 @Injectable()
@@ -18,10 +18,17 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(customReq).pipe(
       catchError(err => {
         // Catching http errors
-        this.toastrService.error(err?.error?.message, 'Error', {
-          timeOut: 3000,
-        });
-        return of(err);
+        // if(err?.status===409){
+        //   this.toastrService.error(err?.error?.message, 'Error', {
+        //     timeOut: 3000,
+        //   });
+        // }
+        console.log(err);
+        throw err;
+      //  throw new HttpErrorResponse(err)
+        // throw of(err);
+        // return throwError(err)
+
       })
     );
   }

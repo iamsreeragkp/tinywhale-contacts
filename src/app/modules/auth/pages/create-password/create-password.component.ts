@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { signUp } from '../../store/auth.actions';
+import { passwordReset, signUp } from '../../store/auth.actions';
 import { AccountType } from '../../store/auth.interface';
 import { IAuthState } from '../../store/auth.reducers';
 
@@ -13,7 +13,7 @@ import { IAuthState } from '../../store/auth.reducers';
 })
 export class CreatePasswordComponent implements OnInit {
   passwordForm!: FormGroup;
-  formFieldDatas: any;
+  isReset=false;
 
   constructor(private router: ActivatedRoute, private store: Store<IAuthState>) {
     this.passwordForm = this.createPasswordForm();
@@ -21,7 +21,11 @@ export class CreatePasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.queryParams.subscribe(data => {
-      this.formFieldDatas = data;
+      if(data?.['isVerified']){
+        this.isReset=true;
+      }else{
+        this.isReset=false;
+      }
     });
   }
 
@@ -45,6 +49,14 @@ export class CreatePasswordComponent implements OnInit {
       account_type: AccountType.BUSINESS,
     };
     this.store.dispatch(signUp({ user: signupPayload }));
+  }
+
+  onSubmitReset(){
+    const { password } = this.passwordForm.value;
+    const resetPayload={
+      password
+    }
+    this.store.dispatch(passwordReset({password:resetPayload}))
   }
 
   get password() {
