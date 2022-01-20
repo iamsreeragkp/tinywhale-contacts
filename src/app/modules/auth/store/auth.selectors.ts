@@ -35,6 +35,13 @@ export const getError=createSelector(
   }
 )
 
+export const getVerifyData=createSelector(
+  getAuthFeatureSelector,
+  state=>{
+    return state.verifyOtp;
+  }
+)
+
 export const getLogInError=createSelector(
   getAuthFeatureSelector,
   state=>{
