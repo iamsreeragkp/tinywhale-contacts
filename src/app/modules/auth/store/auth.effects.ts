@@ -7,6 +7,9 @@ import { AuthService } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 import {
+  checkEmailExists,
+  checkEmailExistsError,
+  checkEmailExistsSuccess,
   logIn,
   logInError,
   logInSuccess,
@@ -60,11 +63,23 @@ export class AuthEffects {
     switchMap(({ userData }) =>
       this.authService.signUpUser(userData).pipe(
         map(responses => signUpSuccess({ response: responses })),
-        catchError(error => of(signUpError({ error: error })))
+        catchError(error => of(signUpError({ error: error?.error?.message ?? error?.message })))
       )
     )
   )
 );
+
+  checkEmailExists$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(checkEmailExists),
+      switchMap(({ email }) =>
+        this.authService.checkEmailExits({ email }).pipe(
+          map(response => checkEmailExistsSuccess(response)),
+          catchError(error => of(checkEmailExistsError({ error: error?.error?.message ?? error?.message })))
+        )
+      )
+    )
+  );
 
   // logIn
 

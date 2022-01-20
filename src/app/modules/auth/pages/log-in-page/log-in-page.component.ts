@@ -52,6 +52,7 @@ export class LogInPageComponent implements OnInit, OnDestroy {
       this.store.dispatch(logInError({ error: undefined }));
       this.logInForm.valueChanges.pipe(take(1), tap(() => {
         this.logInForm.setErrors({ loginFail: null });
+        this.logInForm.updateValueAndValidity();
       }));
     });
   }

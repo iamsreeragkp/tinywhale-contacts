@@ -41,3 +41,13 @@ export const getLogInError=createSelector(
     return state.logInError;
   }
 )
+
+export const getCheckEmailExistsStatus = createSelector(
+  getAuthFeatureSelector,
+  state => state.checkEmail
+)
+
+export const getSignUpFail = createSelector(
+  getAuthFeatureSelector,
+  state => state.signUpError
+)
