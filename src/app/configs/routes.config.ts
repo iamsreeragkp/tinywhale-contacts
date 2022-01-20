@@ -5,6 +5,7 @@ export const ROUTES_CONFIG = new InjectionToken('routes.config');
 const basePaths = {
   hero: 'hero',
   auth: 'auth',
+  website: 'website'
 };
 
 const routesNames = {
@@ -20,6 +21,9 @@ const routesNames = {
     forgotPassword:'forgot-password',
     createPassword:'create-password',
   },
+  website:{
+
+  }
 };
 
 export const getHeroDetail = (id: string) => `/${basePaths.hero}/${id}`;
@@ -38,5 +42,8 @@ export const RoutesConfig = {
       signUp: `/${basePaths.auth}/${routesNames.auth.signUp}`,
       logIn: `/${basePaths.auth}/${routesNames.auth.logIn}`,
     },
+    website:{
+      
+    }
   },
 };
