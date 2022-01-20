@@ -52,7 +52,6 @@
               "includePaths": ["src/app/shared/styles"]
             },
             "scripts": [
-              "src/assets/js/gtm.js",
               "src/assets/js/modernizr.js",
               "node_modules/js-cookie/dist/js.cookie.min.js"
             ],
@@ -143,7 +142,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "scripts": ["src/assets/js/gtm.js", "src/assets/js/modernizr.js"],
+            "scripts": ["src/assets/js/modernizr.js"],
             "styles": [
               "src/assets/css/reset.css",
               "src/assets/css/loading.css",
