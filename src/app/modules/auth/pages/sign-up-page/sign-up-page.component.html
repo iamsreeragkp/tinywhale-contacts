@@ -15,7 +15,7 @@
             <input #domainName type="text" (ngModelChange)="search$.next($event)" class=" domain-input-width  absolute w-full  focus:outline-none border-none bg-transparent min-w-0  p-0 pr-5"
             formControlName="domain"/>
             <Span class="domain-input-width inline-block leading-none invisible truncate">{{signUpForm?.get('domain')?.value}}</Span>
-            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' .tinywhale.com':'Your Company Name'}}</span>
+            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' .tinywhale.com':'yourbusinessname.tinywhale.com'}}</span>
 
           </div>
           <ng-container *ngIf="signUpForm.get('domain')?.touched">
@@ -25,7 +25,7 @@
             <div *ngIf="!isChecking && isDomainAvailable" class="warning absolute">
               <app-formwarning></app-formwarning>
             </div>
-            <div *ngIf="!isChecking && !isDomainAvailable" class="right absolute">
+            <div *ngIf="!isChecking && !isDomainAvailable && domain?.value" class="right absolute">
               <app-formright></app-formright>
             </div>
           </ng-container>

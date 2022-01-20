@@ -16,7 +16,7 @@
   <div class="card shadow-lg p-8 overflow-hidden bg-white m-2">
     <div class="complete-icon absolute" *ngIf="isBusinessInfoStarted===true && isBusinessInfoCompleted===true"><app-completeicon></app-completeicon></div>
     <div class="warning-icon absolute" *ngIf="isBusinessInfoStarted===true && isBusinessInfoCompleted===false "><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start" *ngIf="isBusinessInfoStarted===false && isBusinessInfoCompleted===false"><app-basicinfo></app-basicinfo></div>
+    <div class="image flex justify-items-start"><app-basicinfo></app-basicinfo></div>
     <div class="card-title flex"><span class="number font-normal not-italic mt-6 mr-4 ">1</span><span class="title font-normal not-italic">Add<br> Basic info</span> </div>
     <p class="card-content not-italic font-normal text-base py-4">
       Create a stunning and professional website in minutes
@@ -32,14 +32,14 @@
   <div class="card  shadow-lg p-8 overflow-hidden bg-white m-2">
     <div class="complete-icon absolute" *ngIf="isServiceInfoStarted===true && isServiceInfoCompleted===true"><app-completeicon></app-completeicon></div>
     <div class="warning-icon absolute" *ngIf="isServiceInfoStarted===true && isServiceInfoCompleted===false"><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start" *ngIf="isServiceInfoStarted===false && isServiceInfoCompleted===false"><app-addsrvice></app-addsrvice></div>
+    <div class="image flex justify-items-start" ><app-addsrvice></app-addsrvice></div>
     <div class="card-title flex relative"><span class="number mt-6 mr-4">2</span><span class="title">Add <br> Services</span> </div>
     <p class="card-content not-italic font-normal text-base py-4">
       Display bookable services and packages with scheduling options
     </p>
-    <!-- <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full">Add</button> -->
+    <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full">Add</button>
     <!-- <button class="edit-button mt-auto bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full">Edit</button> -->
-    <button class="mt-auto  completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full">Complete the details</button>
+    <!-- <button class="mt-auto  completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full">Complete the details</button> -->
   </div>
 </div>
 
@@ -48,13 +48,13 @@
   <div class="card  shadow-lg p-8 overflow-hidden bg-white m-2">
     <div class="complete-icon absolute" *ngIf="isPaymentInfoStarted===true && isPaymentInfoCompleted===true"><app-completeicon></app-completeicon></div>
     <div class="warning-icon absolute" *ngIf="isPaymentInfoStarted===true && isPaymentInfoCompleted===false"><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start" *ngIf="isPaymentInfoStarted===false && isPaymentInfoCompleted===false"><app-payment></app-payment></div>
+    <div class="image flex justify-items-start" ><app-payment></app-payment></div>
     <div class="card-title flex "><span class="number mt-6 mr-4">3</span><span class="title">Add <br>Payment info</span> </div>
     <p class="card-content not-italic font-normal text-base py-4">
       We’ve partnered with Stripe to make your payments seamless
     </p>
-    <!-- <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full" >Add</button> -->
-    <button class="edit-button mt-auto  bg-white text-base  not-italic font-normal px-10 py-1 rounded-full">Edit</button>
+    <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full" >Add</button>
+    <!-- <button class="edit-button mt-auto  bg-white text-base  not-italic font-normal px-10 py-1 rounded-full">Edit</button> -->
     <!-- <button class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full">Complete the details</button> -->
 
   </div>

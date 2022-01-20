@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import jwt_decode from 'jwt-decode';
 import { RootService } from '../../root.service';
 
 @Component({
@@ -27,13 +26,14 @@ export class CardGetstartedComponent implements OnInit {
 
   getUserBusinessInfo() {
     const userData = this.rootService.decodeUserToken();
-    this.isBusinessInfoStarted = userData?.dashboardInfos.businessInfo.isStarted;
-    this.isBusinessInfoCompleted = userData?.dashboardInfos.businessInfo.isCompleted;
 
-    this.isPaymentInfoCompleted = userData?.dashboardInfos.paymentInfo.isCompleted;
-    this.isPaymentInfoStarted = userData?.dashboardInfos.paymentInfo.isStarted;
+    this.isBusinessInfoStarted = userData?.dashboardInfos?.businessInfo?.isStarted;
+    this.isBusinessInfoCompleted = userData?.dashboardInfos?.businessInfo?.isCompleted;
 
-    this.isServiceInfoCompleted = userData?.dashboardInfos.serviceInfo.isCompleted;
-    this.isServiceInfoStarted = userData?.dashboardInfos.serviceInfo.isStarted;
+    this.isPaymentInfoCompleted = userData?.dashboardInfos?.paymentInfo?.isCompleted;
+    this.isPaymentInfoStarted = userData?.dashboardInfos?.paymentInfo?.isStarted;
+
+    this.isServiceInfoCompleted = userData?.dashboardInfos?.serviceInfo?.isCompleted;
+    this.isServiceInfoStarted = userData?.dashboardInfos?.serviceInfo?.isStarted;
   }
 }
