@@ -13,6 +13,8 @@ export interface IAuthState {
   otp: any;
   verifyOtp: any;
   resetPassword: any;
+  signUpError: any;
+  logInError: any;
 }
 
 export const initialAuthState: IAuthState = {
@@ -23,7 +25,9 @@ export const initialAuthState: IAuthState = {
   otp: null,
   verifyOtp: [],
   resetPassword: null,
-  userData:[]
+  userData:[],
+  signUpError: undefined,
+  logInError: undefined
 };
 
 export const reducer = createReducer(
@@ -40,10 +44,17 @@ export const reducer = createReducer(
     isAuthenticated: true,
     error: '',
   })),
-  on(AuthActions.signUpError, AuthActions.logInError, state => ({
+  on(AuthActions.signUpError, (state, { error }) => ({
     ...state,
-    users: [],
+    user: undefined,
     isAuthenticated: false,
+    signUpError: error
+  })),
+  on(AuthActions.logInError, (state, { error }) => ({
+    ...state,
+    user: undefined,
+    isAuthenticated: false,
+    logInError: error
   })),
   on(AuthActions.searchDomainSuccess, (state, { domainItem }) => ({
     ...state,
