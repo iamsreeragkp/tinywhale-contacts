@@ -9,19 +9,23 @@
     <form class="form-signup w-full" [formGroup]="signUpForm">
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
-          <input
-            class="input-signup w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
-            type="text"
-            placeholder="abc.tinywhale.com"
-            [ngClass]="{'border-red': isDomainAvailable}"
-            formControlName="domain"
-            (ngModelChange)="search$.next($event)"
-          />
-          <ng-container *ngIf="signUpForm.get('domain')?.value">
-            <div *ngIf="isDomainAvailable" class="warning absolute">
+          <div class="input-signup truncate relative overflow-hidden  w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none" (click)="domainName.focus()" [ngClass]="{'border-red': isDomainAvailable}"
+
+          >
+            <input #domainName type="text" (ngModelChange)="search$.next($event)" class=" domain-input-width  absolute w-full  focus:outline-none border-none bg-transparent min-w-0  p-0 pr-5"
+            formControlName="domain"/>
+            <Span class="domain-input-width inline-block leading-none invisible truncate">{{signUpForm?.get('domain')?.value}}</Span>
+            <span class="text-gray-500">{{signUpForm?.get('domain')?.value ?' . tinywhale.com':'abc.tinywhale.com'}}</span>
+
+          </div>
+          <ng-container *ngIf="signUpForm.get('domain')?.touched">
+            <div *ngIf="isChecking" class="warning absolute">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAATlBMVEX///8AAAAnJyddXV3z8/O3t7fS0tKIiIhOTk5gYGDp6ekxMTErKyuQkJCxsbGoqKja2trj4+P4+PhoaGi+vr6Xl5fIyMg7Ozufn5+AgIAoxMODAAAEKElEQVR4nO2d65KiMBBGRfGGMo4z6ozv/6Jby1YtcgnSl5h0+53/SfqUCAl0OosFAAAAAIAu5bq+1+sydRjRqPbFP/ZV6lDi8FG0fKQOJgan4pFT6nD0+Sy6fKYOSJ1Dz/CQOiBtNkWfTeqQlNkODLepQ1JmNzDcpQ5JmePA8Jg6JGWWA8Nl6pCUgaF9YGgfGNoHhvaBoX1gaB8Y2geGuVCyX1YrGlbRvgpcVk1gNWsAJcOybjpaXTiNn3Bu37T8MprrGP62rc+M5pPcHoPb09urGO4f29/o7ac4d6NbkTvQMFx1O9D9FfsBkhUVDFfSDqa4DOKjKsoN+4JFoXm7GfZOVRQbykOYZNg7tX+p4YhgUZB6mKQc656mKDQcFSz0Hv3VaP8kRZnhuGChmA4wPgBFUWQYEFS8SkfioypKDEOCmo+LOjDGfEWBYUiwqHkyo4zfaiiKfMOgoOKNZvE45WUqsg3DgpwFwAT74EDzFLmGYUHG9J871CxFpqFwVBqywXiGLxUUDscyfLGgbEBOLsbLBUVDMvJpEghKBqXnRCURFAxLzmtLJCgYmJibmEyQPzQtvzShIH9wSo5wUkH+8PPzvBML8gOYm6ufXFAQwqz9FhkIxp3xS1cxSsRbtYlXolrEWnnL3yaoEVS8irq9ZiMYVpRtpOhPfRIKRnqLmZNgUFHyRwz8DRMJhhS/BD1+5SUY44tQZoKjit+iDr8zExxTlGUQ3HITHCr+CPv7yU1woCj9pldlJ9ibKsu3hnZeBqi/uufRTpZ/NL7KVu2FqvzxhU95bSZb31ppSrfmjnq45rVxv5Q86Id85WUHAAAAAAAAAAAAANTZbHfH5RyOu+3rKq7pRfUZ+gQ7zuE1pQEVozo9b97jFQUeFaP6eN52QPwynYpRBfZvPSF2sVXNqMLJSFPE/naiGFU4V2eauK/fNaNaM/taRzXUjCq4P+0JmjvI4kZ1Z/Z1j2qoGZX/39D//9D/vdT/8/AN5jT+56VvsLZ4g/Xhwv8aHwAAAAAAAAAAAACYx/e+J/d719zvP3S/h9T9PmD3e7nd78d3X1PBfV0M97VN3NencV9jyH2dKPe1vtzXa3Nfc8993UT3tS/d1y91X4PWfR1h97Wg3dfzdl+T3X1dffdnI7g/38L9GSXuz5lxf1aQ+/Oe3J/Z5f/cNf9n5/k//1AsmPsZlv7PIfV/lqz/84Df4Exn/+dy+z9bfXGWXh8Khn3FM7mDSToZBIxJr4Zhd/qvlYD1n3O7SudMeVUMHxYAS+VfsOHSXCXLmvUU0jFclHXT0Ur1JtMZgD2LUDL8S5VNQl8HRcNMgaF9YGgfGNoHhvaBoX1gaB8Y2geG9uHkYtiCkU9jDHpOlDXIeW32IOYmGoSWX2oSSo6wUebneZtlbq6+ZWbttwAAAAAAIPMH2tAzFTqcAPkAAAAASUVORK5CYII=" width="20px" alt="">
+            </div>
+            <div *ngIf="!isChecking && isDomainAvailable" class="warning absolute">
               <app-formwarning></app-formwarning>
             </div>
-            <div *ngIf="!isDomainAvailable" class="right absolute">
+            <div *ngIf="!isChecking && !isDomainAvailable" class="right absolute">
               <app-formright></app-formright>
             </div>
           </ng-container>
@@ -33,11 +37,10 @@
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
-            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
+            class="input-signup hello w-full  bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
             type="text"
             placeholder="Enter Email"
             [ngClass]="{'border-red': email?.errors?.['email']}"
-
             formControlName="email"
           />
           <div class="warning absolute" *ngIf="email?.errors?.['email']">
@@ -67,15 +70,14 @@
     <div class="flex flex-col">
       <button
         class="continue text-white w-full py-3 px-8 not-italic font-normal text-base leading-6 rounded-full"
+        [disabled]="isDomainAvailable ? true : false"
         (click)="onSubmitSignUp()"
-        [disabled]="!signUpForm.valid"
       >
         Continue
       </button>
       <div class="or-class text-center my-4 text-base not-italic font-normal">or</div>
       <button
         class="continue-with-google text-white w-full py-3 px-8 not-italic font-normal text-baseleading-6 rounded-full"
-        [disabled]="isDomainAvailable ? true : false"
         (click)="onSubmitGoogleSignIn()"
       >
         Continue with Google
@@ -83,6 +85,6 @@
     </div>
   </main>
   <footer class="footer absolute bottom-7 font-normal not-italic text-xs text-center mt-64">
-    By continuing, you agree to our Terms & Conditions
+    By continuing, you agree to our <a href=""><u>Terms & Conditions</u></a>
   </footer>
 </div>

@@ -1,0 +1,10 @@
+svg {
+    display: block;
+    width: 100%;
+  }
+  .arrow-hover:hover{
+    opacity:1;
+  }
+  .arrow-hover{
+    opacity:0.8;
+  }

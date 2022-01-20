@@ -10,10 +10,11 @@ import { AuthStoreModule } from './store/auth-store.module';
 import { AuthComponent } from './auth.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { CreatePasswordComponent } from './pages/create-password/create-password.component';
+import { MoveNextByMaxLengthDirective } from './shared/moveNextByMaxLength.directive';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, SharedModule, AuthRoutingModule, AuthStoreModule, FormsModule,SwiperModule],
-  declarations: [SignUpPageComponent, LogInPageComponent, AuthComponent, ForgotPasswordComponent, CreatePasswordComponent],
+  declarations: [SignUpPageComponent, LogInPageComponent, AuthComponent, ForgotPasswordComponent, CreatePasswordComponent,MoveNextByMaxLengthDirective],
   providers: [],
 })
 export class AuthModule {}

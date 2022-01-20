@@ -26,6 +26,7 @@ import {
   verifyOtpFail,
   verifyOtpSuccess,
 } from './auth.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
@@ -42,8 +43,11 @@ export class AuthEffects {
   signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signUp),
-      mergeMap(({ user }) =>
+      switchMap(({ user }) =>
         this.authService.signUpUser(user).pipe(
+          tap((data: any) => {
+            // set token here
+          }),
           map(({ response }) => signUpSuccess({ user: response })),
           catchError(error => of(signUpError({ error: error })))
         )
@@ -83,7 +87,8 @@ export class AuthEffects {
       switchMap(({ data }) =>
         this.authService.verifyOtp(data).pipe(
           map(res => verifyOtpSuccess({ response: res })),
-          catchError(error => of(verifyOtpFail({ error: error })))
+          catchError((error) =>{ console.log(error?.error?.message );
+           return of(verifyOtpFail({ error: error?.error?.message }))})
         )
       )
     )
@@ -110,7 +115,6 @@ export class AuthEffects {
             const access_token = action?.user?.['access-token'];
             this.storageService.setAccessToken(access_token);
             this.router.navigate(['/home']);
-            this.toastrService.success('Login Success', 'Success');
           }
         })
       );
@@ -124,8 +128,35 @@ export class AuthEffects {
         ofType(...[signUpSuccess]),
         tap((action: any) => {
           if (action) {
-            this.router.navigate(['/auth/log-in']);
-            this.toastrService.success('Signup Success', 'Success');
+            this.router.navigate(['/home']);
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  verifyPasswordRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(...[verifyOtpSuccess]),
+        tap((action: any) => {
+          if (action) {
+            this.router.navigate(['/auth/create-password'],{queryParams:{isVerified:true}});
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  resetPasswordRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(...[passwordResetSuccess]),
+        tap((action: any) => {
+          if (action) {
+            this.router.navigate(['/home']);
           }
         })
       );

@@ -19,6 +19,8 @@ import { FormrightComponent } from './svgs/formright/formright.component';
 import { PasswordCorrectComponent } from './svgs/passwordcorrect/passwordcorrect.component';
 import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning.component';
 import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
+import { SwipernextComponent } from './svgs/swipernext/swipernext.component';
+import { SwiperpreviousComponent } from './svgs/swiperprevious/swiperprevious.copmponent';
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
     PasswordCorrectComponent,
     PasswordWarningComponent,
     SwiperlogoComponent,
-    
+    SwipernextComponent,
+    SwiperpreviousComponent,
   ],
   exports: [
     CommonModule,
@@ -61,6 +64,8 @@ import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
     PasswordCorrectComponent,
     PasswordWarningComponent,
     SwiperlogoComponent,
+    SwipernextComponent,
+    SwiperpreviousComponent,
   ],
 })
 export class SharedModule {}

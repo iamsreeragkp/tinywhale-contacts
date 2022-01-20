@@ -28,3 +28,9 @@ export const getKey=createSelector(
     return state.otp;
   }
 )
+export const getError=createSelector(
+  getDamainFeatureSelector,
+  state=>{
+    return state.error;
+  }
+)

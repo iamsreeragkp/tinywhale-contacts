@@ -5,6 +5,18 @@
 }
 .swiper-demo{
   background: #12B5C1;
+  .swiper-next{
+    bottom: -15px;
+    right: 60px;
+    cursor: pointer;
+  }
+  
+  .swiper-previous{
+    bottom: -15px;
+    left: 50px;
+    
+
+  }
   .swiper-content{
     padding-bottom: 72px;
     .content{

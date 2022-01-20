@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Auth, Otp } from './auth.interface';
 
-export const signUp = createAction('[AuthModule] SIGN UP', props<{ user: Auth }>());
+export const signUp = createAction('[AuthModule] SIGN UP', props<{ user: any }>());
 
 export const signUpSuccess = createAction('[AuthModule] SIGN UP SUCCESS', props<{ user: Auth[] }>());
 
@@ -21,10 +21,10 @@ export const setOtp = createAction('[OTP] setOtp', props<{ email: Otp }>());
 export const setOtpSuccess = createAction('[OTP] setOtpSuccess', props<{ response:any }>());
 export const setOtpFail = createAction('[OTP] setOtpFail', props<{ error: any }>());
 
-export const verifyOtp = createAction('[OTP] verifyOtp', props<{ data:Otp }>());
+export const verifyOtp = createAction('[OTP] verifyOtp', props<{ data:any }>());
 export const verifyOtpSuccess = createAction('[OTP] verifyOtpSuccess', props<{ response:any }>());
 export const verifyOtpFail = createAction('[OTP] verifyOtpFail', props<{ error: any }>());
 
-export const passwordReset = createAction('[OTP] passwordReset', props<{ password: Otp }>());
+export const passwordReset = createAction('[OTP] passwordReset', props<{ password: any }>());
 export const passwordResetSuccess = createAction('[OTP] passwordResetSuccess', props<{ response:any }>());
 export const passwordResetFail = createAction('[OTP] passwordResetFail', props<{ error: any }>());

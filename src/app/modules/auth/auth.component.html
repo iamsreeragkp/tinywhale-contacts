@@ -1,31 +1,51 @@
 <div class="flex w-full">
-<div class="w-1/2 flex text-white">  
-  <div class=" swiper-demo w-full">  
-    <swiper  [navigation]="true"
-    [slidesPerView]="1"
-    [spaceBetween]="50"
-    (swiper)="true"
-    (slideChange)="true"
-  >
-    <ng-template swiperSlide  *ngFor="let val of slides">
-     <div class="w-full  h-full flex flex-col justify-between">
-       <div class="relative">
-         <img class="swiper-image w-full" src="../../../assets/images/swiper.png">
-         <div class="absolute top-12 left-12"><app-swiperlogo></app-swiperlogo></div>
-        </div>
-         <div class="swiper-content px-12 ">
-           <p class="content italic font-normal mb-8 text-white">“An amazing testimonial about Tinywhale from Jason An amazing testimonial about Tinywhale from Jason””</p>
-           <p class="name-content text-white text-normal font-normal"><b class="font-semibold">Jason Fried</b><br> Football Coach, Singapore</p>
-           <button class="swiper-button not-italic mt-8 bg-white py-2 px-8 font-normal text-base rounded-full">See Jason’s Tinywhale Profile</button>
-         </div>
-
-     </div>
-    </ng-template>
-    
-  </swiper>
-</div>
-</div>
-<div class=" auth-layout relative w-1/2"> 
-<router-outlet></router-outlet>
-</div>
+  <div class="w-1/2 flex text-white">
+    <div class="swiper-demo w-full">
+      <swiper
+        [slidesPerView]="1"
+        [spaceBetween]="50"
+        [loop]="true"
+        [preventClicks]="false"
+        (swiper)="(true)"
+        (slideChange)="(true)"
+        #newSwiper
+        [autoplay]="{ delay: 8000 }"
+        [navigation]="false"
+        [pagination]="{ clickable: true }"
+      >
+        <ng-template swiperSlide *ngFor="let val of slides">
+          <div class="w-full h-full flex flex-col justify-between">
+            <div class="relative">
+              <img class="swiper-image w-full" src="../../../assets/images/swiper.png" />
+              <div class="absolute top-12 left-12"><app-swiperlogo></app-swiperlogo></div>
+              <div class="swiper-next absolute" (click)="swipeNext()">
+                <app-swipernext></app-swipernext>
+              </div>
+              <div class="swiper-previous absolute" (click)="swipePrev()">
+                <app-swiperprevious></app-swiperprevious>
+              </div>
+            </div>
+            <div class="swiper-content px-12">
+              <p class="content italic font-normal mb-8 text-white">
+                “An amazing testimonial about Tinywhale from Jason An amazing testimonial about
+                Tinywhale from Jason””
+              </p>
+              <p class="name-content text-white text-normal font-normal">
+                <b class="font-semibold">Jason Fried</b><br />
+                Football Coach, Singapore
+              </p>
+              <button
+                class="swiper-button not-italic mt-8 bg-white py-2 px-8 font-normal text-base rounded-full"
+              >
+                See Jason’s Tinywhale Profile
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </swiper>
+    </div>
+  </div>
+  <div class="auth-layout relative w-1/2">
+    <router-outlet></router-outlet>
+  </div>
 </div>

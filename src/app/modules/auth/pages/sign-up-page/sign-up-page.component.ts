@@ -14,11 +14,13 @@ import {
   skipWhile,
   Subject,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { IAuthState } from '../../store/auth.reducers';
 import { logIn, searchDomain, signUp } from '../../store/auth.actions';
 import { getDomainData } from '../../store/auth.selectors';
+import { AccountType, Type } from '../../store/auth.interface';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -42,6 +44,7 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
 
   search$ = new Subject<string>();
   ngUnsubscribe = new Subject<any>();
+  isChecking = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,16 +57,19 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.search$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(val => {
+    this.search$.pipe(tap(()=>{this.isChecking=true}),debounceTime(500), distinctUntilChanged()).subscribe(val => {
       if (val) {
         this.store.dispatch(searchDomain({ searchDomain: val }));
       } else {
+        this.isChecking=false;
         this.isDomainAvailable = false;
       }
     });
     this.store.pipe(select(getDomainData), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      this.isChecking = false;
       if (data && data?.Availability === false) {
         this.isDomainAvailable = true;
+
       } else {
         this.isDomainAvailable = false;
       }
@@ -72,7 +78,7 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
 
   createSignupForm() {
     return new FormGroup({
-      domain: new FormControl('', [Validators.required]),
+      domain: new FormControl('', [Validators.required,Validators.minLength(1)]),
       email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
@@ -83,27 +89,40 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
       email,
       domain,
     };
-    this.router.navigate(['/auth/create-password'],{queryParams:{email:email,domain:domain}})
+    if(this.signUpForm.valid && payload){
+      this.setValueToLocalStorage(email, domain);
+      this.router.navigate(['/auth/create-password']);
+    }
+  }
+
+  setValueToLocalStorage(email: any, domain: any) {
+    localStorage.setItem('email', email);
+    localStorage.setItem('domain', domain);
   }
 
   async onSubmitGoogleSignIn() {
+    if(this.isDomainAvailable || !this.domain?.value){
+      this.isDomainAvailable=true;
+      this.domain?.markAsTouched();
+      return
+    }
     try {
       const data = await this.authService.googleSignIn();
       console.log(data);
       if (data && data?.response?.['access_token']) {
-        const { email, firstName, id, idToken, lastName } = data;
+        const { email, idToken } = data;
         const payload = {
           email,
-          firstName,
-          id,
           idToken,
-          lastName,
+          account_type: AccountType.BUSINESS,
+          custom_domain: this.domain?.value,
+          type: Type.GOOGLE,
         };
-        console.log('payload', payload);
-        const google_access_token = data?.response?.['access_token'];
-        this.storageService.setGoogleAccessToken(google_access_token);
-        // this.router.navigate(['/home']);
+        this.store.dispatch(signUp({ user: payload }));
 
+        // const google_access_token = data?.response?.['access_token'];
+        // this.storageService.setGoogleAccessToken(google_access_token);
+        // this.router.navigate(['/home']);
       } else {
         return;
       }
