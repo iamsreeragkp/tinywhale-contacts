@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RootComponent } from './root.component';
 import { SideNavComponent } from './shared/side-nav/side-nav.component';
 import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarted.component';
+import { RootService } from './root.service';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, SharedModule, RootRoutingModule],
@@ -21,5 +22,6 @@ import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarte
     CardGetstartedComponent,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
+  providers:[RootService]
 })
 export class RootModule {}
