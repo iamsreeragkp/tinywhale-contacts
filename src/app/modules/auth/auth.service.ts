@@ -32,6 +32,10 @@ export class AuthService {
     }
   }
 
+  checkEmailExits({ email }: { email: string }): Observable<any> {
+    return this.http.get(`${this.authApi}/auth/check-email-exists/${email}`);
+  }
+
   signUpUser(payload: Auth): Observable<any> {
     return this.http.post(`${this.authApi}/auth/signup`, payload);
   }

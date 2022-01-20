@@ -15,6 +15,10 @@ export interface IAuthState {
   resetPassword: any;
   signUpError: any;
   logInError: any;
+  checkEmail: {
+    exists?: boolean;
+    message?: string;
+  }
 }
 
 export const initialAuthState: IAuthState = {
@@ -27,11 +31,24 @@ export const initialAuthState: IAuthState = {
   resetPassword: null,
   userData:[],
   signUpError: undefined,
-  logInError: undefined
+  logInError: undefined,
+  checkEmail: {
+    exists: undefined,
+    message: undefined
+  }
 };
 
 export const reducer = createReducer(
   initialAuthState,
+  on(AuthActions.checkEmailExistsSuccess, (state, { exists, message }) => ({
+    ...state,
+    checkEmail: {
+      exists,
+      message
+    },
+    user: undefined,
+    isAuthenticated: false,
+  })),
   on(AuthActions.signUpSuccess, (state, { response }) => ({
     ...state,
     userData: response,

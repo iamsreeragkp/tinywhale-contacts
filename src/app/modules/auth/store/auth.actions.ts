@@ -7,6 +7,10 @@ export const signUpSuccess = createAction('[AuthModule] SIGN UP SUCCESS', props<
 
 export const signUpError = createAction('[AuthModule] SIGN UP ERROR',props<{error?: string}>());
 
+export const checkEmailExists = createAction('[AuthModule] CHECK EMAIL EXISTS', props<{ email: string }>());
+export const checkEmailExistsSuccess = createAction('[AuthModule] CHECK EMAIL EXISTS SUCCESS', props<{ exists?: boolean, message?: string }>());
+export const checkEmailExistsError = createAction('[AuthModule] CHECK EMAIL EXISTS ERROR', props<{ error: string }>());
+
 export const logIn = createAction('[AuthModule] LOGIN', props<{ user: Auth }>());
 
 export const logInSuccess = createAction('[AuthModule] LOGIN SUCCESS', props<{ user: Auth[] }>());
