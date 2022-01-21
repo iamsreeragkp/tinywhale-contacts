@@ -20,7 +20,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   fields = ['otp_0', 'otp_1', 'otp_2', 'otp_3', 'otp_4', 'otp_5'];
   @ViewChildren('formRow') rows: any;
 
-
   ngUnsubscribe = new Subject<any>();
 
   constructor(private store: Store<IAuthState>) {
@@ -75,7 +74,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-  isVerifiedOtp=false;
+  isVerifiedOtp = false;
 
   validateOtp() {
     console.log(this.otpForm?.value);
@@ -91,10 +90,10 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     };
     console.log(validateOtpPayload);
     this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
-       this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+    this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       console.log(data);
-      if(data){
-        this.isVerifiedOtp=true;
+      if (data) {
+        this.isVerifiedOtp = true;
       }
     });
 
@@ -119,23 +118,26 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     // this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
   }
 
-
-  keyUpEvent(event:any, index:any){
-    let pos = index;
-    if (event.keyCode === 8 && event.which === 8) {
-     pos = index - 1 ;
+  keyUpEvent(event: any, index: any) {
+    console.log(event);
+    if (event?.code.includes('Digit')) {
+      let pos = index;
+      if (event.keyCode === 8 && event.which === 8) {
+        pos = index - 1;
+      } else {
+        pos = index + 1;
+      }
+      if (pos > -1 && pos < this.fields.length) {
+        this.rows._results[pos].nativeElement.focus();
+      }
     } else {
-     pos = index + 1 ;
-    }
-    if (pos > -1 && pos < this.fields.length ) {
-     this.rows._results[pos].nativeElement.focus();
+      index = 0;
     }
   }
 
   backToReset() {
     this.isOtpVisible = false;
   }
-
 
   get email() {
     return this.resetPasswordForm.get('email');
