@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { UserStoreModule } from '../user/store/user-store.module';
 import { HeroRemoveComponent } from './components/hero-remove/hero-remove.component';
@@ -10,8 +9,6 @@ import { HeroStoreModule } from './store/hero-store.module';
 
 @NgModule({
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule,
     HeroRoutingModule,
     HeroStoreModule,

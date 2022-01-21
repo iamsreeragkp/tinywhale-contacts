@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -22,10 +21,11 @@ import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
 import { SwipernextComponent } from './svgs/swipernext/swipernext.component';
 import { WebsiteComponent } from './svgs/no-data-view-website/website.component';
 import { NoDataViewComponentComponent } from '../modules/root/shared/no-data-view-component/no-data-view-component.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, LazyLoadImageModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
@@ -50,6 +50,8 @@ import { NoDataViewComponentComponent } from '../modules/root/shared/no-data-vie
   ],
   exports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     SpinnerComponent,
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,

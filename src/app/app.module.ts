@@ -6,7 +6,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './modules/core/core.module';
-import { RootModule } from './modules/root/root.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
@@ -21,7 +20,6 @@ registerLocaleData(localeEs, 'es');
     CommonModule,
     HttpClientModule,
     CoreModule,
-    RootModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     SocialLoginModule,
