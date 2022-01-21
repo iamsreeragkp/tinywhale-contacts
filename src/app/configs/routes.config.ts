@@ -22,6 +22,9 @@ const routesNames = {
     createPassword:'create-password',
   },
   website:{
+    home:"home",
+    addbusinessinfo:"addbusinessinfo",
+  
 
   }
 };
@@ -43,6 +46,8 @@ export const RoutesConfig = {
       logIn: `/${basePaths.auth}/${routesNames.auth.logIn}`,
     },
     website:{
+      home: `/${basePaths.website}/${routesNames.website.home}`,
+      website: `/${basePaths.website}/${routesNames.website.addbusinessinfo}`,
       
     }
   },
