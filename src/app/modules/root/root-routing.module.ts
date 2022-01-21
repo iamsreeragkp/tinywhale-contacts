@@ -29,6 +29,11 @@ const rootRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: RoutesConfig.basePaths.account,
+        loadChildren:() => import('../accounts/account.module').then(m=>m.AccountModule),
+        canActivate: [AuthGuard],
+      },
+      {
         path: routesNames.home,
         component: HomePageComponent,
         pathMatch: 'full',
