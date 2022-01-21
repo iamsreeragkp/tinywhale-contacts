@@ -5,7 +5,8 @@ export const ROUTES_CONFIG = new InjectionToken('routes.config');
 const basePaths = {
   hero: 'hero',
   auth: 'auth',
-  website: 'website'
+  website: 'website',
+  account: 'account'
 };
 
 const routesNames = {
@@ -24,8 +25,10 @@ const routesNames = {
   website:{
     home:"home",
     addbusinessinfo:"addbusinessinfo",
-  
-
+  },
+  account:{
+    home:'home',
+    settings:'settings'
   }
 };
 
@@ -48,7 +51,10 @@ export const RoutesConfig = {
     website:{
       home: `/${basePaths.website}/${routesNames.website.home}`,
       website: `/${basePaths.website}/${routesNames.website.addbusinessinfo}`,
-      
+    },
+    account:{
+      home:`/${basePaths.account}/${routesNames.account.home}`,
+      settings:`/${basePaths.account}/${routesNames.account.settings}`
     }
   },
 };
