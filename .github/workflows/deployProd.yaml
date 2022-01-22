@@ -28,7 +28,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-
 
-      - run: npm ci
+      - run: npm set-script prepare ''
+      - run: npm ci --omit=dev
       - run: npm run build:prod
 
       - name: zip build folder
@@ -59,8 +60,8 @@ jobs:
           script: bash deploy-client.sh
 
 
-      # - name: Release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: npx semantic-release
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
