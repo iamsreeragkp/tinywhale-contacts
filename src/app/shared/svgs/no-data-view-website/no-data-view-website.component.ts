@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-website',
-  templateUrl: './website.component.svg',
-  styleUrls: ['./website.component.css']
+  selector: 'app-no-data-view-website',
+  templateUrl: './no-data-view-website.component.svg',
+  styleUrls: ['./no-data-view-website.component.css'],
 })
-export class WebsiteComponent {
- 
-}
-
+export class NoDataViewWebsiteSvgComponent {}
 
 /*
 Copyright Google LLC. All Rights Reserved.

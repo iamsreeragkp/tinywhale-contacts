@@ -5,10 +5,6 @@
 @import 'swiper/scss';
 @import 'swiper/scss/navigation';
 
-* {
-  @include font-roboto();
-}
-
 a,
 .cp {
   cursor: pointer;
@@ -119,10 +115,10 @@ pre {
 // MATERIAL
 //SWIPER
 
-.swiper{
+.swiper {
   @apply h-full w-full;
 }
-.swiper-button-prev, .swiper-button-next  {
+.swiper-button-prev,
+.swiper-button-next {
   display: none !important;
-  
 }

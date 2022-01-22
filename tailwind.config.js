@@ -6,10 +6,20 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily: {
+        baloo: 'Baloo',
+        poppins: 'Poppins'
+      }
       // bagroundColor:{
       //   primary-baground:"#12B5C1"
       // }
     },
+    textColor: {
+      primaryFont: '#154F5B'
+    },
+    borderColor: {
+      lightGrey: '#d6e1e3'
+    }
   },
   variants: {
     extend: {},

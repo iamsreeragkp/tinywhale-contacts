@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import {
   debounceTime,
-  distinctUntilChanged,
   filter,
   Observable,
   Subject,
@@ -78,7 +77,6 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
           return !this.isDomainAvailable;
         }),
         debounceTime(500),
-        distinctUntilChanged()
       )
       .subscribe(val => {
         if (val) {

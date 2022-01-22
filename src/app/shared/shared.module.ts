@@ -19,10 +19,9 @@ import { PasswordCorrectComponent } from './svgs/passwordcorrect/passwordcorrect
 import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning.component';
 import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
 import { SwipernextComponent } from './svgs/swipernext/swipernext.component';
-import { WebsiteComponent } from './svgs/no-data-view-website/website.component';
+import { NoDataViewWebsiteSvgComponent } from './svgs/no-data-view-website/no-data-view-website.component';
 import { NoDataViewComponentComponent } from '../modules/root/shared/no-data-view-component/no-data-view-component.component';
 import { RouterModule } from '@angular/router';
-
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
@@ -44,9 +43,8 @@ import { RouterModule } from '@angular/router';
     PasswordWarningComponent,
     SwiperlogoComponent,
     SwipernextComponent,
-    WebsiteComponent,
+    NoDataViewWebsiteSvgComponent,
     NoDataViewComponentComponent,
-    
   ],
   exports: [
     CommonModule,
@@ -70,9 +68,8 @@ import { RouterModule } from '@angular/router';
     PasswordWarningComponent,
     SwiperlogoComponent,
     SwipernextComponent,
-    WebsiteComponent,
+    NoDataViewWebsiteSvgComponent,
     NoDataViewComponentComponent,
-
   ],
 })
 export class SharedModule {}
