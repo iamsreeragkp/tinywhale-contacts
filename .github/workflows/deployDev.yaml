@@ -28,7 +28,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-
 
-      - run: npm ci
+      - run: npm set-script prepare ''
+      - run: npm ci --omit=dev
       - run: npm run build:dev
 
       - name: zip build folder
