@@ -20,7 +20,6 @@ import { PasswordWarningComponent } from './svgs/passwordwarning/passwordwarning
 import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
 import { SwipernextComponent } from './svgs/swipernext/swipernext.component';
 import { NoDataViewWebsiteSvgComponent } from './svgs/no-data-view-website/no-data-view-website.component';
-import { NoDataViewComponentComponent } from '../modules/root/shared/no-data-view-component/no-data-view-component.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -44,7 +43,6 @@ import { RouterModule } from '@angular/router';
     SwiperlogoComponent,
     SwipernextComponent,
     NoDataViewWebsiteSvgComponent,
-    NoDataViewComponentComponent,
   ],
   exports: [
     CommonModule,
@@ -69,7 +67,6 @@ import { RouterModule } from '@angular/router';
     SwiperlogoComponent,
     SwipernextComponent,
     NoDataViewWebsiteSvgComponent,
-    NoDataViewComponentComponent,
   ],
 })
 export class SharedModule {}

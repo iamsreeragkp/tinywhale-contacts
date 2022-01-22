@@ -1,13 +1,26 @@
 .website-page-heading {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
   .header {
     font-family: Baloo !important;
     color: #154f5b;
     .one {
       font-family: Baloo;
       color: #64c2bc;
-      transform: translateY(10px);
+    }
+  }
+  .cancel-button {
+    font-family: Baloo;
+    font-stretch: normal;
+    letter-spacing: normal;
+    color: #00a4b7;
+  }
+  .save-button {
+    background-color: #00a4b7;
+
+    font-family: Baloo;
+    font-stretch: normal;
+    letter-spacing: normal;
+    &:disabled {
+      background-color: #d6e1e3;
     }
   }
 }

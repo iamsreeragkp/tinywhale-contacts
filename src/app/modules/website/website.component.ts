@@ -17,6 +17,6 @@ import { fadeIn } from 'ng-animate';
     ]),
   ],
 })
-export class WebsiteComponent  {
+export class WebsiteComponent {
   constructor() {}
 }

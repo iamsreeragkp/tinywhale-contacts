@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RootService } from 'src/app/modules/root/root.service';
 
 @Component({
   selector: 'app-view-business-info',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./view-business-info.component.scss'],
 })
 export class ViewBusinessInfoComponent implements OnInit {
+  userData: any;
   businessObj = {
     business_id: 1,
     business_name: 'Rythm',
@@ -23,6 +25,7 @@ export class ViewBusinessInfoComponent implements OnInit {
         recognition_type: 'AWARD',
         photo_url:
           'https://www.figma.com/file/cpthPodXeElBUFKRwfxKtq/Tinywhale---For-Developers?node-id=836%3A1288',
+        expiry_date: null,
       },
       {
         recognition_id: 5,
@@ -30,6 +33,7 @@ export class ViewBusinessInfoComponent implements OnInit {
         recognition_type: 'CERTIFICATE',
         photo_url:
           'https://www.figma.com/file/cpthPodXeElBUFKRwfxKtq/Tinywhale---For-Developers?node-id=836%3A1288',
+        expiry_date: new Date(),
       },
     ],
     testimonials: [
@@ -74,7 +78,9 @@ export class ViewBusinessInfoComponent implements OnInit {
       punchline: ' # Learning Piano Simplified - The fas-track to learn piano like a pro !',
     },
   };
-  constructor() {}
+  constructor(private rootService: RootService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userData = this.rootService.decodeUserToken();
+  }
 }

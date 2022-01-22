@@ -9,17 +9,20 @@ module.exports = {
       fontFamily: {
         baloo: 'Baloo',
         poppins: 'Poppins'
-      }
+      },
       // bagroundColor:{
       //   primary-baground:"#12B5C1"
       // }
+      textColor: {
+        primaryFont: '#154F5B'
+      },
+      borderColor: {
+        lightGrey: '#d6e1e3'
+      },
+      borderRadius: {
+        '5': '1.25rem'
+      }
     },
-    textColor: {
-      primaryFont: '#154F5B'
-    },
-    borderColor: {
-      lightGrey: '#d6e1e3'
-    }
   },
   variants: {
     extend: {},
