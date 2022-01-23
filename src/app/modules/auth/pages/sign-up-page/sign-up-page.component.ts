@@ -1,24 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service';
-import { Router } from '@angular/router';
-import { StorageService } from 'src/app/shared/services/storage.service';
-import {
-  debounceTime,
-  filter,
-  Observable,
-  Subject,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, filter, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { IAuthState } from '../../store/auth.reducers';
-import { checkEmailExists, checkEmailExistsSuccess, searchDomain, signUp, signUpError } from '../../store/auth.actions';
-import { getCheckEmailExistsStatus, getDomainData, getSignUpFail } from '../../store/auth.selectors';
-import { AccountType, Type } from '../../store/auth.interface';
+import {
+  checkEmailExists,
+  checkEmailExistsSuccess,
+  searchDomain,
+  signUpError,
+} from '../../store/auth.actions';
+import {
+  getCheckEmailExistsStatus,
+  getDomainData,
+  getSignUpFail,
+} from '../../store/auth.selectors';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -39,23 +38,36 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   signUpForm!: FormGroup;
   searchDomain: any;
   isDomainAvailable: boolean = false;
+  redirectMode = false;
 
   search$ = new Subject<string>();
   ngUnsubscribe = new Subject<any>();
   isChecking = false;
-  checkEmailExists$: Observable<{ exists?: boolean, message?: string }>;
+  checkEmailExists$: Observable<{ exists?: boolean; message?: string }>;
   signUpFail$: Observable<string>;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
     private router: Router,
-    private storageService: StorageService,
-    private store: Store<IAuthState>
+    private store: Store<IAuthState>,
+    private route: ActivatedRoute
   ) {
     this.signUpForm = this.createSignupForm();
     this.checkEmailExists$ = this.store.pipe(select(getCheckEmailExistsStatus));
     this.signUpFail$ = this.store.pipe(select(getSignUpFail));
+    const routeData = router.getCurrentNavigation()?.extras.state;
+    if (routeData?.['error']) {
+      const [field, value] = routeData?.['data'];
+      setTimeout(() => {
+        this.signUpForm.get(field)?.patchValue(value);
+        store.dispatch(signUpError({ error: routeData?.['message'] }));
+        if (field === 'domain') {
+          this.search$.next(value);
+        }
+      }, 500);
+    } else if (routeData?.['google-redirect']) {
+      this.signUpForm.get('email')?.patchValue(routeData?.['data']);
+      this.redirectMode = true;
+    }
   }
 
   ngOnInit() {
@@ -70,13 +82,14 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
           this.domain?.markAsTouched();
         }),
         filter(() => {
-          this.isDomainAvailable = this.domain?.errors?.['required'] || this.domain?.errors?.['pattern'];
+          this.isDomainAvailable =
+            this.domain?.errors?.['required'] || this.domain?.errors?.['pattern'];
           if (this.isDomainAvailable) {
             this.isChecking = false;
           }
           return !this.isDomainAvailable;
         }),
-        debounceTime(500),
+        debounceTime(500)
       )
       .subscribe(val => {
         if (val) {
@@ -94,27 +107,37 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
         this.isDomainAvailable = false;
       }
     });
-    this.checkEmailExists$.pipe(takeUntil(this.ngUnsubscribe), filter(val => val.exists !== undefined)).subscribe(checkEmailStatus => {
-      if (checkEmailStatus?.exists) {
-        this.signUpForm.setErrors({ signUpFail: checkEmailStatus.message });
-        this.signUpForm.valueChanges.pipe(take(1)).subscribe(() => {
-          this.signUpForm.setErrors({ signUpFail: null });
-          this.signUpForm.updateValueAndValidity();
-        })
-      } else {
-        const { email, domain } = this.signUpForm.value;
-        this.setValueToLocalStorage(email, domain);
-        this.router.navigate(['/auth/create-password']);
-      }
-      this.store.dispatch(checkEmailExistsSuccess({ exists: undefined, message: undefined }));
-    });
-    this.signUpFail$.pipe(takeUntil(this.ngUnsubscribe), filter(val => !!val)).subscribe(err => {
-      this.signUpForm.setErrors({ signUpFail: err });
-      this.store.dispatch(signUpError({ error: undefined }));
-      this.signUpForm.valueChanges.pipe(take(1)).subscribe(() => {
-        this.signUpForm.setErrors({ signUpFail: null });
-        this.signUpForm.updateValueAndValidity();
-      })
+    this.checkEmailExists$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => val.exists !== undefined)
+      )
+      .subscribe(checkEmailStatus => {
+        if (checkEmailStatus?.exists) {
+          this.setFormError(checkEmailStatus?.message);
+        } else {
+          const { email, domain } = this.signUpForm.value;
+          this.setValueToLocalStorage(email, domain);
+          this.router.navigate(['/auth/create-password']);
+        }
+        this.store.dispatch(checkEmailExistsSuccess({ exists: undefined, message: undefined }));
+      });
+    this.signUpFail$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(err => {
+        this.setFormError(err);
+        this.store.dispatch(signUpError({ error: undefined }));
+      });
+  }
+
+  setFormError(err?: string) {
+    this.signUpForm.setErrors({ signUpFail: err ?? null });
+    this.signUpForm.valueChanges.pipe(take(1)).subscribe(() => {
+      this.signUpForm.setErrors({ signUpFail: null });
+      this.signUpForm.updateValueAndValidity();
     });
   }
 
@@ -129,7 +152,8 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitSignUp() {
-    if (!this.signUpForm.valid) {
+    if (!this.signUpForm.valid || this.isDomainAvailable) {
+      this.signUpForm.markAllAsTouched();
       return;
     }
     const { email } = this.signUpForm.value;
@@ -147,29 +171,13 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
       this.domain?.markAsTouched();
       return;
     }
-    try {
-      const data = await this.authService.googleSignIn();
-      console.log(data);
-      if (data && data?.response?.['access_token']) {
-        const { email, idToken } = data;
-        const payload = {
-          email,
-          idToken,
-          account_type: AccountType.BUSINESS,
-          custom_domain: this.domain?.value,
-          type: Type.GOOGLE,
-        };
-        this.store.dispatch(signUp({ userData: payload }));
-
-        // const google_access_token = data?.response?.['access_token'];
-        // this.storageService.setGoogleAccessToken(google_access_token);
-        // this.router.navigate(['/home']);
-      } else {
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const domain_name = window.btoa(
+      JSON.stringify({
+        custom_domain: this.domain.value,
+        account_type: 'BUSINESS',
+      })
+    );
+    window.location.href = `${environment.api_end_point}/auth/google?tk=${domain_name}&redirected=${this.redirectMode}`;
   }
 
   navigateToSignIn() {

@@ -1,7 +1,7 @@
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { StorageService } from '../../../shared/services/storage.service';
 import { ToastrService } from 'ngx-toastr';
 @Injectable()

@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 import { StorageService } from '../../shared/services/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.config';
-import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { Auth, Otp } from './store/auth.interface';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +14,6 @@ export class AuthService {
   constructor(
     private storageService: StorageService,
     private http: HttpClient,
-    private socialAuthService: SocialAuthService,
     @Inject(ENDPOINTS_CONFIG) private endpoints: EndpointsType
   ) {}
 
@@ -48,16 +46,16 @@ export class AuthService {
     return this.http.get(`${this.authApi}/store/check/${subdomain}`);
   }
 
-  sendOtp(payload:Otp){
-    return this.http.post(`${this.authApi}/auth/send-otp`,payload);
+  sendOtp(payload: Otp) {
+    return this.http.post(`${this.authApi}/auth/send-otp`, payload);
   }
 
-  verifyOtp(payload:Otp){
-    return this.http.post(`${this.authApi}/auth/verify-otp`,payload);
+  verifyOtp(payload: Otp) {
+    return this.http.post(`${this.authApi}/auth/verify-otp`, payload);
   }
 
-  resetPassword(payload:Otp){
-    return this.http.post(`${this.authApi}/auth/reset-password`,payload);
+  resetPassword(payload: Otp) {
+    return this.http.post(`${this.authApi}/auth/reset-password`, payload);
   }
 
   signUp(
@@ -105,11 +103,7 @@ export class AuthService {
       );
   }
 
-  public googleSignIn() {
-    return this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
-
-  public googleSignOut() {
-    return this.socialAuthService.signOut();
+  verifyToken(token: string): Observable<any> {
+    return this.http.post(`${this.authApi}/auth/cipher/verify`, { token });
   }
 }

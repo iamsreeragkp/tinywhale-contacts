@@ -11,31 +11,22 @@
         <div class="relative">
           <input
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
-            type="email"
-            placeholder="Enter Email"
-            formControlName="email"
-            [ngClass]="{'border-red': email?.errors?.['pattern'] || logInForm?.errors?.['loginFail'] }"
-          />
+            type="email" placeholder="Enter Email" formControlName="email"
+            [ngClass]="{'border-red': email?.errors?.['pattern'] || logInForm?.errors?.['loginFail'] }" />
           <div class="warning absolute" *ngIf="email?.errors?.['pattern'] || logInForm?.errors?.['loginFail']">
             <app-formwarning></app-formwarning>
           </div>
-          <div
-            class="right absolute"
-            *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['email'] && !logInForm?.errors?.['loginFail']"
-          >
+          <div class="right absolute"
+            *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['email'] && !logInForm?.errors?.['loginFail']">
             <app-formright></app-formright>
           </div>
         </div>
-        <p
-          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['required']"
-          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
-        >
+        <p *ngIf="(email?.touched) && email?.invalid && email?.errors?.['required']"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           Email is required
         </p>
-        <p
-          *ngIf="(email?.touched) && email?.invalid && email?.errors?.['pattern']"
-          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
-        >
+        <p *ngIf="(email?.touched) && email?.invalid && email?.errors?.['pattern']"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           Please enter a valid email address
         </p>
       </div>
@@ -43,60 +34,43 @@
         <div class="relative">
           <input
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
-            type="password"
-            placeholder="Enter Password"
+            type="password" placeholder="Enter Password"
             [ngClass]="{'border-red': password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']}"
-            formControlName="password"
-          />
+            formControlName="password" />
           <div class="warning absolute" *ngIf="password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']">
             <app-formwarning></app-formwarning>
           </div>
-          <div
-            class="right absolute"
-            *ngIf="(password?.dirty || password?.touched) && !password?.invalid && !password?.errors?.['minlength'] && !logInForm?.errors?.['loginFail']"
-          >
+          <div class="right absolute"
+            *ngIf="(password?.dirty || password?.touched) && !password?.invalid && !password?.errors?.['minlength'] && !logInForm?.errors?.['loginFail']">
             <app-formright></app-formright>
           </div>
         </div>
-        <p
-          *ngIf="(password?.touched) && password?.invalid && password?.errors?.['required']"
-          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
-        >
+        <p *ngIf="(password?.touched) && password?.invalid && password?.errors?.['required']"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           Password is required
         </p>
-        <p
-          *ngIf="(password?.touched) && password?.invalid && password?.errors?.['minlength']"
-          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
-        >
+        <p *ngIf="(password?.touched) && password?.invalid && password?.errors?.['minlength']"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           Password Min length is 8
         </p>
-        <p
-          *ngIf="logInForm?.errors?.['loginFail']"
-          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3"
-        >
+        <p *ngIf="logInForm?.errors?.['loginFail']"
+          class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
           {{ logInForm?.errors?.['loginFail'] }}
         </p>
       </div>
     </form>
-    <a
-      class="goto-forgotpassword not-italic font-normal cursor-pointer text-base"
-      [routerLink]="['../forgot-password']"
-    >
-      Forgot Password?</a
-    >
+    <a class="goto-forgotpassword not-italic font-normal cursor-pointer text-base"
+      [routerLink]="['../forgot-password']">
+      Forgot Password?</a>
     <div class="flex flex-col mt-4">
-      <button
-        class="continue text-white w-full py-3 px-8 not-italic font-normal text-base leading-6 rounded-full"
-        (click)="onSubmitLogin()"
-        [disabled]="!logInForm.valid"
-      >
+      <button class="continue text-white w-full py-3 px-8 not-italic font-normal text-base leading-6 rounded-full"
+        (click)="onSubmitLogin()">
         Continue
       </button>
       <div class="or-class text-center my-4 text-base not-italic font-normal">or</div>
       <button
         class="continue-with-google text-white w-full py-3 px-8 not-italic font-normal text-baseleading-6 rounded-full"
-        (click)="onSubmitGoogleSignIn()"
-      >
+        (click)="onSubmitGoogleSignIn()">
         Continue with Google
       </button>
     </div>
