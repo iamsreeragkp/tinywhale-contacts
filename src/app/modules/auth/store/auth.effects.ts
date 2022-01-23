@@ -58,16 +58,16 @@ export class AuthEffects {
   // );
 
   signUp$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(signUp),
-    switchMap(({ userData }) =>
-      this.authService.signUpUser(userData).pipe(
-        map(responses => signUpSuccess({ response: responses })),
-        catchError(error => of(signUpError({ error: error?.error?.message ?? error?.message })))
+    this.actions$.pipe(
+      ofType(signUp),
+      switchMap(({ userData }) =>
+        this.authService.signUpUser(userData).pipe(
+          map(responses => signUpSuccess({ response: responses })),
+          catchError(error => of(signUpError({ error: error?.error?.message ?? error?.message })))
+        )
       )
     )
-  )
-);
+  );
 
   checkEmailExists$ = createEffect(() =>
     this.actions$.pipe(
@@ -75,14 +75,15 @@ export class AuthEffects {
       switchMap(({ email }) =>
         this.authService.checkEmailExits({ email }).pipe(
           map(response => checkEmailExistsSuccess(response)),
-          catchError(error => of(checkEmailExistsError({ error: error?.error?.message ?? error?.message })))
+          catchError(error =>
+            of(checkEmailExistsError({ error: error?.error?.message ?? error?.message }))
+          )
         )
       )
     )
   );
 
   // logIn
-
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -114,8 +115,10 @@ export class AuthEffects {
       switchMap(({ data }) =>
         this.authService.verifyOtp(data).pipe(
           map(res => verifyOtpSuccess({ response: res })),
-          catchError((error) =>{ console.log(error?.error?.message );
-           return of(verifyOtpFail({ error: error?.error?.message }))})
+          catchError(error => {
+            console.log(error?.error?.message);
+            return of(verifyOtpFail({ error: error?.error?.message }));
+          })
         )
       )
     )
@@ -136,15 +139,11 @@ export class AuthEffects {
   loginRedirect$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(...[logInSuccess,signUpSuccess]),
+        ofType(...[logInSuccess, signUpSuccess]),
         tap((action: any) => {
-          if (action?.user?.['access-token']) {
-            const access_token = action?.user?.['access-token'];
-            this.storageService.setAccessToken(access_token);
-            this.router.navigate(['/home']);
-          }
-          if(action?.response?.['access-token']){
-            const access_token = action?.response?.['access-token'];
+          if (action?.user?.['access-token'] || action?.response?.['access-token']) {
+            const access_token =
+              action?.user?.['access-token'] ?? action?.response?.['access-token'];
             this.storageService.setAccessToken(access_token);
             this.router.navigate(['/home']);
           }
@@ -174,7 +173,7 @@ export class AuthEffects {
         ofType(...[verifyOtpSuccess]),
         tap((action: any) => {
           if (action) {
-            this.router.navigate(['/auth/create-password'],{queryParams:{isVerified:true}});
+            this.router.navigate(['/auth/create-password'], { queryParams: { isVerified: true } });
           }
         })
       );
