@@ -1,19 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CardGetstartedComponent } from './card-getstarted.component';
 
-describe('CardGetstartedComponent', () => {
-  let component: CardGetstartedComponent;
-  let fixture: ComponentFixture<CardGetstartedComponent>;
+import { ViewServiceComponent } from './view-service.component';
+
+describe('ViewServiceComponent', () => {
+  let component: ViewServiceComponent;
+  let fixture: ComponentFixture<ViewServiceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CardGetstartedComponent ]
+      declarations: [ ViewServiceComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CardGetstartedComponent);
+    fixture = TestBed.createComponent(ViewServiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
