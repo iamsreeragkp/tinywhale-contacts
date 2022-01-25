@@ -23,6 +23,7 @@ import { ClosedeyeComponent } from './svgs/closedeye/closedeye.component';
 import { NoDataViewWebsiteSvgComponent } from './svgs/no-data-view-website/no-data-view-website.component';
 import { RouterModule } from '@angular/router';
 import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
+import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
@@ -47,6 +48,7 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
     ClosedeyeComponent,
     NoDataViewWebsiteSvgComponent,
     OpenedeyeComponent,
+    AwaitingComponent,
   ],
   exports: [
     CommonModule,
@@ -73,6 +75,7 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
     ClosedeyeComponent,
     NoDataViewWebsiteSvgComponent,
     OpenedeyeComponent,
+    AwaitingComponent,
   ],
 })
 export class SharedModule {}
