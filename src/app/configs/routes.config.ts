@@ -43,7 +43,10 @@ const routesNames = {
   },
   account:{
     home:'home',
-    settings:'settings'
+    settings:'settings',
+    addPayment:"add-payment",
+    viewPayment:"view-payment",
+
   }
 };
 
@@ -82,7 +85,9 @@ export const RoutesConfig = {
     },
     account:{
       home:`/${basePaths.account}/${routesNames.account.home}`,
-      settings:`/${basePaths.account}/${routesNames.account.settings}`
+      settings:`/${basePaths.account}/${routesNames.account.settings}`,
+      addPayment: `/${basePaths.account}/${routesNames.account.addPayment}`,
+      viewPayment: `/${basePaths.account}/${routesNames.account.viewPayment}`,
     }
   },
 };

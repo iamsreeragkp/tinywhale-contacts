@@ -1,0 +1,244 @@
+.fixed-header {
+    margin-left: 10rem;
+    margin-top: 2rem;
+    padding-right: 2.5rem;
+    width: calc(100% - 10rem - 15px);
+    &-mask {
+      width: calc(100% - 12rem);
+      margin-left: 10rem;
+      background-color: #e5e5e5;
+      height: 3rem;
+    }
+  }
+  .website-page-heading {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom: 2px solid #d6e1e3;
+    .header {
+      font-family: Baloo !important;
+      color: #154f5b;
+      .one {
+        font-family: Baloo;
+        color: #64c2bc;
+      }
+    }
+    .cancel-button {
+      font-family: Baloo;
+      font-stretch: normal;
+      letter-spacing: normal;
+      color: #00a4b7;
+    }
+    .save-button {
+      background-color: #00a4b7;
+      font-family: Baloo;
+      font-stretch: normal;
+      letter-spacing: normal;
+      &:disabled {
+        background-color: #d6e1e3;
+      }
+    }
+    .save-button-secondary {
+      background-color: #fff;
+      border: 2px solid #00a4b7;
+      color: #00a4b7;
+      font-family: Baloo;
+      font-stretch: normal;
+      letter-spacing: normal;
+      &:disabled {
+        border-color: #d6e1e3;
+        color: #d6e1e3;
+      }
+    }
+  }
+  .add-info {
+    margin-top: 4.75rem;
+    .detail-section {
+      background-color: #eaf3f6;
+      border-bottom-right-radius: 20px;
+      &-subheading {
+        color: #154f5b;
+      }
+    }
+    .book-button {
+      background-color: #73959d;
+      border: 2px solid #73959d;
+      color: #fff;
+      font-family: Baloo;
+      font-stretch: normal;
+      letter-spacing: normal;
+      &:hover {
+        background-color: #fff;
+        color: #73959d;
+      }
+    }
+    .heading {
+      font-family: Baloo;
+      color: #154f5b;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 36px;
+      line-height: 32px;
+      letter-spacing: -1px;
+    }
+    .text {
+      font-family: poppins;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #154f5b;
+    }
+    .add-another {
+      font-family: Baloo;
+      color: #00a4b7;
+    }
+  }
+  
+  .input-section {
+    border-bottom-left-radius: 20px;
+    .radio-container {
+      border: 2px solid #d6e1e4;
+      &-border-b {
+        border-bottom: 2px solid #d6e1e4;
+      }
+      &-name {
+        color: #154f5b;
+        font-weight: 400;
+      }
+      &-descri {
+        color: #154f5b;
+        font-weight: 300;
+      }
+      input {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    &-subheading {
+      color: #154f5b;
+    }
+    .input-field {
+      &-secondary-text {
+        color: #154f5b;
+      }
+      .w-form {
+        width: calc(100% - 11rem);
+      }
+      .label {
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: #154f5b;
+      }
+      .input {
+        background: #ffffff;
+        border: 2px solid #d6e1e3;
+        border-radius: 8px;
+        // width: 360px;
+        color: #154f5b;
+      }
+      .input-photo {
+        background: #f6f9fa;
+        border: 2px dashed #d6e1e3;
+        border-radius: 8px;
+        width: 120px;
+        height: 120px;
+      }
+      .input-award {
+        background: #f6f9fa;
+        border: 1px solid #d6e1e3;
+        border-radius: 8px;
+        width: 360px;
+        .input {
+          background: #ffffff;
+          border: 2px solid #d6e1e3;
+          border-radius: 8px;
+          width: 300px;
+          color: #154f5b;
+        }
+        .input-photo {
+          background: #f6f9fa;
+          border: 2px dashed #d6e1e3;
+          border-radius: 8px;
+          width: 120px;
+          height: 120px;
+        }
+        
+      }
+    }
+    .checkbox-input {
+      .check-container {
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #154f5b;
+    }
+
+    //  Hide the browser's default checkbox 
+    .check-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    // Create a custom checkbox 
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        border: 1px solid #154f5b;
+        border-radius: 4px;
+    }
+
+    //  When the checkbox is checked, add a blue background 
+    .check-container input:checked ~ .checkmark {
+        background-color: #00a4b7;
+        border: 1px solid #00a4b7;
+    }
+
+    //  Create the checkmark/indicator (hidden when not checked) 
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    //  Show the checkmark when checked 
+    .check-container input:checked ~ .checkmark:after {
+        display: block;
+    }
+    .check-container .checkmark:after {
+        left: 6px;
+        top: 1px;
+        width: 7px;
+        height: 13px;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(42deg);
+    }
+    }
+  }
+  .tinytiptext::before {
+    content: "";
+    position: absolute;
+    top: 0%;
+    right: 100%;
+    border-width: 27px 24px;
+    border-style: solid;
+    border-color: transparent #eaf3f6 transparent transparent;
+  }
+  .connect-bank{
+    background-color: #00a4b7;
+  }
