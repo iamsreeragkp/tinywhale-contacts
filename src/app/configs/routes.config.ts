@@ -7,6 +7,7 @@ const basePaths = {
   auth: 'auth',
   website: 'website',
   service: 'service',
+  booking: 'booking',
   account: 'account'
 };
 
@@ -33,6 +34,12 @@ const routesNames = {
     home:"home",
     addService:"add-service",
     viewService:"view-service",
+  },
+  booking:{
+    home:"home",
+    addBooking:"add-booking",
+    viewBooking:"view-booking",
+    statusBooking:"status-booking",
   },
   account:{
     home:'home',
@@ -66,6 +73,12 @@ export const RoutesConfig = {
       home: `/${basePaths.service}/${routesNames.service.home}`,
       service: `/${basePaths.service}/${routesNames.service.addService}`,
       viewService: `/${basePaths.service}/${routesNames.service.viewService}`,
+    },
+    booking:{
+      home: `/${basePaths.booking}/${routesNames.booking.home}`,
+      booking: `/${basePaths.booking}/${routesNames.booking.addBooking}`,
+      viewBooking: `/${basePaths.booking}/${routesNames.booking.viewBooking}`,
+      statusBooking: `/${basePaths.booking}/${routesNames.booking.statusBooking}`,
     },
     account:{
       home:`/${basePaths.account}/${routesNames.account.home}`,
