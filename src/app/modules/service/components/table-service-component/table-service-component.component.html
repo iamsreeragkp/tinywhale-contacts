@@ -1,0 +1,255 @@
+<div class="table-container w-full rounded-t-lg overflow-hidden">
+  <div class="flex flex-wrap items-center mb-4">
+    <div class="relative mb-2 mr-2">
+      <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+        <span>Schedule</span>
+        <div class="flex items-center justify-center">
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div>
+      </div>
+      <!-- <div class="absolute top-full left-0 w-full z-50">
+        <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+          <button class="px-4 filter-item text-left hover:bg-gray-100">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Fixed</div>
+          </button>
+          <button class="px-4 filter-item text-left hover:bg-gray-100">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Flexible</div>
+          </button>
+        </div>
+      </div> -->
+    </div>
+    <div class="relative mb-2 mr-2">
+      <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+        <span>Days</span>
+        <div class="flex items-center justify-center">
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div>
+      </div>
+      <div class="absolute top-full left-0 w-full z-50">
+        <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Mon
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Tue
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Wed
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Thu
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Fri
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Sat
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+          <div class="px-4 filter-item text-left hover:bg-gray-100 filter-item">
+            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap filter-item-div"><label
+                class="check-container">Sun
+                <input type="checkbox">
+                <span class="checkmark"></span>
+              </label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative mb-2 mr-2">
+      <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+        <span>Pricing Type</span>
+        <div class="flex items-center justify-center">
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="relative mb-2 mr-2">
+      <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+        <span>Location</span>
+        <div class="flex items-center justify-center">
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="relative mb-2 mr-2">
+      <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+        <span>Visibility</span>
+        <div class="flex items-center justify-center">
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center mb-2 ml-5">
+      <button class="text-secondaryBlue font-bold flex items-center">Clear Filters</button>
+    </div>
+  </div>
+  <table class="table-auto w-full">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-2 py-3 text-left font-semibold">
+          <div class="flex items-center text-secondaryBlue">
+            <span>
+              Service Name
+            </span>
+            <div class="ml-2">
+              <img src="../../../../../assets/images/icons/sort.svg" alt="" srcset="" class="transform rotate-180">
+            </div>
+          </div>
+        </th>
+        <th class="px-2 py-3 text-left font-semibold">Schedule</th>
+        <th class="px-2 py-3 text-left font-semibold">Price</th>
+        <th class="px-2 py-3 text-left font-semibold">Location</th>
+        <th class="px-2 py-3 text-left font-semibold">Visibility</th>
+        <th class="px-2 py-3 text-left font-semibold">Actions</th>
+        <th class="px-2 py-3 text-left font-semibold"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Service Listing</td>
+      </tr>
+      <tr class="table-container-borderRow">
+        <td class="align-top px-2 py-3">
+          <div class="flex items-center">
+            <div>
+              <div class="w-12 h-12 rounded overflow-hidden">
+                <img src="../../../../../assets/images/services-dummy.png" alt="" class="w-full h-full object-cover">
+              </div>
+            </div>
+            <span class="italic ml-2">Sports for kids under 3
+              years</span>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="flex items-center">
+            <span class="italic">Sports for kids under 3
+              years</span>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="flex flex-col">
+            <span class="italic whitespace-nowrap">$ xx / session</span>
+            <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
+            <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
+            <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="flex items-center">
+            <span class="italic">Turf City, Singapore</span>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="flex items-center">
+            <span class="italic">Public</span>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="flex items-center">
+            <button
+              class="table-container-button w-24 h-12 flex items-center justify-center font-semibold rounded-full duration-700">
+              Share
+            </button>
+          </div>
+        </td>
+        <td class="align-top px-2 py-3">
+          <div class="relative flex justify-end">
+            <button
+              class="table-container-button w-12 h-12 flex items-center justify-center font-semibold rounded-full duration-700">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
+                  class="table-container-button-svgFill" />
+              </svg>
+            </button>
+            <!-- open more -->
+            <!-- <div class="absolute top-full right-0 z-50 -mt-5">
+              <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+                <button class="px-4 filter-item text-left hover:bg-gray-100">
+                  <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Edit</div>
+                </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                  <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Mark as Private</div>
+                </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                  <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Use as Template</div>
+                </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                  <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Delete</div>
+                  confrim popup
+                  <div>
+                    <div class="fixed w-full h-full inset-0 bg-black opacity-75"></div>
+                    <div class="fixed w-full h-full inset-0 flex justify-center items-center">
+                      <div class="bg-white p-5 md:w-3/12 w-11/12 rounded-2xl">
+                        <h3 class="text-xl font-bold">
+                          Delete Service ?
+                        </h3>
+                        <p class="mt-2">This action cannot be undone</p>
+                        <div class="flex justify-between mt-5">
+                          <div class="w-1/2 pr-2">
+                            <button class="secondary-button w-full">
+                              cancel
+                            </button>
+                          </div>
+                          <div class="w-1/2 pl-2">
+                            <button class="primary-button w-full">
+                              Yes, Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">
+          <div class="w-full h-12 flex justify-center items-center" *ngIf="true;">
+            <button class="text-secondaryBlue font-bold flex items-center">Load More</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">
+          <div class="w-full" *ngIf="true; else noResult">
+            <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
+          </div>
+          <ng-template #noResult>
+            <app-no-result-service-component class="flex flex-1"></app-no-result-service-component>
+          </ng-template>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>

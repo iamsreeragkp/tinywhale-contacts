@@ -2,16 +2,25 @@
   margin-left: 10rem;
   margin-top: 2rem;
   padding-right: 2.5rem;
-  width: calc(100% - 10rem - 15px);
+  width: calc(100% - 10rem);
+  // width: calc(100% - 10rem - 15px);
   &-mask {
     width: calc(100% - 12rem);
     margin-left: 10rem;
     background-color: #e5e5e5;
     height: 3rem;
   }
-  .copy-bg {
-    background-color: #6b9eb6;
-  }
+}
+.booking-toast {
+  background-color: #6b9eb6;
+  width: 30rem;
+  left: calc(50% - 15rem);
+  top: 6rem;
+}
+.status-payment {
+  background-color: #6b9eb6;
+  left: 100%;
+  top: -2.5rem;
 }
 .website-page-heading {
   border-top-left-radius: 20px;
