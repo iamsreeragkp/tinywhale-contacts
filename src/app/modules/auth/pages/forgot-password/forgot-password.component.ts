@@ -99,30 +99,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         this.isVerifiedOtp = true;
       }
     });
-
-    // const { otp1, otp2, otp3, otp4, otp5, otp6 } = this.otpForm.value;
-    // const valuePayload = {
-    //   otp1,
-    //   otp2,
-    //   otp3,
-    //   otp4,
-    //   otp5,
-    //   otp6,
-    // };
-    // const finalOtp = Object.values(valuePayload).join('').toString();
-    // this.store.pipe(select(getKey), takeUntil(this.ngUnsubscribe)).subscribe(data => {
-    //   this.otpKey = data?.data?.key;
-    // });
-    // const validateOtpPayload = {
-    //   email: this.email?.value,
-    //   key: this.otpKey,
-    //   otp: finalOtp,
-    // };
-    // this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
   }
 
   keyUpEvent(event: any, index: any) {
-    console.log(event);
     if (event?.code.includes('Digit')) {
       let pos = index;
       if (event.keyCode === 8 && event.which === 8) {
@@ -136,6 +115,20 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     } else {
       index = 0;
     }
+  }
+
+  onPaste(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData || (<any>window).clipboardData;
+    let pastedText = clipboardData.getData('text').split('').splice(0,6);
+    setTimeout(()=>{
+      this.fields.forEach((val,index)=>{
+        this.otpForm.get(val)?.setValue(pastedText[index])
+      })
+    },0)
+  }
+
+  onInput(content: string) {
+  //   console.log("New content: ", content);
   }
 
   backToReset() {

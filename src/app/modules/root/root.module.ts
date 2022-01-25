@@ -9,9 +9,10 @@ import { RootComponent } from './root.component';
 import { SideNavComponent } from './shared/side-nav/side-nav.component';
 import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarted.component';
 import { RootService } from './root.service';
+import { RootStoreModule } from './store/root-store.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RootRoutingModule],
+  imports: [CommonModule, SharedModule, RootRoutingModule, RootStoreModule],
   declarations: [
     HomePageComponent,
     Error404PageComponent,
@@ -21,6 +22,6 @@ import { RootService } from './root.service';
     CardGetstartedComponent,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
-  providers:[RootService]
+  providers: [RootService],
 })
 export class RootModule {}

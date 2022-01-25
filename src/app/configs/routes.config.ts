@@ -26,6 +26,7 @@ const routesNames = {
     home:"home",
     addBusinessInfo:"add-business-info",
     viewBusinessInfo:"view-business-info",
+    editBusinessInfo:"edit-business-info"
   },
   account:{
     home:'home',
@@ -53,6 +54,7 @@ export const RoutesConfig = {
       home: `/${basePaths.website}/${routesNames.website.home}`,
       website: `/${basePaths.website}/${routesNames.website.addBusinessInfo}`,
       viewBusinessInfo: `/${basePaths.website}/${routesNames.website.viewBusinessInfo}`,
+      editBusinessInfo: `/${basePaths.website}/${routesNames.website.editBusinessInfo}`,
     },
     account:{
       home:`/${basePaths.account}/${routesNames.account.home}`,

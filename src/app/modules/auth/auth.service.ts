@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { EndpointsType, ENDPOINTS_CONFIG } from 'src/app/configs/endpoints.config';
 import { Auth, Otp } from './store/auth.interface';
 import { environment } from 'src/environments/environment';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,20 @@ export class AuthService {
     } catch (error) {
       return false;
     }
+  }
+
+  decodeUserToken() {
+    try {
+      const userToken = JSON.stringify(localStorage.getItem('accessToken')?.replace('Bearer ', ''));
+      const data: any = jwt_decode(userToken);
+      return data;
+    } catch (ex) {
+      this.onlogout();
+    }
+  }
+
+  onlogout() {
+    return localStorage.clear();
   }
 
   checkEmailExits({ email }: { email: string }): Observable<any> {

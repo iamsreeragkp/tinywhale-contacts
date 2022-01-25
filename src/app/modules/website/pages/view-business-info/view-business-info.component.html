@@ -5,12 +5,12 @@
     </header>
     <div class="flex justify-between">
       <a class="save-button active-save rounded-full text-white text-center text-base font-normal not-italic py-3 px-20 ml-2"
-        [routerLink]="['../add-business-info']">Edit</a>
+        [routerLink]="['../edit-business-info']">Edit</a>
     </div>
   </div>
   <hr class="line">
   <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
-    *ngIf="userData?.dashboardInfos?.businessInfo?.isCompleted; else noWebsiteInfo">
+    *ngIf="dashboardData?.businessInfo?.isStarted; else noWebsiteInfo">
     <main>
       <div class="flex mb-4">
         <div class="w-44 py-3 flex justify-end pr-8">

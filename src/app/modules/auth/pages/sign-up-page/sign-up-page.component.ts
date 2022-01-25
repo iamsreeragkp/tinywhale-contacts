@@ -194,6 +194,6 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
-    this.ngUnsubscribe.next(false);
+    this.ngUnsubscribe.next(true);
   }
 }

@@ -2,67 +2,117 @@
 <div class="header flex justify-between mx-2">
   <div>
     <h3 class="title leading-9 font-normal not-italic">Hey 👋 </h3>
-    <p class="content font-normal text-base not-italic">We’re super excited to transform your business in 1 - 2 - 3!</p>
+    <p class="content font-normal text-base not-italic">We're super excited to transform your business in 1 - 2 - 3!</p>
   </div>
   <div>
-    <button class="template-button leading-6 font-normal not-italic bg-white text-base py-2 px-6 rounded-full m-1">See Website Template</button>
-    <button class="publish-button button-active leading-6 text-white text-base font-normal py-2 px-6 m-1 rounded-full opacity-50 cursor-not-allowed not italic">Publish Your Website</button>
+    <button class="template-button leading-6 font-normal not-italic bg-white text-base py-2 px-6 rounded-full m-1">See
+      Website Template</button>
+    <button
+      class="publish-button button-active leading-6 text-white text-base font-normal py-2 px-6 m-1 rounded-full opacity-50 cursor-not-allowed not italic">Publish
+      Your Website</button>
   </div>
 </div>
 
 <div class="pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
   <!--Card 1-->
   <div class="relative">
-  <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
-    <div class="complete-icon absolute" *ngIf="isBusinessInfoStarted===true && isBusinessInfoCompleted===true"><app-completeicon></app-completeicon></div>
-    <div class="warning-icon absolute" *ngIf="isBusinessInfoStarted===true && isBusinessInfoCompleted===false "><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start"><app-basicinfo></app-basicinfo></div>
-    <div class="card-title flex"><span class="number font-normal not-italic mt-6 mr-4 ">1</span><span class="title font-normal not-italic">Add<br> Basic info</span> </div>
-    <div class="flex-1 flex flex-col justify-between">
-      <p class="card-content not-italic font-normal text-base py-4">
-        Create a stunning and professional website in minutes
-      </p>
-       <button class="add-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full  button-active" *ngIf="(isBusinessInfoStarted===false && isBusinessInfoCompleted===false) ? true : false">Add</button>
-       <button class="edit-button bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full" *ngIf="(isBusinessInfoCompleted===true) ? true : false">Edit</button>
-      <button class="completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full" *ngIf="(isBusinessInfoStarted===true && isBusinessInfoCompleted===false) ? true : false">Complete the details</button>
+    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+      <div class="complete-icon absolute"
+        *ngIf="dashboardInfos?.businessInfo?.isStarted && dashboardInfos?.businessInfo?.isCompleted">
+        <app-completeicon></app-completeicon>
+      </div>
+      <div class="warning-icon absolute"
+        *ngIf="dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted">
+        <app-warningicon></app-warningicon>
+      </div>
+      <div class="image flex justify-items-start">
+        <app-basicinfo></app-basicinfo>
+      </div>
+      <div class="card-title flex"><span class="number font-normal not-italic mt-6 mr-4 ">1</span><span
+          class="title font-normal not-italic">Add<br> Basic info</span> </div>
+      <div class="flex-1 flex flex-col justify-between">
+        <p class="card-content not-italic font-normal text-base py-4">
+          Create a stunning and professional website in minutes
+        </p>
+        <button
+          class="add-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full  button-active"
+          *ngIf="!dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted"
+          [routerLink]="'../website/add-business-info'">Add</button>
+        <button class="edit-button bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full"
+          *ngIf="dashboardInfos?.businessInfo?.isCompleted" [routerLink]="'../website/edit-business-info'">Edit</button>
+        <button
+          class="completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          *ngIf="dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted"
+          [routerLink]="'../website/edit-business-info'">Complete the details</button>
+      </div>
     </div>
-  </div>
   </div>
   <!--Card 2-->
   <div class="relative">
-  <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
-    <div class="complete-icon absolute" *ngIf="isServiceInfoStarted===true && isServiceInfoCompleted===true"><app-completeicon></app-completeicon></div>
-    <div class="warning-icon absolute" *ngIf="isServiceInfoStarted===true && isServiceInfoCompleted===false"><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start" ><app-addsrvice></app-addsrvice></div>
-    <div class="card-title flex relative"><span class="number mt-6 mr-4">2</span><span class="title">Add <br> Services</span> </div>
-    <div class="flex-1 flex flex-col justify-between">
-      <p class="card-content not-italic font-normal text-base py-4">
-        Display bookable services and packages with scheduling options
-      </p>
-      <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full  button-active" *ngIf="(isServiceInfoStarted===false && isServiceInfoCompleted===false) ? true : false">Add</button>
-      <button class="edit-button mt-auto bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full" *ngIf="(isServiceInfoCompleted===true) ? true : false">Edit</button>
-      <button class="mt-auto  completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full" *ngIf="(isServiceInfoStarted===true && isServiceInfoCompleted===false) ? true : false">Complete the details</button>
+    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+      <div class="complete-icon absolute"
+        *ngIf="dashboardInfos?.serviceInfo?.isStarted && dashboardInfos?.serviceInfo?.isCompleted">
+        <app-completeicon></app-completeicon>
+      </div>
+      <div class="warning-icon absolute"
+        *ngIf="dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted">
+        <app-warningicon></app-warningicon>
+      </div>
+      <div class="image flex justify-items-start">
+        <app-addsrvice></app-addsrvice>
+      </div>
+      <div class="card-title flex relative"><span class="number mt-6 mr-4">2</span><span class="title">Add <br>
+          Services</span> </div>
+      <div class="flex-1 flex flex-col justify-between">
+        <p class="card-content not-italic font-normal text-base py-4">
+          Display bookable services and packages with scheduling options
+        </p>
+        <button
+          class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full  button-active"
+          *ngIf="!dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted">Add</button>
+        <button
+          class="edit-button mt-auto bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full"
+          *ngIf="dashboardInfos?.serviceInfo?.isCompleted">Edit</button>
+        <button
+          class="mt-auto  completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          *ngIf="dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted">Complete the
+          details</button>
+      </div>
     </div>
   </div>
-</div>
 
   <!--Card 3-->
   <div class="relative">
-  <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
-    <div class="complete-icon absolute" *ngIf="isPaymentInfoStarted===true && isPaymentInfoCompleted===true"><app-completeicon></app-completeicon></div>
-    <div class="warning-icon absolute" *ngIf="isPaymentInfoStarted===true && isPaymentInfoCompleted===false"><app-warningicon></app-warningicon></div>
-    <div class="image flex justify-items-start" ><app-payment></app-payment></div>
-    <div class="card-title flex "><span class="number mt-6 mr-4">3</span><span class="title">Add <br>Payment info</span> </div>
-    <div class="flex-1 flex flex-col justify-between">
-      <p class="card-content not-italic font-normal text-base py-4">
-        We’ve partnered with Stripe to make your payments seamless
-      </p>
-      <button class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full button-active" *ngIf="(isPaymentInfoStarted===false && isPaymentInfoCompleted===false) ? true : false">Add</button>
-      <button class="edit-button mt-auto  bg-white text-base  not-italic font-normal px-10 py-1 rounded-full" *ngIf="(isPaymentInfoCompleted===true) ? true : false">Edit</button>
-      <button class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full" *ngIf="(isPaymentInfoStarted===true && isPaymentInfoCompleted===false) ? true : false">Complete the details</button>
-    </div>
+    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+      <div class="complete-icon absolute"
+        *ngIf="dashboardInfos?.paymentInfo?.isStarted && dashboardInfos?.paymentInfo?.isCompleted">
+        <app-completeicon></app-completeicon>
+      </div>
+      <div class="warning-icon absolute"
+        *ngIf="dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted">
+        <app-warningicon></app-warningicon>
+      </div>
+      <div class="image flex justify-items-start">
+        <app-payment></app-payment>
+      </div>
+      <div class="card-title flex "><span class="number mt-6 mr-4">3</span><span class="title">Add <br>Payment
+          info</span> </div>
+      <div class="flex-1 flex flex-col justify-between">
+        <p class="card-content not-italic font-normal text-base py-4">
+          We've partnered with Rapyd to make your payments seamless
+        </p>
+        <button
+          class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full button-active"
+          *ngIf="!dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted">Add</button>
+        <button class="edit-button mt-auto  bg-white text-base  not-italic font-normal px-10 py-1 rounded-full"
+          *ngIf="dashboardInfos?.paymentInfo?.isCompleted">Edit</button>
+        <button
+          class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          *ngIf="dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted">Complete the
+          details</button>
+      </div>
 
+    </div>
   </div>
-</div>
 </div>
 <!-- </div> -->

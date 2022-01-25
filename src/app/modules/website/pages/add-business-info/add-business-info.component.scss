@@ -1,120 +1,121 @@
-.website-page-heading{
-  
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    .header{
-      font-family: Baloo!important;
-        color: #154F5B;
-        .one{
-            font-family: Baloo;
-            color: #64C2BC;
-        }
-    }
-    .cancel-button {
+.website-page-heading {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  .header {
+    font-family: Baloo !important;
+    color: #154f5b;
+    .one {
       font-family: Baloo;
-      font-stretch: normal;
-      letter-spacing: normal;
-      color: #00a4b7;
-    }
-    .save-button{
-      background-color: #00a4b7;
-     
-      font-family: Baloo;
-       font-stretch: normal;
-      letter-spacing: normal;
-      &:disabled{
-        background-color: #D6E1E3;
-      }
+      color: #64c2bc;
     }
   }
-  .line{
-    border: 1px solid #E5E5E5;
+  .cancel-button {
+    font-family: Baloo;
+    font-stretch: normal;
+    letter-spacing: normal;
+    color: #00a4b7;
   }
-.add-info{
-  .detail-section{
+  .save-button {
+    background-color: #00a4b7;
+
+    font-family: Baloo;
+    font-stretch: normal;
+    letter-spacing: normal;
+    &:disabled {
+      background-color: #d6e1e3;
+    }
+  }
+}
+.line {
+  border: 1px solid #e5e5e5;
+}
+.add-info {
+  .detail-section {
     background-color: #eaf3f6;
     border-bottom-right-radius: 20px;
   }
-    .heading{
-      font-family: Baloo;
-font-style: normal;
-font-weight: normal;
-font-size: 36px;
-line-height: 32px;
-letter-spacing: -1px;
-color: #00A4B7;
-
-    }
-    .text{
-      font-family: poppins;
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 24px;
-color: #154F5B;
-
-    }
-    .add-another{
-      font-family: Baloo;
-     color: #00A4B7;
-    }
+  .heading {
+    font-family: Baloo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 32px;
+    letter-spacing: -1px;
+    color: #00a4b7;
   }
+  .text {
+    font-family: poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #154f5b;
+  }
+  .add-another {
+    font-family: Baloo;
+    color: #00a4b7;
+    cursor: pointer;
+  }
+}
 
-  .input-section{
-    border-bottom-left-radius: 20px;
-    .input-field{
-      .label{
-        font-family: Poppins;
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 24px;
-color: #154F5B;
-
-
-      }
-      .input{
-        background: #FFFFFF;
-        border: 2px solid #D6E1E3;
+.input-section {
+  border-bottom-left-radius: 20px;
+  .input-field {
+    .label {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #154f5b;
+      @apply text-right mr-8;
+    }
+    .input {
+      background: #ffffff;
+      border: 2px solid #d6e1e3;
+      border-radius: 8px;
+      width: 360px;
+      color: #154f5b;
+    }
+    .input-photo {
+      background: #f6f9fa;
+      border: 2px dashed #d6e1e3;
+      border-radius: 8px;
+      width: 112px;
+      height: 112px;
+    }
+    .input-award {
+      background: #f6f9fa;
+      border: 1px solid #d6e1e3;
+      border-radius: 8px;
+      width: 360px;
+      .input {
+        background: #ffffff;
+        border: 2px solid #d6e1e3;
         border-radius: 8px;
-        width: 360px;
-        color: #154F5B;
+        width: 100%;
+        color: #154f5b;
       }
-      .input-photo{
-        background: #F6F9FA;
-        border: 2px dashed #D6E1E3;
-         border-radius: 8px;
-         width: 120px;
-         height: 120px;
-      }
-      .input-award{
-        background: #F6F9FA;
-        border: 1px solid #D6E1E3;
-       border-radius: 8px;
-        width: 360px;
-        .input{
-          background: #FFFFFF;
-          border: 2px solid #D6E1E3;
-          border-radius: 8px;
-          width: 300px;
-          color: #154F5B;
-        }
-        .input-photo{
-          background: #F6F9FA;
-          border: 2px dashed #D6E1E3;
-           border-radius: 8px;
-           width: 120px;
-           height: 120px;
-        }
+      .input-photo {
+        background: #f6f9fa;
+        border: 2px dashed #d6e1e3;
+        border-radius: 8px;
+        width: 112px;
+        height: 112px;
       }
     }
   }
-  .tinytiptext::before {
-    content: "";
-    position: absolute;
-    top: 0%;
-    right: 100%;
-    border-width: 27px 24px;
-    border-style: solid;
-    border-color: transparent #eaf3f6 transparent  transparent;
-  }
+}
+.tinytiptext::before {
+  content: '';
+  position: absolute;
+  top: 0%;
+  right: 100%;
+  border-width: 27px 24px;
+  border-style: solid;
+  border-color: transparent #eaf3f6 transparent transparent;
+}
+
+.image {
+  @apply max-w-none;
+}

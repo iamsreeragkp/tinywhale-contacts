@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
+import { Store } from '@ngrx/store';
+import { IRootState } from './store/root.reducers';
+import { getDashboard } from './store/root.actions';
 
 @Component({
   selector: 'app-root',
@@ -18,5 +21,7 @@ import { fadeIn } from 'ng-animate';
   ],
 })
 export class RootComponent {
-  constructor() {}
+  constructor(private store: Store<IRootState>) {
+    this.store.dispatch(getDashboard());
+  }
 }

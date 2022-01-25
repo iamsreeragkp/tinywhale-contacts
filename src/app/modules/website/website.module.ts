@@ -7,10 +7,16 @@ import { AddBusinessInfoComponent } from './pages/add-business-info/add-business
 import { ViewBusinessInfoComponent } from './pages/view-business-info/view-business-info.component';
 import { RootService } from '../root/root.service';
 import { NoDataViewComponentComponent } from './components/no-data-view-component/no-data-view-component.component';
+import { WebsiteStoreModule } from './store/website-store.module';
 
 @NgModule({
-  imports: [CommonModule, WebsiteRoutingModule, SharedModule],
-  declarations: [WebsiteComponent, AddBusinessInfoComponent, ViewBusinessInfoComponent, NoDataViewComponentComponent],
+  imports: [CommonModule, WebsiteRoutingModule, SharedModule, WebsiteStoreModule],
+  declarations: [
+    WebsiteComponent,
+    AddBusinessInfoComponent,
+    ViewBusinessInfoComponent,
+    NoDataViewComponentComponent,
+  ],
   providers: [RootService],
 })
 export class WebsiteModule {}
