@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         baloo: 'Baloo',
         poppins: 'Poppins',
+        montserrat: 'Montserrat'
       },
       // bagroundColor:{
       //   primary-baground:"#12B5C1"

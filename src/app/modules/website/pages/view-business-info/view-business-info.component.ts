@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { IAppState } from 'src/app/modules/core/reducers';
-import { getDashboard } from 'src/app/modules/root/store/root.actions';
 import { getDashboardData } from 'src/app/modules/root/store/root.selectors';
-import { getBusiness } from '../../store/website.actions';
+import { getBusiness, initBusiness } from '../../store/website.actions';
 import { BusinessInfo } from '../../store/website.interface';
-import { getBusinessData } from '../../store/website.selectors';
+import { getBusinessStatus } from '../../store/website.selectors';
 
 @Component({
   selector: 'app-view-business-info',
@@ -88,11 +87,11 @@ export class ViewBusinessInfoComponent implements OnInit, OnDestroy {
       },
     ],
   };
-  business$: Observable<BusinessInfo>;
+  business$: Observable<{ business?: BusinessInfo; status: boolean; error?: string } | undefined>;
   constructor(private store: Store<IAppState>) {
     this.dashboard$ = store.pipe(select(getDashboardData));
-    this.business$ = store.pipe(select(getBusinessData));
-    store.dispatch(getDashboard());
+    this.business$ = store.pipe(select(getBusinessStatus));
+    // store.dispatch(getDashboard());
     store.dispatch(getBusiness());
   }
 
@@ -101,15 +100,30 @@ export class ViewBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   subscriptions() {
-    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
-      this.dashboardData = data;
-    });
-    this.business$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
-      this.businessObj = data;
-    });
+    this.dashboard$
+      .pipe(
+        takeUntil(this.ngUnsubscriber),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        this.dashboardData = data;
+      });
+    this.business$
+      .pipe(
+        takeUntil(this.ngUnsubscriber),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        if (data?.status && data?.business) {
+          this.businessObj = data.business;
+        } else {
+          console.log(data?.error);
+        }
+      });
   }
 
   ngOnDestroy() {
+    this.store.dispatch(initBusiness());
     this.ngUnsubscriber.next();
     this.ngUnsubscriber.complete();
   }

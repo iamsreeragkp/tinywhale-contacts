@@ -3,14 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, of } from 'rxjs';
 
 import { WebsiteService } from '../website.service';
-import {
-  addBusiness,
-  addBusinessError,
-  addBusinessSuccess,
-  getBusiness,
-  getBusinessFail,
-  getBusinessSuccess,
-} from './website.actions';
+import { addBusiness, addBusinessStatus, getBusiness, getBusinessStatus } from './website.actions';
 
 @Injectable()
 export class WebsiteEffects {
@@ -21,9 +14,14 @@ export class WebsiteEffects {
       ofType(addBusiness),
       switchMap(({ businessData }) =>
         this.websiteService.addBusinessInfo(businessData).pipe(
-          map(responses => addBusinessSuccess({ response: responses })),
+          map(response => addBusinessStatus({ response: response, status: true })),
           catchError(error =>
-            of(addBusinessError({ error: error?.error?.message ?? error?.message }))
+            of(
+              addBusinessStatus({
+                status: false,
+                error: error?.error?.message ?? error?.message,
+              })
+            )
           )
         )
       )
@@ -35,8 +33,8 @@ export class WebsiteEffects {
       ofType(getBusiness),
       switchMap(() =>
         this.websiteService.getBusiness().pipe(
-          map((business: any) => getBusinessSuccess({ business })),
-          catchError(err => of(getBusinessFail({ error: err })))
+          map((response: any) => getBusinessStatus({ business: response.data, status: true })),
+          catchError(err => of(getBusinessStatus({ error: err, status: false })))
         )
       )
     )

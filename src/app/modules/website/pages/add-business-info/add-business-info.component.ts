@@ -1,10 +1,19 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { catchError, forkJoin, map, Observable, of, skipWhile, Subject, takeUntil } from 'rxjs';
+import { catchError, filter, forkJoin, map, Observable, of, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { addBusiness, getBusiness } from '../../store/website.actions';
+import { addBusiness, getBusiness, initBusiness } from '../../store/website.actions';
 import {
   BusinessInfo,
   BusinessLinks,
@@ -13,7 +22,7 @@ import {
   Testimonials,
 } from '../../store/website.interface';
 import { IWebsiteState } from '../../store/website.reducers';
-import { getBusinessData } from '../../store/website.selectors';
+import { getAddBusinessStatus, getBusinessStatus } from '../../store/website.selectors';
 import { WebsiteService } from '../../website.service';
 
 @Component({
@@ -22,8 +31,18 @@ import { WebsiteService } from '../../website.service';
   styleUrls: ['./add-business-info.component.scss'],
 })
 export class AddBusinessInfoComponent implements OnInit, OnDestroy {
+  @ViewChild('photoContainer') photoContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('punchline') punchline!: ElementRef<HTMLInputElement>;
+  isSaving = false;
+  @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
+    this.closeToPhoto = !!target.closest(
+      'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
+    );
+    this.closeToPunchline = !!target.closest(
+      'input.' + this.punchline.nativeElement.className.split(' ').join('.')
+    );
+  }
   businessInfoForm!: FormGroup;
-  isVisible = false;
   recognitionTypeOptions = [
     {
       value: 'AWARD',
@@ -40,24 +59,34 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   ];
 
   ngUnsubscribe = new Subject<any>();
-  businessData$: Observable<BusinessInfo>;
+  businessData$: Observable<
+    { business?: BusinessInfo; status: boolean; error?: string } | undefined
+  >;
+  saveBusinessStatus$: Observable<{ response?: any; status: boolean; error?: string } | undefined>;
   isUploadingImages = false;
+  editMode = false;
+  closeToPunchline = false;
+  closeToPhoto = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private store: Store<IWebsiteState>,
     private websiteService: WebsiteService,
-    private router: ActivatedRoute,
-    private zone: NgZone
+    private router: Router,
+    private route: ActivatedRoute,
+    private zone: NgZone,
+    public location: Location
   ) {
-    this.businessData$ = this.store.pipe(select(getBusinessData));
-    router.url
+    this.businessData$ = this.store.pipe(select(getBusinessStatus));
+    this.saveBusinessStatus$ = this.store.pipe(select(getAddBusinessStatus));
+    route.url
       .pipe(
         takeUntil(this.ngUnsubscribe),
         map(urlSegments => urlSegments.some(url => url?.path.includes('edit-business-info')))
       )
       .subscribe(editMode => {
+        this.editMode = editMode;
         if (editMode) {
           this.zone.run(() => {
             setTimeout(() => {
@@ -77,16 +106,43 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.businessData$
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        skipWhile(val => !val)
+        filter(val => !!val)
       )
       .subscribe(data => {
-        if (data) {
-          console.log(data);
+        if (data?.status) {
+          this.initializeBusinessForm(data.business);
+        } else {
+          console.log(data?.error);
+        }
+      });
+    this.saveBusinessStatus$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        this.isSaving = false;
+        if (data?.status) {
+          console.log('saved successfully');
+          this.clearImages();
+          this.router.navigate(['../'], { relativeTo: this.route });
+        } else {
+          console.log(data?.error);
         }
       });
   }
 
+  clearImages() {
+    this.arrayLicenceImageUrl = [];
+    this.arrayPhotosImageUrl = [];
+    this.arrayTestmonialImageUrl = [];
+    this.fileToUploadLicence = [];
+    this.fileToUploadTestimonial = [];
+    this.fileToUploadPhoto = [];
+  }
+
   initializeBusinessForm(val?: BusinessInfo) {
+    this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
       punchline: [val?.store?.punchline ?? ''],
@@ -113,27 +169,22 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           : [this.createTestimonial()]
       ),
     });
-  }
-
-  changeData(event: any) {
-    console.log(event);
-    if (event) {
-      this.isVisible = true;
-    } else {
-      this.isVisible = false;
+    if (val?.logo) {
+      this.logoImageUrl = val.logo;
     }
   }
 
   createSocialItem(val?: BusinessLinks): FormGroup {
     return this.fb.group({
-      link_id: [val?.link_id ?? ''],
-      social: [val?.url ?? ''],
+      // link_id: [val?.link_id ?? ''],
+      url: [val?.url ?? ''],
     });
   }
 
   createLicences(val?: Recognitions): FormGroup {
+    this.arrayLicenceImageUrl.push(val?.photo_url);
     return this.fb.group({
-      recognition_id: [val?.recognition_id ?? ''],
+      // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
       recognition_name: [val?.recognition_name ?? ''],
       expiry_date: [val?.expiry_date ?? ''],
@@ -142,8 +193,9 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   createTestimonial(val?: Testimonials): FormGroup {
+    this.arrayTestmonialImageUrl.push(val?.photo_url);
     return this.fb.group({
-      testimonial_id: [val?.testimonial_id ?? ''],
+      // testimonial_id: [val?.testimonial_id ?? ''],
       name: [val?.name ?? ''],
       title: [val?.title ?? ''],
       testimonial: [val?.testimonial ?? ''],
@@ -152,8 +204,9 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   createPhotos(val?: BusinessPhotos): FormGroup {
+    this.arrayPhotosImageUrl.push(val?.photo_url);
     return this.fb.group({
-      photo_id: [val?.photo_id ?? ''],
+      // photo_id: [val?.photo_id ?? ''],
       photo_url: [val?.photo_url ?? ''],
     });
   }
@@ -193,7 +246,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   // photos
 
   fileToUploadPhoto: (File | null | undefined)[] = [];
-  arrayPhotosImageUrl: string[] = [];
+  arrayPhotosImageUrl: (string | undefined)[] = [];
 
   handleFileInput(event: Event, index: number) {
     const { files } = event.target as HTMLInputElement;
@@ -211,7 +264,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   // Licence or awarsds file
   fileToUploadLicence: (File | undefined | null)[] = [];
-  arrayLicenceImageUrl: string[] = [];
+  arrayLicenceImageUrl: (string | undefined)[] = [];
 
   handleFileInputLicence(event: Event, i: number) {
     const { files } = event.target as HTMLInputElement;
@@ -227,7 +280,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
-  arrayTestmonialImageUrl: string[] = [];
+  arrayTestmonialImageUrl: (string | undefined)[] = [];
   handleFileTestimonial(event: Event, i: number) {
     const { files } = event.target as HTMLInputElement;
     const file = files?.item(0);
@@ -255,26 +308,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   onSubmitBusiness() {
+    this.isSaving = true;
     this.fileNames = [];
-    const { companyname, punchline, aboutme, socialitems, licenceitems, testimonialitems, logo } =
-      this.businessInfoForm.value;
-    const businessPayload = {
-      company_name: companyname,
-      logo: logo,
-      about_me: aboutme,
-      punchline: punchline,
-      social_links: socialitems,
-      recognition: licenceitems,
-      testimonials: testimonialitems,
-    };
-    console.log('businessPayload', businessPayload);
-
-    // this.websiteService.addBusinessInfo(businessPayload).subscribe(data => {
-    //   console.log(data);
-    // });
-
-    // this.store.dispatch(addBusiness({ businessData: businessPayload }));
-
     /*
       Extracting name of the images and prepending /businessname/type/,
       patching name into form and into an array to generate presigned URL
@@ -291,7 +326,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     }
     this.fileToUploadPhoto.forEach((photo, index) => {
       if (photo?.name) {
-        const photoKey = `${domain_name}/photos/${Date.now()}_${photo.name}`;
+        const photoKey = `${domain_name}/business-photos/${Date.now()}_${photo.name}`;
         this.fileNames.push({ type: 'photos', name: photoKey });
         this.photos.at(index)?.get('photo_url')?.patchValue(photoKey);
       }
@@ -307,9 +342,36 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       if (photo?.name) {
         const testimonialKey = `${domain_name}/testimonials/${Date.now()}_${photo.name}`;
         this.fileNames.push({ type: 'testimonials', name: testimonialKey });
-        this.photos.at(index)?.get('photo_url')?.patchValue(testimonialKey);
+        this.testimonials.at(index)?.get('photo_url')?.patchValue(testimonialKey);
       }
     });
+    const {
+      companyname,
+      punchline,
+      aboutme,
+      socialitems,
+      photos,
+      licenceitems,
+      testimonialitems,
+      logo,
+    } = this.businessInfoForm.value;
+    const businessPayload = {
+      company_name: companyname,
+      logo: logo,
+      about_me: aboutme,
+      punchline: punchline,
+      social_links: socialitems,
+      photos,
+      recognitions: licenceitems,
+      testimonials: testimonialitems,
+    };
+    console.log('businessPayload', businessPayload);
+
+    // this.websiteService.addBusinessInfo(businessPayload).subscribe(data => {
+    //   console.log(data);
+    // });
+
+    // this.store.dispatch(addBusiness({ businessData: businessPayload }));
 
     const filePayload = {
       key: this.fileNames.map(({ name }) => name),
@@ -384,8 +446,17 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     return this.businessInfoForm.get('photos') as FormArray;
   }
 
+  get photoContainerPos() {
+    return `${(this.photoContainer.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
+  }
+
+  get punchlineContainerPos() {
+    return `${(this.punchline.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
+    this.store.dispatch(initBusiness());
     this.ngUnsubscribe.next(true);
   }
 }
