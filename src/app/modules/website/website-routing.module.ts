@@ -5,20 +5,18 @@ import { RoutesConfig } from '../../configs/routes.config';
 import { AddBusinessInfoComponent } from './pages/add-business-info/add-business-info.component';
 import { WebsiteComponent } from './website.component';
 
-
 const websiteRoutesConfig = RoutesConfig.routesNames.website;
 const routesNames = RoutesConfig.routesNames;
-
 
 const websiteRoutes: Routes = [
   {
     path: '',
     component: WebsiteComponent,
     children: [
-
-      { path: '', pathMatch: 'full', redirectTo:routesNames.website.viewBusinessInfo},
+      { path: '', pathMatch: 'full', redirectTo: routesNames.website.viewBusinessInfo },
       { path: websiteRoutesConfig.addBusinessInfo, component: AddBusinessInfoComponent },
       { path: websiteRoutesConfig.viewBusinessInfo, component: ViewBusinessInfoComponent },
+      { path: websiteRoutesConfig.editBusinessInfo, component: AddBusinessInfoComponent },
     ],
   },
 ];
