@@ -13,22 +13,22 @@ module.exports = {
       // }
       textColor: {
         primaryFont: '#154F5B',
-        mediumGray: '#73959d'
-
+        secondaryBlue: '#00a4b7',
+        mediumGray: '#73959d',
       },
       borderColor: {
-        lightGrey: '#d6e1e3'
+        lightGrey: '#d6e1e3',
       },
       borderRadius: {
-        '5': '1.25rem'
+        5: '1.25rem',
       },
       width: {
-        90: '22.5rem'
-      }
+        90: '22.5rem',
+      },
     },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

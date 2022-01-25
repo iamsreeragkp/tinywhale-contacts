@@ -1,9 +1,9 @@
-@import 'mixins';
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-@import 'swiper/scss';
-@import 'swiper/scss/navigation';
+@import "mixins";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "swiper/scss";
+@import "swiper/scss/navigation";
 
 a,
 .cp {
@@ -15,6 +15,36 @@ h2 {
   margin-bottom: 2rem;
 }
 
+.primary-button {
+  color: #fff;
+  background-color: #00a4b7;
+  border: 2px solid #00a4b7;
+  &:hover {
+    color: #00a4b7;
+    background-color: #fff;
+  }
+  &:disabled {
+    color: #fff !important;
+    background-color: #d6e1e3 !important;
+    border-color: #d6e1e3 !important;
+  }
+  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700;
+}
+.secondary-button {
+  color: #00a4b7;
+  background-color: #fff;
+  border: 2px solid #00a4b7;
+  &:hover {
+    color: #fff;
+    background-color: #00a4b7;
+  }
+  &:disabled {
+    color: #d6e1e3 !important;
+    background-color: #fff !important;
+    border-color: #d6e1e3 !important;
+  }
+  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700;
+}
 .header__title {
   text-align: center;
   font-size: 1.5rem;
@@ -131,6 +161,9 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+.w-fit {
+  width: fit-content;
 }
