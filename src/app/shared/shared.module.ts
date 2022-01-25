@@ -21,6 +21,7 @@ import { SwiperlogoComponent } from './svgs/swiperlogo/swiperlogo.component';
 import { SwipernextComponent } from './svgs/swipernext/swipernext.component';
 import { ClosedeyeComponent } from './svgs/closedeye/closedeye.component';
 import { NoDataViewWebsiteSvgComponent } from './svgs/no-data-view-website/no-data-view-website.component';
+import { NoResultViewWebsiteSvgComponent } from './svgs/no-result-view-website/no-result-view-website.component';
 import { RouterModule } from '@angular/router';
 import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
 
@@ -46,6 +47,7 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
     SwipernextComponent,
     ClosedeyeComponent,
     NoDataViewWebsiteSvgComponent,
+    NoResultViewWebsiteSvgComponent,
     OpenedeyeComponent,
   ],
   exports: [
@@ -72,6 +74,7 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
     SwipernextComponent,
     ClosedeyeComponent,
     NoDataViewWebsiteSvgComponent,
+    NoResultViewWebsiteSvgComponent,
     OpenedeyeComponent,
   ],
 })

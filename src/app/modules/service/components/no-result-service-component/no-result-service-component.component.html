@@ -1,0 +1,8 @@
+<div class="w-full website-page bg-white p-8 flex flex-col items-center justify-center">
+  <app-no-result-view-website></app-no-result-view-website>
+  <p class="content font-normal not-italic text-base mt-5">No results found, try different filters</p>
+  <div class="flex justify-evenly mt-8">
+    <button class="getstarted rounded-full ml-2 py-3 px-14 not-italic text-white font-normal text-base"
+      [routerLink]="['../add-service']" routerLinkActive="router-link-active">Clear Filters</button>
+  </div>
+</div>

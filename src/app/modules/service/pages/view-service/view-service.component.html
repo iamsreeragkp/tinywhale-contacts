@@ -3,15 +3,19 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Services</span>
     </header>
-    <div class="flex justify-between">
-      <a class="save-button active-save rounded-full text-white text-center text-base font-normal not-italic py-3 px-20 ml-2"
-        [routerLink]="['../add-service']">Add</a>
-    </div>
   </div>
   <hr class="line">
-  <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
+  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl" *ngIf="!true; else noWebsiteInfo">
+    <main>
+      <app-table-service-component class="flex flex-1"></app-table-service-component>
+    </main>
+  </div>
+  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
 
-  <!-- <ng-template #noWebsiteInfo>
-    <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
-  </ng-template> -->
+  <ng-template #noWebsiteInfo>
+    <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
+      <app-table-service-component class="flex flex-1">
+      </app-table-service-component>
+    </div>
+  </ng-template>
 </div>

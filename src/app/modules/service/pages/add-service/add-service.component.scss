@@ -9,6 +9,9 @@
     background-color: #e5e5e5;
     height: 3rem;
   }
+  .copy-bg {
+    background-color: #6b9eb6;
+  }
 }
 .website-page-heading {
   border-top-left-radius: 20px;
@@ -119,7 +122,7 @@
   }
   &-info {
     color: #154f5b;
-    background-color: #F6F5EA;
+    background-color: #f6f5ea;
   }
   .input-field {
     &-secondary-text {
@@ -208,7 +211,8 @@
 
     /* When the checkbox is checked, add a blue background */
     .check-container input:checked ~ .checkmark {
-      background-color: transparent;
+      background-color: #00a4b7;
+      border: 1px solid #00a4b7;
     }
 
     /* Create the checkmark/indicator (hidden when not checked) */
@@ -227,7 +231,7 @@
       top: 1px;
       width: 7px;
       height: 13px;
-      border: solid #154f5b;
+      border: solid #fff;
       border-width: 0 2px 2px 0;
       transform: rotate(42deg);
     }
