@@ -12,7 +12,7 @@
     "test": "ng test tinywhale-dashboard-client --code-coverage --no-watch",
     "test:app:watch": "ng test tinywhale-dashboard-client --code-coverage --watch=true",
     "test:library:watch": "ng test ngx-example-library --code-coverage --watch=true",
-    "build:dev": "NODE_ENV=production ng build --aot --build-optimizer",
+    "build:dev": "NODE_ENV=production ng build --configuration=development --aot --build-optimizer",
     "build:prod": "NODE_ENV=production ng build --configuration=production --aot --build-optimizer",
     "ci": "npm run lint && npm run test && npm run e2e && npm run build:prod",
     "bundle-report:prod": "npm run build:prod -- --stats-json && webpack-bundle-analyzer dist/stats.json",

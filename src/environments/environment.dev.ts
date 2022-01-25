@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  api_end_point: 'http://localhost:5000/api/v1',
+  api_end_point: 'https://dashboard-dev.tinywhale.com/api/v1',
 };
 
 /*
