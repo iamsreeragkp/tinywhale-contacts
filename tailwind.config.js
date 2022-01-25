@@ -13,6 +13,7 @@ module.exports = {
       textColor: {
         primaryFont: '#154F5B',
         mediumGray: '#73959d'
+
       },
       borderColor: {
         lightGrey: '#d6e1e3'
