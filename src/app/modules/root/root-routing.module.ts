@@ -29,6 +29,11 @@ const rootRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: RoutesConfig.basePaths.service,
+        loadChildren: () => import('../service/service.module').then(m => m.ServiceModule),
+        canActivate: [AuthGuard],
+      },
+      {
         path: RoutesConfig.basePaths.account,
         loadChildren:() => import('../accounts/account.module').then(m=>m.AccountModule),
         canActivate: [AuthGuard],

@@ -6,6 +6,7 @@ const basePaths = {
   hero: 'hero',
   auth: 'auth',
   website: 'website',
+  service: 'service',
   account: 'account'
 };
 
@@ -27,6 +28,11 @@ const routesNames = {
     addBusinessInfo:"add-business-info",
     viewBusinessInfo:"view-business-info",
     editBusinessInfo:"edit-business-info"
+  },
+  service:{
+    home:"home",
+    addService:"add-service",
+    viewService:"view-service",
   },
   account:{
     home:'home',
@@ -55,6 +61,11 @@ export const RoutesConfig = {
       website: `/${basePaths.website}/${routesNames.website.addBusinessInfo}`,
       viewBusinessInfo: `/${basePaths.website}/${routesNames.website.viewBusinessInfo}`,
       editBusinessInfo: `/${basePaths.website}/${routesNames.website.editBusinessInfo}`,
+    },
+    service:{
+      home: `/${basePaths.service}/${routesNames.service.home}`,
+      service: `/${basePaths.service}/${routesNames.service.addService}`,
+      viewService: `/${basePaths.service}/${routesNames.service.viewService}`,
     },
     account:{
       home:`/${basePaths.account}/${routesNames.account.home}`,

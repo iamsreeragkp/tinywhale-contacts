@@ -1,0 +1,39 @@
+.website-page-heading{
+  .header{
+    font-family: Baloo!important;
+      color: #154F5B;
+  }
+}
+.line{
+  border: 1px solid #E5E5E5;
+}
+.website-page{
+  border-bottom-left-radius:20px;
+  
+  .title{
+    font-family: Baloo;
+    color: #154F5B;
+
+
+  }
+  .content{
+    font-family: Poppins;
+line-height: 26px;
+color: #154F5B;
+
+  }
+  .template-button{
+    font-family: Baloo;
+     line-height: 24px;
+     text-align: center;
+      color: #12B5C1;
+      border: 2px solid #12B5C1;
+  }
+  .getstarted{
+    font-family: Baloo;
+     line-height: 24px;
+      background:#12B5C1;
+      text-align: center;
+
+  }
+}
