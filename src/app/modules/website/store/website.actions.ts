@@ -5,18 +5,15 @@ export const addBusiness = createAction(
   '[BusinessModule] add business',
   props<{ businessData: BusinessEditPayload }>()
 );
-export const addBusinessSuccess = createAction(
-  '[BusinessModule] add business SUCCESS',
-  props<{ response: any }>()
-);
-export const addBusinessError = createAction(
-  '[BusinessModule] add business ERROR',
-  props<{ error?: string }>()
+export const addBusinessStatus = createAction(
+  '[BusinessModule] add business STATUS',
+  props<{ response?: any; status: boolean; error?: string }>()
 );
 
 export const getBusiness = createAction('[Business] GetBusiness');
-export const getBusinessSuccess = createAction(
+export const getBusinessStatus = createAction(
   '[Business] GetBusinessSuccess',
-  props<{ business: BusinessInfo }>()
+  props<{ business?: BusinessInfo; status: boolean; error?: string }>()
 );
-export const getBusinessFail = createAction('[Business] GetBusinessFail', props<{ error: any }>());
+
+export const initBusiness = createAction('[Business] INIT');

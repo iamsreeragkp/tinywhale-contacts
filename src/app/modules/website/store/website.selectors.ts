@@ -3,6 +3,11 @@ import { IWebsiteState } from './website.reducers';
 
 const getWebsiteFeatureSelector = createFeatureSelector<IWebsiteState>('website');
 
-export const getBusinessData = createSelector(getWebsiteFeatureSelector, state => {
-  return state?.business;
+export const getBusinessStatus = createSelector(getWebsiteFeatureSelector, state => {
+  return state?.getBusiness;
 });
+
+export const getAddBusinessStatus = createSelector(
+  getWebsiteFeatureSelector,
+  state => state?.addBusiness
+);
