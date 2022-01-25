@@ -63,14 +63,18 @@
     color: #41707A;
 
   }
-  .warning{
-    top:15px;
-    right: 8px;
+  .icon-holder{
+    top:50%;
+    transform: translateY(-50%);
   }
-  .right{
-    top:15px;
-    right: 8px;
-  }
+  // .warning{
+  //   top:15px;
+  //   right: 8px;
+  // }
+  // .right{
+  //   top:15px;
+  //   right: 8px;
+  // }
   .footer{
 font-family: Poppins;
 line-height: 18px;

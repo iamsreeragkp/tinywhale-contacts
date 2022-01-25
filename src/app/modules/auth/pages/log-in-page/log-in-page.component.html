@@ -13,13 +13,15 @@
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
             type="email" placeholder="Enter Email" formControlName="email"
             [ngClass]="{'border-red': email?.errors?.['pattern'] || logInForm?.errors?.['loginFail'] }" />
-          <div class="warning absolute" *ngIf="email?.errors?.['pattern'] || logInForm?.errors?.['loginFail']">
+            <div class="icon-holder flex absolute right-0  items-center">
+          <div class="warning mr-4" *ngIf="email?.errors?.['pattern'] || logInForm?.errors?.['loginFail']">
             <app-formwarning></app-formwarning>
           </div>
-          <div class="right absolute"
+          <div class="right mr-4"
             *ngIf="(email?.dirty || email?.touched) && !email?.invalid && !email?.errors?.['email'] && !logInForm?.errors?.['loginFail']">
             <app-formright></app-formright>
           </div>
+        </div>
         </div>
         <p *ngIf="(email?.touched) && email?.invalid && email?.errors?.['required']"
           class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
@@ -36,14 +38,19 @@
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
             type="password" placeholder="Enter Password"
             [ngClass]="{'border-red': password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']}"
-            formControlName="password" />
-          <div class="warning absolute" *ngIf="password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']">
+            formControlName="password"
+          />
+          <div class="icon-holder flex absolute right-0  items-center">
+          <!-- <div class="closed-eye mr-4 "><app-closedeye></app-closedeye></div> -->
+          <div class="opened-eye mr-4 "><app-openedeye></app-openedeye></div>
+          <div class="warning mr-4" *ngIf="password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']">
             <app-formwarning></app-formwarning>
           </div>
-          <div class="right absolute"
+          <div class="right mr-4"
             *ngIf="(password?.dirty || password?.touched) && !password?.invalid && !password?.errors?.['minlength'] && !logInForm?.errors?.['loginFail']">
             <app-formright></app-formright>
           </div>
+        </div>
         </div>
         <p *ngIf="(password?.touched) && password?.invalid && password?.errors?.['required']"
           class="error not-italic font-normal text-xs leading-3 mt-1 absolute bottom-3">
