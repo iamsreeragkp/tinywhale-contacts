@@ -8,6 +8,7 @@ import { AccountService } from './account.service';
 import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
 import { ViewPaymentComponent } from './pages/view-payment/view-payment.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AccountStoreModule } from './store/account-store.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     AccountRoutingModule,
     SharedModule,
+    AccountStoreModule
   ],
   providers:[AccountService]
 })

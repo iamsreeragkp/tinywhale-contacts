@@ -19,6 +19,7 @@ const routes: Routes = [
       { path: accountRoutesConfig.settings, component: SettingsComponent },
       { path: accountRoutesConfig.addPayment, component: AddPaymentComponent },
       { path: accountRoutesConfig.viewPayment, component: ViewPaymentComponent},
+      { path: accountRoutesConfig.editPayment, component: AddPaymentComponent },
     ],
   },
 ];
