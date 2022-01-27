@@ -16,32 +16,34 @@ h2 {
 }
 
 .primary-button {
-  color: #fff;
   background-color: #00a4b7;
   border: 2px solid #00a4b7;
   &:hover {
     color: #00a4b7;
-    background-color: #fff;
+    @apply bg-white;
   }
   &:disabled {
     color: #fff !important;
     background-color: #d6e1e3 !important;
     border-color: #d6e1e3 !important;
+    @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700;
+  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700 text-white;
 }
+
 .secondary-button {
   color: #00a4b7;
-  background-color: #fff;
   border: 2px solid #00a4b7;
+  @apply bg-white;
   &:hover {
-    color: #fff;
     background-color: #00a4b7;
+    @apply text-white;
   }
   &:disabled {
     color: #d6e1e3 !important;
     background-color: #fff !important;
     border-color: #d6e1e3 !important;
+    @apply cursor-not-allowed;
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700;
 }

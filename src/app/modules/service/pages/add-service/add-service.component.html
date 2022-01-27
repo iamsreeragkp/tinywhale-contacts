@@ -116,178 +116,285 @@
                     <option value="">option1</option>
                     <option value="">option2</option>
                 </select>
+                <!-- <div class="relative w-full custom-select">
+                    <div class="w-full flex items-center justify-between bg-white py-1 px-4 custom-select-box">
+                        <div class="custom-select-box-valueContainer flex items-center flex-wrap items-center">
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <div class="flex items-center bg-white p-1 mr-1 mb-1 custom-select-box-chip">
+                                <span class="whitespace-nowrap text-sm text-primaryFont">Item 1</span>
+                                <button class="ml-2">
+                                    <img src="../../../../../assets/images/icons/close -black.svg" alt="">
+                                </button>
+                            </div>
+                            <!-- <span class="custom-select-placeholder">Customers location</span> -->
             </div>
+            <button class="w-5 h-full items-center">
+                <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full">
+            </button>
         </div>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Capacity*</label></div>
-            <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none" type="number"
-                    placeholder="Enter number of students per session" /></div>
-        </div>
-        <h5 class="input-section-subheading font-bold mb-4 mt-8">Schedule</h5>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">What kind of schedule does this service
-                    have?*</label></div>
-            <div class="w-form">
+        <div class="absolute top-full left-0 w-full z-10">
+            <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow-lg rounded">
+
+                multi select
+                <div class="w-full checkbox-input mt-2 px-4">
+                    <div class="w-full mb-4">
+                        <label class="check-container">Item 1
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="w-full mb-4 border-b border-gray-300">
+                        <label class="check-container">Item 2
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+
+                single select with radio
                 <div class="flex flex-col w-full rounded-lg radio-input">
                     <label class="radio-container py-3 radio-input-border-b" for="fixed">
                         <div class="flex flex-col">
-                            <p class="radio-container-name">Fixed</p>
-                            <p class="radio-container-descri">Predefined time slots in the week</p>
+                            <p class="text-primaryFont">Item 1</p>
                         </div>
                         <input type="radio" id="fixed" name="schedule" value="fixed">
                         <span class="radiomark"></span>
                     </label>
                     <label class="radio-container py-3" for="flexible">
                         <div class="flex flex-col">
-                            <p class="radio-container-name">Flexible</p>
-                            <p class="radio-container-descri">As per client’s requirement</p>
+                            <p class="text-primaryFont">Item 2</p>
                         </div>
                         <input type="radio" id="flexible" name="schedule" value="flexible">
                         <span class="radiomark"></span>
                     </label>
                 </div>
-            </div>
-        </div>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
-            <div class="w-form flex items-center"><input class="input w-24 py-3 px-4 focus:outline-none"
-                    placeholder="$ 50" />
-                <span class="input-field-secondary-text mx-3">min</span>
-            </div>
-        </div>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-0 mr-6"><label for="">Slot Days & Times*</label></div>
-            <div class="w-form checkbox-input mt-2">
-                <div class="w-full mb-4">
-                    <label class="check-container">Sunday
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="w-full flex items-center mb-4"><input class="input w-32 py-3 px-4 focus:outline-none"
-                            placeholder="Start time" />
-                        <span class="input-field-secondary-text mx-3">to</span>
-                        <input class="input w-32 py-3 px-4 focus:outline-none" placeholder="End time" />
-                        <div class="h-full flex items-center mx-3">
-                            <img src="../../../../../assets/images/icons/delete.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="add-another mt-2 font-normal text-base not-italic">+ Add Another Slot</div>
-                </div>
-                <label class="check-container">Monday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="check-container">Tuesday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="check-container">Wednesday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="check-container">Thursday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="check-container">Friday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="check-container">Saturday
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-        </div>
-        <h5 class="input-section-subheading font-bold mb-4 mt-8">Pricing</h5>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Price</label></div>
-            <div class="w-form">
-                <div class="w-full flex items-center"><input class="input w-24 py-3 px-4 focus:outline-none"
-                        placeholder="$ 50" />
-                    <span class="input-field-secondary-text mx-3">per session per person</span>
-                </div>
-                <div class="w-full p-3 mt-3 rounded-lg input-section-info">💡 You can have only one unique session price
-                    per service but
-                    multiple
-                    package prices and options.
-                </div>
-            </div>
-        </div>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Package Price
-                    (Session Bundle)</label></div>
-            <div class="w-form">
-                <div class="w-full flex items-center mb-2"><input class="input w-24 py-3 px-4 focus:outline-none"
-                        placeholder="$ 100" />
-                    <span class="input-field-secondary-text mx-3">for</span>
-                    <input class="input w-20 py-3 px-4 focus:outline-none" placeholder="2" />
-                    <span class="input-field-secondary-text mx-3">sessions</span>
-                    <div class="h-full flex items-center">
-                        <img src="../../../../../assets/images/icons/delete.svg" alt="">
-                    </div>
-                </div>
-                <div class="w-full flex items-center mb-2"><input class="input w-24 py-3 px-4 focus:outline-none"
-                        placeholder="$ 100" />
-                    <span class="input-field-secondary-text mx-3">for</span>
-                    <input class="input w-20 py-3 px-4 focus:outline-none" placeholder="2" />
-                    <span class="input-field-secondary-text mx-3">sessions</span>
-                    <div class="h-full flex items-center">
-                        <img src="../../../../../assets/images/icons/delete.svg" alt="">
-                    </div>
-                </div>
-                <div class="add-another mt-2 font-normal text-base not-italic">+ Add Another Package Price</div>
 
-            </div>
-        </div>
-        <h5 class="input-section-subheading font-bold mb-4 mt-8">Who can see this service?</h5>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Visibility*</label></div>
-            <div class="w-form">
-                <div class="flex flex-col w-full rounded-lg radio-input">
-                    <label class="radio-container py-3 radio-input-border-b" for="public">
-                        <div class="flex flex-col">
-                            <p class="radio-container-name">Public</p>
-                            <p class="radio-container-descri">Anyone visiting my website</p>
-                        </div>
-                        <input type="radio" id="public" name="visibility" value="public">
-                        <span class="radiomark"></span>
-                    </label>
-                    <label class="radio-container py-3" for="private">
-                        <div class="flex flex-col">
-                            <p class="radio-container-name">Private</p>
-                            <p class="radio-container-descri">Clients who I share the link with</p>
-                        </div>
-                        <input type="radio" id="private" name="visibility" value="private">
-                        <span class="radiomark"></span>
-                    </label>
+                Single select
+                <button class="px-4 custom-select-item text-left hover:bg-gray-100">
+                    <div
+                        class="custom-select-item-div w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap text-primaryFont">
+                        Item 1
+                    </div>
+                </button>
+                <button class="px-4 custom-select-item text-left hover:bg-gray-100">
+                    <div
+                        class="custom-select-item-div w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap text-primaryFont">
+                        Item 2</div>
+                </button>
+
+                add location
+                <div class="w-full relative px-4 my-3">
+                    <span class="text-secondaryBlue font-bold">+ add New Location</span>
+                    <input class="input w-full py-3 pr-14 px-4 focus:outline-none bg-red-100"
+                        placeholder="Enter new location name" />
+                    <div class="absolute right-0 top-0 h-full mr-4 flex items-center">
+                        <button class="text-secondaryBlue font-bold mr-3">Add</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+    </div> -->
+</div>
+</div>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">Capacity*</label></div>
+    <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none" type="number"
+            placeholder="Enter number of students per session" /></div>
+</div>
+<h5 class="input-section-subheading font-bold mb-4 mt-8">Schedule</h5>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">What kind of schedule does this service
+            have?*</label></div>
+    <div class="w-form">
+        <div class="flex flex-col w-full rounded-lg radio-input">
+            <label class="radio-container py-3 radio-input-border-b" for="fixed">
+                <div class="flex flex-col">
+                    <p class="radio-container-name">Fixed</p>
+                    <p class="radio-container-descri">Predefined time slots in the week</p>
+                </div>
+                <input type="radio" id="fixed" name="schedule" value="fixed">
+                <span class="radiomark"></span>
+            </label>
+            <label class="radio-container py-3" for="flexible">
+                <div class="flex flex-col">
+                    <p class="radio-container-name">Flexible</p>
+                    <p class="radio-container-descri">As per client’s requirement</p>
+                </div>
+                <input type="radio" id="flexible" name="schedule" value="flexible">
+                <span class="radiomark"></span>
+            </label>
         </div>
     </div>
-    <div class="detail-section w-5/12">
-        <div class="px-8 py-8 relative">
-            <div class="heading">💡 Preview</div>
-            <!-- use below code when no image uploaded -->
-            <div class="flex justify-center items-center w-full h-56 rounded-3xl bg-gray-200 mt-4">
-                <img src="./../../../../../assets/images/defualt-image.svg" alt="">
+</div>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
+    <div class="w-form flex items-center"><input class="input w-24 py-3 px-4 focus:outline-none" placeholder="$ 50" />
+        <span class="input-field-secondary-text mx-3">min</span>
+    </div>
+</div>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-0 mr-6"><label for="">Slot Days & Times*</label></div>
+    <div class="w-form checkbox-input mt-2">
+        <div class="w-full mb-4">
+            <label class="check-container">Sunday
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <div class="w-full flex items-center mb-4"><input class="input w-32 py-3 px-4 focus:outline-none"
+                    placeholder="Start time" />
+                <span class="input-field-secondary-text mx-3">to</span>
+                <input class="input w-32 py-3 px-4 focus:outline-none" placeholder="End time" />
+                <div class="h-full flex items-center mx-3">
+                    <img src="../../../../../assets/images/icons/delete.svg" alt="">
+                </div>
             </div>
-            <!-- use below code when image uploaded 
+            <div class="add-another mt-2 font-normal text-base not-italic">+ Add Another Slot</div>
+        </div>
+        <label class="check-container">Monday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="check-container">Tuesday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="check-container">Wednesday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="check-container">Thursday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="check-container">Friday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="check-container">Saturday
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+</div>
+<h5 class="input-section-subheading font-bold mb-4 mt-8">Pricing</h5>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Price</label></div>
+    <div class="w-form">
+        <div class="w-full flex items-center"><input class="input w-24 py-3 px-4 focus:outline-none"
+                placeholder="$ 50" />
+            <span class="input-field-secondary-text mx-3">per session per person</span>
+        </div>
+        <div class="w-full p-3 mt-3 rounded-lg input-section-info">💡 You can have only one unique session price
+            per service but
+            multiple
+            package prices and options.
+        </div>
+    </div>
+</div>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">Package Price
+            (Session Bundle)</label></div>
+    <div class="w-form">
+        <div class="w-full flex items-center mb-2"><input class="input w-24 py-3 px-4 focus:outline-none"
+                placeholder="$ 100" />
+            <span class="input-field-secondary-text mx-3">for</span>
+            <input class="input w-20 py-3 px-4 focus:outline-none" placeholder="2" />
+            <span class="input-field-secondary-text mx-3">sessions</span>
+            <div class="h-full flex items-center">
+                <img src="../../../../../assets/images/icons/delete.svg" alt="">
+            </div>
+        </div>
+        <div class="w-full flex items-center mb-2"><input class="input w-24 py-3 px-4 focus:outline-none"
+                placeholder="$ 100" />
+            <span class="input-field-secondary-text mx-3">for</span>
+            <input class="input w-20 py-3 px-4 focus:outline-none" placeholder="2" />
+            <span class="input-field-secondary-text mx-3">sessions</span>
+            <div class="h-full flex items-center">
+                <img src="../../../../../assets/images/icons/delete.svg" alt="">
+            </div>
+        </div>
+        <div class="add-another mt-2 font-normal text-base not-italic">+ Add Another Package Price</div>
+
+    </div>
+</div>
+<h5 class="input-section-subheading font-bold mb-4 mt-8">Who can see this service?</h5>
+<div class="input-field flex mb-4">
+    <div class=" w-44 label text-right mt-4 mr-6"><label for="">Visibility*</label></div>
+    <div class="w-form">
+        <div class="flex flex-col w-full rounded-lg radio-input">
+            <label class="radio-container py-3 radio-input-border-b" for="public">
+                <div class="flex flex-col">
+                    <p class="radio-container-name">Public</p>
+                    <p class="radio-container-descri">Anyone visiting my website</p>
+                </div>
+                <input type="radio" id="public" name="visibility" value="public">
+                <span class="radiomark"></span>
+            </label>
+            <label class="radio-container py-3" for="private">
+                <div class="flex flex-col">
+                    <p class="radio-container-name">Private</p>
+                    <p class="radio-container-descri">Clients who I share the link with</p>
+                </div>
+                <input type="radio" id="private" name="visibility" value="private">
+                <span class="radiomark"></span>
+            </label>
+        </div>
+    </div>
+</div>
+</div>
+<div class="detail-section w-5/12">
+    <div class="px-8 py-8 relative">
+        <div class="heading">💡 Preview</div>
+        <!-- use below code when no image uploaded -->
+        <div class="flex justify-center items-center w-full h-56 rounded-3xl bg-gray-200 mt-4">
+            <img src="./../../../../../assets/images/defualt-image.svg" alt="">
+        </div>
+        <!-- use below code when image uploaded 
             <div class="flex justify-center items-center w-full h-64 rounded-3xl bg-gray-200 mt-4">
                 <img src="./../../../../../assets/images/defualt-image.svg" alt="" class="w-full h-full object-cover">
             </div> -->
-            <h5 class="detail-section-subheading font-bold my-3">Piano under 3 years</h5>
-            <p class="text mb-3">Learn Piano in WEEKS not years. Play-By-Ear & learn to Read Music. Pop, Blues, Jazz,
-                Ballads, Improvisation, Classical</p>
-            <p class="text mb-3">$ 80 for 1 session (1 hour)</p>
-            <p class="text mb-3">$ 200 for 3 session (1 hour each)</p>
-            <p class="text mb-3">$ 380 for 6 session (1 hour each)</p>
-            <button type="button"
-                class="book-button flex justify-center items-center h-12 w-full duration-700 rounded-full">
-                Book Now
-            </button>
-        </div>
-
+        <h5 class="detail-section-subheading font-bold my-3">Piano under 3 years</h5>
+        <p class="text mb-3">Learn Piano in WEEKS not years. Play-By-Ear & learn to Read Music. Pop, Blues, Jazz,
+            Ballads, Improvisation, Classical</p>
+        <p class="text mb-3">$ 80 for 1 session (1 hour)</p>
+        <p class="text mb-3">$ 200 for 3 session (1 hour each)</p>
+        <p class="text mb-3">$ 380 for 6 session (1 hour each)</p>
+        <button type="button"
+            class="book-button flex justify-center items-center h-12 w-full duration-700 rounded-full">
+            Book Now
+        </button>
     </div>
+
+</div>
 
 </div>
