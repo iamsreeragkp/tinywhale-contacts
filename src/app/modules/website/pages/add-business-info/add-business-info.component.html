@@ -1,7 +1,7 @@
 <div class="website-page-heading bg-white pt-6 pb-6 px-8 flex justify-between">
-  <header class="header leading-9 font-normal not-italic">
+  <header class="header leading-9 font-normal not-italic flex items-center">
     <ng-container *ngIf="!editMode; else editTitle">
-      <span class="one font-normal not-italic text-7xl leading-6"> 1 </span>
+      <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
       <span class="text-4xl">Add Business Info</span>
     </ng-container>
     <ng-template #editTitle>
@@ -38,7 +38,7 @@
             <img *ngIf="logoImageUrl" [src]="logoImageUrl" class="image h-28" object-fit: contain />
             <ng-container *ngIf="!logoImageUrl">
               <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo">
-              <span>Add a logo</span>
+              <span class="text-mediumGray text-center">Add a <br>logo</span>
             </ng-container>
           </div>
         </div>
