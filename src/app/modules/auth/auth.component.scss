@@ -3,17 +3,20 @@
   padding: 5.5rem 8.75rem 1.94rem 8.75rem !important;
   min-height: 100vh !important;
 }
+.swiper-image{
+  height: 55vh;
+}
 .swiper-demo{
   background: #12B5C1;
   .swiper-next{
-    // bottom: 20px;
+    top: calc(55vh - 1.3rem);
     right: 50px;
     cursor: pointer;
     
   }
   
   .swiper-previous{
-    // bottom: 20px;
+    top: calc(55vh - 1.3rem);
     left: 50px;
     cursor: pointer;
     transform: rotate(180deg);
