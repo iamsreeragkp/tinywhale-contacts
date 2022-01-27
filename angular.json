@@ -81,6 +81,7 @@
             "namedChunks": true
           },
           "configurations": {
+            "local": {},
             "development": {
               "fileReplacements": [
                 {
@@ -123,6 +124,9 @@
             "browserTarget": "tinywhale-dashboard-client:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "tinywhale-dashboard-client:build:local"
+            },
             "production": {
               "browserTarget": "tinywhale-dashboard-client:build:production"
             },
