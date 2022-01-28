@@ -1,16 +1,17 @@
 <div class="flex flex-col min-h-full rounded-5 overflow-hidden">
-  <div class=" website-page-heading bg-white py-4 px-8 flex justify-between">
+  <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Website</span>
     </header>
-    <div class="flex" *ngIf="dashboardData?.businessInfo?.isStarted;">
-      <a class="save-button active-save rounded-full text-white text-center text-base font-normal not-italic py-3 px-20 ml-2"
-        [routerLink]="['../edit-business-info']">Edit</a>
+    <div class="flex" *ngIf="dashboardData?.businessInfo?.isStarted">
+      <a class="primary-button w-48 ml-2" [routerLink]="['../edit-business-info']">Edit</a>
     </div>
   </div>
-  <hr class="line">
-  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
-    *ngIf="dashboardData?.businessInfo?.isStarted; else noWebsiteInfo">
+  <hr class="line" />
+  <div
+    class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
+    *ngIf="dashboardData?.businessInfo?.isStarted; else noWebsiteInfo"
+  >
     <main>
       <div class="flex mb-4">
         <div class="w-44 py-3 flex justify-end pr-8">
@@ -26,11 +27,20 @@
         </div>
         <div class="flex-1 pl-4 flex gap-3">
           <div
-            class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
-            <img class="max-w-none h-full" [src]="businessObj?.logo" *ngIf="businessObj?.logo"
-              [alt]="'Business_Logo'" />
-            <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" [alt]="'Business_Logo'"
-              *ngIf="!businessObj?.logo" />
+            class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
+          >
+            <img
+              class="max-w-none h-full"
+              [src]="businessObj?.logo"
+              *ngIf="businessObj?.logo"
+              [alt]="'Business_Logo'"
+            />
+            <img
+              class="h-7"
+              src="./../../../../../assets/images/defualt-image.svg"
+              [alt]="'Business_Logo'"
+              *ngIf="!businessObj?.logo"
+            />
           </div>
         </div>
       </div>
@@ -66,12 +76,22 @@
           <span class="font-medium text-right">Photos</span>
         </div>
         <div class="flex-1 pl-4 flex gap-3">
-          <div *ngFor="let photo of businessObj?.business_photos; let i = index"
-            class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
-            <img class="max-w-none h-full" [src]="photo?.photo_url" *ngIf="photo.photo_url"
-              [alt]="'Photo_' + (i + 1)" />
-            <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" *ngIf="!photo?.photo_url"
-              [alt]="'Photo_' + (i + 1)" />
+          <div
+            *ngFor="let photo of businessObj?.business_photos; let i = index"
+            class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
+          >
+            <img
+              class="max-w-none h-full"
+              [src]="photo?.photo_url"
+              *ngIf="photo.photo_url"
+              [alt]="'Photo_' + (i + 1)"
+            />
+            <img
+              class="h-7"
+              src="./../../../../../assets/images/defualt-image.svg"
+              *ngIf="!photo?.photo_url"
+              [alt]="'Photo_' + (i + 1)"
+            />
           </div>
         </div>
       </div>
@@ -80,18 +100,31 @@
           <span class="font-medium text-right">Awards / Certifications / Licenses</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex flex-col gap-3">
-          <div *ngFor="let recognition of businessObj?.recognitions; let i = index" class="flex gap-6">
+          <div
+            *ngFor="let recognition of businessObj?.recognitions; let i = index"
+            class="flex gap-6"
+          >
             <div
-              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
-              <img class="max-w-none h-full" [src]="recognition?.photo_url" *ngIf="recognition?.photo_url"
-                [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)" />
-              <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" *ngIf="!recognition?.photo_url"
-                [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)" />
+              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
+            >
+              <img
+                class="max-w-none h-full"
+                [src]="recognition?.photo_url"
+                *ngIf="recognition?.photo_url"
+                [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)"
+              />
+              <img
+                class="h-7"
+                src="./../../../../../assets/images/defualt-image.svg"
+                *ngIf="!recognition?.photo_url"
+                [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)"
+              />
             </div>
             <div class="flex flex-col justify-center gap-2">
               <span class="font-medium">{{ recognition?.recognition_name }}</span>
-              <span *ngIf="recognition?.expiry_date">Valid till {{ recognition?.expiry_date?.toLocaleDateString('us')
-                }}</span>
+              <span *ngIf="recognition?.expiry_date"
+                >Valid till {{ recognition?.expiry_date?.toLocaleDateString('us') }}</span
+              >
             </div>
           </div>
         </div>
@@ -101,18 +134,30 @@
           <span class="font-medium text-right">Testimonial</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex flex-col gap-3">
-          <div *ngFor="let testimonial of businessObj?.testimonials; let i = index"
-            class="flex gap-6 border-solid border-2 border-lightGrey rounded-lg p-3">
+          <div
+            *ngFor="let testimonial of businessObj?.testimonials; let i = index"
+            class="flex gap-6 border-solid border-2 border-lightGrey rounded-lg p-3"
+          >
             <div
-              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
-              <img class="max-w-none h-full" [src]="testimonial?.photo_url" *ngIf="testimonial?.photo_url"
-                [alt]="'Testimonial_' + (i + 1)" />
-              <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" *ngIf="!testimonial?.photo_url"
-                [alt]="'Testimonial_' + (i + 1)" />
+              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
+            >
+              <img
+                class="max-w-none h-full"
+                [src]="testimonial?.photo_url"
+                *ngIf="testimonial?.photo_url"
+                [alt]="'Testimonial_' + (i + 1)"
+              />
+              <img
+                class="h-7"
+                src="./../../../../../assets/images/defualt-image.svg"
+                *ngIf="!testimonial?.photo_url"
+                [alt]="'Testimonial_' + (i + 1)"
+              />
             </div>
             <div class="flex flex-col gap-2 flex-1">
-              <span class="font-medium">{{ testimonial?.name + (testimonial?.title ? ' / ' + testimonial.title : '' )
-                }}</span>
+              <span class="font-medium">{{
+                testimonial?.name + (testimonial?.title ? ' / ' + testimonial.title : '')
+              }}</span>
               <span>{{ testimonial?.testimonial }}</span>
             </div>
           </div>
