@@ -9,9 +9,10 @@ import { RootService } from '../root/root.service';
 import { NoDataBookingComponentComponent } from './components/no-data-booking-component/no-data-booking-component.component';
 import { NoResultBookingComponentComponent } from './components/no-result-booking-component/no-result-booking-component.component';
 import { TableBookingComponentComponent } from './components/table-booking-component/table-booking-component.component';
+import { BookingStoreModule } from './store/booking-store.module';
 
 @NgModule({
-  imports: [CommonModule, BookingRoutingModule, SharedModule],
+  imports: [CommonModule, BookingRoutingModule, SharedModule,BookingStoreModule],
   declarations: [BookingComponent, AddBookingComponent, ViewBookingComponent, NoDataBookingComponentComponent, TableBookingComponentComponent, NoResultBookingComponentComponent],
   providers: [RootService],
 })
