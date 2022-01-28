@@ -9,10 +9,10 @@
         <span class="text-4xl">Edit Payment Info</span>
       </ng-template>
     </header>
-    <div class="flex justify-between">
-      <button class="noborder-button" (click)="location.back()">Cancel</button>
+    <div class="flex justify-between items-center">
+      <button class="noborder-button mr-3" (click)="location.back()">Cancel</button>
 
-      <button class="primary-button w-48" (click)="onSubmitPayment()">Save</button>
+      <button class="primary-button w-48 ml-3" (click)="onSubmitPayment()">Save</button>
     </div>
   </div>
 </div>
@@ -143,36 +143,51 @@
       </div>
       <div class="flex">
         <h5 class="input-section-subheading font-bold mb-4 mt-8 mr-12">Bank Account Details</h5>
-        <p
-          class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
-        >
-          We’ve partnered with
-          <span class="italic font-bold text-primaryFont text-base mr-1"> Rapyd </span> to help you
-          collect online payments securely.
-        </p>
-        <!-- <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Account number/ID</p>     -->
+        <div class="input-field">
+          <div class="w-form">
+            <p
+              class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+            >
+              We’ve partnered with
+              <span class="italic font-bold text-primaryFont text-base mr-1"> Rapyd </span> to help
+              you collect online payments securely.
+            </p>
+
+            <!-- <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Account number/ID</p>     -->
+          </div>
+        </div>
       </div>
       <!-- <div class="input-field flex mb-4"> -->
       <!--Awaiting conformation-->
 
-      <!-- <div class=" w-44 label text-right mt-4 mr-6"></div>
-            <span class="flex">
-                <div class="mb-4 mt-9 mr-4"><app-awaiting></app-awaiting></div>
-                <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Bank Account connected</p>
-             </span> -->
+      <!-- <div class="w-44 label text-right mt-4 mr-6"></div> -->
+
+      <!-- <div class="w-form">
+
+        <span class="flex">
+          <div class="mb-4 mt-9 mr-4"><app-awaiting></app-awaiting></div>
+          <p
+            class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+          >
+            Bank Account connected
+          </p>
+        </span>
+      </div> -->
 
       <!-- Bank Account is connected -->
 
-      <!-- <span class="flex">
+      <!-- <div class="w-form">
+        <span class="flex">
            <div class="mb-4 mt-9 mr-4"><app-formright></app-formright></div>
            <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Bank Account connected</p>
-        </span> -->
-
+        </span>
+      </div> -->
       <!-- </div> -->
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <button class="primary-button w-56">Connect Bank Account</button>
+          <!-- <button class="primary-button w-64">Update Bank Information</button> -->
         </div>
       </div>
       <div class="input-field checkbox-input flex mb-4">
