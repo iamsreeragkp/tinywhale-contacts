@@ -1,60 +1,54 @@
 <div class="fixed z-50 left-0 top-0 fixed-header">
     <div class=" website-page-heading bg-white py-4 px-8 flex justify-between w-full">
         <header class="header leading-9 font-normal not-italic flex items-center text-4xl">Account</header>
-        
+
             <button
-                class="edit-button active-save w-48 rounded-full text-white text-center text-base font-normal not-italic py-3 ml-2">Edit</button>
+                class="edit-button active-save w-48 rounded-full text-white text-center text-base font-normal not-italic py-3 ml-2"  routerLinkActive="router-link-active" (click)="navigateToEdit()">Edit</button>
     </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
 
-<div class="add-info flex w-full">
+<div class="add-info flex w-full" *ngFor="let payInfo of [paymentInfo]">
     <div class="input-section w-full bg-white p-8 flex flex-col">
-        
+
         <h5 class="input-section-subheading w-44 font-bold mb-4 text-right">Billing  Details</h5>
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Account Type</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Company</p>
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{payInfo?.type || '---'}}</p>
         </div>
         </div>
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Company Name</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Online Piano Tutor</p>
-             </div> 
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{payInfo?.business_name || '---'}}</p>
+             </div>
         </div>
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Address</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Rhythm Studios, 357 - A,Acme Plaza, Andheri Kurla Rd, Opp Sangam Theatre, Andheri (west).Mumbai, Maharashtra - 400059</p>
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{(payInfo?.address_line_1 || '') + ' ' + (payInfo?.address_line_2 || '') + ' ' + (payInfo?.city || '') + ' ' + (payInfo?.state || '') + ' -' + ' ' + (payInfo?.postal_code ? payInfo?.postal_code : 'Pincode') || '---'}}</p>
             </div>
         </div>
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Default Currency</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Singapore Dollar (S$)</p>
-        </div>
-        </div>
-        <div class="input-field flex mb-8">
-            <div class=" w-44 label text-right mr-12"><label for="">Default Currency</label></div>
-            <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Singapore Dollar (S$)</p>
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{payInfo?.default_currency || '---'}}</p>
         </div>
         </div>
         <h5 class="input-section-subheading w-44 font-bold mb-4 text-right">Bank Account <br>Details</h5>
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Account Number</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont flex">Account number/ID <span class="ml-4"><app-formright></app-formright></span></p>
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont flex">{{payInfo?.payout_info?.account_id || payInfo?.payout_info?.beneficiary_id || '---' }}<span class="ml-4"><app-formright></app-formright></span></p>
            </div>
         </div>
         <div class="flex ml-7">
-            <button class="logout-button rounded-full bg-white px-16 h-12 text-base float-left font-baloo not-italic font-normal">Log Out</button>
+            <button class="logout-button rounded-full bg-white px-16 h-12 text-base float-left font-baloo not-italic font-normal" (click)="onLogout()">Log Out</button>
         </div>
-        
+
     </div>
-    
+
 
 </div>
 

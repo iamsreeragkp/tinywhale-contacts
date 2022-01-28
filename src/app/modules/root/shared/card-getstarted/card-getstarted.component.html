@@ -103,12 +103,13 @@
         </p>
         <button
           class="add-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full button-active"
-          *ngIf="!dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted">Add</button>
+          *ngIf="!dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted" [routerLink]="'../account/add-payment'">Add</button>
         <button class="edit-button mt-auto  bg-white text-base  not-italic font-normal px-10 py-1 rounded-full"
-          *ngIf="dashboardInfos?.paymentInfo?.isCompleted">Edit</button>
+          *ngIf="dashboardInfos?.paymentInfo?.isCompleted"
+          [routerLink]="'../account/edit-payment'">Edit</button>
         <button
           class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
-          *ngIf="dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted">Complete the
+          *ngIf="dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted" [routerLink]="'../account/edit-payment'">Complete the
           details</button>
       </div>
 
