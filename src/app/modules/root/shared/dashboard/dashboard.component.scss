@@ -1,0 +1,24 @@
+.dashboard-new {
+  &-i-blue {
+    color: #6b9eb6;
+  }
+  &-placeholder {
+    color: #73959d;
+  }
+  &-hovervalue {
+    &:hover {
+      .value-hover {
+        color: #00a4b7;
+      }
+      .right-arrow {
+        display: block;
+      }
+    }
+  }
+  .green-text {
+    color: #44b081;
+  }
+  .red-text {
+    color: #ff725e;
+  }
+}

@@ -1,9 +1,9 @@
-@import 'mixins';
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-@import 'swiper/scss';
-@import 'swiper/scss/navigation';
+@import "mixins";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "swiper/scss";
+@import "swiper/scss/navigation";
 
 a,
 .cp {
@@ -57,7 +57,7 @@ h2 {
     color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply font-baloo  h-12 px-3 duration-500;
+  @apply font-baloo px-3 duration-500;
 }
 
 .custom-select {
@@ -96,7 +96,7 @@ h2 {
     input {
       @apply absolute opacity-0 cursor-pointer h-0 w-0;
       &:checked ~ .checkmark {
-        background-color: red;
+        background-color: #00a4b7;
         border: 1px solid #00a4b7;
       }
       &:checked ~ .checkmark:after {
@@ -155,6 +155,54 @@ h2 {
         background: #00a4b7;
         @apply hidden absolute rounded-full w-3 h-3;
       }
+    }
+  }
+}
+
+.tooltip-top {
+  @apply inline-block relative;
+  .tooltiptext {
+    width: 20rem;
+    background-color: #6b9eb6;
+    bottom: 125%;
+    left: calc(-10rem + 5px);
+    @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
+    &::after {
+      content: "";
+      margin-left: -5px;
+      border-width: 5px;
+      left: 50%;
+      border-color: #6b9eb6 transparent transparent transparent;
+      @apply absolute top-full border-solid;
+    }
+  }
+  &:hover {
+    .tooltiptext {
+      @apply visible opacity-100;
+    }
+  }
+}
+.tooltip-right {
+  @apply inline-block relative;
+  .tooltiptext {
+    width: 25rem;
+    background-color: #6b9eb6;
+    top: -100%;
+    left: 160%;
+    @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
+    &::after {
+      content: "";
+      margin-top: -5px;
+      border-width: 5px;
+      right: 100%;
+      top: 50%;
+      border-color: transparent #6b9eb6 transparent transparent;
+      @apply absolute border-solid;
+    }
+  }
+  &:hover {
+    .tooltiptext {
+      @apply visible opacity-100;
     }
   }
 }
@@ -275,7 +323,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 .w-fit {

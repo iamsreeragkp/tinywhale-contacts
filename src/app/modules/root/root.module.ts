@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { RootComponent } from './root.component';
 import { SideNavComponent } from './shared/side-nav/side-nav.component';
 import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarted.component';
+import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
 
@@ -20,6 +21,7 @@ import { RootStoreModule } from './store/root-store.module';
     RootComponent,
     SideNavComponent,
     CardGetstartedComponent,
+    DashboardComponent,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],
