@@ -27,8 +27,9 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
 import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 
+
 @NgModule({
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule,],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
