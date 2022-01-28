@@ -1,5 +1,5 @@
-<div class="relative w-full custom-select">
-  <div class="w-full flex items-center justify-between bg-white py-1 px-4 custom-select-box cursor-pointer"
+<div class="relative w-full custom-select" #dropdown>
+  <div class="w-full flex items-center justify-between bg-white py-3 px-4 custom-select-box cursor-pointer"
     (click)="open = !open">
     <div class="custom-select-box-valueContainer flex flex-wrap items-center">
       <ng-container *ngIf="_multiSelect && selectedOption">
@@ -21,7 +21,7 @@
       <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full">
     </button>
   </div>
-  <div class="absolute top-full left-0 w-full z-10" *ngIf="open">
+  <div class="absolute top-full left-0 w-full z-10 max-h-56 overflow-y-auto" *ngIf="open">
     <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow-lg rounded">
 
       <!-- multi select -->
@@ -38,15 +38,13 @@
 
       <!-- single select with radio -->
       <div class="flex flex-col w-full rounded-lg radio-input" *ngIf="!_multiSelect && _showRadio">
-        <label class="radio-container py-3" [for]="_label + i"
-          *ngFor="let option of _options; let i = index; let isLast = last"
-          [ngClass]="{ 'radio-input-border-b': !isLast }">
+        <label class="radio-container py-3 radio-input-border-b" [for]="_label + i"
+          *ngFor="let option of _options; let i = index">
           <div class="flex flex-col">
             <p class="text-primaryFont">{{option[_displayKey]}}</p>
           </div>
           <input type="radio" [attr.id]="_label + i" [value]="true"
-            [ngModel]="selectedOption?.[_idKey] === option[_idKey]"
-            (ngModelChange)="selectUnSelectValue(option, false)">
+            [ngModel]="selectedOption?.[_idKey] === option[_idKey]" (ngModelChange)="selectUnSelectValue(option)">
           <span class="radiomark"></span>
         </label>
       </div>

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  HostListener,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   NG_VALIDATORS,
@@ -34,9 +43,10 @@ export class DropdownComponent {
   _label = 'Select';
   _displayKey = 'label';
   _idKey = 'id';
+  _emitId = false;
   // Options
   @Input() set options(val: OptionsType) {
-    this._options = val.map(option => ({
+    this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
       ...option,
       dropdown_field_data: {
         selected: false,
@@ -81,12 +91,26 @@ export class DropdownComponent {
   @Input() set idKey(val: string) {
     this._idKey = val;
   }
+  // Emit the of the object instead of object
+  @Input() set emitId(val: boolean) {
+    this._emitId = val;
+  }
 
   // component properties
   open = false;
   openAddCustomValue = false;
   _isDisabled = false;
   customValueInput = '';
+  @ViewChild('dropdown') dropdown!: ElementRef<HTMLDivElement>;
+  @HostListener('document:click', ['$event']) onClick({ target }: { target: HTMLElement }) {
+    if (!this.open) {
+      return;
+    }
+    const dropDownSelector = 'div.' + this.dropdown.nativeElement.className.split(' ').join('.');
+    if (!target.closest(dropDownSelector)) {
+      this.open = false;
+    }
+  }
 
   _onChange = (val: any) => {};
   _onTouched = () => {};
@@ -122,24 +146,33 @@ export class DropdownComponent {
 
   // component functions
 
-  setPreviousValues(val: OptionType | OptionsType) {
+  setPreviousValues(val: any) {
     if (val instanceof Array) {
-      val.forEach(value => {
-        this.selectUnSelectValue(value, false, false);
+      let valArr = val;
+      if (this._emitId) {
+        valArr = val.map(id => this._options.find(option => option[this._idKey] === id));
+      }
+      valArr.forEach(value => {
+        this.selectUnSelectValue(value, false);
       });
     } else {
       if (val) {
-        this.selectUnSelectValue(val, false, false);
+        let valObj = val;
+        if (this._emitId) {
+          valObj = this._options.find(option => option[this._idKey] === val);
+        }
+        this.selectUnSelectValue(valObj, false);
       } else {
         this._options.forEach(option => (option.dropdown_field_data!.selected = false));
       }
     }
   }
 
-  selectUnSelectValue(val: OptionType, unSelect = true, emitEvent = true) {
+  selectUnSelectValue(val: OptionType, emitEvent = true) {
     this._options.forEach(option => {
       if (option[this._idKey] === val[this._idKey]) {
-        option.dropdown_field_data!.selected = !option.dropdown_field_data?.selected || !unSelect;
+        option.dropdown_field_data!.selected =
+          !option.dropdown_field_data?.selected || !this.showRadio;
       } else if (!this._multiSelect) {
         option.dropdown_field_data!.selected = false;
       }
@@ -149,7 +182,9 @@ export class DropdownComponent {
     }
     this._onChange(this.selectedValues());
     this._onTouched();
-    this.open = !this.open;
+    if (!this._multiSelect) {
+      this.open = !this.open;
+    }
   }
 
   selectCustomValue() {
@@ -169,9 +204,18 @@ export class DropdownComponent {
   }
 
   selectedValues() {
-    return this._options[!this._multiSelect ? 'find' : 'filter'](
-      option => option.dropdown_field_data?.selected
-    );
+    const values =
+      this._options[!this._multiSelect ? 'find' : 'filter'](
+        option => option.dropdown_field_data?.selected
+      ) ?? null;
+    if (this._emitId) {
+      if (values instanceof Array) {
+        return values.map(option => option[this._idKey]);
+      } else {
+        return values?.[this._idKey] ?? null;
+      }
+    }
+    return values;
   }
 
   get selectedOption() {
