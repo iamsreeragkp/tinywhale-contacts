@@ -8,6 +8,10 @@ module.exports = {
         poppins: 'Poppins',
         montserrat: 'Montserrat'
       },
+      fontSize: {
+        thirtyPx: '30px',
+        fourtyPx: '40px',
+      },
       // bagroundColor:{
       //   primary-baground:"#12B5C1"
       // }
@@ -25,6 +29,9 @@ module.exports = {
       width: {
         90: '22.5rem',
       },
+      height: {
+        68: '17rem',
+      }
     },
   },
   variants: {
