@@ -31,6 +31,7 @@ export class ViewPaymentComponent implements OnInit {
   onLogout() {
     this.authService.onlogout();
     this.router.navigate(['/']);
+    window.location.reload();
   }
 
   navigateToEdit() {

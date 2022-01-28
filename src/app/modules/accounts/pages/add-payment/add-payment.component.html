@@ -25,45 +25,26 @@
 <form [formGroup]="paymentForm">
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
-      <h5 class="input-section-subheading font-bold mb-4 mt-8">Billing Details</h5>
-      <div class="input-field flex mb-4">
-        <div class="w-44 label text-right mt-4 mr-6"><label for="">Account Type</label></div>
-        <div class="w-form">
-          <div class="flex flex-col w-full py-3 rounded-lg radio-container">
-            <div class="flex pb-3 px-3 radio-container-border-b">
-              <input
-                type="radio"
-                id="fixed"
-                name="company"
-                value="INDIVIDUAL"
-                class="cursor-pointer"
-                formControlName="company"
-              />
-               
-              <label for="fixed" class="w-full cursor-pointer">
-                <div class="flex flex-col ml-2 -mt-1">
-                  <p class="radio-container-name pt-1">Individual</p>
+        <h5 class="input-section-subheading font-bold mb-4 mt-8">Billing  Details</h5>
+        <div class="input-field flex mb-4">
+            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Account Type</label></div>
+            <div class="w-form">
+                <div class="flex flex-col w-full rounded-lg radio-input">
+                    <label class="radio-container py-3 radio-input-border-b" for="fixed">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name pt-1">Individual</p>
+                        </div>
+                        <input type="radio" id="fixed" name="company" value="INDIVIDUAL" formControlName="company">
+                        <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container py-3" for="flexible">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name pt-1">Company</p>
+                        </div>
+                        <input type="radio" id="flexible" name="company" value="COMPANY" formControlName="company">
+                        <span class="radiomark"></span>
+                    </label>
                 </div>
-              </label>
-            </div>
-            <div class="flex pt-3 px-3">
-              <input
-                type="radio"
-                id="flexible"
-                name="company"
-                value="COMPANY"
-                class="cursor-pointer"
-                formControlName="company"
-
-              />
-               
-              <label for="flexible" class="w-full cursor-pointer">
-                <div class="flex flex-col ml-2 -mt-1">
-                  <p class="radio-container-name pt-1">Company</p>
-                </div>
-              </label>
-            </div>
-          </div>
         </div>
       </div>
       <div class="input-field flex mb-4">
@@ -128,8 +109,8 @@
             placeholder="Select location / venue of class"
             [formControlName]="'currency'"
           >
-            <option value="op1">option1</option>
-            <option value="op2">option2</option>
+          <option value="" disabled selected>Currency</option>
+            <option *ngFor="let currency of defaultCurrencies" [value]="currency.key">{{currency?.value}}</option>
           </select>
         </div>
       </div>

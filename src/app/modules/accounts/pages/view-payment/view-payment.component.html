@@ -27,7 +27,7 @@
         <div class="input-field flex mb-8">
             <div class=" w-44 label text-right mr-12"><label for="">Address</label></div>
             <div class="w-form">
-            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{payInfo?.address_line_1 + ' ' + payInfo?.address_line_2 + ' ' + payInfo?.city + ' ' + payInfo?.state + ' -' + ' ' + (payInfo?.postal_code ? payInfo?.postal_code : 'Pincode') || '---'}}</p>
+            <p  class="  not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">{{(payInfo?.address_line_1 || '') + ' ' + (payInfo?.address_line_2 || '') + ' ' + (payInfo?.city || '') + ' ' + (payInfo?.state || '') + ' -' + ' ' + (payInfo?.postal_code ? payInfo?.postal_code : 'Pincode') || '---'}}</p>
             </div>
         </div>
         <div class="input-field flex mb-8">

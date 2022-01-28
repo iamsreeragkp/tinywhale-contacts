@@ -14,14 +14,34 @@ import { getPayments } from '../../store/account.selectors';
   templateUrl: './add-payment.component.html',
   styleUrls: ['./add-payment.component.scss'],
 })
-export class AddPaymentComponent implements OnInit,OnDestroy {
-
+export class AddPaymentComponent implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   ngUnsubscribe = new Subject<any>();
   editMode = false;
-  paymentData$:Observable<any>;
-  isSaving=false;
-
+  paymentData$: Observable<any>;
+  isSaving = false;
+  defaultCurrencies = [
+    {
+      key: 'USD',
+      value: 'USD',
+    },
+    {
+      key: 'INR',
+      value: 'INR',
+    },
+    {
+      key: 'SGD',
+      value: 'SGD',
+    },
+    {
+      key: 'GBP',
+      value: 'GBP',
+    },
+    {
+      key: 'AUD',
+      value: 'AUD',
+    },
+  ];
 
   constructor(
     private authService: AuthService,
@@ -32,22 +52,22 @@ export class AddPaymentComponent implements OnInit,OnDestroy {
     public location: Location
   ) {
     this.paymentForm = this.createPaymentForm();
-    this.paymentData$=this.store.pipe(select(getPayments));
+    this.paymentData$ = this.store.pipe(select(getPayments));
     route.url
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      map(urlSegments => urlSegments.some(url => url?.path.includes('edit-payment')))
-    )
-    .subscribe(editMode => {
-      this.editMode = editMode;
-      if (editMode) {
-        this.zone.run(() => {
-          setTimeout(() => {
-            this.store.dispatch(getPayment());
-          }, 1000);
-        });
-      }
-    });
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        map(urlSegments => urlSegments.some(url => url?.path.includes('edit-payment')))
+      )
+      .subscribe(editMode => {
+        this.editMode = editMode;
+        if (editMode) {
+          this.zone.run(() => {
+            setTimeout(() => {
+              this.store.dispatch(getPayment());
+            }, 1000);
+          });
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -55,37 +75,36 @@ export class AddPaymentComponent implements OnInit,OnDestroy {
     this.subscriptions();
   }
 
-  subscriptions(){
+  subscriptions() {
     this.paymentData$
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      filter(val => !!val)
-    )
-    .subscribe(data => {
-      if (data) {
-        this.initializePaymentForm(data)
-      } else {
-        console.log(data?.error);
-      }
-    });
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        if (data) {
+          this.initializePaymentForm(data);
+        } else {
+          console.log(data?.error);
+        }
+      });
   }
 
-
-  initializePaymentForm(val?:any){
-    if(!val){
-      return
+  initializePaymentForm(val?: any) {
+    if (!val) {
+      return;
     }
-      this.paymentForm=new FormGroup({
-        company: new FormControl(val?.type),
-        companyname: new FormControl(val?.business_name),
-        addressline1: new FormControl(val?.address_line_1),
-        addressline2: new FormControl(val?.address_line_2),
-        postelcode: new FormControl(val?.postal_code),
-        city: new FormControl(val?.city),
-        state: new FormControl(val?.state),
-        country: new FormControl(val?.country),
-        currency: new FormControl(val?.default_currency),
-      })
+    this.paymentForm = new FormGroup({
+      company: new FormControl(val?.type),
+      companyname: new FormControl(val?.business_name),
+      addressline1: new FormControl(val?.address_line_1),
+      addressline2: new FormControl(val?.address_line_2),
+      postelcode: new FormControl(val?.postal_code),
+      city: new FormControl(val?.city),
+      state: new FormControl(val?.state),
+      country: new FormControl(val?.country),
+      currency: new FormControl(val?.default_currency),
+    });
   }
 
   createPaymentForm() {
@@ -103,7 +122,7 @@ export class AddPaymentComponent implements OnInit,OnDestroy {
   }
 
   onSubmitPayment() {
-    this.isSaving=true;
+    this.isSaving = true;
     const userData = this.authService.decodeUserToken();
     const {
       dashboardInfos: { businessId: business_id },
@@ -134,7 +153,7 @@ export class AddPaymentComponent implements OnInit,OnDestroy {
       beneficiary_id: '4343342323',
     };
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
-    this.isSaving=false;
+    this.isSaving = false;
     // this.router.navigate(['/']);
   }
 

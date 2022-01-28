@@ -128,25 +128,23 @@
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">What kind of schedule does this service
                     have?*</label></div>
             <div class="w-form">
-                <div class="flex flex-col w-full py-3 rounded-lg radio-container">
-                    <div class="flex pb-3 px-3 radio-container-border-b">
-                        <input type="radio" id="fixed" name="schedule" value="fixed" class="cursor-pointer">
-                          <label for="fixed" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Fixed</p>
-                                <p class="radio-container-descri">Predefined time slots in the week</p>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex pt-3 px-3">
-                        <input type="radio" id="flexible" name="schedule" value="flexible" class="cursor-pointer">
-                          <label for="flexible" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Flexible</p>
-                                <p class="radio-container-descri">As per client’s requirement</p>
-                            </div>
-                        </label>
-                    </div>
+                <div class="flex flex-col w-full rounded-lg radio-input">
+                    <label class="radio-container py-3 radio-input-border-b" for="fixed">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Fixed</p>
+                            <p class="radio-container-descri">Predefined time slots in the week</p>
+                        </div>
+                        <input type="radio" id="fixed" name="schedule" value="fixed">
+                        <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container py-3" for="flexible">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Flexible</p>
+                            <p class="radio-container-descri">As per client’s requirement</p>
+                        </div>
+                        <input type="radio" id="flexible" name="schedule" value="flexible">
+                        <span class="radiomark"></span>
+                    </label>
                 </div>
             </div>
         </div>
@@ -246,25 +244,23 @@
         <div class="input-field flex mb-4">
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">Visibility*</label></div>
             <div class="w-form">
-                <div class="flex flex-col w-full py-3 rounded-lg radio-container">
-                    <div class="flex pb-3 px-3 radio-container-border-b">
-                        <input type="radio" id="public" name="visibility" value="public" class="cursor-pointer">
-                          <label for="public" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Public</p>
-                                <p class="radio-container-descri">Anyone visiting my website</p>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex pt-3 px-3">
-                        <input type="radio" id="private" name="visibility" value="private" class="cursor-pointer">
-                          <label for="private" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Private</p>
-                                <p class="radio-container-descri">Clients who I share the link with</p>
-                            </div>
-                        </label>
-                    </div>
+                <div class="flex flex-col w-full rounded-lg radio-input">
+                    <label class="radio-container py-3 radio-input-border-b" for="public">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Public</p>
+                            <p class="radio-container-descri">Anyone visiting my website</p>
+                        </div>
+                        <input type="radio" id="public" name="visibility" value="public">
+                        <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container py-3" for="private">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Private</p>
+                            <p class="radio-container-descri">Clients who I share the link with</p>
+                        </div>
+                        <input type="radio" id="private" name="visibility" value="private">
+                        <span class="radiomark"></span>
+                    </label>
                 </div>
             </div>
         </div>
