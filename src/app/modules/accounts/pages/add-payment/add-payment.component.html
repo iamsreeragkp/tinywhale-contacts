@@ -1,23 +1,18 @@
 <div class="fixed z-50 left-0 top-0 fixed-header">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
     <header class="header leading-9 font-normal not-italic flex items-center">
-    <ng-container *ngIf="!editMode; else editTitle">
-      <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 3 </span>
-      <span class="text-4xl">Add Payment Info</span>
-    </ng-container>
-    <ng-template #editTitle>
-      <span class="text-4xl">Edit Payment Info</span>
-    </ng-template>
+      <ng-container *ngIf="!editMode; else editTitle">
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 3 </span>
+        <span class="text-4xl">Add Payment Info</span>
+      </ng-container>
+      <ng-template #editTitle>
+        <span class="text-4xl">Edit Payment Info</span>
+      </ng-template>
     </header>
     <div class="flex justify-between">
-      <button class="cancel-button text-base not-italic font-normal leading-6 mr-2" (click)="location.back()">Cancel</button>
+      <button class="noborder-button" (click)="location.back()">Cancel</button>
 
-      <button
-        class="save-button active-save w-48 rounded-full text-white text-center text-base font-normal not-italic py-3 ml-2"
-        (click)="onSubmitPayment()"
-      >
-        Save
-      </button>
+      <button class="primary-button w-48" (click)="onSubmitPayment()">Save</button>
     </div>
   </div>
 </div>
@@ -25,26 +20,38 @@
 <form [formGroup]="paymentForm">
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
-        <h5 class="input-section-subheading font-bold mb-4 mt-8">Billing  Details</h5>
-        <div class="input-field flex mb-4">
-            <div class=" w-44 label text-right mt-4 mr-6"><label for="">Account Type</label></div>
-            <div class="w-form">
-                <div class="flex flex-col w-full rounded-lg radio-input">
-                    <label class="radio-container py-3 radio-input-border-b" for="fixed">
-                        <div class="flex flex-col">
-                            <p class="text-primaryFont pt-0.5">Individual</p>
-                        </div>
-                        <input type="radio" id="fixed" name="company" value="INDIVIDUAL" formControlName="company">
-                        <span class="radiomark"></span>
-                    </label>
-                    <label class="radio-container py-3" for="flexible">
-                        <div class="flex flex-col">
-                            <p class="text-primaryFont pt-0.5">Company</p>
-                        </div>
-                        <input type="radio" id="flexible" name="company" value="COMPANY" formControlName="company">
-                        <span class="radiomark"></span>
-                    </label>
-                </div>
+      <h5 class="input-section-subheading font-bold mb-4 mt-8">Billing Details</h5>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Account Type</label></div>
+        <div class="w-form">
+          <div class="flex flex-col w-full rounded-lg radio-input">
+            <label class="radio-container py-3 radio-input-border-b" for="fixed">
+              <div class="flex flex-col">
+                <p class="text-primaryFont pt-0.5">Individual</p>
+              </div>
+              <input
+                type="radio"
+                id="fixed"
+                name="company"
+                value="INDIVIDUAL"
+                formControlName="company"
+              />
+              <span class="radiomark"></span>
+            </label>
+            <label class="radio-container py-3" for="flexible">
+              <div class="flex flex-col">
+                <p class="text-primaryFont pt-0.5">Company</p>
+              </div>
+              <input
+                type="radio"
+                id="flexible"
+                name="company"
+                value="COMPANY"
+                formControlName="company"
+              />
+              <span class="radiomark"></span>
+            </label>
+          </div>
         </div>
       </div>
       <div class="input-field flex mb-4">
@@ -60,43 +67,61 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Address*</label></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="Address Line 1"
-          formControlName="addressline1"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Address Line 1"
+            formControlName="addressline1"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="Address Line 2"
-          formControlName="addressline2"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Address Line 2"
+            formControlName="addressline2"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="Postal Code"
-          formControlName="postelcode"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Postal Code"
+            formControlName="postelcode"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="City"
-          formControlName="city"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="City"
+            formControlName="city"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="State"
-          formControlName="state"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="State"
+            formControlName="state"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input class="input w-full py-3 px-4 focus:outline-none" placeholder="Country"
-          formControlName="country"/>
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Country"
+            formControlName="country"
+          />
         </div>
       </div>
 
@@ -109,8 +134,10 @@
             placeholder="Select location / venue of class"
             [formControlName]="'currency'"
           >
-          <option value="" disabled selected>Currency</option>
-            <option *ngFor="let currency of defaultCurrencies" [value]="currency.key">{{currency?.value}}</option>
+            <option value="" disabled selected>Currency</option>
+            <option *ngFor="let currency of defaultCurrencies" [value]="currency.key">
+              {{ currency?.value }}
+            </option>
           </select>
         </div>
       </div>
@@ -126,7 +153,6 @@
         <!-- <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Account number/ID</p>     -->
       </div>
       <!-- <div class="input-field flex mb-4"> -->
-
       <!--Awaiting conformation-->
 
       <!-- <div class=" w-44 label text-right mt-4 mr-6"></div>
@@ -145,21 +171,21 @@
       <!-- </div> -->
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
-        <button
-          class="connect-bank rounded-full text-white px-8 h-12 not-italic font-baloo font-normal text-base leading-6 text-center"
-        >
-          Connect Bank Account
-        </button>
+        <div class="w-form">
+          <button class="primary-button w-56">Connect Bank Account</button>
+        </div>
       </div>
       <div class="input-field checkbox-input flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
-        <label
-          class="check-container not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
-          >It’s okay, I do not intend to collect online payments right now.
+        <div class="w-form">
+          <label
+            class="check-container not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+            >It’s okay, I do not intend to collect online payments right now.
 
-          <input type="checkbox" />
-          <span class="checkmark"></span>
-        </label>
+            <input type="checkbox" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
       </div>
     </div>
     <div class="detail-section w-5/12"></div>
