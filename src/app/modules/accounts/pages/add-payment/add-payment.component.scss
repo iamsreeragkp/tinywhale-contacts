@@ -6,7 +6,7 @@
   &-mask {
     width: calc(100% - 12rem);
     margin-left: 10rem;
-    background-color: #e5e5e5;
+    background-color: #f1f4f5;
     height: 3rem;
   }
 }
@@ -22,33 +22,6 @@
       color: #64c2bc;
     }
   }
-  .cancel-button {
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    color: #00a4b7;
-  }
-  .save-button {
-    background-color: #00a4b7;
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:disabled {
-      background-color: #d6e1e3;
-    }
-  }
-  .save-button-secondary {
-    background-color: #fff;
-    border: 2px solid #00a4b7;
-    color: #00a4b7;
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:disabled {
-      border-color: #d6e1e3;
-      color: #d6e1e3;
-    }
-  }
 }
 .add-info {
   margin-top: 4.75rem;
@@ -57,18 +30,6 @@
     border-bottom-right-radius: 20px;
     &-subheading {
       color: #154f5b;
-    }
-  }
-  .book-button {
-    background-color: #73959d;
-    border: 2px solid #73959d;
-    color: #fff;
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:hover {
-      background-color: #fff;
-      color: #73959d;
     }
   }
   .heading {
@@ -87,10 +48,6 @@
     font-size: 16px;
     line-height: 24px;
     color: #154f5b;
-  }
-  .add-another {
-    font-family: Baloo;
-    color: #00a4b7;
   }
 }
 

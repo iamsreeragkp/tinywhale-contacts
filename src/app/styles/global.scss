@@ -1,9 +1,9 @@
-@import "mixins";
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "swiper/scss";
-@import "swiper/scss/navigation";
+@import 'mixins';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
 
 a,
 .cp {
@@ -28,7 +28,7 @@ h2 {
     border-color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700 text-white;
+  @apply flex items-center justify-center h-12 rounded-full px-5  font-bold duration-500 text-white;
 }
 
 .secondary-button {
@@ -45,7 +45,19 @@ h2 {
     border-color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-700;
+  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-500;
+}
+
+.noborder-button {
+  color: #00a4b7;
+  &:hover {
+    color: #154f5b;
+  }
+  &:disabled {
+    color: #d6e1e3 !important;
+    @apply cursor-not-allowed;
+  }
+  @apply font-baloo  h-12 px-3 duration-500;
 }
 .header__title {
   text-align: center;
@@ -163,7 +175,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 .w-fit {

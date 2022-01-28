@@ -7,7 +7,7 @@
   &-mask {
     width: calc(100% - 12rem);
     margin-left: 10rem;
-    background-color: #e5e5e5;
+    background-color: #f1f4f5;
     height: 3rem;
   }
 }
@@ -226,7 +226,7 @@
 
     /* Create the checkmark/indicator (hidden when not checked) */
     .checkmark:after {
-      content: "";
+      content: '';
       position: absolute;
       display: none;
     }
@@ -247,7 +247,7 @@
   }
 }
 .tinytiptext::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0%;
   right: 100%;
