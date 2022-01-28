@@ -5,6 +5,16 @@
   &-placeholder {
     color: #73959d;
   }
+  &-hovervalue {
+    &:hover {
+      .value-hover {
+        color: #00a4b7;
+      }
+      .right-arrow {
+        display: block;
+      }
+    }
+  }
   .green-text {
     color: #44b081;
   }

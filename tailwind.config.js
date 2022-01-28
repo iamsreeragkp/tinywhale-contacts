@@ -9,7 +9,7 @@ module.exports = {
         montserrat: 'Montserrat'
       },
       fontSize: {
-        thirtyPx: '30px',
+        tworem: '2rem',
         fourtyPx: '40px',
       },
       // bagroundColor:{
