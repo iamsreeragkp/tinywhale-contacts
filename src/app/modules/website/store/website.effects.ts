@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, of } from 'rxjs';
+import { catchError, map, switchMap, of, mergeMap } from 'rxjs';
+import { getDashboard } from '../../root/store/root.actions';
 
 import { WebsiteService } from '../website.service';
 import { addBusiness, addBusinessStatus, getBusiness, getBusinessStatus } from './website.actions';
@@ -14,7 +15,10 @@ export class WebsiteEffects {
       ofType(addBusiness),
       switchMap(({ businessData }) =>
         this.websiteService.addBusinessInfo(businessData).pipe(
-          map(response => addBusinessStatus({ response: response, status: true })),
+          mergeMap(response => [
+            addBusinessStatus({ response: response, status: true }),
+            getDashboard(),
+          ]),
           catchError(error =>
             of(
               addBusinessStatus({

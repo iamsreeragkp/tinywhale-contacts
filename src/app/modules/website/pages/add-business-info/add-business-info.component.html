@@ -129,7 +129,7 @@
               <input class="input py-3 px-4 mb-4" placeholder="Enter name of Certificate / License"
                 formControlName="recognition_name" />
               <input class="input py-3 px-4 mb-4" placeholder="Expiry date (MM/DD/YY)"
-                *ngIf="item.get('recognition_type')?.value === 'LICENSE'" formControlName="expiry_date" />
+                *ngIf="item.get('recognition_type')?.value !== 'AWARD'" formControlName="expiry_date" />
               <input type="file" accept="image/*" #licenceLogo style="display: none"
                 (change)="handleFileInputLicence($event, i)" />
               <div class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center"

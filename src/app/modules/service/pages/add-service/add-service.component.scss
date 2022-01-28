@@ -199,7 +199,7 @@
 
     /* Create the checkmark/indicator (hidden when not checked) */
     .checkmark:after {
-      content: "";
+      content: '';
       position: absolute;
       display: none;
     }
@@ -270,7 +270,7 @@
 
     /* Create the indicator (the dot/circle - hidden when not checked) */
     .radiomark:after {
-      content: "";
+      content: '';
       position: absolute;
       display: none;
     }
@@ -292,39 +292,11 @@
   }
 }
 .tinytiptext::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0%;
   right: 100%;
   border-width: 27px 24px;
   border-style: solid;
   border-color: transparent #eaf3f6 transparent transparent;
-}
-
-.custom-select {
-  &-box {
-    border: 2px solid #d6e1e3;
-    border-radius: 8px;
-    min-height: 3rem;
-    &-valueContainer {
-      width: calc(100% - 1.25rem);
-    }
-    &-chip {
-      border: 1px solid #d6e1e3;
-      border-radius: 8px;
-      img {
-        width: 10px;
-      }
-    }
-  }
-  &-placeholder {
-    color: #a2a3af;
-  }
-  &-item {
-    &:last-child {
-      .custom-select-item-div {
-        border-bottom: 0px !important;
-      }
-    }
-  }
 }
