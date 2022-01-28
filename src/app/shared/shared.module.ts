@@ -25,6 +25,7 @@ import { NoResultViewWebsiteSvgComponent } from './svgs/no-result-view-website/n
 import { RouterModule } from '@angular/router';
 import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
 import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
@@ -51,6 +52,7 @@ import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
     NoResultViewWebsiteSvgComponent,
     OpenedeyeComponent,
     AwaitingComponent,
+    DropdownComponent,
   ],
   exports: [
     CommonModule,
@@ -79,6 +81,7 @@ import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
     NoResultViewWebsiteSvgComponent,
     OpenedeyeComponent,
     AwaitingComponent,
+    DropdownComponent,
   ],
 })
 export class SharedModule {}

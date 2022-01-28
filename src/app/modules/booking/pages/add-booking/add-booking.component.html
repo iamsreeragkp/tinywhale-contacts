@@ -20,7 +20,8 @@
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
         <div class="input-field flex mb-4">
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
-            <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter customer’s email id" />
+            <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
+                    placeholder="Enter customer’s email id" />
             </div>
         </div>
         <div class="input-field flex mb-4">
@@ -35,8 +36,7 @@
         </div>
         <div class="input-field flex mb-4">
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
-            <div class="w-form"><select class="input py-3 px-4 w-full" type="select"
-                    placeholder="Enter service name">
+            <div class="w-form"><select class="input py-3 px-4 w-full" type="select" placeholder="Enter service name">
                     <option value="">option1</option>
                     <option value="">option2</option>
                 </select>
@@ -49,8 +49,7 @@
         </div>
         <div class="input-field flex mb-4">
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">Slot*</label></div>
-            <div class="w-form"><select class="input py-3 px-4 w-full" type="select"
-                    placeholder="Select Slot">
+            <div class="w-form"><select class="input py-3 px-4 w-full" type="select" placeholder="Select Slot">
                     <option value="">option1</option>
                     <option value="">option2</option>
                 </select>
@@ -59,25 +58,23 @@
         <div class="input-field flex mb-4">
             <div class=" w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
             <div class="w-form">
-                <div class="flex flex-col w-full py-3 rounded-lg radio-container">
-                    <div class="flex pb-3 px-3 radio-container-border-b">
-                        <input type="radio" id="online" name="payment" value="online" class="cursor-pointer">
-                          <label for="online" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Online</p>
-                                <p class="radio-container-descri">Email payment link</p>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex pt-3 px-3">
-                        <input type="radio" id="cash" name="payment" value="cash" class="cursor-pointer">
-                          <label for="cash" class="w-full cursor-pointer">
-                            <div class="flex flex-col ml-2 -mt-1">
-                                <p class="radio-container-name">Off Platform</p>
-                                <p class="radio-container-descri">Cash / Direct Transfer</p>
-                            </div>
-                        </label>
-                    </div>
+                <div class="flex flex-col w-full rounded-lg radio-input">
+                    <label class="radio-container py-3 radio-input-border-b" for="online">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Online</p>
+                            <p class="radio-container-descri">Email payment link</p>
+                        </div>
+                        <input type="radio" id="online" name="payment" value="online">
+                        <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container py-3" for="cash">
+                        <div class="flex flex-col">
+                            <p class="radio-container-name">Off Platform</p>
+                            <p class="radio-container-descri">Cash / Direct Transfe</p>
+                        </div>
+                        <input type="radio" id="cash" name="payment" value="cash">
+                        <span class="radiomark"></span>
+                    </label>
                 </div>
                 <div class="w-full p-3 mt-3 rounded-lg input-section-info">💡 Upon registration a settled invoice email
                     will be the sent to the walk-in guest.

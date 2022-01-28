@@ -46,7 +46,7 @@ const routesNames = {
     settings:'settings',
     addPayment:"add-payment",
     viewPayment:"view-payment",
-
+    editPayment:"edit-payment"
   }
 };
 
@@ -88,6 +88,7 @@ export const RoutesConfig = {
       settings:`/${basePaths.account}/${routesNames.account.settings}`,
       addPayment: `/${basePaths.account}/${routesNames.account.addPayment}`,
       viewPayment: `/${basePaths.account}/${routesNames.account.viewPayment}`,
+      editPayment:`/${basePaths.account}/${routesNames.account.editPayment}`
     }
   },
 };
