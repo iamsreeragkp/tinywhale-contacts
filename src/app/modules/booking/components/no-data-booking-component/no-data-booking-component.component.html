@@ -1,15 +1,19 @@
 <div class="w-full website-page bg-white p-8 flex flex-col items-center justify-center">
   <app-no-data-view-website></app-no-data-view-website>
-  <h1 class="title not-italic font-normal text-2xl leading-6 mb-0 mt-12">All bookings of you services will be listed
-    here
+  <h1 class="title not-italic font-normal text-2xl leading-6 mb-0 mt-12">
+    All bookings of you services will be listed here
   </h1>
-  <p class="content font-normal not-italic text-base mt-3">Share your services and get bookings
-    or register new bookings for your customers</p>
+  <p class="content font-normal not-italic text-base mt-3">
+    Share your services and get bookings or register new bookings for your customers
+  </p>
   <div class="flex justify-evenly mt-8">
-    <!-- <button class=" template-button rounded-full mr-2 py-3 px-8 not-italic bg-white font-normal text-base">See
-      Website
-      Template</button> -->
-    <button class="getstarted rounded-full ml-2 py-3 px-14 not-italic text-white font-normal text-base"
-      [routerLink]="['../add-booking']" routerLinkActive="router-link-active">Register A Walk-in</button>
+    <!-- <button class="secondary-button w-64">See Website Template</button> -->
+    <button
+      class="primary-button w-52 ml-3"
+      [routerLink]="['../add-booking']"
+      routerLinkActive="router-link-active"
+    >
+      Register A Walk-in
+    </button>
   </div>
 </div>

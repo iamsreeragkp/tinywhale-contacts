@@ -6,7 +6,7 @@
   &-mask {
     width: calc(100% - 12rem);
     margin-left: 10rem;
-    background-color: #e5e5e5;
+    background-color: #f1f4f5;
     height: 3rem;
   }
   .copy-bg {
@@ -164,7 +164,7 @@
   }
 }
 .tinytiptext::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0%;
   right: 100%;
