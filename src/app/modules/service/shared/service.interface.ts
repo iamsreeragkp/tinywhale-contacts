@@ -59,7 +59,7 @@ export interface PricePackage {
 
 export interface TimeRange {
   class_time_range_id?: number | null;
-  day_of_week?: number | null;
+  day_of_week: string;
   start_time?: string | null;
   end_time?: string | null;
 }
@@ -80,11 +80,11 @@ export enum LocationType {
 }
 
 export enum WeekDay {
-  Sunday = 1,
-  Monday = 2,
-  Tuesday = 3,
-  Wednesday = 4,
-  Thursday = 5,
-  Friday = 6,
-  Saturday = 7,
+  Sunday = '1',
+  Monday = '2',
+  Tuesday = '3',
+  Wednesday = '4',
+  Thursday = '5',
+  Friday = '6',
+  Saturday = '7',
 }

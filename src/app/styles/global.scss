@@ -14,6 +14,23 @@ h2 {
   margin-bottom: 2rem;
 }
 
+body {
+  ::-webkit-scrollbar {
+    width: 18px;
+    &-track {
+      background-color: transparent;
+      // box-shadow: inset 0 0 5px #00a4b7;
+    }
+    &-thumb {
+      width: 18px;
+      border-radius: 13px;
+      background-clip: padding-box;
+      border: 5px solid transparent;
+      background-color: #00a4b7;
+    }
+  }
+}
+
 .primary-button {
   background-color: #00a4b7;
   border: 2px solid #00a4b7;

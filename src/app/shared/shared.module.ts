@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { HeroLoadingComponent } from './components/hero-loading/hero-loading.component';
-import { HeroCardComponent } from './components/hero-card/hero-card.component';
 import { LogoComponent } from './svgs/logo/logo.component';
 import { BasicinfoComponent } from './svgs/basic info/basicinfo.component';
 import { AddserviceComponent } from './svgs/addservice/addservice.component';
@@ -26,16 +24,14 @@ import { RouterModule } from '@angular/router';
 import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
 import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
-
+import { NumberDirective } from './directives/number.directive';
 
 @NgModule({
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule,],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,
-    HeroLoadingComponent,
-    HeroCardComponent,
     LogoComponent,
     BasicinfoComponent,
     AddserviceComponent,
@@ -54,6 +50,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     OpenedeyeComponent,
     AwaitingComponent,
     DropdownComponent,
+    NumberDirective,
   ],
   exports: [
     CommonModule,
@@ -63,8 +60,6 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,
     LazyLoadImageModule,
-    HeroLoadingComponent,
-    HeroCardComponent,
     LogoComponent,
     BasicinfoComponent,
     AddserviceComponent,
@@ -83,6 +78,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     OpenedeyeComponent,
     AwaitingComponent,
     DropdownComponent,
+    NumberDirective,
   ],
 })
 export class SharedModule {}

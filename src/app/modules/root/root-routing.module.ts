@@ -19,11 +19,6 @@ const rootRoutes: Routes = [
         redirectTo: RoutesConfig.routes.home,
       },
       {
-        path: RoutesConfig.basePaths.hero,
-        loadChildren: () => import('../hero/hero.module').then(m => m.HeroModule),
-        canActivate: [AuthGuard],
-      },
-      {
         path: RoutesConfig.basePaths.website,
         loadChildren: () => import('../website/website.module').then(m => m.WebsiteModule),
         canActivate: [AuthGuard],
@@ -40,7 +35,7 @@ const rootRoutes: Routes = [
       },
       {
         path: RoutesConfig.basePaths.account,
-        loadChildren:() => import('../accounts/account.module').then(m=>m.AccountModule),
+        loadChildren: () => import('../accounts/account.module').then(m => m.AccountModule),
         canActivate: [AuthGuard],
       },
       {
