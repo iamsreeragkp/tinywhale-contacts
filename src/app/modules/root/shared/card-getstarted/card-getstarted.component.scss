@@ -1,47 +1,44 @@
-.dashboard{
-  background-color:#E5E5E5;
+.dashboard {
+  background-color: #e5e5e5;
 }
-.header{
-  .title{
-      font-family: Baloo!important;
-      font-size: 40px;
-      color: #154F5B;
-
+.header {
+  .title {
+    font-family: Baloo !important;
+    font-size: 40px;
+    color: #154f5b;
   }
-  .content{
-      font-family: Poppins !important;
-      line-height: 1.6;
-      color: #154F5B;
+  .content {
+    font-family: Poppins !important;
+    line-height: 1.6;
+    color: #154f5b;
   }
-  .template-button{
-      font-family: Baloo!important;
-     color: #12B5C1;
-     border: 2px solid #12B5C1;
+  .template-button {
+    font-family: Baloo !important;
+    color: #12b5c1;
+    border: 2px solid #12b5c1;
   }
-  .publish-button{
-      font-family: Baloo!important;
-      background: #D6E1E3;
+  .publish-button {
+    font-family: Baloo !important;
+    background: #d6e1e3;
   }
   //<!--- When Publish button is active, then use this Style --!>
-  .button-active{
-  font-family: Baloo!important;
-     background: #154F5B;
-     cursor: pointer; 
-   }
+  .button-active {
+    font-family: Baloo !important;
+    background: #154f5b;
+    cursor: pointer;
+  }
 }
 
 .card {
   border-radius: 20px;
-  box-shadow: 0px 0px 20px #dce1e3;
   min-height: 100%;
-  .complete-icon{
-   top:0;
-   left:-3px;
+  .complete-icon {
+    top: 0;
+    left: -3px;
   }
-  .warning-icon{
-    top:0;
-    left:-3px;
-
+  .warning-icon {
+    top: 0;
+    left: -3px;
   }
   .card-title {
     padding-top: 1.92rem;
@@ -63,51 +60,32 @@
 
   .card-content {
     font-family: Poppins;
-    line-height:1.63rem;
+    line-height: 1.63rem;
     color: #154f5b;
   }
-  .add-button{
+  .completedetails-button {
     font-family: Baloo;
-    background: #12B5C1;
-    width: 109px;
-  }
-  .edit-button{
-    font-family: Baloo;
-     color: #16ADB6;
-     border: 3px solid #12B5C1;
-     width: 109px;
-  }
-  .completedetails-button{
-font-family: Baloo;
-background: #12B5C1;
-width: 231px;
-
+    background: #12b5c1;
+    width: 231px;
   }
 }
-@media (min-width:1024px) and (max-width:1200px) {
-  .card{
-  .number{
-    font-size: 70px !important;
-  }
-  .title{
-    font-size: 25px !important;
-    line-height: 2rem !important;
-  }
-  .add-button{
-    font-size: 12px !important;
-  }
-  .edit-button{
-    font-size: 12px !important;
-  }
-  .completedetails-button{
-    font-size: 12px !important;
-    width: 200px;
-  }
+@media (min-width: 1024px) and (max-width: 1200px) {
+  .card {
+    .number {
+      font-size: 70px !important;
+    }
+    .title {
+      font-size: 25px !important;
+      line-height: 2rem !important;
+    }
+    .completedetails-button {
+      font-size: 12px !important;
+      width: 200px;
+    }
   }
 }
-@media (min-width:1201px) and (max-width:1400px) {
+@media (min-width: 1201px) and (max-width: 1400px) {
   .card-content {
     font-size: 15px !important;
   }
-
 }

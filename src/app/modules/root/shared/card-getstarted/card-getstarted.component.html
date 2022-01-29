@@ -6,24 +6,16 @@
       We're super excited to transform your business in 1 - 2 - 3!
     </p>
   </div>
-  <div>
-    <button
-      class="template-button leading-6 font-normal not-italic bg-white text-base py-2 px-6 rounded-full m-1"
-    >
-      See Website Template
-    </button>
-    <button
-      class="publish-button button-active leading-6 not-italic text-white text-base font-normal py-2 px-6 m-1 rounded-full opacity-50 cursor-not-allowed"
-    >
-      Publish Your Website
-    </button>
+  <div class="flex">
+    <button class="secondary-button h-10 px-6 mr-2">See Website Template</button>
+    <button class="gray-button h-10 ml-2 px-8">Publish Your Website</button>
   </div>
 </div>
 
 <div class="pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
   <!--Card 1-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white mr-2 mt-2 mb-2">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.businessInfo?.isStarted && dashboardInfos?.businessInfo?.isCompleted"
@@ -53,7 +45,7 @@
           Create a stunning and professional website in minutes
         </p>
         <button
-          class="primary-button w-28 mt-auto"
+          class="primary-button w-28 h-10 mt-auto"
           *ngIf="
             !dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
           "
@@ -62,14 +54,14 @@
           Add
         </button>
         <button
-          class="edit-button mt-auto bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full"
+          class="secondary-button mt-auto h-10 w-28"
           *ngIf="dashboardInfos?.businessInfo?.isCompleted"
           [routerLink]="'../website/edit-business-info'"
         >
           Edit
         </button>
         <button
-          class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
           *ngIf="
             dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
           "
@@ -110,7 +102,7 @@
           Display bookable services and packages with scheduling options
         </p>
         <button
-          class="primary-button w-28 mt-auto"
+          class="primary-button w-28 h-10 mt-auto"
           *ngIf="
             !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
           "
@@ -118,13 +110,13 @@
           Add
         </button>
         <button
-          class="edit-button mt-auto bg-white text-base text-center not-italic font-normal px-10 py-1 rounded-full"
+          class="secondary-button w-28 h-10 mt-auto"
           *ngIf="dashboardInfos?.serviceInfo?.isCompleted"
         >
           Edit
         </button>
         <button
-          class="mt-auto completedetails-button text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
           *ngIf="
             dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
           "
@@ -161,7 +153,7 @@
           We've partnered with Rapyd to make your payments seamless
         </p>
         <button
-          class="primary-button w-28 mt-auto"
+          class="primary-button w-28 mt-auto h-10"
           *ngIf="
             !dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
           "
@@ -170,14 +162,14 @@
           Add
         </button>
         <button
-          class="edit-button mt-auto bg-white text-base not-italic font-normal px-10 py-1 rounded-full"
+          class="secondary-button mt-auto w-28 h-10"
           *ngIf="dashboardInfos?.paymentInfo?.isCompleted"
           [routerLink]="'../account/edit-payment'"
         >
           Edit
         </button>
         <button
-          class="completedetails-button mt-auto text-center text-white text-base font-normal not-italic px-10 py-2 rounded-full"
+          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
           *ngIf="
             dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
           "

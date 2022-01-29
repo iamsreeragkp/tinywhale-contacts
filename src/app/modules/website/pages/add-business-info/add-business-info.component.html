@@ -8,7 +8,7 @@
       <span class="text-4xl">Edit Business Info</span>
     </ng-template>
   </header>
-  <div class="flex justify-between">
+  <div class="flex justify-between items-center">
     <button class="noborder-button" (click)="location.back()">Cancel</button>
     <button class="primary-button w-48 ml-3" (click)="onSubmitBusiness()" [disabled]="isSaving">
       {{ isUploadingImages ? 'Uploading images' : 'Save' }}
