@@ -4,7 +4,7 @@
         class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span> <span class="text-4xl">Register A
         Walk-In</span> </header>
     <div class="flex justify-between">
-      <button class="noborder-button">Cancel</button>
+      <button class="noborder-button" (click)="location.back()">Cancel</button>
       <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">Save
         & Add Another</button>
       <button class="primary-button w-52 ml-3" [routerLink]="['../status-booking']">Save
@@ -48,6 +48,8 @@
         <div class="w-form">
           <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
             formControlName="date" />
+            <!-- <ngx-datepicker formControlName="date" ></ngx-datepicker> -->
+
         </div>
       </div>
       <div class="input-field flex mb-4">
