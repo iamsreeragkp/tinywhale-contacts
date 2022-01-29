@@ -105,8 +105,7 @@
       background: #f6f9fa;
       border: 2px dashed #d6e1e3;
       border-radius: 8px;
-      width: 120px;
-      height: 120px;
+      @apply h-28 w-28;
     }
     .input-award {
       background: #f6f9fa;
@@ -137,7 +136,7 @@
   }
 }
 .tinytiptext::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0%;
   right: 100%;

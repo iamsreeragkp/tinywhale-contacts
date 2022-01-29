@@ -24,17 +24,6 @@ export class WebsiteService {
     });
   }
 
-  uploadImage(images: any) {
-    return this.http.post(`${this.businessApi}/utils/signedurl/put`, images);
-  }
-
-  uploadImageToS3(url: any, file: any) {
-    console.log('url', url);
-
-    // const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.put(url, file);
-  }
-
   getBusiness() {
     console.log('reached');
     const userData = this.authService.decodeUserToken();
