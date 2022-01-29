@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { HeroLoadingComponent } from './components/hero-loading/hero-loading.component';
-import { HeroCardComponent } from './components/hero-card/hero-card.component';
 import { LogoComponent } from './svgs/logo/logo.component';
 import { BasicinfoComponent } from './svgs/basic info/basicinfo.component';
 import { AddserviceComponent } from './svgs/addservice/addservice.component';
@@ -34,8 +32,6 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     SpinnerComponent,
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,
-    HeroLoadingComponent,
-    HeroCardComponent,
     LogoComponent,
     BasicinfoComponent,
     AddserviceComponent,
@@ -63,8 +59,6 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     LoadingPlaceholderComponent,
     CapitalizeFirstPipe,
     LazyLoadImageModule,
-    HeroLoadingComponent,
-    HeroCardComponent,
     LogoComponent,
     BasicinfoComponent,
     AddserviceComponent,
