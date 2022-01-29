@@ -1,7 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { UtilsHelperService } from './modules/core/services/utils-helper.service';
-import { StorageService } from './shared/services/storage.service';
 
 declare const Modernizr: any;
 
@@ -12,17 +11,12 @@ declare const Modernizr: any;
 export class AppComponent implements OnInit {
   isOnline: boolean;
 
-  constructor(
-    private storageService: StorageService,
-    @Inject(DOCUMENT) doc: Document,
-    @Inject(LOCALE_ID) locale: string
-  ) {
+  constructor(@Inject(DOCUMENT) doc: Document, @Inject(LOCALE_ID) locale: string) {
     this.isOnline = navigator.onLine;
   }
 
   ngOnInit() {
     this.checkBrowser();
-    // this.setLogin(); // setToken
   }
 
   setLogin() {
