@@ -21,8 +21,8 @@
       <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full">
     </button>
   </div>
-  <div class="absolute top-full left-0 w-full z-10 max-h-56 overflow-y-auto" *ngIf="open">
-    <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow-lg rounded">
+  <div class="absolute top-full left-0 w-full z-10 border border-gray-200 border-solid shadow-lg rounded max-h-56 overflow-y-auto custom-select-drop" *ngIf="open">
+    <div class="bg-white w-fit min-w-full flex flex-col">
 
       <!-- multi select -->
       <div class="w-full checkbox-input mt-2 px-4" *ngIf="_multiSelect">
@@ -38,6 +38,24 @@
 
       <!-- single select with radio -->
       <div class="flex flex-col w-full rounded-lg radio-input" *ngIf="!_multiSelect && _showRadio">
+        <label class="radio-container py-3 radio-input-border-b" [for]="_label + i"
+          *ngFor="let option of _options; let i = index">
+          <div class="flex flex-col">
+            <p class="text-primaryFont">{{option[_displayKey]}}</p>
+          </div>
+          <input type="radio" [attr.id]="_label + i" [value]="true"
+            [ngModel]="selectedOption?.[_idKey] === option[_idKey]" (ngModelChange)="selectUnSelectValue(option)">
+          <span class="radiomark"></span>
+        </label>
+        <label class="radio-container py-3 radio-input-border-b" [for]="_label + i"
+          *ngFor="let option of _options; let i = index">
+          <div class="flex flex-col">
+            <p class="text-primaryFont">{{option[_displayKey]}}</p>
+          </div>
+          <input type="radio" [attr.id]="_label + i" [value]="true"
+            [ngModel]="selectedOption?.[_idKey] === option[_idKey]" (ngModelChange)="selectUnSelectValue(option)">
+          <span class="radiomark"></span>
+        </label>
         <label class="radio-container py-3 radio-input-border-b" [for]="_label + i"
           *ngFor="let option of _options; let i = index">
           <div class="flex flex-col">
