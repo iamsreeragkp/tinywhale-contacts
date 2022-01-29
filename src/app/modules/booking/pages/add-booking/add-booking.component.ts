@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import { IBookingState } from '../../store/booking.reducers';
 @Component({
   selector: 'app-add-booking',
   templateUrl: './add-booking.component.html',
@@ -7,9 +13,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class AddBookingComponent implements OnInit {
   bookingForm!: FormGroup;
-
-
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private store: Store<IBookingState>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private zone: NgZone,
+    public location: Location
+  ) {
     this.bookingForm = this.createBookingForm();
   }
 
@@ -28,7 +39,8 @@ export class AddBookingComponent implements OnInit {
   }
 
   onBooking() {
-    const { email, phonenumber, customername, service, date, slot, payment } = this.bookingForm.value;
+    const { email, phonenumber, customername, service, date, slot, payment } =
+      this.bookingForm.value;
     const bookingPayload = {
       email,
       phonenumber,
@@ -38,7 +50,6 @@ export class AddBookingComponent implements OnInit {
       slot,
       payment,
     };
-    console.log('boobking payload',bookingPayload);
-
+    console.log('boobking payload', bookingPayload);
   }
 }
