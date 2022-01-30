@@ -10,10 +10,12 @@ import { NoDataBookingComponentComponent } from './components/no-data-booking-co
 import { NoResultBookingComponentComponent } from './components/no-result-booking-component/no-result-booking-component.component';
 import { TableBookingComponentComponent } from './components/table-booking-component/table-booking-component.component';
 import { BookingStoreModule } from './store/booking-store.module';
+import { FormsModule } from '@angular/forms';
+import { StatusBookingComponent } from './pages/status-booking/status-booking.component';
 
 @NgModule({
-  imports: [CommonModule, BookingRoutingModule, SharedModule,BookingStoreModule],
-  declarations: [BookingComponent, AddBookingComponent, ViewBookingComponent, NoDataBookingComponentComponent, TableBookingComponentComponent, NoResultBookingComponentComponent],
+  imports: [CommonModule, BookingRoutingModule, SharedModule,BookingStoreModule,FormsModule],
+  declarations: [BookingComponent, AddBookingComponent, ViewBookingComponent, NoDataBookingComponentComponent, TableBookingComponentComponent, NoResultBookingComponentComponent,StatusBookingComponent],
   providers: [RootService],
 })
 export class BookingModule {}

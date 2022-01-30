@@ -25,7 +25,7 @@ registerLocaleData(localeEs, 'es');
     AppRoutingModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    NgxChartsModule
+    NgxChartsModule,
   ],
   declarations: [AppComponent],
   providers: [

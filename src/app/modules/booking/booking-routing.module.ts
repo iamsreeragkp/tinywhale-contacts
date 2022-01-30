@@ -19,6 +19,7 @@ const bookingRoutes: Routes = [
       { path: bookingRoutesConfig.addBooking, component: AddBookingComponent },
       { path: bookingRoutesConfig.viewBooking, component: ViewBookingComponent },
       { path: bookingRoutesConfig.statusBooking, component: StatusBookingComponent },
+      { path: bookingRoutesConfig.editBooking, component: AddBookingComponent }
     ],
   },
 ];
