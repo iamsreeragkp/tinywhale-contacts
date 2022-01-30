@@ -46,12 +46,15 @@ export class DropdownComponent {
   _emitId = false;
   // Options
   @Input() set options(val: OptionsType) {
-    this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
-      ...option,
-      dropdown_field_data: {
-        selected: false,
-      },
-    }));
+    if(val?.length){
+
+      this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
+        ...option,
+        dropdown_field_data: {
+          selected: false,
+        },
+      }));
+    }
   }
   // Whether multi select or not
   @Input() set multiSelect(val: boolean) {

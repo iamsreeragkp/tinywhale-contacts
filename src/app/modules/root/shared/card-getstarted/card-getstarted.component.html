@@ -103,6 +103,7 @@
         </p>
         <button
           class="primary-button w-28 h-10 mt-auto"
+          [disabled]="!dashboardInfos?.businessInfo?.isCompleted"
           *ngIf="
             !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
           "
@@ -154,6 +155,7 @@
         </p>
         <button
           class="primary-button w-28 mt-auto h-10"
+          [disabled]="!dashboardInfos?.serviceInfo?.isCompleted"
           *ngIf="
             !dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
           "
