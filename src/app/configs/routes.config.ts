@@ -42,6 +42,7 @@ const routesNames = {
     addBooking: 'add-booking',
     viewBooking: 'view-booking',
     statusBooking: 'status-booking',
+    editBooking:'edit-booking/:id'
   },
   account: {
     home: 'home',
@@ -83,6 +84,7 @@ export const RoutesConfig = {
       booking: `/${basePaths.booking}/${routesNames.booking.addBooking}`,
       viewBooking: `/${basePaths.booking}/${routesNames.booking.viewBooking}`,
       statusBooking: `/${basePaths.booking}/${routesNames.booking.statusBooking}`,
+      editBooking:`/${basePaths.booking}/${routesNames.booking.editBooking}`
     },
     account: {
       home: `/${basePaths.account}/${routesNames.account.home}`,

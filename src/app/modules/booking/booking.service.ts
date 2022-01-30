@@ -12,11 +12,16 @@ export class BookingService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   addBooking(payload: any) {
-    return this.http.post(`${this.bookingApi}/booking/create`, payload);
+    return this.http.post(`${this.bookingApi}/booking/order`, payload);
   }
 
-  getBookingById(bookingId: any) {
-    return this.http.get(`${this.bookingApi}/booking/${bookingId}`);
+  getBookingById(orderId: any) {
+    const userData = this.authService.decodeUserToken();
+    const {
+      dashboardInfos: { businessId },
+    } = userData;
+    const params = new HttpParams().set('business_id', businessId);
+    return this.http.get(`${this.bookingApi}/booking/order/${orderId}`,{params:params});
   }
 
   getAllBookings() {
@@ -24,7 +29,8 @@ export class BookingService {
     const {
       dashboardInfos: { businessId },
     } = userData;
-    return this.http.get(`${this.bookingApi}/booking/${businessId}`);
+    const params = new HttpParams().set('business_id', businessId);
+    return this.http.get(`${this.bookingApi}/booking/order`,{params:params});
   }
 
   getServiceDropdown() {
