@@ -1,30 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { OptionsType } from 'src/app/shared/interfaces/dropdown.interface';
-import { timeOptions } from 'src/app/shared/utils';
-import { ServiceService } from '../../service.service';
+import { convert24HrsFormatToAmPm, timeOptions } from 'src/app/shared/utils';
 import {
+  LocationType,
   PricePackage,
   Product,
   ProductPhoto,
   TimeRange,
   WeekDay,
 } from '../../shared/service.interface';
+import { addService, getService, initService } from '../../store/service.actions';
+import { getAddServiceStatus, getServiceStatus } from '../../store/service.selectors';
 
 @Component({
   selector: 'app-add-service',
   templateUrl: './add-service.component.html',
   styleUrls: ['./add-service.component.scss'],
 })
-export class AddServiceComponent implements OnInit {
+export class AddServiceComponent implements OnInit, OnDestroy {
   productForm: FormGroup = new FormGroup({});
   locationOptions: OptionsType = [
-    { id: 'CUSTOMER_LOCATION', type: 'CUSTOMER_LOCATION', label: "Customer's Location" },
-    { id: 'ONLINE', type: 'ONLINE', label: 'Online (Zoom - connect)' },
+    {
+      location_id: LocationType.CUSTOMER_LOCATION,
+      location_type: LocationType.CUSTOMER_LOCATION,
+      location_name: "Customer's Location",
+    },
+    {
+      location_id: LocationType.ONLINE,
+      location_type: LocationType.ONLINE,
+      location_name: 'Online (Zoom - connect)',
+    },
   ];
   // generating time options
   timeOptions = timeOptions;
@@ -41,16 +53,40 @@ export class AddServiceComponent implements OnInit {
     label: weekDay,
     selected: false,
   }));
-  ngUnsubscriber = new Subject<void>();
+  ngUnsubscribe = new Subject<void>();
   startTimeUnsubscriber$ = new Subject<void>();
-
+  editMode = false;
+  createAnother = false;
+  autoSaving = false;
+  addServiceStatus$: Observable<{ status: boolean; error?: string; response?: any } | undefined>;
+  productData$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   constructor(
     private store: Store<IAppState>,
     private _fb: FormBuilder,
-    private productService: ServiceService,
-    private utilsService: UtilsHelperService
+    private utilsService: UtilsHelperService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private zone: NgZone,
+    public location: Location
   ) {
     this.initForms();
+    this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
+    this.productData$ = this.store.pipe(select(getServiceStatus));
+    route.params
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        map(params => params['id']),
+        filter(val => !!val)
+      )
+      .subscribe(id => {
+        console.log(id);
+        this.editMode = true;
+        this.zone.run(() => {
+          setTimeout(() => {
+            this.store.dispatch(getService({ product_id: id }));
+          }, 100);
+        });
+      });
   }
 
   ngOnInit(): void {
@@ -58,12 +94,69 @@ export class AddServiceComponent implements OnInit {
   }
 
   subscriptions() {
+    this.productFormSubscriptions();
+    this.productData$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        if (data?.status) {
+          this.initForms(data.product);
+          this.productFormSubscriptions();
+        } else {
+          console.log(data?.error);
+        }
+      });
+    this.addServiceStatus$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(status => !!status)
+      )
+      .subscribe(data => {
+        if (data?.status) {
+          if (this.autoSaving) {
+            this.autoSaving = false;
+            if (!this.editMode) {
+              this.router.navigate(['../edit-service', data?.response?.product_id], {
+                relativeTo: this.route,
+                replaceUrl: true,
+              });
+            }
+          } else if (this.createAnother) {
+            if (this.editMode) {
+              this.router.navigate(['../../add-service'], {
+                relativeTo: this.route,
+                replaceUrl: true,
+              });
+            } else {
+              this.initForms();
+              this.expireSubscriptions();
+              this.subscriptions();
+            }
+          } else {
+            this.location.back();
+          }
+        } else {
+          console.log(data?.error);
+        }
+      });
+  }
+
+  productFormSubscriptions() {
+    this.productForm.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe), debounceTime(5000))
+      .subscribe(() => {
+        this.autoSaving = true;
+        this.saveProductForm();
+      });
     this.productForm
       .get('duration')
-      ?.valueChanges.pipe(takeUntil(this.ngUnsubscriber))
+      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(duration => {
         this.timeRanges.controls.forEach(timeRange => this.updateEndTime(timeRange, duration));
       });
+    this.subscribeStartTimes();
   }
 
   initForms(val?: Product) {
@@ -75,11 +168,9 @@ export class AddServiceComponent implements OnInit {
       currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null],
       photos: this._fb.array(
-        val?.photos?.length
-          ? val.photos.map(photo => this.createPhotos(photo))
-          : Array.from({ length: 3 }, _ => this.createPhotos())
+        Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
       ),
-      location: [val?.class?.business_location ?? null],
+      location: [this.createLocation(val)],
       price_package: this._fb.array(
         val?.class?.class_packages?.length
           ? val.class.class_packages.map(pkg => this.createPricePackages(pkg))
@@ -94,8 +185,26 @@ export class AddServiceComponent implements OnInit {
       duration: [val?.class?.duration_in_minutes ?? null],
     });
     if (val?.product_id) {
-      this.productForm.addControl('product_id', this._fb.control([val.product_id]));
+      this.productForm.addControl('product_id', this._fb.control(val.product_id));
     }
+  }
+
+  createLocation(val?: Product): any {
+    if (val?.class?.location_type) {
+      if (val?.class?.location_type === 'BUSINESS_LOCATION') {
+        return {
+          location_id: val?.class?.location_id,
+          location_type: val?.class?.location_type,
+          location_name: val?.class?.business_location?.location_name,
+          address: val?.class?.business_location?.address,
+        };
+      } else {
+        return this.locationOptions.find(
+          location => location['location_type'] === val?.class?.location_type
+        );
+      }
+    }
+    return null;
   }
 
   createPhotos(val?: ProductPhoto) {
@@ -114,7 +223,7 @@ export class AddServiceComponent implements OnInit {
       day_of_week: [val?.day_of_week ?? null, [Validators.pattern(/^[1-7]$/)]],
       start_time: [val?.start_time ?? ''],
       end_time: [val?.end_time ?? ''],
-      end_time_label: [{ value: this.createEndTimeLabel(val?.end_time), disabled: true }],
+      end_time_label: [{ value: convert24HrsFormatToAmPm(val?.end_time), disabled: true }],
     });
   }
 
@@ -125,25 +234,7 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  createEndTimeLabel(val?: string | null) {
-    if (!val) {
-      return '';
-    }
-    const [endHour, minute] = val.match(/\d{2}/g)!;
-    let amPm = 'AM';
-    let hour = endHour;
-    if (+endHour >= 12) {
-      amPm = 'PM';
-    }
-    if (+endHour > 12) {
-      hour = (+endHour - 12).toString().padStart(2, '0');
-    } else if (+endHour === 0) {
-      hour = '12';
-    }
-    return `${hour}:${minute} ${amPm}`;
-  }
-
-  addRemoveTimeRange(dayOfWeek: string, selected: boolean) {
+  addRemoveTimeRange(dayOfWeek: WeekDay, selected: boolean) {
     const weekDay = this.weekDayOptions.find(weekDay => weekDay.value === dayOfWeek)!;
     weekDay.selected = selected;
     if (weekDay.selected) {
@@ -157,12 +248,12 @@ export class AddServiceComponent implements OnInit {
     }
   }
 
-  addTimeRangeToWeekDay(dayOfWeek: string) {
+  addTimeRangeToWeekDay(dayOfWeek: WeekDay) {
     this.timeRanges.push(this.createTimeRanges({ day_of_week: dayOfWeek }));
     this.subscribeStartTimes();
   }
 
-  deleteTimeRangeFromWeekday(dayOfWeek: string, index: number) {
+  deleteTimeRangeFromWeekday(dayOfWeek: WeekDay, index: number) {
     this.timeRanges.removeAt(index);
     if (!this.getTimeSlotsOfWeekday(dayOfWeek).length) {
       this.addRemoveTimeRange(dayOfWeek, false);
@@ -198,7 +289,7 @@ export class AddServiceComponent implements OnInit {
       );
     timeRange
       .get('end_time_label')
-      ?.patchValue(this.createEndTimeLabel(timeRange.get('end_time')?.value));
+      ?.patchValue(convert24HrsFormatToAmPm(timeRange.get('end_time')?.value));
   }
 
   addPricePackage() {
@@ -207,9 +298,15 @@ export class AddServiceComponent implements OnInit {
 
   async handleFileInput(event: Event, index: number) {
     try {
-      const [file, url] = await this.utilsService.handleFileInput(event, 'image/');
+      const [file, url, fileKey] = await this.utilsService.handleFileInput(
+        event,
+        'product_photos',
+        'image/',
+        true
+      );
       this.productPhotos.at(index).get('photo_file')?.patchValue(file);
       this.productPhotos.at(index).get('photo_data_url')?.patchValue(url);
+      this.productPhotos.at(index).get('photo_url')?.patchValue(fileKey);
     } catch (ex) {
       console.log(ex);
     }
@@ -228,8 +325,52 @@ export class AddServiceComponent implements OnInit {
     this.pricePackages.removeAt(index);
   }
 
-  saveProductForm(form: FormGroup) {
-    console.log(this.productForm.value);
+  expireSubscriptions() {
+    this.ngUnsubscribe.next();
+  }
+
+  saveProductForm(createAnother = false) {
+    this.createAnother = createAnother;
+    const {
+      product_type,
+      product_id,
+      title,
+      description,
+      price,
+      currency,
+      visibility,
+      location,
+      photos,
+      price_package,
+      time_ranges,
+      capacity,
+      duration,
+    } = this.productForm.value;
+    let { location_id, location_name, location_type, address } = location ?? {};
+    if (location_type !== LocationType.BUSINESS_LOCATION) {
+      location_id = undefined;
+    }
+    const payload = {
+      product_id,
+      product_type,
+      title,
+      description,
+      price,
+      currency,
+      visibility,
+      location: {
+        location_id,
+        location_name,
+        location_type,
+        address,
+      },
+      photos: photos.filter((photo: ProductPhoto) => photo.photo_url),
+      price_package: price_package.filter((pkg: PricePackage) => pkg.price && pkg.no_of_sessions),
+      time_ranges: time_ranges.filter((tR: TimeRange) => tR.end_time && tR.start_time),
+      capacity,
+      duration,
+    };
+    this.store.dispatch(addService({ productData: payload }));
   }
 
   get productPhotos() {
@@ -254,8 +395,14 @@ export class AddServiceComponent implements OnInit {
   }
 
   get previewablePricePackages() {
-    return this.pricePackages.controls.filter(
-      pricePackage => pricePackage.get('price')?.value && pricePackage.get('no_of_sessions')?.value
+    return this.pricePackages.value.filter(
+      (pricePackage: PricePackage) => pricePackage?.price && pricePackage?.no_of_sessions
     );
+  }
+
+  ngOnDestroy(): void {
+    this.expireSubscriptions();
+    this.ngUnsubscribe.complete();
+    this.store.dispatch(initService());
   }
 }

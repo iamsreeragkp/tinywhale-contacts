@@ -1,0 +1,35 @@
+.heading {
+  font-family: Baloo;
+  color: #154f5b;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: -1px;
+}
+
+.detail-section-subheading {
+  color: #154f5b;
+}
+
+.book-button {
+  background-color: #73959d;
+  border: 2px solid #73959d;
+  color: #fff;
+  font-family: Baloo;
+  font-stretch: normal;
+  letter-spacing: normal;
+  &:hover {
+    background-color: #fff;
+    color: #73959d;
+  }
+}
+
+.text {
+  font-family: poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #154f5b;
+}

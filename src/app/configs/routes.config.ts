@@ -28,7 +28,8 @@ const routesNames = {
   service: {
     home: 'home',
     addService: 'add-service',
-    viewService: 'view-service',
+    editService: 'edit-service/:id',
+    viewService: 'view-service/:id',
   },
   booking: {
     home: 'home',

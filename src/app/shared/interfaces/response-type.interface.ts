@@ -4,3 +4,7 @@ export interface ResponseType {
   data?: any;
   errors?: any[];
 }
+
+export interface SignedUrlResponse {
+  signedURL: { [k: string]: string };
+}
