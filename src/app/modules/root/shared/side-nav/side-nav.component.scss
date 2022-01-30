@@ -30,15 +30,17 @@
       fill: #12b5c1 !important;
     }
   }
+  .nav-link.active {
+    .active-border {
+      display: block;
+      background: #12b5c1;
+    }
+    .color-fill {
+      fill: #12b5c1 !important;
+    }
+  }
+  .nav-link.router-link-disabled {
+    cursor: default;
+  }
 }
 // <!--Active item Condition --!>
-
-.active {
-  .active-border {
-    display: block;
-    background: #12b5c1;
-  }
-  .color-fill {
-    fill: #12b5c1 !important;
-  }
-}

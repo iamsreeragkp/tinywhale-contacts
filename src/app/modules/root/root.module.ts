@@ -12,9 +12,10 @@ import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
 import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
+import { GettingStartedModule } from '../getting-started/getting-started.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RootRoutingModule, RootStoreModule],
+  imports: [CommonModule, SharedModule, RootRoutingModule, RootStoreModule, GettingStartedModule],
   declarations: [
     HomePageComponent,
     Error404PageComponent,
@@ -23,7 +24,7 @@ import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-li
     SideNavComponent,
     CardGetstartedComponent,
     DashboardComponent,
-    RouterLinkDisabledDirective
+    RouterLinkDisabledDirective,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],

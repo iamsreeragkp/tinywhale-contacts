@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { PricePackage } from '../../shared/service.interface';
+import { PricePackage } from '../../../service/shared/service.interface';
 
 @Component({
   selector: 'app-preview-product',

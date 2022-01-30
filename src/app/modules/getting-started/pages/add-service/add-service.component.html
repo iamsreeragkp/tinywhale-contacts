@@ -2,8 +2,15 @@
   <div class="fixed z-50 fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
       <header class="header leading-9 font-normal not-italic flex items-center">
-        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
-        <span class="text-4xl">Add a Service</span>
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3" *ngIf="isGettingStarted && !editMode"> 2
+        </span>
+        <span class="text-4xl">
+          {{
+          editMode
+          ? (productForm?.get('title')?.value ?? 'Edit a Service')
+          : 'Add a Service'
+          }}
+        </span>
       </header>
       <div class="flex justify-between items-center">
         <button class="noborder-button" type="button" (click)="location.back()">Cancel</button>

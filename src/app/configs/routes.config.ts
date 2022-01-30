@@ -3,6 +3,7 @@ import { InjectionToken } from '@angular/core';
 export const ROUTES_CONFIG = new InjectionToken('routes.config');
 
 const basePaths = {
+  home: 'home',
   auth: 'auth',
   website: 'website',
   service: 'service',
@@ -11,7 +12,12 @@ const basePaths = {
 };
 
 const routesNames = {
-  home: 'home',
+  home: {
+    dashboard: 'dashboard',
+    addBusinessInfo: 'add-business-info',
+    addService: 'add-service',
+    addPayment: 'add-payment',
+  },
   error404: '404',
   auth: {
     signUp: 'sign-up',
@@ -50,7 +56,12 @@ export const RoutesConfig = {
   basePaths,
   routesNames,
   routes: {
-    home: `/${routesNames.home}`,
+    home: {
+      dashboard: `/${basePaths.home}/${routesNames.home.dashboard}`,
+      addBusinessInfo: `/${basePaths.home}/${routesNames.home.addBusinessInfo}`,
+      addService: `/${basePaths.home}/${routesNames.home.addService}`,
+      addPayment: `/${basePaths.home}/${routesNames.home.addPayment}`,
+    },
     error404: `/${routesNames.error404}`,
     auth: {
       signUp: `/${basePaths.auth}/${routesNames.auth.signUp}`,

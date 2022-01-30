@@ -5,8 +5,13 @@ import { RoutesConfig } from '../../configs/routes.config';
 import { Error404PageComponent } from './pages/error404-page/error404-page.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RootComponent } from './root.component';
+import { AddBusinessInfoComponent } from '../website/pages/add-business-info/add-business-info.component';
+import { AddServiceComponent } from '../getting-started/pages/add-service/add-service.component';
+import { AddPaymentComponent } from '../getting-started/pages/add-payment/add-payment.component';
+import { DashboardComponent } from './shared/dashboard/dashboard.component';
 
 const routesNames = RoutesConfig.routesNames;
+const homeRoutes = RoutesConfig.routes.home;
 
 const rootRoutes: Routes = [
   {
@@ -16,7 +21,7 @@ const rootRoutes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: RoutesConfig.routes.home,
+        redirectTo: RoutesConfig.basePaths.home,
       },
       {
         path: RoutesConfig.basePaths.website,
@@ -39,10 +44,18 @@ const rootRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: routesNames.home,
+        path: RoutesConfig.basePaths.home,
         component: HomePageComponent,
-        pathMatch: 'full',
-        canActivate: [AuthGuard],
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: homeRoutes.dashboard },
+          { path: RoutesConfig.routesNames.home.dashboard, component: DashboardComponent },
+          {
+            path: RoutesConfig.routesNames.home.addBusinessInfo,
+            component: AddBusinessInfoComponent,
+          },
+          { path: RoutesConfig.routesNames.home.addService, component: AddServiceComponent },
+          { path: RoutesConfig.routesNames.home.addPayment, component: AddPaymentComponent },
+        ],
       },
       { path: routesNames.error404, component: Error404PageComponent },
     ],

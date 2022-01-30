@@ -5,25 +5,20 @@ import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountService } from './account.service';
-import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
 import { ViewPaymentComponent } from './pages/view-payment/view-payment.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AccountStoreModule } from './store/account-store.module';
-
+import { GettingStartedModule } from '../getting-started/getting-started.module';
 
 @NgModule({
-  declarations: [
-    AccountComponent,
-    SettingsComponent,
-    AddPaymentComponent,
-    ViewPaymentComponent,
-  ],
+  declarations: [AccountComponent, SettingsComponent, ViewPaymentComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,
     SharedModule,
-    AccountStoreModule
+    GettingStartedModule,
+    AccountStoreModule,
   ],
-  providers:[AccountService]
+  providers: [AccountService],
 })
-export class AccountModule { }
+export class AccountModule {}
