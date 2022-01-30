@@ -7,7 +7,7 @@
       <button class="noborder-button" (click)="location.back()">Cancel</button>
       <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">Save
         & Add Another</button>
-      <button class="primary-button w-52 ml-3" [routerLink]="['../status-booking']">Save
+      <button class="primary-button w-52 ml-3" (click)="onBooking()" [routerLink]="['../status-booking']">Save
         & Exit</button>
     </div>
   </div>
@@ -24,7 +24,7 @@
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
-        <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
+        <div class="w-form"><input type="number" class="input w-full py-3 px-4 focus:outline-none"
             placeholder="Enter customer’s phone number" formControlName="phonenumber"></div>
       </div>
       <div class="input-field flex mb-4">
@@ -34,13 +34,8 @@
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
-        <div class="w-form"><select class="input py-3 px-4 w-full" type="select" placeholder="Enter service name"
-            formControlName="service">
-            <option value="" disabled selected>Service</option>
-
-            <option value="op1">option1</option>
-            <option value="op2">option2</option>
-          </select>
+        <div class="w-form">
+          <app-dropdown [options]="classData" placeholder="Enter service name" [displayKey]="'title'" [emitId]="true" [idKey]="'product_id'" formControlName="service"></app-dropdown>
         </div>
       </div>
       <div class="input-field flex mb-4">
@@ -48,18 +43,16 @@
         <div class="w-form">
           <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
             formControlName="date" />
-          <!-- <ngx-datepicker formControlName="date" ></ngx-datepicker> -->
-
+            <!-- <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker> -->
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Slot*</label></div>
-        <div class="w-form"><select class="input py-3 px-4 w-full" type="select" placeholder="Select Slot"
+        <div class="w-form">
+          <select class="input py-3 px-4 w-full" type="select" placeholder="Select Slot"
             formControlName="slot">
-            <option value="" disabled selected>Slot</option>
-
-            <option value="1">option1</option>
-            <option value="2">option2</option>
+            <option hidden value="" disabled selected>Select Slot</option>
+            <option *ngFor="let timeSlot of times" >{{timeSlot?.start_time}}-{{timeSlot?.end_time}}</option>
           </select>
         </div>
       </div>
@@ -72,7 +65,7 @@
                 <p class="radio-container-name">Online</p>
                 <p class="radio-container-descri">Email payment link</p>
               </div>
-              <input type="radio" id="online" name="payment" value="online" formControlName="payment">
+              <input type="radio" id="online" name="payment" value="ONLINE" formControlName="payment">
               <span class="radiomark"></span>
             </label>
             <label class="radio-container py-3" for="cash">
@@ -80,7 +73,7 @@
                 <p class="radio-container-name">Off Platform</p>
                 <p class="radio-container-descri">Cash / Direct Transfe</p>
               </div>
-              <input type="radio" id="cash" name="payment" value="cash" formControlName="payment">
+              <input type="radio" id="cash" name="payment" value="OFFLINE" formControlName="payment">
               <span class="radiomark"></span>
             </label>
           </div>

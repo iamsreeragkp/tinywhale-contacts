@@ -11,6 +11,7 @@ import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarte
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
+import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 
 @NgModule({
   imports: [CommonModule, SharedModule, RootRoutingModule, RootStoreModule],
@@ -22,6 +23,7 @@ import { RootStoreModule } from './store/root-store.module';
     SideNavComponent,
     CardGetstartedComponent,
     DashboardComponent,
+    RouterLinkDisabledDirective
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],
