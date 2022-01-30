@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
-import { ProductPayload } from './shared/service.interface';
+import { ProductPayload, ServiceListFilter } from './shared/service.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,18 +18,21 @@ export class ServiceService {
     const {
       dashboardInfos: { businessId: business_id },
     } = userData;
-    return this.http.post(`${this.api}/dashboard/business-info`, {
+    return this.http.post(`${this.api}/dashboard/service`, {
       ...payload,
       business_id,
     });
   }
 
-  getService() {
-    console.log('reached');
-    const userData = this.authService.decodeUserToken();
+  getService(productId: number) {
+    return this.http.get(`${this.api}/dashboard/service/${productId}`);
+  }
+
+  getServiceList(filters: ServiceListFilter) {
     const {
-      dashboardInfos: { businessId },
-    } = userData;
-    return this.http.get(`${this.api}/dashboard/business-info/${businessId}`);
+      dashboardInfos: { businessId: business_id },
+    } = this.authService.decodeUserToken();
+    const params = new HttpParams({ fromObject: { ...filters, business_id } });
+    return this.http.get(`${this.api}/dashboard/service`, { params });
   }
 }

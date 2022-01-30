@@ -24,7 +24,6 @@ import {
 } from '../../store/website.interface';
 import { IWebsiteState } from '../../store/website.reducers';
 import { getAddBusinessStatus, getBusinessStatus } from '../../store/website.selectors';
-import { WebsiteService } from '../../website.service';
 
 @Component({
   selector: 'app-add-business-info',
@@ -73,7 +72,6 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private store: Store<IWebsiteState>,
-    private websiteService: WebsiteService,
     private utilsHelper: UtilsHelperService,
     private router: Router,
     private route: ActivatedRoute,
@@ -93,7 +91,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           this.zone.run(() => {
             setTimeout(() => {
               this.store.dispatch(getBusiness());
-            }, 1000);
+            }, 100);
           });
         }
       });
@@ -233,7 +231,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   async handleFileInputLogo(event: Event) {
     try {
-      const [file, url] = await this.utilsHelper.handleFileInput(event, 'image/');
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/');
       this.fileToUploadLogo = file;
       this.logoImageUrl = url;
     } catch (ex) {
@@ -244,6 +242,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   deleteLogo() {
     this.logoImageUrl = '';
     this.fileToUploadLogo = null;
+    this.businessInfoForm.get('logo')?.patchValue(null);
   }
 
   // photos
@@ -253,7 +252,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   async handleFileInput(event: Event, index: number) {
     try {
-      const [file, url] = await this.utilsHelper.handleFileInput(event, 'image/');
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'business_photos',
+        'image/'
+      );
       this.fileToUploadPhoto[index] = file;
       this.arrayPhotosImageUrl[index] = url;
     } catch (ex) {
@@ -263,6 +266,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   deletePhoto(index: number) {
     this.arrayPhotosImageUrl[index] = '';
     this.fileToUploadPhoto[index] = null;
+    this.photos.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   // Licence or awarsds file
@@ -271,7 +275,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   async handleFileInputLicence(event: Event, i: number) {
     try {
-      const [file, url] = await this.utilsHelper.handleFileInput(event, 'image/');
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'recognitions',
+        'image/'
+      );
       this.fileToUploadLicence[i] = file;
       this.arrayLicenceImageUrl[i] = url;
     } catch (ex) {
@@ -282,13 +290,18 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   deleteLicense(index: number) {
     this.arrayLicenceImageUrl[index] = '';
     this.fileToUploadLicence[index] = null;
+    this.recognitions.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
   arrayTestmonialImageUrl: (string | undefined)[] = [];
   async handleFileTestimonial(event: Event, i: number) {
     try {
-      const [file, url] = await this.utilsHelper.handleFileInput(event, 'image/');
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'testimonial',
+        'image/'
+      );
       this.fileToUploadTestimonial[i] = file;
       this.arrayTestmonialImageUrl[i] = url;
     } catch (ex) {
@@ -299,6 +312,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   deleteTestimonial(index: number) {
     this.arrayTestmonialImageUrl[index] = '';
     this.fileToUploadTestimonial[index] = null;
+    this.testimonials.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   getBase64(event: any) {
@@ -326,7 +340,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       dashboardInfos: { customUsername: domain_name },
     } = userData;
     this.fileNames = [];
-    if (this.logoImageUrl) {
+    if (this.fileToUploadLogo) {
       const logoKey = `${domain_name}/logo/${Date.now()}_${this.fileToUploadLogo?.name}`;
       this.fileNames.push({ type: 'logo', name: logoKey });
       this.businessInfoForm.get('logo')?.patchValue(logoKey);

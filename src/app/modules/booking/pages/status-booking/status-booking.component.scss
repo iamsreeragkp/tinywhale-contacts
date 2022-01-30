@@ -1,11 +1,8 @@
 .fixed-header {
-  margin-left: 10rem;
-  margin-top: 2rem;
-  padding-right: 2.5rem;
-  width: calc(100% - 10rem);
+  width: calc(100% - 12.5rem);
   // width: calc(100% - 10rem - 18px);
   &-mask {
-    width: calc(100% - 12rem);
+    width: calc(100% - 12.5rem);
     margin-left: 10rem;
     background-color: #f1f4f5;
     height: 3rem;
@@ -63,7 +60,7 @@
   }
 }
 .add-info {
-  margin-top: 4.75rem;
+  padding-top: 4.75rem;
   .detail-section {
     background-color: #eaf3f6;
     border-bottom-right-radius: 20px;

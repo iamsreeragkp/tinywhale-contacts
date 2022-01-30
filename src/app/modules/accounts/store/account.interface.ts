@@ -42,3 +42,11 @@ export interface AccountInfo {
   };
   message: string;
 }
+
+export interface BusinessLocation {
+  location_id: number;
+  business_id: number;
+  location_name?: string | null;
+  address?: string | null;
+  created_at?: Date;
+}

@@ -1,21 +1,23 @@
-<div class="website-page-heading bg-white pt-6 pb-6 px-8 flex justify-between">
-  <header class="header leading-9 font-normal not-italic flex items-center">
-    <ng-container *ngIf="!editMode; else editTitle">
-      <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
-      <span class="text-4xl">Add Business Info</span>
-    </ng-container>
-    <ng-template #editTitle>
-      <span class="text-4xl">Edit Business Info</span>
-    </ng-template>
-  </header>
-  <div class="flex justify-between items-center">
-    <button class="noborder-button" (click)="location.back()">Cancel</button>
-    <button class="primary-button w-48 ml-3" (click)="onSubmitBusiness()" [disabled]="isSaving">
-      {{ isUploadingImages ? 'Uploading images' : 'Save' }}
-    </button>
+<div class="fixed z-50 fixed-header">
+  <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
+    <header class="header leading-9 font-normal not-italic flex items-center">
+      <ng-container *ngIf="!editMode; else editTitle">
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
+        <span class="text-4xl">Add Business Info</span>
+      </ng-container>
+      <ng-template #editTitle>
+        <span class="text-4xl">Edit Business Info</span>
+      </ng-template>
+    </header>
+    <div class="flex justify-between items-center">
+      <button class="noborder-button" (click)="location.back()">Cancel</button>
+      <button class="primary-button w-48 ml-3" (click)="onSubmitBusiness()" [disabled]="isSaving">
+        {{ isUploadingImages ? 'Uploading images' : 'Save' }}
+      </button>
+    </div>
   </div>
 </div>
-<hr class="line" />
+<div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
 <form [formGroup]="businessInfoForm">
   <div class="add-info flex w-full">
     <div class="font-poppins input-section w-8/12 bg-white p-8 flex flex-col relative">

@@ -1,0 +1,32 @@
+<div class="heading">💡 Preview</div>
+<!-- use below code when no image uploaded -->
+<div class="flex justify-center items-center bg-white w-full h-64 rounded-3xl mt-6 overflow-hidden"
+  [ngClass]="{'bg-gray-200': !photo }">
+  <img src="./../../../../../assets/images/defualt-image.svg" alt="" *ngIf="!photo" />
+  <img [src]="photo" alt="" class="h-full w-full object-cover" *ngIf="photo">
+</div>
+<!-- use below code when image uploaded
+      <div class="flex justify-center items-center w-full h-64 rounded-3xl bg-gray-200 mt-4">
+          <img src="./../../../../../assets/images/defualt-image.svg" alt="" class="w-full h-full object-cover">
+      </div> -->
+<h5 class="detail-section-subheading font-bold my-3">
+  {{ title ?? 'Title' }}
+</h5>
+<p class="text mb-3">
+  {{ description ?? 'Description' }}
+</p>
+<p class="text mb-3" *ngIf="price">$
+  {{ price }} for 1 session
+  {{ duration ? '(' + duration + ' minutes)' : '' }}
+</p>
+<p class="text mb-3" *ngIf="!price">Price per session</p>
+<p class="text mb-3" *ngIf="!packages?.length">Package Price for N sessions</p>
+<p class="text mb-3" *ngFor="let pricePackage of packages">
+  $ {{ pricePackage?.price }} for
+  {{ pricePackage?.no_of_sessions }} sessions
+  {{ duration ? '(' + duration + ' minutes each)' : '' }}
+</p>
+<!-- <p class="text mb-3">$ 380 for 6 session (1 hour each)</p> -->
+<button type="button" class="book-button flex justify-center items-center h-12 w-full duration-700 rounded-full">
+  Book Now
+</button>

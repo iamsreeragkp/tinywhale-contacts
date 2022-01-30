@@ -126,7 +126,9 @@ export class DropdownComponent {
 
   set value(val: any) {}
 
-  writeValue(val: OptionsType | OptionType) {}
+  writeValue(val: OptionsType | OptionType) {
+    this.setPreviousValues(val);
+  }
 
   registerOnChange(fn: () => any) {
     this._onChange = fn;
@@ -183,7 +185,7 @@ export class DropdownComponent {
     this._onChange(this.selectedValues());
     this._onTouched();
     if (!this._multiSelect) {
-      this.open = !this.open;
+      this.open = false;
     }
   }
 

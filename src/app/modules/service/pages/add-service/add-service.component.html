@@ -1,14 +1,15 @@
-<form [formGroup]="productForm" (ngSubmit)="saveProductForm($event)">
-  <div class="fixed z-50 left-0 top-0 fixed-header">
+<form [formGroup]="productForm" (ngSubmit)="$event.preventDefault(); saveProductForm()">
+  <div class="fixed z-50 fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
       <header class="header leading-9 font-normal not-italic flex items-center">
         <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
         <span class="text-4xl">Add a Service</span>
       </header>
       <div class="flex justify-between items-center">
-        <button class="noborder-button">Cancel</button>
-        <button class="secondary-button mr-3 ml-6 w-52">Save & Add Another</button>
-        <button class="primary-button w-48 ml-3">Save</button>
+        <button class="noborder-button" type="button" (click)="location.back()">Cancel</button>
+        <button class="secondary-button mr-3 ml-6 w-52" type="button" (click)="saveProductForm(true)">Save & Add
+          Another</button>
+        <button class="primary-button w-48 ml-3" type="submit">Save</button>
         <!-- <div class="relative mx-2"><button class="primary-button">
                     Share
                 </button>
@@ -223,7 +224,8 @@
           <div class=" w-44 label text-right mt-4 mr-6"><label for="">Location*</label></div>
           <div class="w-form">
             <app-dropdown [showRadio]="true" [addCustomValue]="true" [placeholder]="'Select location / venue of class'"
-              [label]="'location'" [options]="locationOptions" formControlName="location"></app-dropdown>
+              [label]="'location'" [displayKey]="'location_name'" [idKey]="'location_id'" [options]="locationOptions"
+              formControlName="location"></app-dropdown>
           </div>
         </div>
         <div class="input-field flex mb-4">
@@ -283,7 +285,7 @@
                 <p class="radio-container-name">Public</p>
                 <p class="radio-container-descri">Anyone visiting my website</p>
               </div>
-              <input type="radio" id="public" formControlName="visibility" value="public" />
+              <input type="radio" id="public" formControlName="visibility" value="PUBLIC" />
               <span class="radiomark"></span>
             </label>
             <label class="radio-container py-3" for="private">
@@ -291,7 +293,7 @@
                 <p class="radio-container-name">Private</p>
                 <p class="radio-container-descri">Clients who I share the link with</p>
               </div>
-              <input type="radio" id="private" formControlName="visibility" value="private" />
+              <input type="radio" id="private" formControlName="visibility" value="PRIVATE" />
               <span class="radiomark"></span>
             </label>
           </div>
@@ -299,40 +301,12 @@
       </div>
     </div>
     <div class="detail-section w-5/12">
-      <div class="px-8 py-8 relative">
-        <div class="heading">💡 Preview</div>
-        <!-- use below code when no image uploaded -->
-        <div class="flex justify-center items-center bg-white w-full h-64 rounded-3xl mt-4 overflow-hidden"
-          [ngClass]="{'bg-gray-200': !photoForPreview }">
-          <img src="./../../../../../assets/images/defualt-image.svg" alt="" *ngIf="!photoForPreview" />
-          <img [src]="photoForPreview" alt="" class="h-full w-full object-cover" *ngIf="photoForPreview">
-        </div>
-        <!-- use below code when image uploaded
-            <div class="flex justify-center items-center w-full h-64 rounded-3xl bg-gray-200 mt-4">
-                <img src="./../../../../../assets/images/defualt-image.svg" alt="" class="w-full h-full object-cover">
-            </div> -->
-        <h5 class="detail-section-subheading font-bold my-3">
-          {{ productForm.get('title')?.value ?? 'Title' }}
-        </h5>
-        <p class="text mb-3">
-          {{ productForm.get('description')?.value ?? 'Description' }}
-        </p>
-        <p class="text mb-3" *ngIf="productForm.get('price')?.value">$
-          {{ productForm.get('price')?.value }} for 1 session
-          {{ productForm.get('duration')?.value ? '(' + productForm.get('duration')?.value + ' minutes)' : '' }}
-        </p>
-        <p class="text mb-3" *ngIf="!productForm.get('price')?.value">Price per session</p>
-        <p class="text mb-3" *ngIf="!previewablePricePackages?.length">Package Price for N sessions</p>
-        <p class="text mb-3" *ngFor="let pricePackage of previewablePricePackages">
-          $ {{ pricePackage.get('price')?.value }} for
-          {{ pricePackage.get('no_of_sessions')?.value }} sessions
-          {{ productForm.get('duration')?.value ? '(' + productForm.get('duration')?.value + ' minutes each)' : '' }}
-        </p>
-        <!-- <p class="text mb-3">$ 380 for 6 session (1 hour each)</p> -->
-        <button type="button"
-          class="book-button flex justify-center items-center h-12 w-full duration-700 rounded-full">
-          Book Now
-        </button>
+      <div class="px-8 py-8">
+        <app-preview-product [title]="productForm.get('title')?.value"
+          [description]="productForm.get('description')?.value" [photo]="photoForPreview"
+          [duration]="productForm.get('duration')?.value" [price]="productForm.get('price')?.value"
+          [packages]="previewablePricePackages">
+        </app-preview-product>
       </div>
     </div>
   </div>
