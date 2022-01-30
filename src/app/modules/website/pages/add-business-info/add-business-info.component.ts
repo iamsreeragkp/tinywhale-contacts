@@ -67,6 +67,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   editMode = false;
   closeToPunchline = false;
   closeToPhoto = false;
+  isGettingStarted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -95,6 +96,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           });
         }
       });
+    this.isGettingStarted = this.router.url.split('/').includes('home');
   }
 
   ngOnInit(): void {

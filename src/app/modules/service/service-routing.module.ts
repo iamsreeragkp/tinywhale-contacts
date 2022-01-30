@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ServiceListComponent } from './pages/service-list/service-list.component';
 import { RoutesConfig } from '../../configs/routes.config';
-import { AddServiceComponent } from './pages/add-service/add-service.component';
+import { AddServiceComponent } from '../getting-started/pages/add-service/add-service.component';
 import { ServiceComponent } from './service.component';
 import { ViewServiceComponent } from './pages/view-service/view-service.component';
 

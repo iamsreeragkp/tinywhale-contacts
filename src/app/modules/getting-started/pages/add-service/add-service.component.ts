@@ -15,9 +15,9 @@ import {
   ProductPhoto,
   TimeRange,
   WeekDay,
-} from '../../shared/service.interface';
-import { addService, getService, initService } from '../../store/service.actions';
-import { getAddServiceStatus, getServiceStatus } from '../../store/service.selectors';
+} from '../../../service/shared/service.interface';
+import { addService, getService, initService } from '../../../service/store/service.actions';
+import { getAddServiceStatus, getServiceStatus } from '../../../service/store/service.selectors';
 
 @Component({
   selector: 'app-add-service',
@@ -58,6 +58,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   editMode = false;
   createAnother = false;
   autoSaving = false;
+  isGettingStarted = false;
   addServiceStatus$: Observable<{ status: boolean; error?: string; response?: any } | undefined>;
   productData$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   constructor(
@@ -87,6 +88,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           }, 100);
         });
       });
+    this.isGettingStarted = router.url.split('/').includes('home');
   }
 
   ngOnInit(): void {

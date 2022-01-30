@@ -5,9 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { addPayment, getPayment } from '../../store/account.actions';
-import { IAccountState } from '../../store/account.reducers';
-import { getPayments } from '../../store/account.selectors';
+import { addPayment, getPayment } from '../../../accounts/store/account.actions';
+import { IAccountState } from '../../../accounts/store/account.reducers';
+import { getPayments } from '../../../accounts/store/account.selectors';
 
 @Component({
   selector: 'app-add-payment',
@@ -20,6 +20,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
   editMode = false;
   paymentData$: Observable<any>;
   isSaving = false;
+  isGettingStarted = false;
   defaultCurrencies = [
     {
       key: 'USD',
@@ -68,6 +69,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
           });
         }
       });
+    this.isGettingStarted = this.router.url.split('/').includes('home');
   }
 
   ngOnInit(): void {

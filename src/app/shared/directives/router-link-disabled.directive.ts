@@ -7,8 +7,15 @@ import { RouterLink, RouterLinkWithHref } from '@angular/router';
   selector: '[routerLink][disabled]'
 })
 export class RouterLinkDisabledDirective implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('disabled') public isDisabled: boolean = false;
+  public isDisabled: boolean = false
+  @Input() set disabled(val: boolean) {
+    this.isDisabled = val;
+    if (val) {
+      (this.elementRef.nativeElement as HTMLAnchorElement).classList.add('router-link-disabled');
+    } else {
+      (this.elementRef.nativeElement as HTMLAnchorElement).classList.remove('router-link-disabled');
+    }
+  };
 
   constructor(
     @Optional() routerLink: RouterLink,
@@ -23,7 +30,6 @@ export class RouterLinkDisabledDirective implements OnChanges {
       if (this.isDisabled) {
         return !routerLinkWithHref;
       }
-
       return onClick.apply(link, args);
     };
   }
