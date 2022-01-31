@@ -289,10 +289,10 @@
       </tr>
       <tr>
         <td colspan="7">
-          <div class="w-full" *ngIf="!isFilterEmpty && !productsList?.length">
+          <div class="w-full" *ngIf="isFilterEmpty && !productsList?.length">
             <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
           </div>
-          <app-no-result-service-component class="flex flex-1" *ngIf="isFilterEmpty && !productsList?.length">
+          <app-no-result-service-component class="flex flex-1" *ngIf="!isFilterEmpty && !productsList?.length">
           </app-no-result-service-component>
         </td>
       </tr>
