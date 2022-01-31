@@ -14,16 +14,16 @@ import { select, Store } from '@ngrx/store';
 import { catchError, filter, forkJoin, map, Observable, of, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
-import { addBusiness, getBusiness, initBusiness } from '../../store/website.actions';
+import { addBusiness, getBusiness, initBusiness } from '../../../website/store/website.actions';
 import {
   BusinessInfo,
   BusinessLinks,
   BusinessPhotos,
   Recognitions,
   Testimonials,
-} from '../../store/website.interface';
-import { IWebsiteState } from '../../store/website.reducers';
-import { getAddBusinessStatus, getBusinessStatus } from '../../store/website.selectors';
+} from '../../../website/store/website.interface';
+import { IWebsiteState } from '../../../website/store/website.reducers';
+import { getAddBusinessStatus, getBusinessStatus } from '../../../website/store/website.selectors';
 
 @Component({
   selector: 'app-add-business-info',
