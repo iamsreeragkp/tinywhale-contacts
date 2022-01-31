@@ -1,49 +1,40 @@
-
-.auth-layout{
+.auth-layout {
   padding: 5.5rem 8.75rem 1.94rem 8.75rem !important;
   min-height: 100vh !important;
 }
-.swiper-image{
+.swiper-image {
   height: 55vh;
 }
-.swiper-demo{
-  background: #12B5C1;
-  .swiper-next{
+.swiper-demo {
+  background: #00a4b7;
+  .swiper-next {
     top: calc(55vh - 1.3rem);
     right: 50px;
     cursor: pointer;
-    
   }
-  
-  .swiper-previous{
+
+  .swiper-previous {
     top: calc(55vh - 1.3rem);
     left: 50px;
     cursor: pointer;
     transform: rotate(180deg);
-    
-    
-
   }
-  .swiper-content{
+  .swiper-content {
     padding-bottom: 72px;
-    .content{
-  font-family: Poppins;
-  font-size: 21px;
-  line-height: 28px;
-  
-    }
-    .name-content{
+    .content {
       font-family: Poppins;
-     line-height: 24px;
+      font-size: 21px;
+      line-height: 28px;
     }
-    .swiper-button{
+    .name-content {
+      font-family: Poppins;
+      line-height: 24px;
+    }
+    .swiper-button {
       font-family: Baloo;
       line-height: 25px;
-       text-align: center;
-        color: #12B5C1;
-
+      text-align: center;
+      color: #00a4b7;
     }
   }
-  
-
 }
