@@ -24,23 +24,22 @@
   & :hover {
     .active-border {
       display: block;
-      background: #12b5c1;
+      background: #00a4b7;
     }
     .color-fill {
-      fill: #12b5c1 !important;
+      fill: #00a4b7 !important;
     }
   }
-  .nav-link.active {
-    .active-border {
-      display: block;
-      background: #12b5c1;
-    }
-    .color-fill {
-      fill: #12b5c1 !important;
-    }
+}
+// <!--Active item Condition --!>
+
+.active {
+  .active-border {
+    display: block;
+    background: #00a4b7;
   }
-  .nav-link.router-link-disabled {
-    cursor: default;
+  .color-fill {
+    fill: #00a4b7 !important;
   }
 }
 // <!--Active item Condition --!>

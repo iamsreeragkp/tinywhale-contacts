@@ -1,6 +1,5 @@
 .sign-up {
-
-  .header{
+  .header {
     margin-bottom: 34px;
     .title {
       font-family: Baloo;
@@ -12,59 +11,46 @@
       font-family: Poppins;
       line-height: 26px;
       color: #154f5b;
-      .goto-login{
-        color: #12B5C1;
+      .goto-login {
+        color: #00a4b7;
       }
     }
   }
-  .form-signup{
-    .input-field{
-    .input-signup{
-      border: 2px solid #D6E1E3;
-      border-radius: 10px;
-      font-family: Poppins;
-       line-height: 24px;
-       color: #154F5B;
-       .domain{
-        color: #154F5B;
-
-       }
+  .form-signup {
+    .input-field {
+      .input-signup {
+        border: 2px solid #d6e1e3;
+        border-radius: 10px;
+        font-family: Poppins;
+        line-height: 24px;
+        color: #154f5b;
+        .domain {
+          color: #154f5b;
+        }
+      }
+      .error {
+        display: none;
+      }
     }
-    .error{
-      display: none;
-    }
-
-  }
-  .error-active{
-    .border-red{
-      border: 2px solid #FF725E;
-    }
-    .error{
-      display: block;
-      font-family: Poppins;
-      line-height: 18px;
-      color: #FF725E;
+    .error-active {
+      .border-red {
+        border: 2px solid #ff725e;
+      }
+      .error {
+        display: block;
+        font-family: Poppins;
+        line-height: 18px;
+        color: #ff725e;
+      }
     }
   }
-  }
-
-  .continue{
-    background: #12B5C1;
-    font-family: Baloo;
-
-  }
-  .continue-with-google{
-   background: #154F5B;
-    font-family: Baloo;
-  }
-  .or-class{
+  .or-class {
     font-family: Poppins;
     line-height: 26px;
-    color: #41707A;
-
+    color: #41707a;
   }
-  .icon-holder{
-    top:50%;
+  .icon-holder {
+    top: 50%;
     transform: translateY(-50%);
   }
   // .warning{
@@ -75,20 +61,15 @@
   //   top:15px;
   //   right: 8px;
   // }
-  .footer{
-font-family: Poppins;
-line-height: 18px;
-color: #73959D;
-
-
+  .footer {
+    font-family: Poppins;
+    line-height: 18px;
+    color: #73959d;
   }
 }
-.domain-input-width{
-
-  max-width: calc(100% - 1.75rem - 126px);
- 
-  
+.domain-input-width {
+  // max-width: calc(100% - 1.75rem - 340px);
 }
-input.domain-input-width{
-  width: calc(100% - 1.75rem - 136.78px) ;
-} 
+input.domain-input-width {
+  // width: calc(100% - 1.75rem - 136.78px);
+}

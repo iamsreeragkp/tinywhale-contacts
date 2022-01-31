@@ -34,6 +34,8 @@ export class LogInPageComponent implements OnInit, OnDestroy {
   loginError$: Observable<string>;
   ngUnsubscribe = new Subject<void>();
 
+  show = 'password';
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -109,5 +111,8 @@ export class LogInPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+  onClick(evnt: string) {
+    this.show = evnt;
   }
 }

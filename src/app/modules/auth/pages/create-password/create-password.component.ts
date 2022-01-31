@@ -14,22 +14,27 @@ import { getKey, getVerifyData } from '../../store/auth.selectors';
   templateUrl: './create-password.component.html',
   styleUrls: ['./create-password.component.scss'],
 })
-export class CreatePasswordComponent implements OnInit,OnDestroy {
+export class CreatePasswordComponent implements OnInit, OnDestroy {
   passwordForm!: FormGroup;
-  isReset=false;
+  isReset = false;
   ngUnsubscribe = new Subject<any>();
 
+  show = 'password';
 
-  constructor(private router: ActivatedRoute, private store: Store<IAuthState>,private storageService:StorageService) {
+  constructor(
+    private router: ActivatedRoute,
+    private store: Store<IAuthState>,
+    private storageService: StorageService
+  ) {
     this.passwordForm = this.createPasswordForm();
   }
 
   ngOnInit(): void {
     this.router.queryParams.subscribe(data => {
-      if(data?.['isVerified']){
-        this.isReset=true;
-      }else{
-        this.isReset=false;
+      if (data?.['isVerified']) {
+        this.isReset = true;
+      } else {
+        this.isReset = false;
       }
     });
   }
@@ -56,17 +61,16 @@ export class CreatePasswordComponent implements OnInit,OnDestroy {
     this.store.dispatch(signUp({ userData: signupPayload }));
   }
 
-
-  onSubmitReset(){
+  onSubmitReset() {
     const { password } = this.passwordForm.value;
     this.store.pipe(select(getVerifyData), takeUntil(this.ngUnsubscribe)).subscribe(data => {
-      const access_token=data?.['access-token'];
-      this.storageService.setAccessToken(access_token)
+      const access_token = data?.['access-token'];
+      this.storageService.setAccessToken(access_token);
     });
-    const resetPayload={
-      password
-    }
-    this.store.dispatch(passwordReset({password:resetPayload}))
+    const resetPayload = {
+      password,
+    };
+    this.store.dispatch(passwordReset({ password: resetPayload }));
   }
 
   get password() {
@@ -76,5 +80,8 @@ export class CreatePasswordComponent implements OnInit,OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(false);
+  }
+  onClick(evnt: string) {
+    this.show = evnt;
   }
 }

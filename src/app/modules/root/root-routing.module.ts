@@ -5,10 +5,10 @@ import { RoutesConfig } from '../../configs/routes.config';
 import { Error404PageComponent } from './pages/error404-page/error404-page.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RootComponent } from './root.component';
-import { AddBusinessInfoComponent } from '../website/pages/add-business-info/add-business-info.component';
 import { AddServiceComponent } from '../getting-started/pages/add-service/add-service.component';
 import { AddPaymentComponent } from '../getting-started/pages/add-payment/add-payment.component';
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { AddBusinessInfoComponent } from '../getting-started/pages/add-business-info/add-business-info.component';
 
 const routesNames = RoutesConfig.routesNames;
 const homeRoutes = RoutesConfig.routes.home;
