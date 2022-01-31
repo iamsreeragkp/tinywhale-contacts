@@ -74,11 +74,11 @@
         <th class="px-2 py-3 text-left font-semibold"></th>
       </tr>
     </thead>
-    <tbody *ngFor="let bookData of bookingData;let i=index" (click)="showSubItem(i)">
+    <tbody >
       <tr>
         <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Service Listing</td>
       </tr>
-      <tr class="table-container-borderRow">
+      <tr class="table-container-borderRow" *ngFor="let bookData of bookingData;let i=index" (click)="showSubItem(i)">
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
             <span class="italic whitespace-nowrap">{{bookData?.date_time | date}}</span>
@@ -137,23 +137,23 @@
           </div>
         </td>
       </tr>
-      <!-- <tr>
+       <tr>
         <td colspan="7">
           <div class="w-full h-12 flex justify-center items-center" *ngIf="true;">
             <button class="text-secondaryBlue font-bold flex items-center">Load More</button>
           </div>
         </td>
-      </tr> -->
-      <!-- <tr>
+      </tr>
+       <tr>
         <td colspan="7">
-          <div class="w-full" *ngIf="true; else noResult">
+          <div class="w-full" >
             <app-no-data-booking-component class="flex flex-1"></app-no-data-booking-component>
           </div>
           <ng-template #noResult>
             <app-no-result-booking-component class="flex flex-1"></app-no-result-booking-component>
           </ng-template>
         </td>
-      </tr> -->
+      </tr>
 
     </tbody>
   </table>
