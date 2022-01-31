@@ -51,7 +51,7 @@
         <div class="relative">
           <input
             class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
-            type="password"
+            [type]="show"
             placeholder="Enter Password"
             [ngClass]="{'border-red': password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']}"
             formControlName="password"
