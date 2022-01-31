@@ -1,21 +1,133 @@
 <div class="flex flex-col min-h-full rounded-5 overflow-hidden">
-  <div class=" website-page-heading bg-white py-4 px-8 flex justify-between">
+  <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
     <header class="header leading-9 font-normal not-italic">
-      <span class="text-4xl">Services</span>
+      <span class="text-4xl">{{productObj?.title ?? ''}}</span>
     </header>
-  </div>
-  <hr class="line">
-  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl" *ngIf="!true; else noWebsiteInfo">
-    <main>
-      <app-table-service-component class="flex flex-1"></app-table-service-component>
-    </main>
-  </div>
-  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
-
-  <ng-template #noWebsiteInfo>
-    <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
-      <app-table-service-component class="flex flex-1">
-      </app-table-service-component>
+    <div class="flex">
+      <a class="primary-button w-48 ml-2" [routerLink]="['../../edit-service', productObj?.product_id]">Edit</a>
     </div>
-  </ng-template>
+  </div>
+  <hr class="line" />
+  <div class="flex">
+    <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-bl-3xl flex-1">
+      <main>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Title</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{ productObj?.title ?? '-' }}</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Description</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{ productObj?.description ?? '-' }}</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Photos</span>
+          </div>
+          <div class="flex-1 pl-4 flex gap-3">
+            <div *ngFor="let photo of productObj?.product_photos; let i = index"
+              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
+              <img class="max-w-none h-full" [src]="photo?.photo_url" *ngIf="photo.photo_url"
+                [alt]="'Photo_' + (i + 1)" />
+              <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" *ngIf="!photo?.photo_url"
+                [alt]="'Photo_' + (i + 1)" />
+            </div>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Session Duration</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{ productObj?.class?.duration_in_minutes ?? '-' }} min</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Time</span>
+          </div>
+          <div class="flex-1 py-3 pl-4">
+            <div class="flex w-full gap-3" [ngClass]="{ 'mb-3': !isLastTR }"
+              *ngFor="let timeRange of timeRangeSerialized; let isLastTR = last">
+              <div class="w-32">
+                <span>{{ timeRange?.label}}</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex gap-3" [ngClass]="{ 'mb-3': !isLast }"
+                  *ngFor="let range of timeRange.ranges; let isLast = last">
+                  <div>
+                    <span>{{ range.start_time_label }}</span>
+                  </div>
+                  <span> - </span>
+                  <div>
+                    <span>{{ range.end_time_label }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Location</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span *ngIf="productObj?.class?.location_type === 'CUSTOMER_LOCATION'">Customer's Location</span>
+            <span *ngIf="productObj?.class?.location_type === 'ONLINE'">Online (Zoom - connect)</span>
+            <span *ngIf="productObj?.class?.location_type === 'BUSINESS_LOCATION'">{{
+              productObj?.class?.business_location?.location_name }}</span>
+            <span *ngIf="!productObj?.class?.location_type">-</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Capacity</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{ productObj?.class?.capacity ?? '-' }}</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Price</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{
+              productObj?.price
+              ? '$ ' + productObj?.price + ' for 1 session ' +
+              (
+              productObj?.class?.duration_in_minutes
+              ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
+              : ''
+              )
+              : '-'
+              }}</span>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-44 py-3 flex justify-end pr-8">
+            <span class="font-medium text-right">Visibility</span>
+          </div>
+          <div class="flex-1 py-3 pl-4 flex">
+            <span>{{ productObj?.visibility ?? '-' | titlecase }} min</span>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="detail-section w-5/12">
+      <div class="p-8">
+        <app-preview-product [title]="productObj?.title" [description]="productObj?.description"
+          [photo]="photoForPreview" [price]="productObj?.price" [duration]="productObj?.class?.duration_in_minutes"
+          [packages]="previewablePackages">
+        </app-preview-product>
+      </div>
+    </div>
+  </div>
 </div>

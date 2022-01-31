@@ -1,11 +1,8 @@
 .fixed-header {
-  margin-left: 10rem;
-  margin-top: 2rem;
-  padding-right: 2.5rem;
-  width: calc(100% - 10rem);
+  width: calc(100% - 12.5rem);
   // width: calc(100% - 10rem - 15px);
   &-mask {
-    width: calc(100% - 12rem);
+    width: calc(100% - 12.5rem);
     margin-left: 10rem;
     background-color: #f1f4f5;
     height: 3rem;
@@ -19,7 +16,7 @@
     font-family: Baloo !important;
     color: #154f5b;
   }
-  z .edit-button {
+  .edit-button {
     background-color: #00a4b7;
     font-family: Baloo;
     font-stretch: normal;
@@ -27,7 +24,7 @@
   }
 }
 .add-info {
-  margin-top: 4.75rem;
+  padding-top: 4.75rem;
 
   .heading {
     font-family: Baloo;

@@ -1,0 +1,320 @@
+<form [formGroup]="productForm" (ngSubmit)="$event.preventDefault(); saveProductForm()">
+  <div class="fixed z-50 fixed-header">
+    <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
+      <header class="header leading-9 font-normal not-italic flex items-center">
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3" *ngIf="isGettingStarted && !editMode"> 2
+        </span>
+        <span class="text-4xl">
+          {{
+          editMode
+          ? (productForm?.get('title')?.value ?? 'Edit a Service')
+          : 'Add a Service'
+          }}
+        </span>
+      </header>
+      <div class="flex justify-between items-center">
+        <button class="noborder-button" type="button" (click)="location.back()">Cancel</button>
+        <button class="secondary-button mr-3 ml-6 w-52" type="button" (click)="saveProductForm(true)">Save & Add
+          Another</button>
+        <button class="primary-button w-48 ml-3" type="submit">Save</button>
+        <!-- <div class="relative mx-2"><button class="primary-button">
+                    Share
+                </button>
+                <div class="absolute right-0 top-full z-50">
+                    <div class="p-4 w-80 rounded-lg copy-bg">
+                        <div class="flex justify-between">
+                            <span class="text-white">Share service link with clients</span>
+                            <button class="text-white">
+                                <img src="../../../../../assets/images/icons/close.svg" alt="">
+                            </button>
+                        </div>
+                        <div class="p-2 pr-12 bg-white relative rounded-lg mt-3">
+                            <div class="w-full truncate text-primaryFont">
+                                <span>https://tinycard.to/businessname</span>
+                            </div>
+                            <div class="absolute right-0 top-0 h-full flex items-center justify-center">
+                                <span class="text-secondaryBlue font-bold mr-2">Copy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        <!-- <div class="relative mx-2">
+                <button class="primary-button">
+                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
+                            fill="#fff" />
+                    </svg>
+                </button>
+                <div class="absolute top-full right-0 z-50 -mt-5">
+                    <div
+                        class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+                        <button class="px-4 filter-item text-left hover:bg-gray-100">
+                            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Edit</div>
+                        </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Mark as
+                                Private</div>
+                        </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Use as
+                                Template</div>
+                        </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+                            <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Delete
+                            </div>
+                            confrim popup
+                            <div>
+                                <div class="fixed w-full h-full inset-0 bg-black opacity-75"></div>
+                                <div class="fixed w-full h-full inset-0 flex justify-center items-center">
+                                    <div class="bg-white p-5 md:w-3/12 w-11/12 rounded-2xl">
+                                        <h3 class="text-xl font-bold">
+                                            Delete Service ?
+                                        </h3>
+                                        <p class="mt-2">This action cannot be undone</p>
+                                        <div class="flex justify-between mt-5">
+                                            <div class="w-1/2 pr-2">
+                                                <button class="secondary-button w-full">
+                                                    cancel
+                                                </button>
+                                            </div>
+                                            <div class="w-1/2 pl-2">
+                                                <button class="primary-button w-full">
+                                                    Yes, Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
+
+  <div class="add-info flex w-full">
+    <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
+      <h5 class="input-section-subheading font-bold mb-4">About the service</h5>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Title*</label></div>
+        <div class="w-form">
+          <input formControlName="title" class="input w-full py-3 px-4 focus:outline-none" placeholder="Company name" />
+        </div>
+      </div>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Description*</label></div>
+        <div class="w-form">
+          <textarea rows="3" formControlName="description" class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Describe your service in detail"></textarea>
+        </div>
+      </div>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Photos* </label></div>
+        <div class="flex w-form" formArrayName="photos">
+          <div class="relative mr-2" *ngFor="let photo of productPhotos?.controls; let i = index" [formGroupName]="i">
+            <button (click)="deletePhoto(i)" *ngIf="photo.get('photo_data_url')?.value"
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+            </button>
+            <div
+              class="input-photo text-center relative cursor-pointer flex flex-col justify-evenly items-center overflow-hidden"
+              (click)="photoInput.click()">
+              <input type="file" #photoInput accept="image/*" class="hidden" (change)="handleFileInput($event, i)" />
+              <img *ngIf="photo.get('photo_data_url')?.value" [src]="photo.get('photo_data_url')?.value"
+                alt="{{'Photo_' + (i + 1)}}" class="image h-full w-full object-cover">
+              <ng-container *ngIf="!photo.get('photo_data_url')?.value">
+                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+                <span class="text-mediumGray">Add Photo</span>
+              </ng-container>
+            </div>
+          </div>
+          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
+          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
+        </div>
+      </div>
+      <h5 class="input-section-subheading font-bold mb-4 mt-8">Schedule</h5>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6">
+          <label for="">What kind of schedule does this service have?*</label>
+        </div>
+        <div class="w-form">
+          <div class="flex flex-col w-full rounded-lg radio-input">
+            <label class="radio-container py-3 radio-input-border-b" for="fixed">
+              <div class="flex flex-col">
+                <p class="radio-container-name">Fixed</p>
+                <p class="radio-container-descri">Predefined time slots in the week</p>
+              </div>
+              <input type="radio" id="fixed" value="CLASS" formControlName="product_type" />
+              <span class="radiomark"></span>
+            </label>
+            <label class="radio-container py-3" for="flexible">
+              <div class="flex flex-col">
+                <p class="radio-container-name">Flexible</p>
+                <p class="radio-container-descri">As per client’s requirement</p>
+              </div>
+              <input type="radio" id="flexible" value="SERVICE" formControlName="product_type" />
+              <span class="radiomark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="productForm.get('product_type')?.value === 'CLASS'">
+        <div class="input-field flex mb-4">
+          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
+          <div class="w-form flex items-center"><input formControlName="duration" type="number" [preventDecimal]="true"
+              [preventNegative]="true" class="input w-24 py-3 px-4 focus:outline-none" placeholder="60"
+              formControlName="duration" />
+            <span class="input-field-secondary-text mx-3">min</span>
+          </div>
+        </div>
+        <div class="input-field flex mb-4">
+          <div class=" w-44 label text-right mt-0 mr-6"><label for="">Slot Days & Times*</label></div>
+          <div class="w-form checkbox-input mt-2">
+            <div class="w-full mb-4" *ngFor="let weekDay of weekDayOptions">
+              <label class="check-container">{{ weekDay.label }}
+                <input type="checkbox" [ngModel]="weekDay.selected"
+                  (ngModelChange)="addRemoveTimeRange(weekDay.value, $event)" [ngModelOptions]="{ standalone: true }" />
+                <span class="checkmark"></span>
+              </label>
+              <ng-container *ngIf="weekDay.selected" formArrayName="time_ranges">
+                <ng-container *ngFor="let weekDaySlots of timeRanges.controls; let i = index;">
+                  <div class="w-full flex items-center mb-4"
+                    *ngIf="weekDaySlots.get('day_of_week')?.value === weekDay.value" [formGroupName]="i">
+                    <div class="w-36">
+                      <app-dropdown [options]="timeOptions" [idKey]="'value'" [emitId]="true"
+                        [placeholder]="'Start Time'" [label]="'Start Time'" formControlName="start_time"></app-dropdown>
+                    </div>
+                    <span class="input-field-secondary-text mx-3">to</span>
+                    <input class="input w-36 py-3 px-4 focus:outline-none" formControlName="end_time_label"
+                      placeholder="End time" />
+                    <div class="h-full flex items-center mx-3">
+                      <button (click)="deleteTimeRangeFromWeekday(weekDay.value ,i)">
+                        <img src="../../../../../assets/images/icons/delete.svg" alt="delete">
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+                <button class="add-another mt-2 font-normal text-base not-italic cursor-pointer"
+                  (click)="addTimeRangeToWeekDay(weekDay.value)">+ Add Another Slot</button>
+              </ng-container>
+            </div>
+            <!-- <label class="check-container">Monday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <label class="check-container">Tuesday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <label class="check-container">Wednesday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <label class="check-container">Thursday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <label class="check-container">Friday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <label class="check-container">Saturday
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label> -->
+          </div>
+        </div>
+        <h5 class="input-section-subheading font-bold mb-4 mt-8">Location</h5>
+        <div class="input-field flex mb-4">
+          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Location*</label></div>
+          <div class="w-form">
+            <app-dropdown [showRadio]="true" [addCustomValue]="true" [placeholder]="'Select location / venue of class'"
+              [label]="'location'" [displayKey]="'location_name'" [idKey]="'location_id'" [options]="locationOptions"
+              formControlName="location"></app-dropdown>
+          </div>
+        </div>
+        <div class="input-field flex mb-4">
+          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Capacity*</label></div>
+          <div class="w-form"><input type="number" [preventDecimal]="true" [preventNegative]="true"
+              class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter number of students per session"
+              formControlName="capacity" /></div>
+        </div>
+      </ng-container>
+      <h5 class="input-section-subheading font-bold mb-4 mt-8">Pricing</h5>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6">
+          <label for="">{{ productForm.get('product_type')?.value === 'CLASS' ? 'Session ' : '' }}Price</label>
+        </div>
+        <div class="w-form">
+          <div class="w-full flex items-center">
+            <input type="number" [preventNegative]="true" class="input w-24 py-3 px-4 focus:outline-none"
+              placeholder="$ 50" formControlName="price" />
+            <span class="input-field-secondary-text mx-3" *ngIf="productForm.get('product_type')?.value === 'CLASS'">per
+              session per person</span>
+          </div>
+          <div class="w-full p-3 mt-3 rounded-lg input-section-info"
+            *ngIf="productForm.get('product_type')?.value === 'CLASS'">
+            💡 You can have only one unique session price per service but multiple package prices
+            and options.
+          </div>
+        </div>
+      </div>
+      <div class="input-field flex mb-4" *ngIf="productForm.get('product_type')?.value === 'CLASS'">
+        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Package Price
+            (Session Bundle)</label></div>
+        <div class="w-form" formArrayName="price_package">
+          <div class="w-full flex items-center mb-2" *ngFor="let sessionPrice of pricePackages.controls; let i = index"
+            [formGroupName]="i">
+            <input class="input w-24 py-3 px-4 focus:outline-none" placeholder="$ 100" formControlName="price"
+              type="number" [preventNegative]="true" />
+            <span class="input-field-secondary-text mx-3">for</span>
+            <input type="number" class="input w-20 py-3 px-4 focus:outline-none" placeholder="2"
+              formControlName="no_of_sessions" [preventDecimal]="true" [preventNegative]="true" />
+            <span class="input-field-secondary-text mx-3">sessions</span>
+            <button class="h-full flex items-center" (click)="deletePricePackage(i)">
+              <img src="../../../../../assets/images/icons/delete.svg" alt="">
+            </button>
+          </div>
+          <button class="add-another mt-2 font-normal text-base not-italic" (click)="addPricePackage()">+ Add Another
+            Package Price</button>
+
+        </div>
+      </div>
+      <h5 class="input-section-subheading font-bold mb-4 mt-8">Who can see this service?</h5>
+      <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Visibility*</label></div>
+        <div class="w-form">
+          <div class="flex flex-col w-full rounded-lg radio-input">
+            <label class="radio-container py-3 radio-input-border-b" for="public">
+              <div class="flex flex-col">
+                <p class="radio-container-name">Public</p>
+                <p class="radio-container-descri">Anyone visiting my website</p>
+              </div>
+              <input type="radio" id="public" formControlName="visibility" value="PUBLIC" />
+              <span class="radiomark"></span>
+            </label>
+            <label class="radio-container py-3" for="private">
+              <div class="flex flex-col">
+                <p class="radio-container-name">Private</p>
+                <p class="radio-container-descri">Clients who I share the link with</p>
+              </div>
+              <input type="radio" id="private" formControlName="visibility" value="PRIVATE" />
+              <span class="radiomark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-section w-5/12">
+      <div class="px-8 py-8">
+        <app-preview-product [title]="productForm.get('title')?.value"
+          [description]="productForm.get('description')?.value" [photo]="photoForPreview"
+          [duration]="productForm.get('duration')?.value" [price]="productForm.get('price')?.value"
+          [packages]="previewablePricePackages">
+        </app-preview-product>
+      </div>
+    </div>
+  </div>
+</form>

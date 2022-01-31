@@ -1,21 +1,23 @@
-<div class="website-page-heading bg-white pt-6 pb-6 px-8 flex justify-between">
-  <header class="header leading-9 font-normal not-italic flex items-center">
-    <ng-container *ngIf="!editMode; else editTitle">
-      <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
-      <span class="text-4xl">Add Business Info</span>
-    </ng-container>
-    <ng-template #editTitle>
-      <span class="text-4xl">Edit Business Info</span>
-    </ng-template>
-  </header>
-  <div class="flex justify-between items-center">
-    <button class="noborder-button" (click)="location.back()">Cancel</button>
-    <button class="primary-button w-48 ml-3" (click)="onSubmitBusiness()" [disabled]="isSaving">
-      {{ isUploadingImages ? 'Uploading images' : 'Save' }}
-    </button>
+<div class="fixed z-50 fixed-header">
+  <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
+    <header class="header leading-9 font-normal not-italic flex items-center">
+      <ng-container *ngIf="!editMode; else editTitle">
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3" *ngIf="isGettingStarted"> 1 </span>
+        <span class="text-4xl">Add Business Info</span>
+      </ng-container>
+      <ng-template #editTitle>
+        <span class="text-4xl">Edit Business Info</span>
+      </ng-template>
+    </header>
+    <div class="flex justify-between items-center">
+      <button class="noborder-button" (click)="location.back()">Cancel</button>
+      <button class="primary-button w-48 ml-3" (click)="onSubmitBusiness()" [disabled]="isSaving">
+        {{ isUploadingImages ? 'Uploading images' : 'Save' }}
+      </button>
+    </div>
   </div>
 </div>
-<hr class="line" />
+<div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
 <form [formGroup]="businessInfoForm">
   <div class="add-info flex w-full">
     <div class="font-poppins input-section w-8/12 bg-white p-8 flex flex-col relative">
@@ -27,20 +29,17 @@
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Company Logo </label></div>
-        <input
-          type="file"
-          accept="image/*"
-          style="display: none"
-          #logo
-          (input)="handleFileInputLogo($event)"
-        />
-        <div>
-          <div
-            (click)="logo.click()"
+        <input type="file" accept="image/*" style="display: none" #logo (input)="handleFileInputLogo($event)" />
+        <div class="relative">
+          <button (click)="deleteLogo()" *ngIf="logoImageUrl"
+            class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+            <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+          </button>
+          <div (click)="logo.click()"
             class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
-            placeholder="Add a Logo"
-          >
-            <img *ngIf="logoImageUrl" [src]="logoImageUrl" class="image h-28" object-fit: contain />
+            placeholder="Add a Logo">
+            <img *ngIf="logoImageUrl" [src]="logoImageUrl" class="image h-full w-full object-cover" object-fit:
+              contain />
             <ng-container *ngIf="!logoImageUrl">
               <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
               <span class="text-mediumGray text-center">Add a <br />logo</span>
@@ -51,32 +50,22 @@
       <div class="input-field flex mb-8 relative">
         <div class="w-36 label mt-4"><label for="">Punchline* </label></div>
         <div>
-          <input
-            class="input py-3 px-4 punchline"
-            placeholder="Eg: I help kids learn the basics of Music"
-            formControlName="punchline"
-            #punchline
-          />
+          <input class="input py-3 px-4 punchline" placeholder="Eg: I help kids learn the basics of Music"
+            formControlName="punchline" #punchline />
         </div>
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">About Me* </label></div>
         <div>
-          <textarea
-            class="input py-3 px-4"
-            placeholder="Tell a little about of yourself"
-            formControlName="aboutme"
-            rows="2"
-          ></textarea>
+          <textarea class="input py-3 px-4" placeholder="Tell a little about of yourself" formControlName="aboutme"
+            rows="2"></textarea>
         </div>
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Social Links* </label></div>
         <div class="flex flex-col">
-          <ng-container
-            formArrayName="socialitems"
-            *ngFor="let item of socialItems.controls; let i = index; let isFirst = first"
-          >
+          <ng-container formArrayName="socialitems"
+            *ngFor="let item of socialItems.controls; let i = index; let isFirst = first">
             <div [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
               <input class="input py-3 px-4" placeholder="Enter URL" formControlName="url" />
             </div>
@@ -91,75 +80,57 @@
         <div class="w-36 label mt-4"><label for="">Photos*</label></div>
         <div class="flex justify-between w-90" #photoContainer>
           <div>
-            <input
-              type="file"
-              accept="image/*"
-              #photo1
-              style="display: none"
-              (change)="handleFileInput($event, 0)"
-            />
-            <div
-              class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
-              (click)="photo1.click()"
-              placeholder="Add profile photo"
-            >
-              <img
-                *ngIf="arrayPhotosImageUrl[0]"
-                [src]="arrayPhotosImageUrl[0]"
-                class="image h-28"
-              />
-              <ng-container *ngIf="!arrayPhotosImageUrl[0]">
-                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
-                <span class="text-mediumGray">Add Profile Photo</span>
-              </ng-container>
+            <input type="file" accept="image/*" #photo1 style="display: none" (change)="handleFileInput($event, 0)" />
+            <div class="relative">
+              <button (click)="deletePhoto(0)" *ngIf="arrayPhotosImageUrl[0]"
+                class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+                <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+              </button>
+              <div class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+                (click)="photo1.click()" placeholder="Add photo">
+                <img *ngIf="arrayPhotosImageUrl[0]" [src]="arrayPhotosImageUrl[0]"
+                  class="image h-full w-full object-cover" />
+                <ng-container *ngIf="!arrayPhotosImageUrl[0]">
+                  <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                  <span class="text-mediumGray">Add Photo</span>
+                </ng-container>
+              </div>
             </div>
           </div>
           <div>
-            <input
-              type="file"
-              accept="image/*"
-              #photo2
-              style="display: none"
-              (change)="handleFileInput($event, 1)"
-            />
-            <div
-              class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
-              (click)="photo2.click()"
-              placeholder="Add photo"
-            >
-              <img
-                *ngIf="arrayPhotosImageUrl[1]"
-                [src]="arrayPhotosImageUrl[1]"
-                class="image h-28"
-              />
-              <ng-container *ngIf="!arrayPhotosImageUrl[1]">
-                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
-                <span class="text-mediumGray">Add Photo</span>
-              </ng-container>
+            <input type="file" accept="image/*" #photo2 style="display: none" (change)="handleFileInput($event, 1)" />
+            <div class="relative">
+              <button (click)="deletePhoto(1)" *ngIf="arrayPhotosImageUrl[1]"
+                class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+                <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+              </button>
+              <div class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+                (click)="photo2.click()" placeholder="Add photo">
+                <img *ngIf="arrayPhotosImageUrl[1]" [src]="arrayPhotosImageUrl[1]"
+                  class="image h-full w-full object-cover" />
+                <ng-container *ngIf="!arrayPhotosImageUrl[1]">
+                  <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                  <span class="text-mediumGray">Add Photo</span>
+                </ng-container>
+              </div>
             </div>
           </div>
           <div>
-            <input
-              type="file"
-              accept="image/*"
-              #photo3
-              style="display: none"
-              (change)="handleFileInput($event, 2)"
-            />
-            <div
-              class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
-              (click)="photo3.click()"
-              placeholder="Add photo"
-            >
-              <img
-                *ngIf="arrayPhotosImageUrl[2]"
-                [src]="arrayPhotosImageUrl[2]"
-                class="image h-28"
-              />
-              <ng-container *ngIf="!arrayPhotosImageUrl[2]">
-                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
-                <span class="text-mediumGray">Add Photo</span>
-              </ng-container>
+            <input type="file" accept="image/*" #photo3 style="display: none" (change)="handleFileInput($event, 2)" />
+            <div class="relative">
+              <button (click)="deletePhoto(2)" *ngIf="arrayPhotosImageUrl[2]"
+                class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+                <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+              </button>
+              <div class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+                (click)="photo3.click()" placeholder="Add photo">
+                <img *ngIf="arrayPhotosImageUrl[2]" [src]="arrayPhotosImageUrl[2]"
+                  class="image h-full w-full object-cover" />
+                <ng-container *ngIf="!arrayPhotosImageUrl[2]">
+                  <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                  <span class="text-mediumGray">Add Photo</span>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
@@ -168,65 +139,38 @@
         <div class="w-36 label mt-4">
           <label for="">
             Awards /<br />Certifications/<br />
-            Licenses</label
-          >
+            Licenses</label>
         </div>
         <div class="flex flex-col">
-          <ng-container
-            formArrayName="licenceitems"
-            *ngFor="let item of recognitions.controls; let i = index; let isFirst = first"
-          >
-            <div
-              class="input-award flex flex-col px-4 py-4"
-              [formGroupName]="i"
-              [ngClass]="{ 'mt-3': !isFirst }"
-            >
-              <select
-                class="input py-3 px-4 mb-4"
-                type="select"
-                [formControlName]="'recognition_type'"
-              >
+          <ng-container formArrayName="licenceitems"
+            *ngFor="let item of recognitions.controls; let i = index; let isFirst = first">
+            <div class="input-award flex flex-col px-4 py-4" [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
+              <select class="input py-3 px-4 mb-4" type="select" [formControlName]="'recognition_type'">
                 <option value="" hidden>Select Type</option>
                 <option *ngFor="let option of recognitionTypeOptions" [value]="option.value">
                   {{ option.label }}
                 </option>
               </select>
-              <input
-                class="input py-3 px-4 mb-4"
-                placeholder="Enter name of Certificate / License"
-                formControlName="recognition_name"
-              />
-              <input
-                class="input py-3 px-4 mb-4"
-                placeholder="Expiry date (MM/DD/YY)"
-                *ngIf="item.get('recognition_type')?.value !== 'AWARD'"
-                formControlName="expiry_date"
-              />
-              <input
-                type="file"
-                accept="image/*"
-                #licenceLogo
-                style="display: none"
-                (change)="handleFileInputLicence($event, i)"
-              />
-              <div
-                class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center"
-                placeholder="Add a Logo"
-                (click)="licenceLogo.click()"
-              >
-                <img
-                  *ngIf="arrayLicenceImageUrl[i]"
-                  [src]="arrayLicenceImageUrl[i]"
-                  class="image h-28"
-                />
-                <ng-container *ngIf="!arrayLicenceImageUrl[i]">
-                  <img
-                    class="h-7"
-                    src="../../../../../assets/images/defualt-image.svg"
-                    alt="photo"
-                  />
-                  <span class="text-mediumGray">Add Photo</span>
-                </ng-container>
+              <input class="input py-3 px-4 mb-4" placeholder="Enter name of Certificate / License"
+                formControlName="recognition_name" />
+              <input class="input py-3 px-4 mb-4" placeholder="Expiry date (MM/DD/YY)"
+                *ngIf="item.get('recognition_type')?.value !== 'AWARD'" formControlName="expiry_date" />
+              <input type="file" accept="image/*" #licenceLogo style="display: none"
+                (change)="handleFileInputLicence($event, i)" />
+              <div class="relative w-28">
+                <button (click)="deleteLicense(i)" *ngIf="arrayLicenceImageUrl[i]"
+                  class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+                  <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+                </button>
+                <div class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+                  placeholder="Add a Logo" (click)="licenceLogo.click()">
+                  <img *ngIf="arrayLicenceImageUrl[i]" [src]="arrayLicenceImageUrl[i]"
+                    class="image h-full w-full object-cover" />
+                  <ng-container *ngIf="!arrayLicenceImageUrl[i]">
+                    <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                    <span class="text-mediumGray">Add Photo</span>
+                  </ng-container>
+                </div>
               </div>
             </div>
           </ng-container>
@@ -238,62 +182,33 @@
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Testimonial</label></div>
         <div class="flex flex-col">
-          <ng-container
-            formArrayName="testimonialitems"
-            *ngFor="let item of testimonials.controls; let i = index; let isFirst = first"
-          >
-            <div
-              class="input-award flex flex-col px-4 py-4"
-              [formGroupName]="i"
-              [ngClass]="{ 'mt-3': !isFirst }"
-            >
-              <input
-                class="input py-3 px-4 mb-4"
-                placeholder="Enter client name"
-                formControlName="name"
-              />
-              <input
-                class="input py-3 px-4 mb-4"
-                placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
-                formControlName="title"
-              />
-              <input
-                class="input py-3 px-4 mb-4"
-                placeholder="Enter testimonial"
-                formControlName="testimonial"
-              />
-              <input
-                type="file"
-                accept="image/*"
-                #clientPhoto
-                style="display: none"
-                (change)="handleFileTestimonial($event, i)"
-              />
-              <div
-                class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center"
-                placeholder="Add photo of client"
-                (click)="clientPhoto.click()"
-              >
-                <img
-                  *ngIf="arrayTestmonialImageUrl[i]"
-                  [src]="arrayTestmonialImageUrl[i]"
-                  class="image h-28"
-                />
-                <ng-container *ngIf="!arrayTestmonialImageUrl[i]">
-                  <img
-                    class="h-7"
-                    src="../../../../../assets/images/defualt-image.svg"
-                    alt="photo"
-                  />
-                  <span class="text-mediumGray">Add Photo of Client</span>
-                </ng-container>
+          <ng-container formArrayName="testimonialitems"
+            *ngFor="let item of testimonials.controls; let i = index; let isFirst = first">
+            <div class="input-award flex flex-col px-4 py-4" [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
+              <input class="input py-3 px-4 mb-4" placeholder="Enter client name" formControlName="name" />
+              <input class="input py-3 px-4 mb-4" placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
+                formControlName="title" />
+              <input class="input py-3 px-4 mb-4" placeholder="Enter testimonial" formControlName="testimonial" />
+              <input type="file" accept="image/*" #clientPhoto style="display: none"
+                (change)="handleFileTestimonial($event, i)" />
+              <div class="relative w-28">
+                <button (click)="deleteTestimonial(i)" *ngIf="arrayTestmonialImageUrl[i]"
+                  class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+                  <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+                </button>
+                <div class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center"
+                  placeholder="Add photo of client" (click)="clientPhoto.click()">
+                  <img *ngIf="arrayTestmonialImageUrl[i]" [src]="arrayTestmonialImageUrl[i]"
+                    class="image h-full w-full object-cover" />
+                  <ng-container *ngIf="!arrayTestmonialImageUrl[i]">
+                    <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                    <span class="text-mediumGray">Add Photo <br> of Client</span>
+                  </ng-container>
+                </div>
               </div>
             </div>
           </ng-container>
-          <div
-            class="add-another mt-2 font-normal text-base not-italic"
-            (click)="addTestimonialItem()"
-          >
+          <div class="add-another mt-2 font-normal text-base not-italic" (click)="addTestimonialItem()">
             + Add Another
           </div>
         </div>

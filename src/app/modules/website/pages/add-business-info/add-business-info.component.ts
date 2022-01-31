@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { catchError, filter, forkJoin, map, Observable, of, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { addBusiness, getBusiness, initBusiness } from '../../store/website.actions';
 import {
   BusinessInfo,
@@ -23,7 +24,6 @@ import {
 } from '../../store/website.interface';
 import { IWebsiteState } from '../../store/website.reducers';
 import { getAddBusinessStatus, getBusinessStatus } from '../../store/website.selectors';
-import { WebsiteService } from '../../website.service';
 
 @Component({
   selector: 'app-add-business-info',
@@ -67,12 +67,13 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   editMode = false;
   closeToPunchline = false;
   closeToPhoto = false;
+  isGettingStarted = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private store: Store<IWebsiteState>,
-    private websiteService: WebsiteService,
+    private utilsHelper: UtilsHelperService,
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
@@ -91,10 +92,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           this.zone.run(() => {
             setTimeout(() => {
               this.store.dispatch(getBusiness());
-            }, 1000);
+            }, 100);
           });
         }
       });
+    this.isGettingStarted = this.router.url.split('/').includes('home');
   }
 
   ngOnInit(): void {
@@ -151,7 +153,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       photos: this.fb.array(
         val?.business_photos?.length
           ? val?.business_photos?.map(this.createPhotos.bind(this))
-          : Array(3).fill(this.createPhotos())
+          : Array.from({ length: 3 }, _ => this.createPhotos())
       ),
       socialitems: this.fb.array(
         val?.links?.length
@@ -229,18 +231,20 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   fileToUploadLogo: File | null | undefined;
   logoImageUrl = '';
 
-  handleFileInputLogo(event: Event) {
-    const { files } = event.target as HTMLInputElement;
-    const file = files?.item(0);
-    if (file?.type?.includes('image/')) {
-      this.logoImageUrl = '';
+  async handleFileInputLogo(event: Event) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/');
       this.fileToUploadLogo = file;
-      let reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.logoImageUrl = event.target.result;
-      };
-      reader.readAsDataURL(this.fileToUploadLogo);
+      this.logoImageUrl = url;
+    } catch (ex) {
+      console.log(ex);
     }
+  }
+
+  deleteLogo() {
+    this.logoImageUrl = '';
+    this.fileToUploadLogo = null;
+    this.businessInfoForm.get('logo')?.patchValue(null);
   }
 
   // photos
@@ -248,50 +252,69 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   fileToUploadPhoto: (File | null | undefined)[] = [];
   arrayPhotosImageUrl: (string | undefined)[] = [];
 
-  handleFileInput(event: Event, index: number) {
-    const { files } = event.target as HTMLInputElement;
-    this.arrayPhotosImageUrl[index] = '';
-    const file = files?.item(0);
-    if (file?.type?.includes('image/')) {
+  async handleFileInput(event: Event, index: number) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'business_photos',
+        'image/'
+      );
       this.fileToUploadPhoto[index] = file;
-      let reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.arrayPhotosImageUrl[index] = event.target.result;
-      };
-      reader.readAsDataURL(this.fileToUploadPhoto[index] as File);
+      this.arrayPhotosImageUrl[index] = url;
+    } catch (ex) {
+      console.log(ex);
     }
+  }
+  deletePhoto(index: number) {
+    this.arrayPhotosImageUrl[index] = '';
+    this.fileToUploadPhoto[index] = null;
+    this.photos.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   // Licence or awarsds file
   fileToUploadLicence: (File | undefined | null)[] = [];
   arrayLicenceImageUrl: (string | undefined)[] = [];
 
-  handleFileInputLicence(event: Event, i: number) {
-    const { files } = event.target as HTMLInputElement;
-    const file = files?.item(0);
-    if (file?.type?.includes('image/')) {
+  async handleFileInputLicence(event: Event, i: number) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'recognitions',
+        'image/'
+      );
       this.fileToUploadLicence[i] = file;
-      let reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.arrayLicenceImageUrl[i] = event.target.result;
-      };
-      reader.readAsDataURL(this.fileToUploadLicence[i] as File);
+      this.arrayLicenceImageUrl[i] = url;
+    } catch (ex) {
+      console.log(ex);
     }
+  }
+
+  deleteLicense(index: number) {
+    this.arrayLicenceImageUrl[index] = '';
+    this.fileToUploadLicence[index] = null;
+    this.recognitions.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
   arrayTestmonialImageUrl: (string | undefined)[] = [];
-  handleFileTestimonial(event: Event, i: number) {
-    const { files } = event.target as HTMLInputElement;
-    const file = files?.item(0);
-    if (file?.type?.includes('image/')) {
+  async handleFileTestimonial(event: Event, i: number) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'testimonial',
+        'image/'
+      );
       this.fileToUploadTestimonial[i] = file;
-      let reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.arrayTestmonialImageUrl[i] = event.target.result;
-      };
-      reader.readAsDataURL(this.fileToUploadTestimonial[i] as File);
+      this.arrayTestmonialImageUrl[i] = url;
+    } catch (ex) {
+      console.log(ex);
     }
+  }
+
+  deleteTestimonial(index: number) {
+    this.arrayTestmonialImageUrl[index] = '';
+    this.fileToUploadTestimonial[index] = null;
+    this.testimonials.at(index)?.get('photo_url')?.patchValue(null);
   }
 
   getBase64(event: any) {
@@ -319,7 +342,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       dashboardInfos: { customUsername: domain_name },
     } = userData;
     this.fileNames = [];
-    if (this.logoImageUrl) {
+    if (this.fileToUploadLogo) {
       const logoKey = `${domain_name}/logo/${Date.now()}_${this.fileToUploadLogo?.name}`;
       this.fileNames.push({ type: 'logo', name: logoKey });
       this.businessInfoForm.get('logo')?.patchValue(logoKey);
@@ -382,7 +405,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.websiteService.uploadImage(filePayload).subscribe((data: any) => {
+    this.utilsHelper.uploadImage(filePayload).subscribe((data: any) => {
       console.log(data);
       const { signedURL } = data;
       this.isUploadingImages = true;
@@ -412,7 +435,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
                 )
               ];
           }
-          return this.websiteService.uploadImageToS3(url, file);
+          return this.utilsHelper.uploadImageToS3(url, file);
         })
       )
         .pipe(

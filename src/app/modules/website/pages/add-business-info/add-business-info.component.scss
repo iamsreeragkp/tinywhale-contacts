@@ -1,6 +1,19 @@
+.fixed-header {
+  width: calc(100% - 12.5rem);
+  &-mask {
+    width: calc(100% - 12.5rem);
+    margin-left: 10rem;
+    background-color: #f1f4f5;
+    height: 3rem;
+  }
+  .copy-bg {
+    background-color: #6b9eb6;
+  }
+}
 .website-page-heading {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  border-bottom: 2px solid #d6e1e3;
   .header {
     font-family: Baloo !important;
     color: #154f5b;
@@ -26,10 +39,8 @@
     }
   }
 }
-.line {
-  border: 1px solid #e5e5e5;
-}
 .add-info {
+  padding-top: 4.75rem;
   .detail-section {
     background-color: #eaf3f6;
     border-bottom-right-radius: 20px;

@@ -1,14 +1,14 @@
 <div class="table-container w-full rounded-t-lg overflow-hidden">
   <div class="flex flex-wrap items-center mb-4">
     <div class="relative mb-2 mr-2">
-      <div
-        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"
-      >
-        <span>Service</span>
+      <!-- <div class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"> -->
+      <!-- <span>Service</span>
         <div class="flex items-center justify-center">
-          <img src="../../../../../assets/images/icons/down.svg" alt="" />
-        </div>
-      </div>
+          <img src="../../../../../assets/images/icons/down.svg" alt="">
+        </div> -->
+      <app-dropdown placeholder="Service" [displayKey]="'title'" [emitId]="true"></app-dropdown>
+
+      <!-- </div> -->
       <!-- <div class="absolute top-full left-0 w-full z-50">
         <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
           <button class="px-4 filter-item text-left hover:bg-gray-100">
@@ -30,24 +30,24 @@
       </div> -->
     </div>
     <div class="relative mb-2 mr-2">
-      <div
-        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"
-      >
+      <!-- <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
         <span>Status</span>
         <div class="flex items-center justify-center">
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
-      </div>
+      </div> -->
+      <app-dropdown placeholder="Status" [displayKey]="'title'" [emitId]="true"></app-dropdown>
     </div>
     <div class="relative mb-2 mr-2">
-      <div
-        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"
-      >
+      <!-- <div
+        class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
         <span>Payment</span>
         <div class="flex items-center justify-center">
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
-      </div>
+      </div> -->
+      <app-dropdown placeholder="Payment" [displayKey]="'title'" [emitId]="true"></app-dropdown>
     </div>
     <div class="flex items-center mb-2 ml-5">
       <button class="noborder-button">Clear Filters</button>
@@ -80,22 +80,30 @@
       <tr>
         <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Service Listing</td>
       </tr>
-      <tr class="table-container-borderRow">
+      <tr
+        class="table-container-borderRow"
+        *ngFor="let bookData of bookingData; let i = index"
+        (click)="showSubItem(i)"
+      >
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <span class="italic whitespace-nowrap">19 Jan ‘22</span>
+            <span class="italic whitespace-nowrap">{{ bookData?.date_time | date }}</span>
             <span class="italic whitespace-nowrap">(1/2)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div
+            *ngIf="bookData?.status === 'COMPLETED'"
             class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
           >
-            <span>Completed</span>
+            <span>{{ bookData?.status }}</span>
           </div>
-          <!-- <div class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm">
-            <span>Upcoming</span>
-          </div> -->
+          <div
+            *ngIf="bookData?.status === 'PENDING_PAYMENT' || bookData?.status === 'OPEN'"
+            class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm"
+          >
+            <span>{{ bookData?.status }}</span>
+          </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
@@ -109,11 +117,21 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <div class="italic flex items-center">
-              <span class="mr-2">$ 100</span>
-              <img src="../../../../../assets/images/icons/check.svg" alt="" />
-              <!-- <img src="../../../../../assets/images/icons/pending.svg" alt=""> -->
-            </div>
+            <ng-container *ngFor="let price of orderLineItem">
+              <div class="italic flex items-center">
+                <span class="mr-2">{{ price?.currency }} {{ price?.price }}</span>
+                <img
+                  src="../../../../../assets/images/icons/check.svg"
+                  alt=""
+                  *ngIf="bookData?.status === 'COMPLETED'"
+                />
+                <img
+                  src="../../../../../assets/images/icons/pending.svg"
+                  alt=""
+                  *ngIf="bookData?.status === 'PENDING_PAYMENT' || bookData?.status === 'OPEN'"
+                />
+              </div>
+            </ng-container>
             <span class="italic whitespace-nowrap">(2 sessions)</span>
           </div>
         </td>
@@ -140,7 +158,11 @@
               <div
                 class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded"
               >
-                <button class="px-4 filter-item text-left hover:bg-gray-100">
+                <button
+                  class="px-4 filter-item text-left hover:bg-gray-100"
+                  *ngIf="visibleIndex === i"
+                  (click)="navigateToEdit(bookData?.order_id)"
+                >
                   <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">
                     Reschedule
                   </div>
@@ -159,7 +181,7 @@
       </tr>
       <tr>
         <td colspan="7">
-          <div class="w-full" *ngIf="true; else noResult">
+          <div class="w-full">
             <app-no-data-booking-component class="flex flex-1"></app-no-data-booking-component>
           </div>
           <ng-template #noResult>

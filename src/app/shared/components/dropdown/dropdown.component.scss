@@ -1,4 +1,21 @@
 .custom-select {
+  &-drop {
+    &::-webkit-scrollbar {
+      width: 3px !important;
+      &-track {
+        width: 3px !important;
+        background-color: white;
+      }
+      &-thumb {
+        width: 3px !important;
+        border-radius: 0px;
+        background-clip: unset;
+        border: 0px solid transparent !important;
+      }
+    }
+    transition-property: all;
+    @apply duration-200;
+  }
   &-box {
     border: 2px solid #d6e1e3;
     border-radius: 8px;

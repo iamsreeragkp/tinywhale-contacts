@@ -12,7 +12,6 @@ import { TokenInterceptor } from './modules/core/interceptors/token.interceptor'
 import { RootGuard } from './modules/root/root.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxChartsModule }from '@swimlane/ngx-charts';
 
 registerLocaleData(localeEs, 'es');
 
@@ -25,7 +24,6 @@ registerLocaleData(localeEs, 'es');
     AppRoutingModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    NgxChartsModule
   ],
   declarations: [AppComponent],
   providers: [

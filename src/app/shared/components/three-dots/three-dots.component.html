@@ -1,0 +1,24 @@
+<div class="relative" #threeDots>
+  <button
+    class="table-container-button w-12 h-12 flex items-center justify-center font-semibold rounded-full duration-700"
+    (click)="open = !open">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
+        class="table-container-button-svgFill" />
+    </svg>
+  </button>
+  <!-- open more -->
+  <div class="absolute top-full right-0 z-50 -mt-5 pop-over overflow-hidden"
+    [ngClass]="{ 'max-h-0': !open, 'max-h-screen': open }">
+    <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+      <button class="px-4 filter-item text-left hover:bg-gray-100" *ngFor="let action of _actions">
+        <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap"
+          (click)="open = false; actionTriggered.emit(action)">{{ action }}</div>
+      </button>
+      <button class="px-4 filter-item text-left hover:bg-gray-100" disabled *ngIf="!_actions.length">
+        <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Delete</div>
+      </button>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,25 @@ h2 {
   margin-bottom: 2rem;
 }
 
+body {
+  background-color: #f1f4f5;
+  &::-webkit-scrollbar,
+  ::-webkit-scrollbar {
+    width: 18px;
+    &-track {
+      background-color: transparent;
+      // box-shadow: inset 0 0 5px #00a4b7;
+    }
+    &-thumb {
+      width: 18px;
+      border-radius: 13px;
+      background-clip: padding-box;
+      border: 5px solid transparent;
+      background-color: #00a4b7;
+    }
+  }
+}
+
 .primary-button {
   background-color: #00a4b7;
   border: 2px solid #00a4b7;
@@ -27,7 +46,7 @@ h2 {
     border-color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5  font-bold duration-500 text-white;
+  @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
 }
 .gray-button {
   background-color: #154f5b;
@@ -42,7 +61,7 @@ h2 {
     border-color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5  font-bold duration-500 text-white;
+  @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
 }
 
 .secondary-button {
@@ -59,7 +78,7 @@ h2 {
     border-color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply flex items-center justify-center h-12 rounded-full px-5 font-bold duration-500;
+  @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
 }
 
 .noborder-button {

@@ -44,31 +44,33 @@
         <p class="card-content not-italic font-normal text-base py-4">
           Create a stunning and professional website in minutes
         </p>
-        <button
-          class="primary-button w-28 h-10 mt-auto"
-          *ngIf="
-            !dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
-          "
-          [routerLink]="'../website/add-business-info'"
-        >
-          Add
-        </button>
-        <button
-          class="secondary-button mt-auto h-10 w-28"
-          *ngIf="dashboardInfos?.businessInfo?.isCompleted"
-          [routerLink]="'../website/edit-business-info'"
-        >
-          Edit
-        </button>
-        <button
-          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
-          *ngIf="
-            dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
-          "
-          [routerLink]="'../website/edit-business-info'"
-        >
-          Complete the details
-        </button>
+        <div>
+          <button
+            class="primary-button px-10 h-10 mt-auto"
+            *ngIf="
+              !dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
+            "
+            [routerLink]="'../add-business-info'"
+          >
+            Add
+          </button>
+          <button
+            class="secondary-button mt-auto h-10 px-10"
+            *ngIf="dashboardInfos?.businessInfo?.isCompleted"
+            [routerLink]="'../../website/edit-business-info'"
+          >
+            Edit
+          </button>
+          <button
+            class="primary-button mt-auto px-10 h-10"
+            *ngIf="
+              dashboardInfos?.businessInfo?.isStarted && !dashboardInfos?.businessInfo?.isCompleted
+            "
+            [routerLink]="'../../website/edit-business-info'"
+          >
+            Complete the details
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -101,28 +103,34 @@
         <p class="card-content not-italic font-normal text-base py-4">
           Display bookable services and packages with scheduling options
         </p>
-        <button
-          class="primary-button w-28 h-10 mt-auto"
-          *ngIf="
-            !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
-          "
-        >
-          Add
-        </button>
-        <button
-          class="secondary-button w-28 h-10 mt-auto"
-          *ngIf="dashboardInfos?.serviceInfo?.isCompleted"
-        >
-          Edit
-        </button>
-        <button
-          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
-          *ngIf="
-            dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
-          "
-        >
-          Complete the details
-        </button>
+        <div>
+          <button
+            class="primary-button px-10 h-10 mt-auto"
+            [disabled]='!dashboardInfos?.businessInfo.isCompleted'
+            *ngIf="
+              !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
+            "
+            [routerLink]="'../add-service'"
+          >
+            Add
+          </button>
+          <button
+            class="secondary-button px-10 h-10 mt-auto"
+            *ngIf="dashboardInfos?.serviceInfo?.isCompleted"
+            [routerLink]="'../../service'"
+          >
+            View Services
+          </button>
+          <button
+            class="primary-button mt-auto px-10 h-10"
+            *ngIf="
+              dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
+            "
+            [routerLink]="'../../service'"
+          >
+            Complete the details
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -152,31 +160,34 @@
         <p class="card-content not-italic font-normal text-base py-4">
           We've partnered with Rapyd to make your payments seamless
         </p>
-        <button
-          class="primary-button w-28 mt-auto h-10"
-          *ngIf="
-            !dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
-          "
-          [routerLink]="'../account/add-payment'"
-        >
-          Add
-        </button>
-        <button
-          class="secondary-button mt-auto w-28 h-10"
-          *ngIf="dashboardInfos?.paymentInfo?.isCompleted"
-          [routerLink]="'../account/edit-payment'"
-        >
-          Edit
-        </button>
-        <button
-          class="primary-button mt-auto sm:w-52 md:w-56 h-10"
-          *ngIf="
-            dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
-          "
-          [routerLink]="'../account/edit-payment'"
-        >
-          Complete the details
-        </button>
+        <div>
+          <button
+            class="primary-button px-10 mt-auto h-10"
+            [disabled]="!dashboardInfos?.serviceInfo?.isCompleted"
+            *ngIf="
+              !dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
+            "
+            [routerLink]="'../add-payment'"
+          >
+            Add
+          </button>
+          <button
+            class="secondary-button mt-auto px-10 h-10"
+            *ngIf="dashboardInfos?.paymentInfo?.isCompleted"
+            [routerLink]="'../../account/edit-payment'"
+          >
+            Edit
+          </button>
+          <button
+            class="primary-button mt-auto px-10 h-10"
+            *ngIf="
+              dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
+            "
+            [routerLink]="'../../account/edit-payment'"
+          >
+            Complete the details
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,11 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { addServiceStatus, getServiceStatus, initService } from './service.actions';
+import {
+  addServiceStatus,
+  getServiceList,
+  getServiceListStatus,
+  getServiceStatus,
+  initService,
+} from './service.actions';
 import { Product } from '../shared/service.interface';
 
 export const userFeatureKey = 'AuthState';
@@ -11,7 +17,12 @@ export interface IServiceState {
     error?: string;
   };
   getService?: {
-    business?: Product;
+    product?: Product;
+    status: boolean;
+    error?: string;
+  };
+  getServiceList?: {
+    products?: Product[];
     status: boolean;
     error?: string;
   };
@@ -20,6 +31,7 @@ export interface IServiceState {
 export const initialServiceState: IServiceState = {
   addService: undefined,
   getService: undefined,
+  getServiceList: undefined,
 };
 
 export const reducer = createReducer(
@@ -28,10 +40,18 @@ export const reducer = createReducer(
     ...state,
     addService: { response, status, error },
   })),
-  on(getServiceStatus, (state, { business, error, status }) => ({
+  on(getServiceStatus, (state, { product, error, status }) => ({
     ...state,
     getService: {
-      business,
+      product,
+      error,
+      status,
+    },
+  })),
+  on(getServiceListStatus, (state, { products, error, status }) => ({
+    ...state,
+    getServiceList: {
+      products,
       error,
       status,
     },

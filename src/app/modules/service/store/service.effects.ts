@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, of, mergeMap } from 'rxjs';
+import { getDashboard } from '../../root/store/root.actions';
 
 import { ServiceService } from '../service.service';
-import { addService, addServiceStatus, getService, getServiceStatus } from './service.actions';
+import {
+  addService,
+  addServiceStatus,
+  getService,
+  getServiceList,
+  getServiceListStatus,
+  getServiceStatus,
+} from './service.actions';
 
 @Injectable()
 export class ServiceEffects {
@@ -12,11 +20,11 @@ export class ServiceEffects {
   addServiceInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addService),
-      switchMap(({ businessData }) =>
-        this.productService.addServiceInfo(businessData).pipe(
+      switchMap(({ productData }) =>
+        this.productService.addServiceInfo(productData).pipe(
           mergeMap(response => [
-            addServiceStatus({ response: response, status: true }),
-            getService(),
+            addServiceStatus({ response: response.data, status: true }),
+            getDashboard(),
           ]),
           catchError(error =>
             of(
@@ -34,10 +42,22 @@ export class ServiceEffects {
   getService$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getService),
-      switchMap(() =>
-        this.productService.getService().pipe(
-          map((response: any) => getServiceStatus({ business: response.data, status: true })),
+      switchMap(({ product_id }) =>
+        this.productService.getService(product_id).pipe(
+          map((response: any) => getServiceStatus({ product: response.data, status: true })),
           catchError(err => of(getServiceStatus({ error: err, status: false })))
+        )
+      )
+    )
+  );
+
+  getServiceList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getServiceList),
+      switchMap(({ filters }) =>
+        this.productService.getServiceList(filters).pipe(
+          map((response: any) => getServiceListStatus({ products: response.data, status: true })),
+          catchError(err => of(getServiceListStatus({ error: err, status: false })))
         )
       )
     )
