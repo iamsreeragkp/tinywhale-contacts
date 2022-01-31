@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ViewBusinessInfoComponent } from './pages/view-business-info/view-business-info.component';
 import { RoutesConfig } from '../../configs/routes.config';
-import { AddBusinessInfoComponent } from './pages/add-business-info/add-business-info.component';
 import { WebsiteComponent } from './website.component';
+import { AddBusinessInfoComponent } from '../getting-started/pages/add-business-info/add-business-info.component';
 
 const websiteRoutesConfig = RoutesConfig.routesNames.website;
 const routesNames = RoutesConfig.routesNames;

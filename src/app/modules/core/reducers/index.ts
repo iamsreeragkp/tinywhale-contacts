@@ -4,9 +4,11 @@ import { IAuthState, authReducer } from '../../auth/store/auth.reducers';
 import { IWebsiteState, websiteReducer } from '../../website/store/website.reducers';
 import { IServiceState, serviceReducer } from '../../service/store/service.reducers';
 import { bookingReducer, IBookingState } from '../../booking/store/booking.reducers';
+import { IRootState, rootReducer } from '../../root/store/root.reducers';
 
 export interface IAppState {
   user: IUserState;
+  root: IRootState;
   auth: IAuthState;
   website: IWebsiteState;
   service: IServiceState;
@@ -15,6 +17,7 @@ export interface IAppState {
 
 export const reducers: ActionReducerMap<IAppState> = {
   user: userReducer,
+  root: rootReducer,
   auth: authReducer,
   website: websiteReducer,
   service: serviceReducer,
