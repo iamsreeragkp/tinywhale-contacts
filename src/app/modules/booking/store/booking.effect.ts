@@ -11,6 +11,9 @@ import {
   getBookingByIdError,
   getBookingByIdSuccess,
   getBookingError,
+  getBookingList,
+  getBookingListError,
+  getBookingListSuccess,
   getBookingSuccess,
 } from './booking.actions';
 
@@ -55,6 +58,20 @@ export class BookingEffects {
         this.bookingService.getBookingById(bookingId).pipe(
           map((response: any) => getBookingByIdSuccess({ response: response?.data })),
           catchError(err => of(getBookingByIdError({ error: err })))
+        )
+      )
+    )
+  );
+
+  getBookingList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookingList),
+      switchMap(({ filters }) =>
+        this.bookingService.getBookingList(filters).pipe(
+          map((response: any) =>
+            getBookingListSuccess({ bookingList: response.data, status: true })
+          ),
+          catchError(err => of(getBookingListError({ error: err, status: false })))
         )
       )
     )

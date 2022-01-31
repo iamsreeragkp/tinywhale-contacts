@@ -1,4 +1,5 @@
 <div class="table-container w-full rounded-t-lg overflow-hidden">
+  <form [formGroup]="filterForm">
   <div class="flex flex-wrap items-center mb-4">
     <div class="relative mb-2 mr-2">
       <!-- <div class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"> -->
@@ -6,7 +7,9 @@
         <div class="flex items-center justify-center">
           <img src="../../../../../assets/images/icons/down.svg" alt="">
         </div> -->
-      <app-dropdown placeholder="Service" [displayKey]="'title'" [emitId]="true"></app-dropdown>
+        <!-- <app-dropdown  placeholder="Service" [displayKey]="'title'" [emitId]="true" ></app-dropdown> -->
+
+        <app-dropdown [options]="serviceData" placeholder="Service" [displayKey]="'title'"  formControlName="service"></app-dropdown>
 
       <!-- </div> -->
       <!-- <div class="absolute top-full left-0 w-full z-50">
@@ -37,7 +40,7 @@
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
       </div> -->
-      <app-dropdown placeholder="Status" [displayKey]="'title'" [emitId]="true"></app-dropdown>
+      <app-dropdown [options]="status"  placeholder="Status" [displayKey]="'title'" formControlName="status"></app-dropdown>
     </div>
     <div class="relative mb-2 mr-2">
       <!-- <div
@@ -47,13 +50,15 @@
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
       </div> -->
-      <app-dropdown placeholder="Payment" [displayKey]="'title'" [emitId]="true"></app-dropdown>
+      <app-dropdown [options]="payment"  placeholder="Payment" [displayKey]="'title'"  formControlName="payment"></app-dropdown>
+
     </div>
     <div class="flex items-center mb-2 ml-5">
-      <button class="noborder-button">Clear Filters</button>
+      <button class="noborder-button" (click)="clearFilter()">Clear Filters</button>
     </div>
   </div>
-  <table class="table-auto w-full">
+  </form>
+  <table class="table-auto w-full" >
     <thead>
       <tr class="bg-gray-100">
         <th class="px-2 py-3 text-left font-semibold">
@@ -118,57 +123,20 @@
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
             <ng-container *ngFor="let price of orderLineItem">
-              <div class="italic flex items-center">
-                <span class="mr-2">{{ price?.currency }} {{ price?.price }}</span>
-                <img
-                  src="../../../../../assets/images/icons/check.svg"
-                  alt=""
-                  *ngIf="bookData?.status === 'COMPLETED'"
-                />
-                <img
-                  src="../../../../../assets/images/icons/pending.svg"
-                  alt=""
-                  *ngIf="bookData?.status === 'PENDING_PAYMENT' || bookData?.status === 'OPEN'"
-                />
-              </div>
-            </ng-container>
+            <div class="italic flex items-center">
+              <span class="mr-2">{{price?.currency==='INR'? '₹' : price?.currency==='USD'? '$' : price?.currency==='SGD'? 'S$' : price?.currency==='GBP'? '£' : price?.currency==='AUD'? 'A$' : ''}} {{price?.price}}</span>
+              <img src="../../../../../assets/images/icons/check.svg" alt="" *ngIf="bookData?.status === 'COMPLETED'">
+              <img src="../../../../../assets/images/icons/pending.svg" alt="" *ngIf="bookData?.status ==='PENDING_PAYMENT' || bookData?.status ==='OPEN'">
+            </div>
+          </ng-container>
             <span class="italic whitespace-nowrap">(2 sessions)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="relative flex justify-end">
-            <button
-              class="table-container-button w-12 h-12 flex items-center justify-center font-semibold rounded-full duration-700"
-            >
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 26 26"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
-                  class="table-container-button-svgFill"
-                />
-              </svg>
-            </button>
-            <!-- open more -->
-            <div class="absolute top-full right-0 z-50 -mt-5">
-              <div
-                class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded"
-              >
-                <button
-                  class="px-4 filter-item text-left hover:bg-gray-100"
-                  *ngIf="visibleIndex === i"
-                  (click)="navigateToEdit(bookData?.order_id)"
-                >
-                  <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">
-                    Reschedule
-                  </div>
-                </button>
-              </div>
-            </div>
+                <ng-container *ngIf="bookData?.status !== 'COMPLETED'">
+              <app-three-dots [actions]="threeDotsActions" (actionTriggered)="handleAction($event, i,bookData?.order_id)"></app-three-dots>
+              </ng-container>
           </div>
         </td>
       </tr>

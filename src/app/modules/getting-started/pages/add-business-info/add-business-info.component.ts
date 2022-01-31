@@ -295,6 +295,16 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.recognitions.at(index)?.get('photo_url')?.patchValue(null);
   }
 
+  deleteAwardOrLicence(index:any){
+    const remove = this.businessInfoForm.get('licenceitems') as FormArray;
+    remove.removeAt(index)
+  }
+
+  deleteTestmonials(index:any){
+    const remove = this.businessInfoForm.get('testimonialitems') as FormArray;
+    remove.removeAt(index)
+  }
+
   fileToUploadTestimonial: (File | undefined | null)[] = [];
   arrayTestmonialImageUrl: (string | undefined)[] = [];
   async handleFileTestimonial(event: Event, i: number) {

@@ -38,3 +38,19 @@ export const getBookingByIdError = createAction(
   '[BookingModule] get BookingById Error',
   props<{ error?: any }>()
 );
+
+
+export const getBookingList = createAction(
+  '[BookingModule] GET BOOKING LIST',
+  props<{ filters: any }>()
+);
+
+export const getBookingListSuccess = createAction(
+  '[BookingModule] GET BOOKING LIST SUCCESS',
+  props<{ bookingList?: any[]; status: boolean; error?: string }>()
+);
+
+export const getBookingListError = createAction(
+  '[BookingModule] GET BOOKING LIST ERROR',
+  props<{ status: boolean; error?: string }>()
+);

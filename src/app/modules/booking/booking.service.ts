@@ -41,4 +41,15 @@ export class BookingService {
     const params = new HttpParams().set('business_id', businessId).set('product_type', 'CLASS');
     return this.http.get(`${this.bookingApi}/dashboard/service`, { params: params });
   }
+
+
+  getBookingList(filters: any) {
+    const {
+      dashboardInfos: { businessId: business_id },
+    } = this.authService.decodeUserToken();
+    const params = new HttpParams({ fromObject: { ...filters, business_id } });
+    return this.http.get(`${this.bookingApi}/booking`, { params });
+  }
+
+
 }
