@@ -106,7 +106,7 @@
         <div>
           <button
             class="primary-button px-10 h-10 mt-auto"
-            [disabled]="!dashboardInfos?.businessInfo?.isCompleted"
+            [disabled]='!dashboardInfos?.businessInfo.isCompleted'
             *ngIf="
               !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
             "
