@@ -20,6 +20,7 @@ export class AddBookingComponent implements OnInit {
   bookingForm!: FormGroup;
   options = {
     format: 'yyyy-MM-dd',
+    placeholder: 'Select date',
   };
   classData: any;
   classTimeRanges: any;

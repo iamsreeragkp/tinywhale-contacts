@@ -12,9 +12,10 @@ import { TableBookingComponentComponent } from './components/table-booking-compo
 import { BookingStoreModule } from './store/booking-store.module';
 import { FormsModule } from '@angular/forms';
 import { StatusBookingComponent } from './pages/status-booking/status-booking.component';
+import { DatepickerModule } from 'ng2-datepicker';
 
 @NgModule({
-  imports: [CommonModule, BookingRoutingModule, SharedModule,BookingStoreModule,FormsModule],
+  imports: [CommonModule, BookingRoutingModule, SharedModule,BookingStoreModule,FormsModule, DatepickerModule],
   declarations: [BookingComponent, AddBookingComponent, ViewBookingComponent, NoDataBookingComponentComponent, TableBookingComponentComponent, NoResultBookingComponentComponent,StatusBookingComponent],
   providers: [RootService],
 })
