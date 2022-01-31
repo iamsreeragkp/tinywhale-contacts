@@ -7,7 +7,12 @@ import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs'
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { OptionsType } from 'src/app/shared/interfaces/dropdown.interface';
-import { convert24HrsFormatToAmPm, timeOptions } from 'src/app/shared/utils';
+import {
+  convert24HrsFormatToAmPm,
+  locationOptions,
+  timeOptions,
+  weekDayOptions,
+} from 'src/app/shared/utils';
 import {
   LocationType,
   PricePackage,
@@ -26,33 +31,10 @@ import { getAddServiceStatus, getServiceStatus } from '../../../service/store/se
 })
 export class AddServiceComponent implements OnInit, OnDestroy {
   productForm: FormGroup = new FormGroup({});
-  locationOptions: OptionsType = [
-    {
-      location_id: LocationType.CUSTOMER_LOCATION,
-      location_type: LocationType.CUSTOMER_LOCATION,
-      location_name: "Customer's Location",
-    },
-    {
-      location_id: LocationType.ONLINE,
-      location_type: LocationType.ONLINE,
-      location_name: 'Online (Zoom - connect)',
-    },
-  ];
+  locationOptions = locationOptions;
   // generating time options
   timeOptions = timeOptions;
-  weekDayOptions = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ].map(weekDay => ({
-    value: WeekDay[weekDay as keyof typeof WeekDay],
-    label: weekDay,
-    selected: false,
-  }));
+  weekDayOptions = weekDayOptions;
   ngUnsubscribe = new Subject<void>();
   startTimeUnsubscriber$ = new Subject<void>();
   editMode = false;
@@ -120,15 +102,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           if (this.autoSaving) {
             this.autoSaving = false;
             if (!this.editMode) {
-              this.router.navigate(['../edit-service', data?.response?.product_id], {
-                relativeTo: this.route,
+              this.router.navigate(['/service/edit-service', data?.response?.product_id], {
                 replaceUrl: true,
               });
             }
           } else if (this.createAnother) {
             if (this.editMode) {
-              this.router.navigate(['../../add-service'], {
-                relativeTo: this.route,
+              this.router.navigate(['/service/add-service'], {
                 replaceUrl: true,
               });
             } else {

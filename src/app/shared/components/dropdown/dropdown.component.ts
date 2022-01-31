@@ -44,10 +44,10 @@ export class DropdownComponent {
   _displayKey = 'label';
   _idKey = 'id';
   _emitId = false;
+  _closableChip = true;
   // Options
   @Input() set options(val: OptionsType) {
-    if(val?.length){
-
+    if (val?.length) {
       this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
         ...option,
         dropdown_field_data: {
@@ -98,6 +98,10 @@ export class DropdownComponent {
   @Input() set emitId(val: boolean) {
     this._emitId = val;
   }
+  // Closable chip view multiselect
+  @Input() set closableChip(val: boolean) {
+    this._closableChip = false;
+  }
 
   // component properties
   open = false;
@@ -109,10 +113,13 @@ export class DropdownComponent {
     if (!this.open) {
       return;
     }
-    const dropDownSelector = 'div.' + this.dropdown.nativeElement.className.split(' ').join('.');
-    if (!target.closest(dropDownSelector)) {
+    if (!this.dropdown.nativeElement.contains(target)) {
       this.open = false;
     }
+    // const dropDownSelector = 'div.' + this.dropdown.nativeElement.className.split(' ').join('.');
+    // if (!target.closest(dropDownSelector)) {
+    //   this.open = false;
+    // }
   }
 
   _onChange = (val: any) => {};
@@ -177,7 +184,7 @@ export class DropdownComponent {
     this._options.forEach(option => {
       if (option[this._idKey] === val[this._idKey]) {
         option.dropdown_field_data!.selected =
-          !option.dropdown_field_data?.selected || !this.showRadio;
+          !option.dropdown_field_data?.selected || (!this._multiSelect && !this.showRadio);
       } else if (!this._multiSelect) {
         option.dropdown_field_data!.selected = false;
       }
@@ -208,12 +215,12 @@ export class DropdownComponent {
     this.open = !this.open;
   }
 
-  selectedValues() {
+  selectedValues(skipIdEmit = false) {
     const values =
       this._options[!this._multiSelect ? 'find' : 'filter'](
         option => option.dropdown_field_data?.selected
       ) ?? null;
-    if (this._emitId) {
+    if (this._emitId && !skipIdEmit) {
       if (values instanceof Array) {
         return values.map(option => option[this._idKey]);
       } else {

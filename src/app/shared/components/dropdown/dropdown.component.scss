@@ -13,6 +13,8 @@
         border: 0px solid transparent !important;
       }
     }
+    transition-property: all;
+    @apply duration-200;
   }
   &-box {
     border: 2px solid #d6e1e3;

@@ -25,6 +25,10 @@ import { OpenedeyeComponent } from './svgs/openedeye/openedeye.component';
 import { AwaitingComponent } from './svgs/awaiting/awaiting.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { NumberDirective } from './directives/number.directive';
+import { ArrayJoinPipe } from './pipes/array-join.pipe';
+import { GroupWeekDaysPipe } from './pipes/group-weekdays';
+import { ThreeDotsComponent } from './components/three-dots/three-dots.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
@@ -51,6 +55,10 @@ import { NumberDirective } from './directives/number.directive';
     AwaitingComponent,
     DropdownComponent,
     NumberDirective,
+    ArrayJoinPipe,
+    GroupWeekDaysPipe,
+    ThreeDotsComponent,
+    ModalComponent,
   ],
   exports: [
     CommonModule,
@@ -79,6 +87,10 @@ import { NumberDirective } from './directives/number.directive';
     AwaitingComponent,
     DropdownComponent,
     NumberDirective,
+    ArrayJoinPipe,
+    GroupWeekDaysPipe,
+    ThreeDotsComponent,
+    ModalComponent,
   ],
 })
 export class SharedModule {}
