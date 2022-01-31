@@ -3,9 +3,7 @@
     <h1 class="title not-italic font-normal leading-9 mb-4">Sign in</h1>
     <p class="content not-italic font-normal text-base">
       Don’t have an account?
-      <span class="goto-signup cursor-pointer hover:text-primaryFont" (click)="navigateToSignUp()"
-        >Sign up</span
-      >
+      <span class="goto-signup cursor-pointer" (click)="navigateToSignUp()">Sign up</span>
     </p>
   </header>
   <main>
@@ -13,7 +11,7 @@
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
-            class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-data w-full"
             type="email"
             placeholder="Enter Email"
             formControlName="email"
@@ -50,7 +48,7 @@
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <input
-            class="input-login focus:outline-none w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3"
+            class="input-data w-full"
             [type]="show"
             placeholder="Enter Password"
             [ngClass]="{'border-red': password?.errors?.['minlength'] || logInForm?.errors?.['loginFail']}"
