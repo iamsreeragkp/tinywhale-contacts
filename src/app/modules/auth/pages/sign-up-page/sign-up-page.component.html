@@ -21,18 +21,21 @@
               #domainName
               type="text"
               (ngModelChange)="search$.next($event)"
-              class="domain-input-width absolute w-full focus:outline-none border-none bg-transparent min-w-0 p-0 pr-5"
+              class="domain-input-width pl-24 absolute w-full focus:outline-none border-none bg-transparent min-w-0 p-0 pr-5"
               formControlName="domain"
+              placeholder="yourbusinessname"
             />
-            <Span class="domain-input-width inline-block leading-none invisible truncate">{{
-              signUpForm?.get('domain')?.value
-            }}</Span>
-            <span class="text-gray-500">{{
+
+            <!-- <span class="text-gray-500">{{
               signUpForm?.get('domain')?.value
                 ? '
-              .tinywhale.com'
-                : 'yourbusinessname.tinywhale.com'
-            }}</span>
+              tinycard.to/'
+                : 'tinycard.to/yourbusinessname'
+            }}</span> -->
+            <span class="text-primaryFont font-semibold">tinycard.to/</span>
+            <!-- <Span class="domain-input-width inline-block leading-none">{{
+              signUpForm?.get('domain')?.value
+            }}</Span> -->
           </div>
           <ng-container *ngIf="signUpForm.get('domain')?.touched">
             <div class="icon-holder flex absolute right-0 items-center">
