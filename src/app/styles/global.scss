@@ -48,7 +48,6 @@ body {
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
 }
-
 .gray-button {
   background-color: #154f5b;
   border: 2px solid #154f5b;
@@ -92,7 +91,7 @@ body {
     color: #d6e1e3 !important;
     @apply cursor-not-allowed;
   }
-  @apply font-baloo px-3 duration-500;
+  @apply font-baloo px-3 duration-500 cursor-pointer;
 }
 
 .custom-select {

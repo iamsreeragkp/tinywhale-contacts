@@ -13,7 +13,7 @@ module.exports = {
         fourtyPx: '40px',
       },
       // bagroundColor:{
-      //   primary-baground:"#12B5C1"
+      //   primary-baground:"#00a4b7"
       // }
       textColor: {
         primaryFont: '#154F5B',

@@ -1,39 +1,35 @@
-.website-page-heading{
-  .header{
-    font-family: Baloo!important;
-      color: #154F5B;
+.website-page-heading {
+  .header {
+    font-family: Baloo !important;
+    color: #154f5b;
   }
 }
-.line{
-  border: 1px solid #E5E5E5;
+.line {
+  border: 1px solid #e5e5e5;
 }
-.website-page{
-  border-bottom-left-radius:20px;
-  
-  .title{
+.website-page {
+  border-bottom-left-radius: 20px;
+
+  .title {
     font-family: Baloo;
-    color: #154F5B;
-
-
+    color: #154f5b;
   }
-  .content{
+  .content {
     font-family: Poppins;
-line-height: 26px;
-color: #154F5B;
-
+    line-height: 26px;
+    color: #154f5b;
   }
-  .template-button{
+  .template-button {
     font-family: Baloo;
-     line-height: 24px;
-     text-align: center;
-      color: #12B5C1;
-      border: 2px solid #12B5C1;
+    line-height: 24px;
+    text-align: center;
+    color: #00a4b7;
+    border: 2px solid #00a4b7;
   }
-  .getstarted{
+  .getstarted {
     font-family: Baloo;
-     line-height: 24px;
-      background:#12B5C1;
-      text-align: center;
-
+    line-height: 24px;
+    background: #00a4b7;
+    text-align: center;
   }
 }
