@@ -2,7 +2,7 @@
   <div class="w-full flex items-center justify-between bg-white py-3 px-4 custom-select-box cursor-pointer"
     (click)="open = !open">
     <div class="custom-select-box-valueContainer flex flex-wrap items-center">
-      <ng-container *ngIf="_multiSelect && selectedOption">
+      <ng-container *ngIf="_multiSelect && selectedOption && _closableChip">
         <ng-container *ngFor="let option of _options">
           <div class="flex items-center bg-white p-1 mr-1 my-1 custom-select-box-chip"
             *ngIf="option.dropdown_field_data?.selected">
@@ -14,14 +14,18 @@
           </div>
         </ng-container>
       </ng-container>
-      <span *ngIf="selectedOption && !_multiSelect">{{selectedOption[_displayKey]}}</span>
-      <span class="custom-select-placeholder" *ngIf="!selectedOption">{{ _placeholder }}</span>
+      <span *ngIf="selectedOption && !_multiSelect" class="truncate">{{selectedOption[_displayKey]}}</span>
+      <span *ngIf="selectedOption && _multiSelect && !_closableChip" class="truncate">{{ selectedValues(true) |
+        arrayJoin:', ':_displayKey}}</span>
+      <span class="custom-select-placeholder truncate" *ngIf="!selectedOption">{{ _placeholder }}</span>
     </div>
     <button class="w-5 h-full items-center">
-      <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full">
+      <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full transition"
+        [ngClass]="{ 'transform rotate-180': open }">
     </button>
   </div>
-  <div class="absolute top-full left-0 w-full z-10 border border-gray-200 border-solid shadow-lg rounded max-h-56 overflow-y-auto custom-select-drop" *ngIf="open">
+  <div class="absolute top-full left-0 min-w-full z-10 rounded overflow-y-auto custom-select-drop"
+    [ngClass]="{ 'max-h-0 overflow-hidden': !open, 'max-h-56 border border-gray-200 border-solid shadow-lg': open }">
     <div class="bg-white w-fit min-w-full flex flex-col">
 
       <!-- multi select -->

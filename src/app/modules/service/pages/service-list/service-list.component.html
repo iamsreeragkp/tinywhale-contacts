@@ -3,19 +3,22 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Services</span>
     </header>
+    <button class="primary-button px-12" [routerLink]="['../add-service']">
+      Add A Service
+    </button>
   </div>
   <hr class="line">
-  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl" *ngIf="!true; else noWebsiteInfo">
+  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
     <main>
       <app-table-service-component class="flex flex-1"></app-table-service-component>
     </main>
   </div>
-  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
+  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
 
   <ng-template #noWebsiteInfo>
     <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
       <app-table-service-component class="flex flex-1">
       </app-table-service-component>
     </div>
-  </ng-template>
+  </ng-template> -->
 </div>

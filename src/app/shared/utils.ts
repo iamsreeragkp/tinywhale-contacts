@@ -1,4 +1,4 @@
-import { TimeRange, WeekDay } from '../modules/service/shared/service.interface';
+import { LocationType, TimeRange, WeekDay } from '../modules/service/shared/service.interface';
 import { TimeRangeSerialized } from './interfaces/time-range.interface';
 
 export const timeOptions = ['AM', 'PM'].flatMap(amPm =>
@@ -102,3 +102,30 @@ export function convert24HrsFormatToAmPm(time?: string | null) {
   }
   return `${hour}:${minute} ${amPm}`;
 }
+
+export const weekDayOptions = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+].map(weekDay => ({
+  value: WeekDay[weekDay as keyof typeof WeekDay],
+  label: weekDay,
+  selected: false,
+}));
+
+export const locationOptions = [
+  {
+    location_id: LocationType.CUSTOMER_LOCATION,
+    location_type: LocationType.CUSTOMER_LOCATION,
+    location_name: "Customer's Location",
+  },
+  {
+    location_id: LocationType.ONLINE,
+    location_type: LocationType.ONLINE,
+    location_name: 'Online (Zoom - connect)',
+  },
+];

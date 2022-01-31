@@ -13,9 +13,17 @@ import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
 import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RootRoutingModule, RootStoreModule, GettingStartedModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RootRoutingModule,
+    RootStoreModule,
+    GettingStartedModule,
+    NgxChartsModule,
+  ],
   declarations: [
     HomePageComponent,
     Error404PageComponent,
