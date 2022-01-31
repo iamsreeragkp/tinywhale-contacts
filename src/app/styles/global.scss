@@ -431,6 +431,14 @@ input[type="number"] {
   width: fit-content;
 }
 
+.graph-container {
+  .tick {
+    text {
+      fill: #73959d !important;
+      font-weight: 500;
+    }
+  }
+}
 // Last line should be this
 
 @import "tailwindcss/utilities";
