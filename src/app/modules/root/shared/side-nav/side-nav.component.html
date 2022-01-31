@@ -28,7 +28,6 @@
           <a
             class="nav-link flex flex-col items-center justify-around w-full"
             routerLinkActive="active"
-            [disabled]="!dashboardInfos?.businessInfo?.isCompleted"
             routerLink="/website"
           >
             <div class="absolute left-0 top-0 w-2 h-full bg-blue-400 rounded active-border"></div>
@@ -53,7 +52,6 @@
         <a
           routerLink="service"
           routerLinkActive="active"
-          [disabled]="!dashboardInfos?.serviceInfo?.isCompleted"
           class="nav-link flex flex-col items-center justify-around w-full"
         >
           <div class="absolute left-0 top-0 w-2 h-full bg-blue-400 rounded active-border"></div>

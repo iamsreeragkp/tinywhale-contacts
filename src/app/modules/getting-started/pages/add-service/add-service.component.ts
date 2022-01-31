@@ -78,7 +78,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   subscriptions() {
-    this.productFormSubscriptions();
     this.productData$
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -101,11 +100,16 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         if (data?.status) {
           if (this.autoSaving) {
             this.autoSaving = false;
-            if (!this.editMode) {
-              this.router.navigate(['/service/edit-service', data?.response?.product_id], {
-                replaceUrl: true,
-              });
+            const productIdControl = this.productForm.get('product_id');
+            if (productIdControl) {
+              productIdControl.patchValue(data.response.product_id);
+            } else {
+              this.productForm.addControl(
+                'product_id',
+                this._fb.control([data.response.product_id])
+              );
             }
+            this.productFormSubscriptions();
           } else if (this.createAnother) {
             if (this.editMode) {
               this.router.navigate(['/service/add-service'], {
@@ -113,8 +117,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
               });
             } else {
               this.initForms();
-              this.expireSubscriptions();
-              this.subscriptions();
             }
           } else {
             this.location.back();
@@ -126,15 +128,17 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   productFormSubscriptions() {
+    this.startTimeUnsubscriber$.next();
     this.productForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe), debounceTime(5000))
+      .pipe(debounceTime(5000), takeUntil(this.startTimeUnsubscriber$))
       .subscribe(() => {
         this.autoSaving = true;
+        console.log('********saving', this.autoSaving);
         this.saveProductForm();
       });
     this.productForm
       .get('duration')
-      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
+      ?.valueChanges.pipe(takeUntil(this.startTimeUnsubscriber$))
       .subscribe(duration => {
         this.timeRanges.controls.forEach(timeRange => this.updateEndTime(timeRange, duration));
       });
@@ -169,6 +173,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     if (val?.product_id) {
       this.productForm.addControl('product_id', this._fb.control(val.product_id));
     }
+    this.productFormSubscriptions();
   }
 
   createLocation(val?: Product): any {
@@ -232,7 +237,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   addTimeRangeToWeekDay(dayOfWeek: WeekDay) {
     this.timeRanges.push(this.createTimeRanges({ day_of_week: dayOfWeek }));
-    this.subscribeStartTimes();
+    this.productFormSubscriptions();
   }
 
   deleteTimeRangeFromWeekday(dayOfWeek: WeekDay, index: number) {
@@ -240,7 +245,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     if (!this.getTimeSlotsOfWeekday(dayOfWeek).length) {
       this.addRemoveTimeRange(dayOfWeek, false);
     }
-    this.subscribeStartTimes();
+    this.productFormSubscriptions();
   }
 
   getTimeSlotsOfWeekday(dayOfWeek: string) {
@@ -250,7 +255,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   subscribeStartTimes() {
-    this.startTimeUnsubscriber$.next();
     // subscribing start date, patching end date with duration
     this.timeRanges.controls.forEach(timeRange => {
       timeRange
@@ -383,6 +387,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('on destroy');
     this.expireSubscriptions();
     this.ngUnsubscribe.complete();
     this.store.dispatch(initService());

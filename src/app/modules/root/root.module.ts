@@ -11,7 +11,7 @@ import { CardGetstartedComponent } from './shared/card-getstarted/card-getstarte
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
-import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
+// import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -32,7 +32,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     SideNavComponent,
     CardGetstartedComponent,
     DashboardComponent,
-    RouterLinkDisabledDirective,
+    // RouterLinkDisabledDirective,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],

@@ -7,7 +7,7 @@
           <div class="flex items-center bg-white p-1 mr-1 my-1 custom-select-box-chip"
             *ngIf="option.dropdown_field_data?.selected">
             <span class="whitespace-nowrap text-sm text-primaryFont">{{option[_displayKey]}}</span>
-            <button class="ml-2">
+            <button class="ml-2" type="button">
               <img src="../../../../../assets/images/icons/close -black.svg" alt=""
                 (click)="selectUnSelectValue(option)">
             </button>
@@ -19,7 +19,7 @@
         arrayJoin:', ':_displayKey}}</span>
       <span class="custom-select-placeholder truncate" *ngIf="!selectedOption">{{ _placeholder }}</span>
     </div>
-    <button class="w-5 h-full items-center">
+    <button type="button" class="w-5 h-full items-center">
       <img src="../../../../../assets/images/icons/down.svg" alt="" class="w-full transition"
         [ngClass]="{ 'transform rotate-180': open }">
     </button>
@@ -73,8 +73,8 @@
 
       <!-- Single select -->
       <ng-container *ngIf="!_multiSelect && !_showRadio">
-        <button class="px-4 custom-select-item text-left hover:bg-gray-100" *ngFor="let option of _options;"
-          (click)="selectUnSelectValue(option)">
+        <button type="button" class="px-4 custom-select-item text-left hover:bg-gray-100"
+          *ngFor="let option of _options;" (click)="selectUnSelectValue(option)">
           <div
             class="custom-select-item-div w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap text-primaryFont">
             {{ option[_displayKey] }}
@@ -84,13 +84,14 @@
 
       <!-- add location -->
       <div class="w-full relative px-4 my-3" *ngIf="_addCustomValue">
-        <button class="text-secondaryBlue font-bold" (click)="openAddCustomValue = !openAddCustomValue">+ Add New {{
+        <button type="button" class="text-secondaryBlue font-bold" (click)="openAddCustomValue = !openAddCustomValue">+
+          Add New {{
           _label | titlecase }}</button>
         <ng-container *ngIf="openAddCustomValue">
           <input class="input w-full py-3 pr-14 px-4 focus:outline-none"
             placeholder="Enter new {{ _label | lowercase }} name" [(ngModel)]="customValueInput" />
           <div class="absolute right-0 top-1/2 -translate-y-1/2 mr-4 flex items-center">
-            <button class="text-secondaryBlue font-bold mr-3" (click)="selectCustomValue()">Add</button>
+            <button type="button" class="text-secondaryBlue font-bold mr-3" (click)="selectCustomValue()">Add</button>
           </div>
         </ng-container>
       </div>
