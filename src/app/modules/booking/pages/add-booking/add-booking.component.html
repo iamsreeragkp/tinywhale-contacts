@@ -1,15 +1,34 @@
 <div class="fixed z-50 fixed-header">
   <div class=" website-page-heading bg-white py-4 px-8 flex justify-between w-full">
-    <header class="header leading-9 font-normal not-italic flex items-center"><span
+    <header class="header leading-9 font-normal not-italic flex items-center">
+      <ng-container *ngIf="!editMode; else editTitle">
+      <span
         class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span> <span class="text-4xl">Register A
-        Walk-In</span> </header>
+        Walk-In</span>
+        </ng-container>
+        <ng-template #editTitle>
+          <span
+        class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span> <span class="text-4xl">Reschedule Booking</span>
+        </ng-template>
+
+    </header>
+    <ng-container *ngIf="!editMode; else editButton">
+
     <div class="flex justify-between items-center">
       <button class="noborder-button" (click)="location.back()">Cancel</button>
       <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">Save
         & Add Another</button>
-      <button class="primary-button w-52 ml-3" (click)="onBooking()" [routerLink]="['../status-booking']">Save
+      <button class="primary-button w-52 ml-3" (click)="onBookingAndExit()" [routerLink]="['../status-booking']">Save
         & Exit</button>
     </div>
+    </ng-container>
+    <ng-template #editButton>
+      <div class="flex justify-between items-center">
+        <button class="noborder-button" (click)="location.back()">Cancel</button>
+        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">Save
+          </button>
+      </div>
+</ng-template>
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
@@ -19,22 +38,22 @@
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
         <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Enter customer’s email id" formControlName="email" />
+          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s email id" formControlName="email" />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
         <div class="w-form"><input type="number" class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Enter customer’s phone number" formControlName="phonenumber"></div>
+          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s phone number" formControlName="phonenumber"></div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Customer Name</label></div>
         <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Enter customer’s full name" formControlName="customername"></div>
+          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s full name" formControlName="customername"></div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
-        <div class="w-form">
+        <div class="w-form" [attr.disabled]="editMode ? '' : null">
           <app-dropdown [options]="classData" placeholder="Enter service name" [displayKey]="'title'" [emitId]="true" [idKey]="'product_id'" formControlName="service"></app-dropdown>
         </div>
       </div>
@@ -54,9 +73,11 @@
             <option hidden value="" disabled selected>Select Slot</option>
             <option *ngFor="let timeSlot of times" >{{timeSlot?.start_time}}-{{timeSlot?.end_time}}</option>
           </select>
+          <!-- <app-dropdown [options]="times" placeholder="Select Slot" [displayKey]="''" [emitId]="true" [idKey]="'product_id'" formControlName="slot"></app-dropdown> -->
+
         </div>
       </div>
-      <div class="input-field flex mb-4">
+      <div class="input-field flex mb-4" *ngIf="!editMode">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
         <div class="w-form">
           <div class="flex flex-col w-full rounded-lg radio-input">

@@ -191,8 +191,8 @@ export class DropdownComponent {
     });
     if (emitEvent) {
       this.selectedValue.emit(this.selectedValues());
+      this._onChange(this.selectedValues());
     }
-    this._onChange(this.selectedValues());
     this._onTouched();
     if (!this._multiSelect) {
       this.open = false;
