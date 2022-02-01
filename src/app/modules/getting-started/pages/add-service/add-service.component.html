@@ -2,20 +2,25 @@
   <div class="fixed z-50 fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
       <header class="header leading-9 font-normal not-italic flex items-center">
-        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3" *ngIf="isGettingStarted && !editMode"> 2
+        <span
+          class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"
+          *ngIf="isGettingStarted && !editMode"
+        >
+          2
         </span>
         <span class="text-4xl">
-          {{
-          editMode
-          ? (productForm?.get('title')?.value ?? 'Edit a Service')
-          : 'Add a Service'
-          }}
+          {{ editMode ? productForm?.get('title')?.value ?? 'Edit a Service' : 'Add a Service' }}
         </span>
       </header>
       <div class="flex justify-between items-center">
         <button class="noborder-button" type="button" (click)="location.back()">Cancel</button>
-        <button class="secondary-button mr-3 ml-6 w-52" type="button" (click)="saveProductForm(true)">Save & Add
-          Another</button>
+        <button
+          class="secondary-button mr-3 ml-6 w-52"
+          type="button"
+          (click)="saveProductForm(true)"
+        >
+          Save & Add Another
+        </button>
         <button class="primary-button w-48 ml-3" type="submit">Save</button>
         <!-- <div class="relative mx-2"><button class="primary-button">
                     Share
@@ -100,30 +105,56 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Title*</label></div>
         <div class="w-form">
-          <input formControlName="title" class="input w-full py-3 px-4 focus:outline-none" placeholder="Company name" />
+          <input
+            formControlName="title"
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Company name"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Description*</label></div>
         <div class="w-form">
-          <textarea rows="3" formControlName="description" class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Describe your service in detail"></textarea>
+          <textarea
+            rows="3"
+            formControlName="description"
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Describe your service in detail"
+          ></textarea>
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Photos* </label></div>
         <div class="flex w-form" formArrayName="photos">
-          <div class="relative mr-2" *ngFor="let photo of productPhotos?.controls; let i = index" [formGroupName]="i">
-            <button (click)="deletePhoto(i)" *ngIf="photo.get('photo_data_url')?.value"
-              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
-              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+          <div
+            class="relative mr-2"
+            *ngFor="let photo of productPhotos?.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <button
+              (click)="deletePhoto(i)"
+              *ngIf="photo.get('photo_data_url')?.value"
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
+            >
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
             </button>
             <div
               class="input-photo text-center relative cursor-pointer flex flex-col justify-evenly items-center overflow-hidden"
-              (click)="photoInput.click()">
-              <input type="file" #photoInput accept="image/*" class="hidden" (change)="handleFileInput($event, i)" />
-              <img *ngIf="photo.get('photo_data_url')?.value" [src]="photo.get('photo_data_url')?.value"
-                alt="{{'Photo_' + (i + 1)}}" class="image h-full w-full object-cover">
+              (click)="photoInput.click()"
+            >
+              <input
+                type="file"
+                #photoInput
+                accept="image/*"
+                class="hidden"
+                (change)="handleFileInput($event, i)"
+              />
+              <img
+                *ngIf="photo.get('photo_data_url')?.value"
+                [src]="photo.get('photo_data_url')?.value"
+                alt="{{ 'Photo_' + (i + 1) }}"
+                class="image h-full w-full object-cover"
+              />
               <ng-container *ngIf="!photo.get('photo_data_url')?.value">
                 <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
                 <span class="text-mediumGray">Add Photo</span>
@@ -162,42 +193,72 @@
       </div>
       <ng-container *ngIf="productForm.get('product_type')?.value === 'CLASS'">
         <div class="input-field flex mb-4">
-          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
-          <div class="w-form flex items-center"><input formControlName="duration" type="number" [preventDecimal]="true"
-              [preventNegative]="true" class="input w-24 py-3 px-4 focus:outline-none" placeholder="60"
-              formControlName="duration" />
+          <div class="w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
+          <div class="w-form flex items-center">
+            <input
+              formControlName="duration"
+              type="number"
+              [preventDecimal]="true"
+              [preventNegative]="true"
+              class="input w-24 py-3 px-4 focus:outline-none"
+              placeholder="60"
+              formControlName="duration"
+            />
             <span class="input-field-secondary-text mx-3">min</span>
           </div>
         </div>
         <div class="input-field flex mb-4">
-          <div class=" w-44 label text-right mt-0 mr-6"><label for="">Slot Days & Times*</label></div>
+          <div class="w-44 label text-right mt-0 mr-6">
+            <label for="">Slot Days & Times*</label>
+          </div>
           <div class="w-form checkbox-input mt-2">
             <div class="w-full mb-4" *ngFor="let weekDay of weekDayOptions">
-              <label class="check-container">{{ weekDay.label }}
-                <input type="checkbox" [ngModel]="weekDay.selected"
-                  (ngModelChange)="addRemoveTimeRange(weekDay.value, $event)" [ngModelOptions]="{ standalone: true }" />
+              <label class="check-container"
+                >{{ weekDay.label }}
+                <input
+                  type="checkbox"
+                  [ngModel]="weekDay.selected"
+                  (ngModelChange)="addRemoveTimeRange(weekDay.value, $event)"
+                  [ngModelOptions]="{ standalone: true }"
+                />
                 <span class="checkmark"></span>
               </label>
               <ng-container *ngIf="weekDay.selected" formArrayName="time_ranges">
-                <ng-container *ngFor="let weekDaySlots of timeRanges.controls; let i = index;">
-                  <div class="w-full flex items-center mb-4"
-                    *ngIf="weekDaySlots.get('day_of_week')?.value === weekDay.value" [formGroupName]="i">
+                <ng-container *ngFor="let weekDaySlots of timeRanges.controls; let i = index">
+                  <div
+                    class="w-full flex items-center mb-4"
+                    *ngIf="weekDaySlots.get('day_of_week')?.value === weekDay.value"
+                    [formGroupName]="i"
+                  >
                     <div class="w-36">
-                      <app-dropdown [options]="timeOptions" [idKey]="'value'" [emitId]="true"
-                        [placeholder]="'Start Time'" [label]="'Start Time'" formControlName="start_time"></app-dropdown>
+                      <app-dropdown
+                        [options]="timeOptions"
+                        [idKey]="'value'"
+                        [emitId]="true"
+                        [placeholder]="'Start Time'"
+                        [label]="'Start Time'"
+                        formControlName="start_time"
+                      ></app-dropdown>
                     </div>
                     <span class="input-field-secondary-text mx-3">to</span>
-                    <input class="input w-36 py-3 px-4 focus:outline-none" formControlName="end_time_label"
-                      placeholder="End time" />
+                    <input
+                      class="input w-36 py-3 px-4 focus:outline-none"
+                      formControlName="end_time_label"
+                      placeholder="End time"
+                    />
                     <div class="h-full flex items-center mx-3">
-                      <button (click)="deleteTimeRangeFromWeekday(weekDay.value ,i)">
-                        <img src="../../../../../assets/images/icons/delete.svg" alt="delete">
+                      <button (click)="deleteTimeRangeFromWeekday(weekDay.value, i)">
+                        <img src="../../../../../assets/images/icons/delete.svg" alt="delete" />
                       </button>
                     </div>
                   </div>
                 </ng-container>
-                <button class="add-another mt-2 font-normal text-base not-italic cursor-pointer"
-                  (click)="addTimeRangeToWeekDay(weekDay.value)">+ Add Another Slot</button>
+                <button
+                  class="add-another mt-2 font-normal text-base not-italic cursor-pointer"
+                  (click)="addTimeRangeToWeekDay(weekDay.value)"
+                >
+                  + Add Another Slot
+                </button>
               </ng-container>
             </div>
             <!-- <label class="check-container">Monday
@@ -228,58 +289,102 @@
         </div>
         <h5 class="input-section-subheading font-bold mb-4 mt-8">Location</h5>
         <div class="input-field flex mb-4">
-          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Location*</label></div>
+          <div class="w-44 label text-right mt-4 mr-6"><label for="">Location*</label></div>
           <div class="w-form">
-            <app-dropdown [showRadio]="true" [addCustomValue]="true" [placeholder]="'Select location / venue of class'"
-              [label]="'location'" [displayKey]="'location_name'" [idKey]="'location_id'" [options]="locationOptions"
-              formControlName="location"></app-dropdown>
+            <app-dropdown
+              [showRadio]="true"
+              [addCustomValue]="true"
+              [placeholder]="'Select location / venue of class'"
+              [label]="'location'"
+              [displayKey]="'location_name'"
+              [idKey]="'location_id'"
+              [options]="locationOptions"
+              formControlName="location"
+            ></app-dropdown>
           </div>
         </div>
         <div class="input-field flex mb-4">
-          <div class=" w-44 label text-right mt-4 mr-6"><label for="">Capacity*</label></div>
-          <div class="w-form"><input type="number" [preventDecimal]="true" [preventNegative]="true"
-              class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter number of students per session"
-              formControlName="capacity" /></div>
+          <div class="w-44 label text-right mt-4 mr-6"><label for="">Capacity*</label></div>
+          <div class="w-form">
+            <input
+              type="number"
+              [preventDecimal]="true"
+              [preventNegative]="true"
+              class="input w-full py-3 px-4 focus:outline-none"
+              placeholder="Enter number of students per session"
+              formControlName="capacity"
+            />
+          </div>
         </div>
       </ng-container>
       <h5 class="input-section-subheading font-bold mb-4 mt-8">Pricing</h5>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6">
-          <label for="">{{ productForm.get('product_type')?.value === 'CLASS' ? 'Session ' : '' }}Price</label>
+          <label for=""
+            >{{ productForm.get('product_type')?.value === 'CLASS' ? 'Session ' : '' }}Price</label
+          >
         </div>
         <div class="w-form">
           <div class="w-full flex items-center">
-            <input type="number" [preventNegative]="true" class="input w-24 py-3 px-4 focus:outline-none"
-              placeholder="$ 50" formControlName="price" />
-            <span class="input-field-secondary-text mx-3" *ngIf="productForm.get('product_type')?.value === 'CLASS'">per
-              session per person</span>
+            <input
+              type="number"
+              [preventNegative]="true"
+              class="input w-24 py-3 px-4 focus:outline-none"
+              placeholder="$ 50"
+              formControlName="price"
+            />
+            <span
+              class="input-field-secondary-text mx-3"
+              *ngIf="productForm.get('product_type')?.value === 'CLASS'"
+              >per session per person</span
+            >
           </div>
-          <div class="w-full p-3 mt-3 rounded-lg input-section-info"
-            *ngIf="productForm.get('product_type')?.value === 'CLASS'">
+          <div
+            class="w-full p-3 mt-3 rounded-lg input-section-info"
+            *ngIf="productForm.get('product_type')?.value === 'CLASS'"
+          >
             💡 You can have only one unique session price per service but multiple package prices
             and options.
           </div>
         </div>
       </div>
       <div class="input-field flex mb-4" *ngIf="productForm.get('product_type')?.value === 'CLASS'">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Package Price
-            (Session Bundle)</label></div>
+        <div class="w-44 label text-right mt-4 mr-6">
+          <label for="">Package Price (Session Bundle)</label>
+        </div>
         <div class="w-form" formArrayName="price_package">
-          <div class="w-full flex items-center mb-2" *ngFor="let sessionPrice of pricePackages.controls; let i = index"
-            [formGroupName]="i">
-            <input class="input w-24 py-3 px-4 focus:outline-none" placeholder="$ 100" formControlName="price"
-              type="number" [preventNegative]="true" />
+          <div
+            class="w-full flex items-center mb-2"
+            *ngFor="let sessionPrice of pricePackages.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <input
+              class="input w-24 py-3 px-4 focus:outline-none"
+              placeholder="$ 100"
+              formControlName="price"
+              type="number"
+              [preventNegative]="true"
+            />
             <span class="input-field-secondary-text mx-3">for</span>
-            <input type="number" class="input w-20 py-3 px-4 focus:outline-none" placeholder="2"
-              formControlName="no_of_sessions" [preventDecimal]="true" [preventNegative]="true" />
+            <input
+              type="number"
+              class="input w-20 py-3 px-4 focus:outline-none"
+              placeholder="2"
+              formControlName="no_of_sessions"
+              [preventDecimal]="true"
+              [preventNegative]="true"
+            />
             <span class="input-field-secondary-text mx-3">sessions</span>
             <button class="h-full flex items-center" (click)="deletePricePackage(i)">
-              <img src="../../../../../assets/images/icons/delete.svg" alt="">
+              <img src="../../../../../assets/images/icons/delete.svg" alt="" />
             </button>
           </div>
-          <button class="add-another mt-2 font-normal text-base not-italic" (click)="addPricePackage()">+ Add Another
-            Package Price</button>
-
+          <button
+            class="add-another mt-2 font-normal text-base not-italic"
+            (click)="addPricePackage()"
+          >
+            + Add Another Package Price
+          </button>
         </div>
       </div>
       <h5 class="input-section-subheading font-bold mb-4 mt-8">Who can see this service?</h5>
@@ -290,7 +395,7 @@
             <label class="radio-container py-3 radio-input-border-b" for="public">
               <div class="flex flex-col">
                 <p class="radio-container-name">Public</p>
-                <p class="radio-container-descri">Anyone visiting my website</p>
+                <p class="radio-container-descri">Anyone visiting my Tiny Card™</p>
               </div>
               <input type="radio" id="public" formControlName="visibility" value="PUBLIC" />
               <span class="radiomark"></span>
@@ -309,10 +414,14 @@
     </div>
     <div class="detail-section w-5/12">
       <div class="px-8 py-8">
-        <app-preview-product [title]="productForm.get('title')?.value"
-          [description]="productForm.get('description')?.value" [photo]="photoForPreview"
-          [duration]="productForm.get('duration')?.value" [price]="productForm.get('price')?.value"
-          [packages]="previewablePricePackages">
+        <app-preview-product
+          [title]="productForm.get('title')?.value"
+          [description]="productForm.get('description')?.value"
+          [photo]="photoForPreview"
+          [duration]="productForm.get('duration')?.value"
+          [price]="productForm.get('price')?.value"
+          [packages]="previewablePricePackages"
+        >
         </app-preview-product>
       </div>
     </div>

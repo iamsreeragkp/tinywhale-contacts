@@ -72,6 +72,22 @@ body {
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
 }
+.google-button {
+  color: #154f5b;
+  border: 2px solid #154f5b;
+  @apply bg-white;
+  &:hover {
+    background-color: #154f5b;
+    @apply text-white;
+  }
+  &:disabled {
+    color: #d6e1e3 !important;
+    background-color: #fff !important;
+    border-color: #d6e1e3 !important;
+    @apply cursor-not-allowed;
+  }
+  @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
+}
 
 .secondary-button {
   color: #00a4b7;
