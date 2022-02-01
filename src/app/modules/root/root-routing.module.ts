@@ -46,6 +46,7 @@ const rootRoutes: Routes = [
       {
         path: RoutesConfig.basePaths.home,
         component: HomePageComponent,
+        canActivate: [AuthGuard],
         children: [
           { path: '', pathMatch: 'full', redirectTo: homeRoutes.dashboard },
           { path: RoutesConfig.routesNames.home.dashboard, component: DashboardComponent },
