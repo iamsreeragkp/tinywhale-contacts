@@ -84,7 +84,14 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
         console.log(data?.error);
       }
     });
-    this.filterForm.valueChanges.subscribe(data => console.log(data));
+    this.filterForm.valueChanges.subscribe(data => {
+      const {days_of_week,location_type,pricing_type,product_type,status}=data;
+      for(let i=0;i < days_of_week?.length;i++){
+        console.log(days_of_week[i]);
+      }
+      this.store.dispatch(getServiceList({filters:{status:status? status : '',location_type:location_type ? location_type : '',product_type:product_type ? product_type : '',days_of_week:days_of_week ? days_of_week : '',pricing_type:pricing_type ? pricing_type : ''}}))
+    }
+      );
   }
 
   createFilterForm() {
