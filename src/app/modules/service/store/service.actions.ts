@@ -29,3 +29,32 @@ export const getServiceListStatus = createAction(
 );
 
 export const initService = createAction('[ServiceModule] INIT');
+
+
+export const changeVisibility = createAction(
+  '[ServiceModule] CHANGE VISIBILITY',
+  props<{ productId:any,visibility: any  }>()
+);
+export const changeVisibilitySuccess = createAction(
+  '[ServiceModule] CHANGE VISIBILITY SUCCESS',
+  props<{ products?: any; status: boolean; error?: string }>()
+);
+
+export const changeVisibilityError = createAction(
+  '[ServiceModule] CHANGE VISIBILITY Error',
+  props<{ error?: string }>()
+);
+
+export const deleteServiceList = createAction(
+  '[ServiceModule] DELETE SERVICE LIST',
+  props<{ productId: any }>()
+);
+export const deleteServiceListSuccess = createAction(
+  '[ServiceModule] DELETE SERVICE LIST SUCCESS',
+  // props<{ products?: Product[]; status: boolean; error?: string }>()
+);
+
+export const deleteServiceListError = createAction(
+  '[ServiceModule] DELETE SERVICE LIST Error',
+  props<{ error?: string }>()
+);

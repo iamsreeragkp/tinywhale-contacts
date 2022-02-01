@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
+import { ServiceService } from '../../service.service';
 import { Product } from '../../shared/service.interface';
-import { getServiceList } from '../../store/service.actions';
+import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
 import { IServiceState } from '../../store/service.reducers';
 import { getServiceListStatus } from '../../store/service.selectors';
 
@@ -56,12 +57,14 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   threeDotsOpen?: number;
   productToDelete?: number;
   openProductDeleteModal = false;
+  deleteProductId: any;
 
   constructor(
     private store: Store<IServiceState>,
     private _fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private serviceService:ServiceService
   ) {
     this.productList$ = store.pipe(
       select(getServiceListStatus),
@@ -101,17 +104,22 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
   }
 
-  handleAction(event: string, index: number) {
+  handleAction(event: string, index: number, product_id: any) {
     if (event === 'Edit') {
       this.router.navigate(['../edit-service', this.productsList?.[index]?.product_id], {
         relativeTo: this.route,
       });
     } else if (event === 'Mark as Private') {
-      // this.store.dispatch();
+      const visibility = {
+        visibility: 'PUBLIC',
+      };
+      this.store.dispatch(changeVisibility({ productId:product_id, visibility:visibility }));
+      window.location.reload();
     } else if (event === 'Use as Template') {
     } else if (event === 'Delete') {
       this.productToDelete = index;
       this.openProductDeleteModal = true;
+      this.deleteProductId = product_id;
     }
   }
 
@@ -125,6 +133,11 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   get isFilterEmpty() {
     return this.filterForm.valid;
+  }
+
+  onDeleteProduct() {
+    this.store.dispatch(deleteServiceList({ productId: this.deleteProductId }));
+    this.productsList = this.productsList.filter(r => r.product_id !== this.deleteProductId);
   }
 
   ngOnDestroy() {
