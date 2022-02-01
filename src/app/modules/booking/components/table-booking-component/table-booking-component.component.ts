@@ -26,17 +26,24 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   status = [
     {
       title: 'Upcoming',
+      value: 'Upcoming'
     },
     {
       title: 'Completed',
+      value: 'Completed'
+
     },
   ];
   payment = [
     {
       title: 'Paid',
+      value: 'Paid'
+
     },
     {
       title: 'Unpaid',
+      value: 'Unpaid'
+
     },
   ];
 

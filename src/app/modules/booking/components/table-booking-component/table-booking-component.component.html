@@ -9,7 +9,7 @@
         </div> -->
         <!-- <app-dropdown  placeholder="Service" [displayKey]="'title'" [emitId]="true" ></app-dropdown> -->
 
-        <app-dropdown [options]="serviceData" placeholder="Service" [displayKey]="'title'"  formControlName="service"></app-dropdown>
+        <app-dropdown [options]="serviceData" placeholder="Service" [displayKey]="'title'"   formControlName="service"></app-dropdown>
 
       <!-- </div> -->
       <!-- <div class="absolute top-full left-0 w-full z-50">
@@ -40,7 +40,7 @@
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
       </div> -->
-      <app-dropdown [options]="status"  placeholder="Status" [displayKey]="'title'" formControlName="status"></app-dropdown>
+      <app-dropdown [options]="status"  placeholder="Status" [displayKey]="'title'" [idKey]="'value'" [emitId]="true" formControlName="status"></app-dropdown>
     </div>
     <div class="relative mb-2 mr-2">
       <!-- <div
@@ -50,7 +50,7 @@
           <img src="../../../../../assets/images/icons/down.svg" alt="" />
         </div>
       </div> -->
-      <app-dropdown [options]="payment"  placeholder="Payment" [displayKey]="'title'"  formControlName="payment"></app-dropdown>
+      <app-dropdown [options]="payment"  placeholder="Payment" [displayKey]="'title'" [idKey]="'value'" [emitId]="true"  formControlName="payment"></app-dropdown>
 
     </div>
     <div class="flex items-center mb-2 ml-5">
