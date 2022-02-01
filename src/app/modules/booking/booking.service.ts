@@ -47,8 +47,8 @@ export class BookingService {
     const {
       dashboardInfos: { businessId: business_id },
     } = this.authService.decodeUserToken();
-    const params = new HttpParams({ fromObject: { ...filters, business_id } });
-    return this.http.get(`${this.bookingApi}/booking`, { params });
+    const params = new HttpParams({ fromObject: { business_id, ...filters } });
+    return this.http.get(`${this.bookingApi}/booking/order`, { params });
   }
 
 

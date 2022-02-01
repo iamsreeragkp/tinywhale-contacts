@@ -39,17 +39,29 @@ export class BookingEffects {
     )
   );
 
+  // getBooking$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(getBooking),
+  //     switchMap(() =>
+  //       this.bookingService.getAllBookings().pipe(
+  //         map((response: any) => getBookingSuccess({ response: response?.data })),
+  //         catchError(err => of(getBookingError({ error: err })))
+  //       )
+  //     )
+  //   )
+  // );
+
   getBooking$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getBooking),
-      switchMap(() =>
-        this.bookingService.getAllBookings().pipe(
-          map((response: any) => getBookingSuccess({ response: response?.data })),
-          catchError(err => of(getBookingError({ error: err })))
-        )
+  this.actions$.pipe(
+    ofType(getBookingList),
+    switchMap(({filters}) =>
+      this.bookingService.getBookingList(filters).pipe(
+        map((response: any) => getBookingListSuccess({ bookingList: response?.data , status: true})),
+        catchError(err => of(getBookingListError({ error: err, status: false })))
       )
     )
-  );
+  )
+);
 
   getBookingById$ = createEffect(() =>
     this.actions$.pipe(

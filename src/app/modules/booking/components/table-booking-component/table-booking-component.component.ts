@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../booking.service';
-import { getBooking } from '../../store/booking.actions';
+import { getBooking, getBookingList } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
-import { getBookings } from '../../store/booking.selectors';
+import { getBookingListStatus, getBookings } from '../../store/booking.selectors';
 
 @Component({
   selector: 'app-table-booking-component',
@@ -26,23 +26,23 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   status = [
     {
       title: 'Upcoming',
-      value: 'Upcoming'
+      value: 'UPCOMING'
     },
     {
       title: 'Completed',
-      value: 'Completed'
+      value: 'COMPLETED'
 
     },
   ];
   payment = [
     {
       title: 'Paid',
-      value: 'Paid'
+      value: 'PAID'
 
     },
     {
       title: 'Unpaid',
-      value: 'Unpaid'
+      value: 'UNPAID'
 
     },
   ];
@@ -54,8 +54,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     private store: Store<IBookingState>,
     private bookingService: BookingService
   ) {
-    this.store.dispatch(getBooking());
-    this.bookingData$ = this.store.pipe(select(getBookings));
+
+    this.bookingData$ = store.pipe(
+      select(getBookingListStatus),
+      takeUntil(this.ngUnsubscribe),
+      filter(val => !!val)
+    );
+
+    this.store.dispatch(getBookingList({filters:{}}));
+    this.bookingData$ = this.store.pipe(select(getBookingListStatus));
     this.getDropdownData();
     this.filterForm = this.createFilterForm();
   }
@@ -72,7 +79,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data) {
-          this.bookingData = data;
+
+          this.bookingData = data.bookingList;
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }
@@ -80,7 +88,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
           console.log(data?.error);
         }
       });
-    this.filterForm.valueChanges.subscribe(data => console.log(data));
+
+    this.filterForm.valueChanges.subscribe(data => {
+      const productId=data?.service?.product_id;
+      const status=data?.status;
+      const payment=data?.payment;
+
+
+      this.store.dispatch(getBookingList({filters:{product_id:productId ? productId : '',payment_status:payment ? payment : '',status:status ? status : ''}}))
+    });
   }
 
   handleAction(event: string, index: number, orderId: any) {
