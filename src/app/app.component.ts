@@ -10,9 +10,11 @@ declare const Modernizr: any;
 })
 export class AppComponent implements OnInit {
   isOnline: boolean;
+  isMobile: boolean;
 
   constructor(@Inject(DOCUMENT) doc: Document, @Inject(LOCALE_ID) locale: string) {
     this.isOnline = navigator.onLine;
+    this.isMobile = this.checkIfMobile();
   }
 
   ngOnInit() {
@@ -32,6 +34,10 @@ export class AppComponent implements OnInit {
       //   'OK'
       // );
     }
+  }
+
+  checkIfMobile() {
+    return UtilsHelperService.isMobile();
   }
 
   checkBrowserFeatures() {

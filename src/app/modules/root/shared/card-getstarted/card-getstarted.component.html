@@ -8,7 +8,16 @@
   </div>
   <div class="flex">
     <button class="secondary-button h-10 px-6 mr-2">See Tiny Card™ Template</button>
-    <button class="gray-button h-10 ml-2 px-8">Publish Your Tiny Card™</button>
+    <button
+      class="gray-button h-10 ml-2 px-8"
+      [disabled]="
+        !dashboardInfos?.businessInfo?.isCompleted ||
+        !dashboardInfos?.serviceInfo?.isCompleted ||
+        !dashboardInfos?.paymentInfo?.isCompleted
+      "
+    >
+      Publish Your Tiny Card™
+    </button>
   </div>
 </div>
 
@@ -106,7 +115,6 @@
         <div>
           <button
             class="primary-button px-10 h-10 mt-auto"
-            [disabled]="!dashboardInfos?.businessInfo.isCompleted"
             *ngIf="
               !dashboardInfos?.serviceInfo?.isStarted && !dashboardInfos?.serviceInfo?.isCompleted
             "
@@ -163,7 +171,6 @@
         <div>
           <button
             class="primary-button px-10 mt-auto h-10"
-            [disabled]="!dashboardInfos?.serviceInfo?.isCompleted"
             *ngIf="
               !dashboardInfos?.paymentInfo?.isStarted && !dashboardInfos?.paymentInfo?.isCompleted
             "

@@ -324,14 +324,13 @@
             <!-- confrim popup -->
             <div class="flex-1 flex justify-end">
               <app-three-dots
-                [actions]="threeDotsActions"
-                (actionTriggered)="handleAction($event, i, product?.product_id)"
+                [actions]="getActions(product)"
+                (actionTriggered)="handleAction($event, product)"
               ></app-three-dots>
             </div>
           </div>
         </td>
         <td class="align-top px-2 py-3"></td>
-
       </tr>
       <tr>
         <td colspan="7">
@@ -364,7 +363,7 @@
       <button class="secondary-button w-full" (click)="closeDeleteModal()">Cancel</button>
     </div>
     <div class="w-1/2 pl-2">
-      <button class="primary-button w-full" (click)="onDeleteProduct();closeDeleteModal(true)">Yes, Delete</button>
+      <button class="primary-button w-full" (click)="closeDeleteModal(true)">Yes, Delete</button>
     </div>
   </div>
 </app-modal>

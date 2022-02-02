@@ -1,10 +1,14 @@
 <div class="flex flex-col min-h-full rounded-5 overflow-hidden">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
     <header class="header leading-9 font-normal not-italic">
-      <span class="text-4xl">{{productObj?.title ?? ''}}</span>
+      <span class="text-4xl">{{ productObj?.title ?? '' }}</span>
     </header>
     <div class="flex">
-      <a class="primary-button w-48 ml-2" [routerLink]="['../../edit-service', productObj?.product_id]">Edit</a>
+      <button type="button" class="primary-button mr-2 px-8">Share</button>
+      <app-three-dots
+        [actions]="threeDotsActions"
+        (actionTriggered)="handleAction($event)"
+      ></app-three-dots>
     </div>
   </div>
   <hr class="line" />
@@ -32,12 +36,22 @@
             <span class="font-medium text-right">Photos</span>
           </div>
           <div class="flex-1 pl-4 flex gap-3">
-            <div *ngFor="let photo of productObj?.product_photos; let i = index"
-              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center">
-              <img class="max-w-none h-full" [src]="photo?.photo_url" *ngIf="photo.photo_url"
-                [alt]="'Photo_' + (i + 1)" />
-              <img class="h-7" src="./../../../../../assets/images/defualt-image.svg" *ngIf="!photo?.photo_url"
-                [alt]="'Photo_' + (i + 1)" />
+            <div
+              *ngFor="let photo of productObj?.product_photos; let i = index"
+              class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
+            >
+              <img
+                class="max-w-none h-full"
+                [src]="photo?.photo_url"
+                *ngIf="photo.photo_url"
+                [alt]="'Photo_' + (i + 1)"
+              />
+              <img
+                class="h-7"
+                src="./../../../../../assets/images/defualt-image.svg"
+                *ngIf="!photo?.photo_url"
+                [alt]="'Photo_' + (i + 1)"
+              />
             </div>
           </div>
         </div>
@@ -54,14 +68,20 @@
             <span class="font-medium text-right">Time</span>
           </div>
           <div class="flex-1 py-3 pl-4">
-            <div class="flex w-full gap-3" [ngClass]="{ 'mb-3': !isLastTR }"
-              *ngFor="let timeRange of timeRangeSerialized; let isLastTR = last">
+            <div
+              class="flex w-full gap-3"
+              [ngClass]="{ 'mb-3': !isLastTR }"
+              *ngFor="let timeRange of timeRangeSerialized; let isLastTR = last"
+            >
               <div class="w-32">
-                <span>{{ timeRange?.label}}</span>
+                <span>{{ timeRange?.label }}</span>
               </div>
               <div class="flex-1">
-                <div class="flex gap-3" [ngClass]="{ 'mb-3': !isLast }"
-                  *ngFor="let range of timeRange.ranges; let isLast = last">
+                <div
+                  class="flex gap-3"
+                  [ngClass]="{ 'mb-3': !isLast }"
+                  *ngFor="let range of timeRange.ranges; let isLast = last"
+                >
                   <div>
                     <span>{{ range.start_time_label }}</span>
                   </div>
@@ -79,10 +99,15 @@
             <span class="font-medium text-right">Location</span>
           </div>
           <div class="flex-1 py-3 pl-4 flex">
-            <span *ngIf="productObj?.class?.location_type === 'CUSTOMER_LOCATION'">Customer's Location</span>
-            <span *ngIf="productObj?.class?.location_type === 'ONLINE'">Online (Zoom - connect)</span>
+            <span *ngIf="productObj?.class?.location_type === 'CUSTOMER_LOCATION'"
+              >Customer's Location</span
+            >
+            <span *ngIf="productObj?.class?.location_type === 'ONLINE'"
+              >Online (Zoom - connect)</span
+            >
             <span *ngIf="productObj?.class?.location_type === 'BUSINESS_LOCATION'">{{
-              productObj?.class?.business_location?.location_name }}</span>
+              productObj?.class?.business_location?.location_name
+            }}</span>
             <span *ngIf="!productObj?.class?.location_type">-</span>
           </div>
         </div>
@@ -101,14 +126,14 @@
           <div class="flex-1 py-3 pl-4 flex">
             <span>{{
               productObj?.price
-              ? '$ ' + productObj?.price + ' for 1 session ' +
-              (
-              productObj?.class?.duration_in_minutes
-              ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
-              : ''
-              )
-              : '-'
-              }}</span>
+                ? '$ ' +
+                  productObj?.price +
+                  ' for 1 session ' +
+                  (productObj?.class?.duration_in_minutes
+                    ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
+                    : '')
+                : '-'
+            }}</span>
           </div>
         </div>
         <div class="flex mb-4">
@@ -123,11 +148,29 @@
     </div>
     <div class="detail-section w-5/12">
       <div class="p-8">
-        <app-preview-product [title]="productObj?.title" [description]="productObj?.description"
-          [photo]="photoForPreview" [price]="productObj?.price" [duration]="productObj?.class?.duration_in_minutes"
-          [packages]="previewablePackages">
+        <app-preview-product
+          [title]="productObj?.title"
+          [description]="productObj?.description"
+          [photo]="photoForPreview"
+          [price]="productObj?.price"
+          [duration]="productObj?.class?.duration_in_minutes"
+          [packages]="previewablePackages"
+        >
         </app-preview-product>
       </div>
     </div>
   </div>
 </div>
+
+<app-modal [(open)]="openProductDeleteModal" [modalConfig]="{ closeOnOutsideClick: true }">
+  <h3 class="text-xl font-bold">Delete Service ?</h3>
+  <p class="mt-2">This action cannot be undone</p>
+  <div class="flex justify-between mt-5">
+    <div class="w-1/2 pr-2">
+      <button class="secondary-button w-full" (click)="closeDeleteModal()">Cancel</button>
+    </div>
+    <div class="w-1/2 pl-2">
+      <button class="primary-button w-full" (click)="closeDeleteModal(true)">Yes, Delete</button>
+    </div>
+  </div>
+</app-modal>

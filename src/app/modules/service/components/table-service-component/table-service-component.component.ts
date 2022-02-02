@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
 import { ServiceService } from '../../service.service';
-import { Product } from '../../shared/service.interface';
+import { Product, ServiceListFilter, VisibilityType } from '../../shared/service.interface';
 import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
 import { IServiceState } from '../../store/service.reducers';
 import { getServiceListStatus } from '../../store/service.selectors';
@@ -14,6 +15,7 @@ import { getServiceListStatus } from '../../store/service.selectors';
   selector: 'app-table-service-component',
   templateUrl: './table-service-component.component.html',
   styleUrls: ['./table-service-component.component.scss'],
+  providers: [TitleCasePipe],
 })
 export class TableServiceComponentComponent implements OnInit, OnDestroy {
   productsList: Product[] = [];
@@ -49,7 +51,6 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       label: 'Private',
     },
   ];
-  threeDotsActions = ['Edit', 'Mark as Private', 'Use as Template', 'Delete'];
 
   productList$: Observable<{ products?: Product[]; error?: string; status: boolean } | undefined>;
   ngUnsubscribe = new Subject<void>();
@@ -57,14 +58,13 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   threeDotsOpen?: number;
   productToDelete?: number;
   openProductDeleteModal = false;
-  deleteProductId: any;
 
   constructor(
     private store: Store<IServiceState>,
     private _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private serviceService:ServiceService
+    private titleCasePipe: TitleCasePipe
   ) {
     this.productList$ = store.pipe(
       select(getServiceListStatus),
@@ -88,13 +88,12 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       }
     });
     this.filterForm.valueChanges.subscribe(data => {
-      const {days_of_week,location_type,pricing_type,product_type,status}=data;
-      for(let i=0;i < days_of_week?.length;i++){
-        console.log(days_of_week[i]);
-      }
-      this.store.dispatch(getServiceList({filters:{status:status? status : '',location_type:location_type ? location_type : '',product_type:product_type ? product_type : '',days_of_week:days_of_week ? days_of_week : '',pricing_type:pricing_type ? pricing_type : ''}}))
-    }
+      this.store.dispatch(
+        getServiceList({
+          filters: this.constructFilterPayload(),
+        })
       );
+    });
   }
 
   createFilterForm() {
@@ -111,40 +110,86 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
   }
 
-  handleAction(event: string, index: number, product_id: any) {
+  handleAction(event: string, product: Product) {
     if (event === 'Edit') {
-      this.router.navigate(['../edit-service', this.productsList?.[index]?.product_id], {
+      this.router.navigate(['../edit-service', product.product_id], {
         relativeTo: this.route,
       });
-    } else if (event === 'Mark as Private') {
-      const visibility = {
-        visibility: 'PUBLIC',
-      };
-      this.store.dispatch(changeVisibility({ productId:product_id, visibility:visibility }));
-      window.location.reload();
+    } else if (['Mark as Private', 'Mark as Public'].includes(event)) {
+      const visibility = event.includes('Public') ? VisibilityType.PRIVATE : VisibilityType.PUBLIC;
+      this.store.dispatch(
+        changeVisibility({
+          productId: product.product_id,
+          visibility: visibility,
+          filters: this.constructFilterPayload(),
+        })
+      );
     } else if (event === 'Use as Template') {
+      const { product_id, title: oldTitle, ...needed } = product;
+      const title = `Copy of ${oldTitle ?? ''}`;
+      const cloneProduct = { ...needed, title };
+      this.router.navigate(['..', 'add-service'], {
+        relativeTo: this.route,
+        state: { product: cloneProduct },
+      });
     } else if (event === 'Delete') {
-      this.productToDelete = index;
+      this.productToDelete = product.product_id;
       this.openProductDeleteModal = true;
-      this.deleteProductId = product_id;
     }
   }
 
+  constructFilterPayload() {
+    const { days_of_week, location_type, pricing_type, product_type, status } =
+      this.filterForm.value;
+    const filterObj: ServiceListFilter = {};
+    if (product_type) {
+      filterObj.product_type = product_type;
+    }
+    if (location_type) {
+      filterObj.location_type = location_type;
+    }
+    if (status) {
+      filterObj.status = status;
+    }
+    if (pricing_type) {
+      filterObj.pricing_type = pricing_type;
+    }
+    if (days_of_week) {
+      filterObj.days_of_week = days_of_week?.join(',');
+    }
+    return filterObj;
+  }
+
   closeDeleteModal(deleteProduct?: boolean) {
-    if (deleteProduct) {
-      // this.store.dispatch();
+    if (deleteProduct && this.productToDelete) {
+      this.store.dispatch(
+        deleteServiceList({
+          productId: this.productToDelete,
+          filters: this.constructFilterPayload(),
+        })
+      );
     }
     this.productToDelete = undefined;
     this.openProductDeleteModal = false;
   }
 
-  get isFilterEmpty() {
-    return this.filterForm.valid;
+  getActions(product: Product) {
+    const actionsArr = ['Edit'];
+    if (product.visibility) {
+      actionsArr.push(
+        `Mark as ${this.titleCasePipe.transform(
+          product.visibility === VisibilityType.PUBLIC
+            ? VisibilityType.PRIVATE
+            : VisibilityType.PUBLIC
+        )}`
+      );
+    }
+    actionsArr.push('Use as Template', 'Delete');
+    return actionsArr;
   }
 
-  onDeleteProduct() {
-    this.store.dispatch(deleteServiceList({ productId: this.deleteProductId }));
-    this.productsList = this.productsList.filter(r => r.product_id !== this.deleteProductId);
+  get isFilterEmpty() {
+    return this.filterForm.valid;
   }
 
   ngOnDestroy() {

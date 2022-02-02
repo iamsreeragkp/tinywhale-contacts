@@ -13,28 +13,51 @@ export const timeOptions = ['AM', 'PM'].flatMap(amPm =>
 export const currencyList = [
   {
     id: 'USD',
-    name: 'United States Dollar',
+    name: 'US Dollar (USD)',
     symbol: '$',
   },
   {
     id: 'INR',
-    name: 'Indian Rupee',
+    name: 'Indian Rupee (INR)',
     symbol: '₹',
   },
   {
     id: 'SGD',
-    name: 'Singapore Dollar',
+    name: 'Singapore Dollar (SGD)',
     symbol: 'S$',
   },
   {
     id: 'GBP',
-    name: 'Pound Sterling',
+    name: 'Pound Sterling (GBP)',
     symbol: '£',
   },
   {
     id: 'AUD',
-    name: 'Australian Dollar',
+    name: 'Australian Dollar (AUD)',
     symbol: 'A$',
+  },
+];
+
+export const countryList = [
+  {
+    id: 'US',
+    name: 'United States of America (US)',
+  },
+  {
+    id: 'IN',
+    name: 'India (IN)',
+  },
+  {
+    id: 'SG',
+    name: 'Singapore (SG)',
+  },
+  {
+    id: 'GB',
+    name: 'United Kingdom (GB)',
+  },
+  {
+    id: 'AU',
+    name: 'Australia (AU)',
   },
 ];
 

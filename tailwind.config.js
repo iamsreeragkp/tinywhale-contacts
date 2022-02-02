@@ -15,14 +15,6 @@ module.exports = {
       // bagroundColor:{
       //   primary-baground:"#00a4b7"
       // }
-      textColor: {
-        primaryFont: '#154F5B',
-        secondaryBlue: '#00a4b7',
-        mediumGray: '#73959d',
-      },
-      borderColor: {
-        lightGrey: '#d6e1e3',
-      },
       borderRadius: {
         5: '1.25rem',
       },
@@ -31,6 +23,13 @@ module.exports = {
       },
       height: {
         68: '17rem',
+      },
+      colors: {
+        veryLightGrey: '#f1f4f5',
+        lightGrey: '#d6e1e3',
+        mediumGray: '#73959d',
+        primaryFont: '#154F5B',
+        secondaryBlue: '#00a4b7',
       }
     },
   },

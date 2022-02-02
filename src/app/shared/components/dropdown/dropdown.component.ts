@@ -54,6 +54,8 @@ export class DropdownComponent {
           selected: false,
         },
       }));
+    } else {
+      this._options = [];
     }
   }
   // Whether multi select or not

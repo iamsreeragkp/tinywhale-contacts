@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
@@ -14,7 +15,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
-
   // options
   multi: any[] = multi;
   single: any[] = single;
@@ -35,15 +35,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
   timeline: boolean = false;
   barPadding: number = 50;
 
-  colorScheme = {
-    domain: ['#00A4B7']
+  colorScheme: Color = {
+    name: 'primary',
+    selectable: true,
+    group: ScaleType.Linear,
+    domain: ['#00A4B7'],
   };
   colorSchemeBar = {
-    domain: ['#ED9F7C']
-  }
+    name: 'bar',
+    selectable: true,
+    group: ScaleType.Linear,
+    domain: ['#ED9F7C'],
+  };
   colorSchemeCurve = {
-    domain: ['#E1C700']
-  }
+    name: 'curve',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#E1C700'],
+  };
   constructor(private store: Store<IRootState>) {
     this.dashboard$ = store.pipe(select(getDashboardData));
   }
@@ -62,4 +71,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.ngUnsubscriber.next();
     this.ngUnsubscriber.complete();
   }
+
+  onSelect(eve: any) {}
+
+  onActivate(eve: any) {}
+
+  onDeactivate(eve: any) {}
 }
