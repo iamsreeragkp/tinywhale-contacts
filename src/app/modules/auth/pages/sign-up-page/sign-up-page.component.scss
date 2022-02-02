@@ -13,6 +13,9 @@
       color: #154f5b;
       .goto-login {
         color: #00a4b7;
+        &:hover {
+          color: #154f5b;
+        }
       }
     }
   }
@@ -66,10 +69,4 @@
     line-height: 18px;
     color: #73959d;
   }
-}
-.domain-input-width {
-  // max-width: calc(100% - 1.75rem - 340px);
-}
-input.domain-input-width {
-  // width: calc(100% - 1.75rem - 136.78px);
 }
