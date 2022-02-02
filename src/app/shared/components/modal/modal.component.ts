@@ -21,4 +21,11 @@ export class ModalComponent {
   }
   @Output() openChange = new EventEmitter<boolean>();
   constructor() {}
+
+  handleOutsideClick() {
+    if (this._closeOnOutsideClick) {
+      this.open = false;
+      this.openChange.emit(this.open);
+    }
+  }
 }

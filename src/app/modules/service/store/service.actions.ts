@@ -1,5 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { ProductPayload, Product, ServiceListFilter } from '../shared/service.interface';
+import {
+  ProductPayload,
+  Product,
+  ServiceListFilter,
+  VisibilityType,
+} from '../shared/service.interface';
 
 export const addService = createAction(
   '[ServiceModule] ADD SERVICE',
@@ -30,10 +35,9 @@ export const getServiceListStatus = createAction(
 
 export const initService = createAction('[ServiceModule] INIT');
 
-
 export const changeVisibility = createAction(
   '[ServiceModule] CHANGE VISIBILITY',
-  props<{ productId:any,visibility: any  }>()
+  props<{ productId: number; visibility: VisibilityType; filters?: ServiceListFilter }>()
 );
 export const changeVisibilitySuccess = createAction(
   '[ServiceModule] CHANGE VISIBILITY SUCCESS',
@@ -47,10 +51,11 @@ export const changeVisibilityError = createAction(
 
 export const deleteServiceList = createAction(
   '[ServiceModule] DELETE SERVICE LIST',
-  props<{ productId: any }>()
+  props<{ productId: number; filters?: ServiceListFilter }>()
 );
+
 export const deleteServiceListSuccess = createAction(
-  '[ServiceModule] DELETE SERVICE LIST SUCCESS',
+  '[ServiceModule] DELETE SERVICE LIST SUCCESS'
   // props<{ products?: Product[]; status: boolean; error?: string }>()
 );
 

@@ -1,7 +1,7 @@
 name: front end staging
 
 on:
-  pull_request:
+  pull_request_review:
     branches:
       [main]
 

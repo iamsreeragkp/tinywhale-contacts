@@ -2,24 +2,39 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { IAppState } from 'src/app/modules/core/reducers';
-import { getService, initService } from '../../store/service.actions';
-import { Product, WeekDay } from '../../shared/service.interface';
+import {
+  changeVisibility,
+  deleteServiceList,
+  getService,
+  initService,
+} from '../../store/service.actions';
+import { Product, VisibilityType, WeekDay } from '../../shared/service.interface';
 import { getServiceStatus } from '../../store/service.selectors';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TimeRangeSerialized } from 'src/app/shared/interfaces/time-range.interface';
 import { getTimeRangeSerialized } from 'src/app/shared/utils';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-service',
   templateUrl: './view-service.component.html',
   styleUrls: ['./view-service.component.scss'],
+  providers: [TitleCasePipe],
 })
 export class ViewServiceComponent implements OnInit, OnDestroy {
   ngUnsubscriber = new Subject<void>();
   productObj?: Product;
   timeRangeSerialized?: TimeRangeSerialized[];
   product$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
-  constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
+  threeDotsActions: string[] = [];
+  openProductDeleteModal = false;
+
+  constructor(
+    private store: Store<IAppState>,
+    private route: ActivatedRoute,
+    private titleCasePipe: TitleCasePipe,
+    private router: Router
+  ) {
     this.product$ = store.pipe(select(getServiceStatus));
     // store.dispatch(getDashboard());
     this.getProduct();
@@ -45,6 +60,18 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data?.status && data?.product) {
           this.productObj = data.product;
+          let actionsArr = ['Edit'];
+          if (data.product?.visibility) {
+            actionsArr.push(
+              `Mark as ${this.titleCasePipe.transform(
+                data.product.visibility === VisibilityType.PUBLIC
+                  ? VisibilityType.PRIVATE
+                  : VisibilityType.PUBLIC
+              )}`
+            );
+          }
+          actionsArr.push('Use as Template', 'Delete');
+          this.threeDotsActions = actionsArr;
           if (this.productObj?.class?.class_time_ranges?.length) {
             this.timeRangeSerialized = getTimeRangeSerialized(
               this.productObj.class.class_time_ranges
@@ -54,6 +81,46 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
           console.log(data?.error);
         }
       });
+  }
+
+  handleAction(event: string) {
+    if (!this.productObj) {
+      return;
+    }
+    if (event === 'Edit') {
+      this.router.navigate(['../../edit-service', this.productObj?.product_id], {
+        relativeTo: this.route,
+      });
+    } else if (['Mark as Private', 'Mark as Public'].includes(event)) {
+      const visibility = event.includes('Public') ? VisibilityType.PRIVATE : VisibilityType.PUBLIC;
+      this.store.dispatch(
+        changeVisibility({
+          productId: this.productObj?.product_id,
+          visibility: visibility,
+        })
+      );
+    } else if (event === 'Use as Template') {
+      const { product_id, title: oldTitle, ...needed } = this.productObj;
+      const title = `Copy of ${oldTitle ?? ''}`;
+      const cloneProduct = { ...needed, title };
+      this.router.navigate(['../../add-service'], {
+        relativeTo: this.route,
+        state: { product: cloneProduct },
+      });
+    } else if (event === 'Delete') {
+      this.openProductDeleteModal = true;
+    }
+  }
+
+  closeDeleteModal(deleteProduct?: boolean) {
+    if (deleteProduct && this.productObj) {
+      this.store.dispatch(
+        deleteServiceList({
+          productId: this.productObj?.product_id,
+        })
+      );
+    }
+    this.openProductDeleteModal = false;
   }
 
   get photoForPreview() {

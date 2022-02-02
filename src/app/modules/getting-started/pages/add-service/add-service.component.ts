@@ -70,6 +70,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           }, 100);
         });
       });
+    const productData = router.getCurrentNavigation()?.extras?.state?.['product'];
+    if (productData) {
+      this.initForms(productData);
+    }
     this.isGettingStarted = router.url.split('/').includes('home');
   }
 
@@ -104,10 +108,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             if (productIdControl) {
               productIdControl.patchValue(data.response.product_id);
             } else {
-              this.productForm.addControl(
-                'product_id',
-                this._fb.control([data.response.product_id])
-              );
+              this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
@@ -130,7 +131,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   productFormSubscriptions() {
     this.startTimeUnsubscriber$.next();
     this.productForm.valueChanges
-      .pipe(debounceTime(5000), takeUntil(this.startTimeUnsubscriber$))
+      .pipe(debounceTime(3000), takeUntil(this.startTimeUnsubscriber$))
       .subscribe(() => {
         this.autoSaving = true;
         console.log('********saving', this.autoSaving);

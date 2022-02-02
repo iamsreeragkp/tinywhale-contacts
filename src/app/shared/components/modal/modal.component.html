@@ -1,5 +1,5 @@
 <ng-container *ngIf="open">
-  <div class="fixed w-full h-full inset-0 bg-black opacity-75"></div>
+  <div class="fixed w-full h-full inset-0 bg-black opacity-75" (click)="handleOutsideClick()"></div>
   <div class="fixed w-full h-full inset-0 flex justify-center items-center">
     <div class="bg-white p-5 md:w-3/12 w-11/12 rounded-2xl">
       <ng-content></ng-content>

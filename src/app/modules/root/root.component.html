@@ -1,18 +1,7 @@
-<app-side-nav class="hidden md:flex"></app-side-nav>
-<div class="dashboard hidden md:flex min-h-screen">
+<app-side-nav></app-side-nav>
+<div class="dashboard flex min-h-screen">
   <div class="w-full py-10 pl-40 pr-10 overflow-y-auto">
     <router-outlet></router-outlet>
-  </div>
-</div>
-<div class="flex flex-col justify-center w-full min-h-screen mobile-screen">
-  <div
-    class="flex flex-col justify-center items-center rounded-3xl md:hidden card m-6 shadow-lg p-8 overflow-hidden bg-white"
-  >
-    <app-logo></app-logo>
-    <h1 class="text-primaryFont font-baloo font-normal text-2xl mt-8 mb-4">Hey 👋</h1>
-    <p class="text-primaryFont text-center font-poppins font-normal text-base">
-      Open your TinyWhale dashboard on desktop
-    </p>
   </div>
 </div>
 

@@ -9,7 +9,7 @@
           2
         </span>
         <span class="text-4xl">
-          {{ editMode ? productForm?.get('title')?.value ?? 'Edit a Service' : 'Add a Service' }}
+          {{ productForm?.get('title')?.value || (editMode ? 'Edit a Service' : 'Add a Service') }}
         </span>
       </header>
       <div class="flex justify-between items-center">

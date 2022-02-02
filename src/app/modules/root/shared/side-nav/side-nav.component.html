@@ -28,7 +28,6 @@
         <a
           class="nav-link flex flex-col items-center justify-around w-full"
           routerLinkActive="active"
-          [class.disabled]="!dashboardInfos?.businessInfo?.isStarted"
           routerLink="/website"
         >
           <div class="absolute left-0 top-0 w-2 h-full bg-blue-400 rounded active-border"></div>
@@ -53,7 +52,6 @@
         <a
           routerLink="service"
           routerLinkActive="active"
-          [class.disabled]="!dashboardInfos?.serviceInfo?.isStarted"
           class="nav-link flex flex-col items-center justify-around w-full"
         >
           <div class="absolute left-0 top-0 w-2 h-full bg-blue-400 rounded active-border"></div>
@@ -78,7 +76,6 @@
       <li class="active-item nav-item relative py-2">
         <a
           routerLink="booking"
-          [class.disabled]="!dashboardInfos?.paymentInfo?.isStarted"
           routerLinkActive="active"
           class="nav-link flex flex-col items-center justify-around w-full"
         >
@@ -104,7 +101,6 @@
       <li class="active-item nav-item relative py-2">
         <a
           routerLink="account"
-          [class.disabled]="!dashboardInfos?.paymentInfo?.isStarted"
           routerLinkActive="active"
           class="nav-link flex flex-col items-center justify-around w-full"
         >

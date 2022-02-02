@@ -2,7 +2,12 @@
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
     <header class="header leading-9 font-normal not-italic flex items-center">
       <ng-container *ngIf="!editMode; else editTitle">
-        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3" *ngIf="isGettingStarted"> 3 </span>
+        <span
+          class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"
+          *ngIf="isGettingStarted"
+        >
+          3
+        </span>
         <span class="text-4xl">Add Payment Info</span>
       </ng-container>
       <ng-template #editTitle>
@@ -54,7 +59,10 @@
           </div>
         </div>
       </div>
-      <div class="input-field flex mb-4">
+      <div
+        class="input-field flex mb-4"
+        *ngIf="paymentForm.get('company')?.value === 'COMPANY'; else individualType"
+      >
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Company Name*</label></div>
         <div class="w-form">
           <input
@@ -64,6 +72,28 @@
           />
         </div>
       </div>
+      <ng-template #individualType>
+        <div class="input-field flex mb-4">
+          <div class="w-44 label text-right mt-4 mr-6"><label for="">First Name*</label></div>
+          <div class="w-form">
+            <input
+              class="input w-full py-3 px-4 focus:outline-none"
+              placeholder="Enter your First Name"
+              formControlName="firstname"
+            />
+          </div>
+        </div>
+        <div class="input-field flex mb-4">
+          <div class="w-44 label text-right mt-4 mr-6"><label for="">Last Name*</label></div>
+          <div class="w-form">
+            <input
+              class="input w-full py-3 px-4 focus:outline-none"
+              placeholder="Enter your Last Name"
+              formControlName="lastname"
+            />
+          </div>
+        </div>
+      </ng-template>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Address*</label></div>
         <div class="w-form">
@@ -117,28 +147,42 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <input
+          <!-- <input
             class="input w-full py-3 px-4 focus:outline-none"
             placeholder="Country"
             formControlName="country"
-          />
+          /> -->
+          <app-dropdown
+            placeholder="Select Country"
+            [options]="countryList"
+            [displayKey]="'name'"
+            [emitId]="true"
+            formControlName="country"
+          ></app-dropdown>
         </div>
       </div>
 
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Default Currency*</label></div>
         <div class="w-form">
-          <select
+          <!-- <select
             class="input py-3 px-4 w-full"
             type="select"
             placeholder="Select location / venue of class"
             [formControlName]="'currency'"
           >
             <option value="" disabled selected>Currency</option>
-            <option *ngFor="let currency of defaultCurrencies" [value]="currency.key">
-              {{ currency?.value }}
+            <option *ngFor="let currency of defaultCurrencies" [value]="currency.id">
+              {{ currency?.name }}
             </option>
-          </select>
+          </select> -->
+          <app-dropdown
+            placeholder="Select Currency"
+            [options]="defaultCurrencies"
+            [displayKey]="'name'"
+            [emitId]="true"
+            formControlName="currency"
+          ></app-dropdown>
         </div>
       </div>
       <div class="flex">

@@ -72,11 +72,12 @@ export class ServiceEffects {
   deleteService$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteServiceList),
-      mergeMap(({ productId }) =>
+      switchMap(({ productId, filters }) =>
         this.productService.deleteService(productId).pipe(
-          switchMap(() => {
-            return merge(of(deleteServiceListSuccess()));
-          }),
+          mergeMap(() => [
+            deleteServiceListSuccess(),
+            ...(filters ? [getServiceList({ filters })] : []),
+          ]),
           catchError(error => of(deleteServiceListError({ error })))
         )
       )
@@ -86,9 +87,12 @@ export class ServiceEffects {
   changeVisibility$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVisibility),
-      switchMap(({ productId, visibility }) =>
+      switchMap(({ productId, visibility, filters }) =>
         this.productService.visibilityChange(productId, visibility).pipe(
-          mergeMap(response => [changeVisibilitySuccess({ products: response, status: true })]),
+          mergeMap(response => [
+            changeVisibilitySuccess({ products: response, status: true }),
+            ...(filters ? [getServiceList({ filters })] : []),
+          ]),
           catchError(error =>
             of(
               changeVisibilityError({

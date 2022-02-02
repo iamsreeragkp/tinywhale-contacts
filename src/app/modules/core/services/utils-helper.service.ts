@@ -39,6 +39,11 @@ export class UtilsHelperService {
     });
   }
 
+  static isMobile() {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    return browser.getPlatformType(true) === 'mobile';
+  }
+
   uploadImage(images: any): Observable<SignedUrlResponse> {
     return this.http.post<SignedUrlResponse>(`${this.api}/utils/signedurl/put`, images);
   }

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { environment } from 'src/environments/environment';
+import { countryList, currencyList } from 'src/app/shared/utils';
 import { addKyc, addPayment, getPayment } from '../../../accounts/store/account.actions';
 import { IAccountState } from '../../../accounts/store/account.reducers';
 import { getAccountInfo, getKycInfo, getPayments } from '../../../accounts/store/account.selectors';
@@ -18,32 +18,13 @@ import { getAccountInfo, getKycInfo, getPayments } from '../../../accounts/store
 export class AddPaymentComponent implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   ngUnsubscribe = new Subject<any>();
+  unSubscribeAccountType = new Subject<void>();
   editMode = false;
   paymentData$: Observable<any>;
   isSaving = false;
   isGettingStarted = false;
-  defaultCurrencies = [
-    {
-      key: 'USD',
-      value: 'USD',
-    },
-    {
-      key: 'INR',
-      value: 'INR',
-    },
-    {
-      key: 'SGD',
-      value: 'SGD',
-    },
-    {
-      key: 'GBP',
-      value: 'GBP',
-    },
-    {
-      key: 'AUD',
-      value: 'AUD',
-    },
-  ];
+  defaultCurrencies = currencyList;
+  countryList = countryList;
 
   checkedInfo = true;
 
@@ -56,6 +37,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     public location: Location
   ) {
     this.paymentForm = this.createPaymentForm();
+    this.subscribeAccountTypeChange();
     this.paymentData$ = this.store.pipe(select(getPayments));
     route.url
       .pipe(
@@ -109,6 +91,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     this.paymentForm = new FormGroup({
       company: new FormControl(val?.type),
       companyname: new FormControl(val?.business_name),
+      firstname: new FormControl(val?.first_name),
+      lastname: new FormControl(val?.last_name),
       addressline1: new FormControl(val?.address_line_1),
       addressline2: new FormControl(val?.address_line_2),
       postelcode: new FormControl(val?.postal_code),
@@ -117,12 +101,15 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: new FormControl(val?.country),
       currency: new FormControl(val?.default_currency),
     });
+    this.subscribeAccountTypeChange();
   }
 
   createPaymentForm() {
     return new FormGroup({
       company: new FormControl(''),
       companyname: new FormControl(''),
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
       addressline1: new FormControl(''),
       addressline2: new FormControl(''),
       postelcode: new FormControl(''),
@@ -131,6 +118,24 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: new FormControl(''),
       currency: new FormControl(''),
     });
+  }
+
+  subscribeAccountTypeChange() {
+    this.unSubscribeAccountType.next();
+    this.paymentForm
+      .get('company')
+      ?.valueChanges.pipe(takeUntil(this.unSubscribeAccountType))
+      .subscribe(val => {
+        if (val === 'INDIVIDUAL') {
+          this.paymentForm.get('firstname')?.enable();
+          this.paymentForm.get('lastname')?.enable();
+          this.paymentForm.get('companyname')?.disable();
+        } else {
+          this.paymentForm.get('firstname')?.disable();
+          this.paymentForm.get('lastname')?.disable();
+          this.paymentForm.get('companyname')?.enable();
+        }
+      });
   }
 
   onSubmitPayment() {
@@ -142,6 +147,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     const {
       company,
       companyname,
+      firstname,
+      lastname,
       addressline1,
       addressline2,
       postelcode,
@@ -154,6 +161,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     const paymentPayload = {
       business_id: business_id,
       business_name: companyname,
+      first_name: firstname,
+      last_name: lastname,
       type: company,
       address_line_1: addressline1,
       address_line_2: addressline2,
@@ -205,7 +214,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  onUpdateBank(){
+  onUpdateBank() {
     const userData = this.authService.decodeUserToken();
     const {
       dashboardInfos: { businessId: business_id },
@@ -236,7 +245,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       connect_rapyd: true,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
-
   }
 
   onChangeData(event: any) {
