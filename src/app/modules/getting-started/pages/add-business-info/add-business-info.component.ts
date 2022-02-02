@@ -36,14 +36,14 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   @ViewChild('punchline') punchline!: ElementRef<HTMLInputElement>;
   // @ViewChild('companyName', { static: true }) companyName: ElementRef;
   isSaving = false;
-  // @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
-  //   this.closeToPhoto = !!target.closest(
-  //     'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
-  //   );
-  //   this.closeToPunchline = !!target.closest(
-  //     'input.' + this.punchline.nativeElement.className.split(' ').join('.')
-  //   );
-  // }
+  @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
+    this.closeToPhoto = !!target.closest(
+      'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
+    );
+    this.closeToPunchline = !!target.closest(
+      'input.' + this.punchline.nativeElement.className.split(' ').join('.')
+    );
+  }
   businessInfoForm!: FormGroup;
   recognitionTypeOptions = [
     {
