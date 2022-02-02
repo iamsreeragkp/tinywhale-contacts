@@ -34,13 +34,7 @@
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Company Logo </label></div>
-        <input
-          type="file"
-          accept="image/*"
-          style="display: none"
-          #logo
-          (input)="handleFileInputLogo($event)"
-        />
+        <input type="file" accept="image/*" style="display: none" #logo (change)="handleFileInputLogo($event)" />
         <div class="relative">
           <button
             (click)="deleteLogo()"
@@ -109,44 +103,25 @@
 
       <div class="input-field flex mb-8 relative">
         <div class="w-36 label mt-4"><label for="">Photos*</label></div>
-        <div class="flex justify-between w-90" #photoContainer>
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              #photo1
-              style="display: none"
-              (change)="handleFileInput($event, 0)"
-            />
-            <div class="relative">
-              <button
-                (click)="deletePhoto(0)"
-                *ngIf="arrayPhotosImageUrl[0]"
-                class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
-              >
-                <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
-              </button>
-              <div
-                class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
-                (click)="photo1.click()"
-                placeholder="Add photo"
-              >
-                <img
-                  *ngIf="arrayPhotosImageUrl[0]"
-                  [src]="arrayPhotosImageUrl[0]"
-                  class="image h-full w-full object-cover"
-                />
-                <ng-container *ngIf="!arrayPhotosImageUrl[0]">
-                  <img
-                    class="h-7"
-                    src="../../../../../assets/images/defualt-image.svg"
-                    alt="photo"
-                  />
-                  <span class="text-mediumGray">Add Photo</span>
-                </ng-container>
-              </div>
+        <!-- <div class="flex justify-between w-90" #photoContainer formArrayName="photos">
+
+          <input type="file" accept="image/*" #photo1 style="display: none" (change)="handleFileInput($event, 0)" />
+          <div class="relative">
+            <button (click)="deletePhoto(0)" *ngIf="arrayPhotosImageUrl[0]"
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+            </button>
+            <div class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+              (click)="photo1.click()" placeholder="Add photo">
+              <img *ngIf="arrayPhotosImageUrl[0]" [src]="arrayPhotosImageUrl[0]"
+                class="image h-full w-full object-cover" />
+              <ng-container *ngIf="!arrayPhotosImageUrl[0]">
+                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="photo" />
+                <span class="text-mediumGray">Add Photo</span>
+              </ng-container>
             </div>
           </div>
+
           <div>
             <input
               type="file"
@@ -221,7 +196,32 @@
               </div>
             </div>
           </div>
+        </div> -->
+        <div class="flex w-form" #photoContainer formArrayName="photos">
+        
+          <div class="relative mr-2" *ngFor="let photo of businessPhotosList?.controls; let i = index"
+            [formGroupName]="i">
+            <button (click)="deletePhoto(i)" *ngIf="photo.get('photo_data_url')?.value"
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+            </button>
+            <div
+              class="input-photo text-center relative cursor-pointer flex flex-col justify-evenly items-center overflow-hidden"
+              (click)="photoInput.click()">
+              <input type="file" #photoInput accept="image/*" class="hidden" (change)="handleFileInput($event, i)" />
+              <img *ngIf="photo.get('photo_data_url')?.value" [src]="photo.get('photo_data_url')?.value"
+                alt="{{'Photo_' + (i + 1)}}" class="image h-full w-full object-cover">
+              <ng-container *ngIf="!photo.get('photo_data_url')?.value">
+                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+                <span class="text-mediumGray">Add Photo</span>
+              </ng-container>
+            
+          </div>
+          </div>
+          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
+          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
         </div>
+
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4">
