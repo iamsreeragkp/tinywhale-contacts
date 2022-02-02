@@ -100,7 +100,7 @@ export class UtilsHelperService {
       if (file && (!imageType || file.type?.includes(imageType))) {
         const {
           dashboardInfos: { customUsername },
-        } = this.authService.decodeUserToken();
+        } = this.authService?.decodeUserToken();
         const fileKey = `${customUsername}/${category}/${Date.now()}_${file.name}`;
         if (upload) {
           this.getSignedUrlAndUploadToS3({ fileKey, file });
