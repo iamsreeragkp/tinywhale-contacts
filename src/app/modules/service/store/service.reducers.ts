@@ -1,6 +1,9 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import {
   addServiceStatus,
+  changeVisibilitySuccess,
+  deleteServiceList,
+  deleteServiceListSuccess,
   getServiceList,
   getServiceListStatus,
   getServiceStatus,
@@ -26,12 +29,16 @@ export interface IServiceState {
     status: boolean;
     error?: string;
   };
+  productId:any;
+  visibility?:any;
 }
 
 export const initialServiceState: IServiceState = {
   addService: undefined,
   getService: undefined,
   getServiceList: undefined,
+  productId:undefined,
+  visibility:undefined
 };
 
 export const reducer = createReducer(
@@ -55,6 +62,14 @@ export const reducer = createReducer(
       error,
       status,
     },
+  })),
+  on(deleteServiceList, (state,{productId}) => ({
+    ...state,
+    productId:productId
+  })),
+  on(changeVisibilitySuccess, (state,{products}) => ({
+    ...state,
+    visibility:products
   })),
   on(initService, () => initialServiceState)
 );
