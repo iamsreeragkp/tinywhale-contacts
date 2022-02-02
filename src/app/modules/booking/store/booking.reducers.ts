@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { addBookingError, addBookingSuccess, getBookingByIdError, getBookingByIdSuccess, getBookingError, getBookingSuccess } from './booking.actions';
+import { addBookingError, addBookingSuccess, getBookingByIdError, getBookingByIdSuccess, getBookingError, getBookingListError, getBookingListSuccess, getBookingSuccess } from './booking.actions';
 
 export const userFeatureKey = 'AuthState';
 
@@ -7,14 +7,20 @@ export interface IBookingState {
   BookingInfo:any;
   error:any,
   getBooking:any,
-  getBookingById?: any
+  getBookingById?: any,
+  getBookingList?: {
+    bookings?: any[];
+    status: boolean;
+    error?: string;
+  };
 }
 
 export const initialBookingState: IBookingState = {
   BookingInfo:[],
   error:'',
   getBooking: undefined,
-  getBookingById:undefined
+  getBookingById:undefined,
+  getBookingList:undefined
 };
 
 export const reducer = createReducer(
@@ -31,9 +37,17 @@ export const reducer = createReducer(
     ...state,
     getBookingById:response
   })),
-  on(addBookingError,getBookingByIdError,getBookingError, (state, { error }) => ({
+  on(addBookingError,getBookingByIdError,getBookingError,getBookingListError, (state, { error }) => ({
     ...state,
     error:error
+  })),
+  on(getBookingListSuccess, (state, { bookingList, error, status }) => ({
+    ...state,
+    getBookingList: {
+      bookingList,
+      error,
+      status,
+    },
   })),
 );
 

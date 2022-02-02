@@ -45,9 +45,15 @@
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="" />
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+          <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
+            <ngx-charts-line-chart [scheme]="colorScheme" [showXAxisLabel]="showXAxisLabel"
+              [fitContainer]="fitContainer" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
+              [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi"
+              [gradient]="gradient" [showGridLines]="showGridLines" (select)="onSelect($event)"
+              (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-line-chart>
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
           </div>
         </div>
         <div class="w-full md:w-4/12 h-72 flex flex-col px-8">
@@ -226,8 +232,14 @@
             </div>
           </div>
           <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
+            <ngx-charts-line-chart [scheme]="colorSchemeCurve" [showXAxisLabel]="showXAxisLabel"
+              [fitContainer]="fitContainer" [showYAxisLabel]="false" [xAxis]="false" [yAxis]="false"
+              [xAxisLabel]="false" [yAxisLabel]="false" [timeline]="false" [results]="multi" [gradient]="gradient"
+              [showGridLines]="false" (select)="onSelect($event)" (activate)="onActivate($event)"
+              (deactivate)="onDeactivate($event)">
+            </ngx-charts-line-chart>
           </div>
         </div>
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
@@ -238,9 +250,14 @@
               <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+          <div class="flex flex-col items-center justify-center">
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
+            <ngx-charts-bar-vertical [fitContainer]="fitContainer" [scheme]="colorSchemeBar" [results]="single"
+              [gradient]="gradient" [xAxis]="false" [yAxis]="false" [legend]="false" [showXAxisLabel]="false"
+              [barPadding]="barPadding" [showYAxisLabel]="false" [xAxisLabel]="false" [yAxisLabel]="false"
+              (select)="onSelect($event)">
+            </ngx-charts-bar-vertical>
           </div>
         </div>
       </div>

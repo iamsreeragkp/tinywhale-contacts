@@ -35,4 +35,12 @@ export class ServiceService {
     const params = new HttpParams({ fromObject: { ...filters, business_id } });
     return this.http.get(`${this.api}/dashboard/service`, { params });
   }
+
+  visibilityChange(product_id:number,payload:any){
+    return this.http.patch(`${this.api}/dashboard/service/${product_id}`,payload);
+  }
+
+  deleteService(product_id:number){
+    return this.http.delete(`${this.api}/dashboard/service/${product_id}`);
+  }
 }
