@@ -14,3 +14,7 @@ export const getBookingByIds = createSelector(getBookingFeatureSelector, state =
 export const getBookingInfo = createSelector(getBookingFeatureSelector, state => {
   return state?.BookingInfo;
 });
+
+export const getBookingListStatus = createSelector(getBookingFeatureSelector, state => {
+  return state?.getBookingList;
+});

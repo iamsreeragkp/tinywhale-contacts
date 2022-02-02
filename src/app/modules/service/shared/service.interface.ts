@@ -102,4 +102,5 @@ export interface ServiceListFilter {
   product_type?: string;
   location_type?: LocationType;
   days_of_week?: string;
+  pricing_type?: string;
 }

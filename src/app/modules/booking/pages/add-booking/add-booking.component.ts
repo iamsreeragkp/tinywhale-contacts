@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
+import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { BookingService } from '../../booking.service';
 import { addBooking, getBookingById } from '../../store/booking.actions';
@@ -16,7 +16,7 @@ import { getBookingByIds } from '../../store/booking.selectors';
   templateUrl: './add-booking.component.html',
   styleUrls: ['./add-booking.component.scss'],
 })
-export class AddBookingComponent implements OnInit {
+export class AddBookingComponent implements OnInit,OnDestroy {
   bookingForm!: FormGroup;
   options = {
     format: 'yyyy-MM-dd',
@@ -69,6 +69,38 @@ export class AddBookingComponent implements OnInit {
       }
     });
     this.subscriptions();
+    this.bookingForm.valueChanges
+    .pipe(
+      debounceTime(500),
+      switchMap((value) => of(value))
+    )
+    .subscribe((value) => {
+      const { email, phonenumber, customername, service, date, slot, payment } = value;
+      const bookingPayload = {
+        email: email,
+        phone_number: phonenumber,
+        name: customername,
+        date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+        product_id: service,
+        booking_type: BookingType.BUSINESS_OWNER,
+        platform: payment,
+      };
+      this.store.dispatch(addBooking({ bookingData: bookingPayload }));
+      if(this.editMode){
+        const bookingPayload = {
+          email: email,
+          phone_number: phonenumber,
+          name: customername,
+          date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+          product_id: service,
+          booking_type: BookingType.BUSINESS_OWNER,
+          platform: payment || 'ONLINE',
+          order_id: this.orderId,
+        };
+        this.store.dispatch(addBooking({ bookingData: bookingPayload }));
+      }
+
+    });
   }
 
   subscriptions() {
@@ -113,7 +145,7 @@ export class AddBookingComponent implements OnInit {
 
   getDropdownData() {
     this.bookingService.getServiceDropdown().subscribe((data: any) => {
-      this.classData = data?.Classes;
+      this.classData = data?.data;
       this.classTimeRanges = data?.Classes;
     });
   }
@@ -123,7 +155,7 @@ export class AddBookingComponent implements OnInit {
       this.bookingForm.value;
     const bookingPayload = {
       email: email,
-      mobile_number: phonenumber,
+      phone_number: phonenumber,
       name: customername,
       date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
       product_id: service,
@@ -139,7 +171,7 @@ export class AddBookingComponent implements OnInit {
       this.bookingForm.value;
     const bookingPayload = {
       email: email,
-      mobile_number: phonenumber,
+      phone_number: phonenumber,
       name: customername,
       date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
       product_id: service,
@@ -166,7 +198,7 @@ export class AddBookingComponent implements OnInit {
       this.bookingForm.value;
     const bookingPayload = {
       email: email,
-      mobile_number: phonenumber,
+      phone_number: phonenumber,
       name: customername,
       date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
       product_id: service,

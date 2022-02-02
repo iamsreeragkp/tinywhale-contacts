@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -10,7 +10,7 @@ import { getDashboardData } from '../../store/root.selectors';
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss']
 })
-export class SideNavComponent implements OnInit {
+export class SideNavComponent implements OnInit,OnDestroy {
 
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
@@ -30,8 +30,6 @@ export class SideNavComponent implements OnInit {
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
-      console.log(this.dashboardInfos);
-
     });
   }
 
