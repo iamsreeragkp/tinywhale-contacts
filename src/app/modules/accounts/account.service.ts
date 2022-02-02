@@ -25,4 +25,8 @@ export class AccountService {
     } = userData;
     return this.http.get(`${this.paymentApi}/account/account-info/${businessId}`);
   }
+
+  kycRegister(){
+    return this.http.get(`${this.paymentApi}/account/kyc`)
+  }
 }

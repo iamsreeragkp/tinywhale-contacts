@@ -27,3 +27,18 @@ export const getPaymentError = createAction(
   '[PaymentModule] get payment SUCCESS',
   props<{ error?: any }>()
 );
+
+
+export const addKyc = createAction(
+  '[KycModule] add Kyc',
+);
+
+export const addKycSuccess = createAction(
+  '[KycModule] add Kyc SUCCESS',
+  props<{ response?: any }>()
+);
+
+export const addKycError = createAction(
+  '[KycModule] add Kyc SUCCESS',
+  props<{ error?: any }>()
+);

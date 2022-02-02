@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { addPaymentError, addPaymentSuccess, getPaymentError, getPaymentSuccess } from './account.actions';
+import { addKycError, addKycSuccess, addPaymentError, addPaymentSuccess, getPaymentError, getPaymentSuccess } from './account.actions';
 import { AccountInfo } from './account.interface';
 
 export const userFeatureKey = 'AuthState';
@@ -7,13 +7,15 @@ export const userFeatureKey = 'AuthState';
 export interface IAccountState {
   AccountInfo:any;
   error:any,
-  getAccount?: AccountInfo
+  getAccount?: AccountInfo,
+  kycData:any;
 }
 
 export const initialAccountState: IAccountState = {
   AccountInfo:[],
   error:'',
-  getAccount:undefined
+  getAccount:undefined,
+  kycData:undefined
 };
 
 export const reducer = createReducer(
@@ -26,7 +28,11 @@ export const reducer = createReducer(
     ...state,
     getAccount:response
   })),
-  on(addPaymentError,getPaymentError, (state, { error }) => ({
+  on(addKycSuccess, (state, { response }) => ({
+    ...state,
+    kycData:response
+  })),
+  on(addPaymentError,getPaymentError,addKycError, (state, { error }) => ({
     ...state,
     error:error
   })),

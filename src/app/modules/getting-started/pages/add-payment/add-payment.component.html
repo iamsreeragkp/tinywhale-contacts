@@ -220,26 +220,26 @@
 
       <!-- Bank Account is connected -->
 
-      <!-- <div class="w-form">
+      <div class="w-form" *ngIf="idStatus">
         <span class="flex">
            <div class="mb-4 mt-9 mr-4"><app-formright></app-formright></div>
            <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Bank Account connected</p>
         </span>
-      </div> -->
+      </div>
       <!-- </div> -->
-      <div class="input-field flex mb-4">
+      <div class="input-field flex mb-4" *ngIf="checkedInfo">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
-          <button class="primary-button w-56">Connect Bank Account</button>
-          <!-- <button class="primary-button w-64">Update Bank Information</button> -->
+          <button class="primary-button w-56" (click)="onConnectBank()" *ngIf="!idStatus">Connect Bank Account</button>
+          <button class="primary-button w-64" *ngIf="idStatus" (click)="onUpdateBank()">Update Bank Information</button>
         </div>
       </div>
       <div class="input-field checkbox-input flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
-        <div class="w-form">
+        <div class="w-form" *ngIf="!idStatus">
           <label
             class="check-container not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
-            >It’s okay, I do not intend to collect online payments right now.
+            (change)="onChangeData($event)">It’s okay, I do not intend to collect online payments right now.
 
             <input type="checkbox" />
             <span class="checkmark"></span>

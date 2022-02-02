@@ -6,9 +6,9 @@ import { select, Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { countryList, currencyList } from 'src/app/shared/utils';
-import { addPayment, getPayment } from '../../../accounts/store/account.actions';
+import { addKyc, addPayment, getPayment } from '../../../accounts/store/account.actions';
 import { IAccountState } from '../../../accounts/store/account.reducers';
-import { getPayments } from '../../../accounts/store/account.selectors';
+import { getAccountInfo, getKycInfo, getPayments } from '../../../accounts/store/account.selectors';
 
 @Component({
   selector: 'app-add-payment',
@@ -25,6 +25,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
   isGettingStarted = false;
   defaultCurrencies = currencyList;
   countryList = countryList;
+
+  checkedInfo = true;
 
   constructor(
     private authService: AuthService,
@@ -60,6 +62,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     this.subscriptions();
   }
 
+  idStatus = false;
+
   subscriptions() {
     this.paymentData$
       .pipe(
@@ -68,7 +72,12 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data) {
+          console.log(data);
           this.initializePaymentForm(data);
+          if (data?.payout_info?.beneficiary_id) {
+            this.idStatus = true;
+            this.store.dispatch(addKyc());
+          }
         } else {
           console.log(data?.error);
         }
@@ -162,11 +171,88 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      beneficiary_id: '4343342323',
     };
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
     this.isSaving = false;
-    // this.router.navigate(['/']);
+    this.router.navigate(['/']);
+  }
+
+  onConnectBank() {
+    const userData = this.authService.decodeUserToken();
+    const {
+      dashboardInfos: { businessId: business_id },
+    } = userData;
+    const {
+      company,
+      companyname,
+      addressline1,
+      addressline2,
+      postelcode,
+      city,
+      state,
+      country,
+      currency,
+    } = this.paymentForm.value;
+
+    const rapidPayload = {
+      business_id: business_id,
+      business_name: companyname,
+      type: company,
+      address_line_1: addressline1,
+      address_line_2: addressline2,
+      city: city,
+      state: state,
+      country: country,
+      postal_code: parseInt(postelcode),
+      default_currency: currency,
+      connect_rapyd: true,
+    };
+    if (this.idStatus) {
+      this.store.dispatch(addKyc());
+    } else {
+      this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+    }
+  }
+
+  onUpdateBank() {
+    const userData = this.authService.decodeUserToken();
+    const {
+      dashboardInfos: { businessId: business_id },
+    } = userData;
+    const {
+      company,
+      companyname,
+      addressline1,
+      addressline2,
+      postelcode,
+      city,
+      state,
+      country,
+      currency,
+    } = this.paymentForm.value;
+
+    const rapidPayload = {
+      business_id: business_id,
+      business_name: companyname,
+      type: company,
+      address_line_1: addressline1,
+      address_line_2: addressline2,
+      city: city,
+      state: state,
+      country: country,
+      postal_code: parseInt(postelcode),
+      default_currency: currency,
+      connect_rapyd: true,
+    };
+    this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+  }
+
+  onChangeData(event: any) {
+    if (event?.target?.checked === true) {
+      this.checkedInfo = false;
+    } else {
+      this.checkedInfo = true;
+    }
   }
 
   ngOnDestroy() {

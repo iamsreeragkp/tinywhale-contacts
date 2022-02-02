@@ -46,14 +46,13 @@ jobs:
 
       - name: scp to ec2instance
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-145-124-59.us-east-2.compute.amazonaws.com
-          scp build.tar.gz ubuntu@ec2-3-145-124-59.us-east-2.compute.amazonaws.com:/home/ubuntu/
-
+          ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-217-62-139.us-east-2.compute.amazonaws.com
+          scp build.tar.gz ubuntu@ec2-18-217-62-139.us-east-2.compute.amazonaws.com:/home/ubuntu/
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-3-145-124-59.us-east-2.compute.amazonaws.com
+          host: ec2-18-217-62-139.us-east-2.compute.amazonaws.com
           username: ubuntu
           key: ${{ secrets.DEV_SSH_KEY }}
           port: 22
