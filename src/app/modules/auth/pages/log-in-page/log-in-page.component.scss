@@ -13,6 +13,9 @@
       color: #154f5b;
       .goto-signup {
         color: #00a4b7;
+        &:hover {
+          color: #154f5b;
+        }
       }
     }
   }
@@ -30,9 +33,9 @@
       }
     }
     .error-active {
-      .input-signup {
-        border: 2px solid #ff725e;
-      }
+      // .input-signup {
+      //   border: 2px solid #ff725e;
+      // }
       .error {
         display: block;
         font-family: Poppins;
@@ -58,6 +61,9 @@
     line-height: 26px;
     color: #00a4b7;
     margin-bottom: 50px !important;
+    &:hover {
+      color: #154f5b;
+    }
   }
   .goto-forgotpassword {
     font-family: Poppins;

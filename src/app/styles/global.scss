@@ -1,8 +1,8 @@
-@import 'mixins';
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'swiper/scss';
-@import 'swiper/scss/navigation';
+@import "mixins";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "swiper/scss";
+@import "swiper/scss/navigation";
 
 a,
 .cp {
@@ -32,7 +32,16 @@ body {
     }
   }
 }
-
+.input-data {
+  border: 2px solid #d6e1e3;
+  border-radius: 10px;
+  color: #154f5b;
+  outline-color: #154f5b;
+  &:focus {
+    border-color: #154f5b;
+  }
+  @apply font-poppins focus:outline-none leading-6 bg-white font-normal text-base  py-3 pl-4 pr-3;
+}
 .primary-button {
   background-color: #00a4b7;
   border: 2px solid #00a4b7;
@@ -62,6 +71,22 @@ body {
     @apply cursor-not-allowed;
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
+}
+.google-button {
+  color: #154f5b;
+  border: 2px solid #154f5b;
+  @apply bg-white;
+  &:hover {
+    background-color: #154f5b;
+    @apply text-white;
+  }
+  &:disabled {
+    color: #d6e1e3 !important;
+    background-color: #fff !important;
+    border-color: #d6e1e3 !important;
+    @apply cursor-not-allowed;
+  }
+  @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
 }
 
 .secondary-button {
@@ -122,6 +147,72 @@ body {
   }
 }
 
+.calendar-1 {
+  .datepicker-container {
+    @apply w-full;
+    input {
+      border: 2px solid #d6e1e3;
+      border-radius: 8px;
+      color: #154f5b;
+      @apply bg-white w-full py-3 px-4 focus:outline-none;
+    }
+    .calendar-container {
+      top: calc(3rem + 4px) !important;
+      // position: static !important;
+      .top-container {
+        padding: 16px 20px !important;
+        justify-content: center !important;
+        @apply relative flex;
+        span {
+          color: #154f5b;
+          @apply font-medium;
+        }
+        .control {
+          top: 22px;
+          @apply absolute;
+          path {
+            fill: #154f5b !important;
+          }
+        }
+        .prev-month {
+          @apply left-0;
+        }
+        .next-month {
+          margin-right: 20px;
+          @apply right-0;
+        }
+      }
+      .main-calendar-day-names {
+        height: unset !important;
+        border-width: 0px !important;
+        .day-name-unit {
+          color: #154f5b !important;
+          font-size: 12px !important;
+          @apply font-medium;
+        }
+      }
+      .main-calendar-days {
+        .day-unit {
+          color: #154f5b !important;
+          height: 42px !important;
+          &:hover {
+            background: #00a4b7 !important;
+            color: #fff !important;
+            opacity: 100% !important;
+          }
+        }
+        .is-prev-month {
+          opacity: 33%;
+        }
+        .is-selected {
+          background: #00a4b7 !important;
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}
+
 .checkbox-input {
   .check-container {
     padding-left: 30px;
@@ -142,7 +233,7 @@ body {
       border-radius: 4px;
       @apply absolute top-0 left-0 h-5 w-5 bg-transparent;
       &:after {
-        content: '';
+        content: "";
         left: 6px;
         top: 1px;
         width: 7px;
@@ -182,7 +273,7 @@ body {
       border: 1px solid #154f5b;
       @apply absolute bg-white rounded-full w-5 h-5 left-4 top-4;
       &:after {
-        content: '';
+        content: "";
         top: 3px;
         left: 3px;
         border-radius: 50%;
@@ -202,7 +293,7 @@ body {
     left: calc(-10rem + 5px);
     @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
     &::after {
-      content: '';
+      content: "";
       margin-left: -5px;
       border-width: 5px;
       left: 50%;
@@ -225,7 +316,7 @@ body {
     left: 160%;
     @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
     &::after {
-      content: '';
+      content: "";
       margin-top: -5px;
       border-width: 5px;
       right: 100%;
@@ -357,13 +448,21 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 .w-fit {
   width: fit-content;
 }
 
+.graph-container {
+  .tick {
+    text {
+      fill: #73959d !important;
+      font-weight: 500;
+    }
+  }
+}
 // Last line should be this
 
-@import 'tailwindcss/utilities';
+@import "tailwindcss/utilities";

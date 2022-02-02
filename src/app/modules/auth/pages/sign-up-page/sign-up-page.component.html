@@ -3,9 +3,7 @@
     <h1 class="title not-italic font-normal leading-9 mb-0">Get Started</h1>
     <p class="content not-italic font-normal text-base" *ngIf="!redirectMode">
       Already have an account?
-      <span class="goto-login cursor-pointer hover:text-primaryFont" (click)="navigateToSignIn()"
-        >Sign in</span
-      >
+      <span class="goto-login cursor-pointer" (click)="navigateToSignIn()">Sign in</span>
     </p>
   </header>
   <main>
@@ -83,7 +81,7 @@
       <div class="input-field relative pb-9 error-active" *ngIf="!redirectMode">
         <div class="relative">
           <input
-            class="input-signup hello w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
+            class="input-data w-full"
             type="text"
             placeholder="Enter Email"
             [ngClass]="{'border-red': email?.errors?.['pattern']}"
@@ -128,8 +126,9 @@
       <div class="or-class text-center my-4 text-base not-italic font-normal" *ngIf="!redirectMode">
         or
       </div>
-      <button class="gray-button w-full" (click)="onSubmitGoogleSignIn()">
-        Continue with Google
+      <button class="google-button w-full" (click)="onSubmitGoogleSignIn()">
+        <app-googleicon class="w-5 h-5 mr-6 mb-1"></app-googleicon>
+        Sign in with Google
       </button>
     </div>
   </main>

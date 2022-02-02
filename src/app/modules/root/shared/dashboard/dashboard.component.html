@@ -1,28 +1,31 @@
-<ng-container *ngIf="(dashboardInfos?.businessInfo?.isCompleted&&dashboardInfos?.serviceInfo?.isCompleted&&dashboardInfos?.paymentInfo?.isCompleted);else card">
-  <div class="dashboard-new" >
+<ng-container
+  *ngIf="
+    dashboardInfos?.businessInfo?.isCompleted &&
+      dashboardInfos?.serviceInfo?.isCompleted &&
+      dashboardInfos?.paymentInfo?.isCompleted;
+    else card
+  "
+>
+  <div class="dashboard-new">
     <div class="header flex items-center justify-between mx-2 font-baloo">
       <div class="flex items-center">
-        <h3 class="text-fourtyPx text-primaryFont leading-9 not-italic">Hey 👋 </h3>
+        <h3 class="text-fourtyPx text-primaryFont leading-9 not-italic">Hey 👋</h3>
       </div>
       <div class="flex items-center">
-        <button class="primary-button w-52">Share Your Website</button>
+        <button class="primary-button w-52">Share Your Tiny Card™</button>
       </div>
     </div>
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
       <div class="flex items-center border-b border-gray-300 border-solid pb-3">
         <h3 class="font-bold text-primaryFont mr-4">Overview</h3>
-        <button class="text-secondaryBlue font-bold mr-4 text-xs">
-          MTD
-        </button>
-        <button class="text-primaryFont font-medium mr-4 text-xs">
-          QTD
-        </button>
-        <button class="text-primaryFont font-medium mr-4 text-xs">
-          YTD
-        </button>
+        <button class="text-secondaryBlue font-bold mr-4 text-xs">MTD</button>
+        <button class="text-primaryFont font-medium mr-4 text-xs">QTD</button>
+        <button class="text-primaryFont font-medium mr-4 text-xs">YTD</button>
       </div>
       <div class="flex flex-col md:flex-row py-8">
-        <div class="flex flex-col w-full md:w-8/12 border-b md:border-b-0 md:border-r border-gray-300 border-solid h-72">
+        <div
+          class="flex flex-col w-full md:w-8/12 border-b md:border-b-0 md:border-r border-gray-300 border-solid h-72"
+        >
           <div class="flex items-center pb-4">
             <h4 class="text-primaryFont mr-3.5 font-medium">Gross Earnings</h4>
             <div class="tooltip-right">
@@ -35,36 +38,52 @@
 
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center ml-6 invisible">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="">
+              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">S$ 80</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="">
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+          <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
+            <ngx-charts-line-chart [scheme]="colorScheme" [showXAxisLabel]="showXAxisLabel"
+              [fitContainer]="fitContainer" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
+              [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi"
+              [gradient]="gradient" [showGridLines]="showGridLines" (select)="onSelect($event)"
+              (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-line-chart>
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
           </div>
         </div>
         <div class="w-full md:w-4/12 h-72 flex flex-col px-8">
-          <div class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid">
+          <div
+            class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid"
+          >
             <div class="flex items-center pb-4">
               <h4 class="text-primaryFont mr-3.5 font-medium">Booked Sessions</h4>
               <div class="tooltip-top">
                 <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
-                <span class="tooltiptext">Total sessions registered from
-                  individual and package bookings</span>
+                <span class="tooltiptext"
+                  >Total sessions registered from individual and package bookings</span
+                >
               </div>
             </div>
             <div class="flex items-center dashboard-new-hovervalue cursor-pointer">
-              <h3 class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500">0</h3>
-              <img src="../../../../../assets/images/icons/right-blue.svg" alt=""
-                class="-mt-1 hidden right-arrow duration-500">
+              <h3
+                class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
+              >
+                0
+              </h3>
+              <img
+                src="../../../../../assets/images/icons/right-blue.svg"
+                alt=""
+                class="-mt-1 hidden right-arrow duration-500"
+              />
             </div>
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center invisible">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="">
+              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">4</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
@@ -82,7 +101,7 @@
             <h3 class="text-primaryFont font-bold font-baloo text-tworem">0 %</h3>
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center invisible">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="">
+              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">.02%</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
@@ -98,9 +117,16 @@
           <h4 class="text-primaryFont mr-3.5 font-medium">Active Services</h4>
         </div>
         <div class="flex items-center dashboard-new-hovervalue cursor-pointer">
-          <h3 class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500">0</h3>
-          <img src="../../../../../assets/images/icons/right-blue.svg" alt=""
-            class="-mt-1 hidden right-arrow  duration-500">
+          <h3
+            class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
+          >
+            0
+          </h3>
+          <img
+            src="../../../../../assets/images/icons/right-blue.svg"
+            alt=""
+            class="-mt-1 hidden right-arrow duration-500"
+          />
         </div>
       </div>
       <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
@@ -114,9 +140,16 @@
           <h4 class="text-primaryFont mr-3.5 font-medium">Pending Payments</h4>
         </div>
         <div class="flex items-center dashboard-new-hovervalue cursor-pointer duration-500">
-          <h3 class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500">0</h3>
-          <img src="../../../../../assets/images/icons/right-blue.svg" alt=""
-            class="-mt-1 hidden right-arrow duration-500">
+          <h3
+            class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
+          >
+            0
+          </h3>
+          <img
+            src="../../../../../assets/images/icons/right-blue.svg"
+            alt=""
+            class="-mt-1 hidden right-arrow duration-500"
+          />
         </div>
       </div>
       <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
@@ -181,9 +214,10 @@
         </div>
         <div class="w-full h-full flex justify-center items-center hidden">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56">
-            <p class="text-primaryFont mt-3 text-center mb-6">You don’t have any upcoming sessions yet.
-              Share your services and get bookings.</p>
+            <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
+            <p class="text-primaryFont mt-3 text-center mb-6">
+              You don’t have any upcoming sessions yet. Share your services and get bookings.
+            </p>
             <button class="secondary-button w-48">Go to Services</button>
           </div>
         </div>
@@ -194,13 +228,18 @@
             <h4 class="text-primaryFont mr-3.5 font-medium">Gross Earnings</h4>
             <div class="tooltip-top">
               <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
-              <span class="tooltiptext">Lifetime earnings /
-                number of unique paying customers</span>
+              <span class="tooltiptext">Lifetime earnings / number of unique paying customers</span>
             </div>
           </div>
           <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
+            <ngx-charts-line-chart [scheme]="colorSchemeCurve" [showXAxisLabel]="showXAxisLabel"
+              [fitContainer]="fitContainer" [showYAxisLabel]="false" [xAxis]="false" [yAxis]="false"
+              [xAxisLabel]="false" [yAxisLabel]="false" [timeline]="false" [results]="multi" [gradient]="gradient"
+              [showGridLines]="false" (select)="onSelect($event)" (activate)="onActivate($event)"
+              (deactivate)="onDeactivate($event)">
+            </ngx-charts-line-chart>
           </div>
         </div>
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
@@ -211,15 +250,19 @@
               <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
-            <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
-            <p class="dashboard-new-placeholder mt-3">No data available</p>
+          <div class="flex flex-col items-center justify-center">
+            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
+            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
+            <ngx-charts-bar-vertical [fitContainer]="fitContainer" [scheme]="colorSchemeBar" [results]="single"
+              [gradient]="gradient" [xAxis]="false" [yAxis]="false" [legend]="false" [showXAxisLabel]="false"
+              [barPadding]="barPadding" [showYAxisLabel]="false" [xAxisLabel]="false" [yAxisLabel]="false"
+              (select)="onSelect($event)">
+            </ngx-charts-bar-vertical>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </ng-container>
 <ng-template #card>
   <app-card-getstarted></app-card-getstarted>

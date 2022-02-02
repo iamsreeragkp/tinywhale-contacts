@@ -42,4 +42,9 @@
     fill: #00a4b7 !important;
   }
 }
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
 // <!--Active item Condition --!>

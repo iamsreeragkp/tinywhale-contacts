@@ -29,6 +29,7 @@ import { ArrayJoinPipe } from './pipes/array-join.pipe';
 import { GroupWeekDaysPipe } from './pipes/group-weekdays';
 import { ThreeDotsComponent } from './components/three-dots/three-dots.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
@@ -59,6 +60,7 @@ import { ModalComponent } from './components/modal/modal.component';
     GroupWeekDaysPipe,
     ThreeDotsComponent,
     ModalComponent,
+    GoogleiconComponent,
   ],
   exports: [
     CommonModule,
@@ -91,6 +93,7 @@ import { ModalComponent } from './components/modal/modal.component';
     GroupWeekDaysPipe,
     ThreeDotsComponent,
     ModalComponent,
+    GoogleiconComponent,
   ],
 })
 export class SharedModule {}

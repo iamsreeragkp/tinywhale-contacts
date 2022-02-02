@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, of, mergeMap } from 'rxjs';
+import { catchError, map, switchMap, of, mergeMap, merge } from 'rxjs';
 import { getDashboard } from '../../root/store/root.actions';
 
 import { ServiceService } from '../service.service';
 import {
   addService,
   addServiceStatus,
+  changeVisibility,
+  changeVisibilityError,
+  changeVisibilitySuccess,
+  deleteServiceList,
+  deleteServiceListError,
+  deleteServiceListSuccess,
   getService,
   getServiceList,
   getServiceListStatus,
@@ -58,6 +64,38 @@ export class ServiceEffects {
         this.productService.getServiceList(filters).pipe(
           map((response: any) => getServiceListStatus({ products: response.data, status: true })),
           catchError(err => of(getServiceListStatus({ error: err, status: false })))
+        )
+      )
+    )
+  );
+
+  deleteService$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteServiceList),
+      mergeMap(({ productId }) =>
+        this.productService.deleteService(productId).pipe(
+          switchMap(() => {
+            return merge(of(deleteServiceListSuccess()));
+          }),
+          catchError(error => of(deleteServiceListError({ error })))
+        )
+      )
+    )
+  );
+
+  changeVisibility$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeVisibility),
+      switchMap(({ productId, visibility }) =>
+        this.productService.visibilityChange(productId, visibility).pipe(
+          mergeMap(response => [changeVisibilitySuccess({ products: response, status: true })]),
+          catchError(error =>
+            of(
+              changeVisibilityError({
+                error: error?.error?.message ?? error?.message,
+              })
+            )
+          )
         )
       )
     )

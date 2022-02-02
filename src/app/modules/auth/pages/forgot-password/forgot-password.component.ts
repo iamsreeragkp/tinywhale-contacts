@@ -60,6 +60,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   onResetPassword() {
+    this.otpForm.reset();
     const { email } = this.resetPasswordForm?.value;
     const payload = {
       email,
@@ -71,6 +72,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     //     this.isOtpVisible = false;
     //   }
     // });
+    this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      if (data) {
+        this.isVerifiedOtp = false;
+      }
+    });
     if (this.resetPasswordForm.valid) {
       this.isOtpVisible = true;
       this.store.dispatch(setOtp({ email: payload }));
@@ -80,7 +86,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   isVerifiedOtp = false;
 
   validateOtp() {
-    console.log(this.otpForm?.value);
     const valuePayload = this.otpForm?.value;
     const finalOtp = Object.values(valuePayload).join('').toString();
     this.store.pipe(select(getKey), takeUntil(this.ngUnsubscribe)).subscribe(data => {
@@ -91,10 +96,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       key: this.otpKey,
       otp: finalOtp,
     };
-    console.log(validateOtpPayload);
     this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
     this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
-      console.log(data);
       if (data) {
         this.isVerifiedOtp = true;
       }
@@ -102,6 +105,18 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   keyUpEvent(event: any, index: any) {
+    if(event?.code==='Backspace' || event?.code==='Delete'){
+      let pos = index;
+      if (event.keyCode === 8 && event.which === 8) {
+        pos = index - 1;
+      } else {
+        pos = index - 1;
+      }
+      if (pos > -1 && pos < this.fields.length) {
+        this.rows._results[pos].nativeElement.focus();
+      }
+    }
+
     if (event?.code.includes('Digit')) {
       let pos = index;
       if (event.keyCode === 8 && event.which === 8) {
@@ -133,6 +148,12 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   backToReset() {
     this.isOtpVisible = false;
+    this.otpForm.reset();
+    this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      if (data) {
+        this.isVerifiedOtp = false;
+      }
+    });
   }
 
   get email() {

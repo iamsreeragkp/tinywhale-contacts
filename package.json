@@ -77,6 +77,8 @@
     "@ngrx/store-devtools": "^13.0.2",
     "@sentry/browser": "6.16.0",
     "@swimlane/ngx-charts": "^20.0.1",
+    "@types/d3": "^7.1.0",
+    "@types/d3-selection": "^3.0.2",
     "@types/js-cookie": "^3.0.1",
     "@types/uuid": "^8.3.3",
     "autoprefixer": "^10.4.2",
@@ -101,9 +103,7 @@
     "swiper": "^7.4.1",
     "tslib": "2.3.1",
     "uuid": "8.3.2",
-    "zone.js": "0.11.4",
-    "@types/d3": "^7.1.0",
-    "@types/d3-selection": "^3.0.2"
+    "zone.js": "0.11.4"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "13.0.0",

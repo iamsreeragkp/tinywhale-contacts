@@ -1,34 +1,36 @@
 <div class="fixed z-50 fixed-header">
-  <div class=" website-page-heading bg-white py-4 px-8 flex justify-between w-full">
+  <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
     <header class="header leading-9 font-normal not-italic flex items-center">
       <ng-container *ngIf="!editMode; else editTitle">
-      <span
-        class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span> <span class="text-4xl">Register A
-        Walk-In</span>
-        </ng-container>
-        <ng-template #editTitle>
-          <span
-        class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span> <span class="text-4xl">Reschedule Booking</span>
-        </ng-template>
-
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
+        <span class="text-4xl">Register A Walk-In</span>
+      </ng-container>
+      <ng-template #editTitle>
+        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
+        <span class="text-4xl">Reschedule Booking</span>
+      </ng-template>
     </header>
     <ng-container *ngIf="!editMode; else editButton">
-
-    <div class="flex justify-between items-center">
-      <button class="noborder-button" (click)="location.back()">Cancel</button>
-      <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">Save
-        & Add Another</button>
-      <button class="primary-button w-52 ml-3" (click)="onBookingAndExit()" [routerLink]="['../status-booking']">Save
-        & Exit</button>
-    </div>
+      <div class="flex justify-between items-center">
+        <button class="noborder-button" (click)="location.back()">Cancel</button>
+        <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">
+          Save & Add Another
+        </button>
+        <button
+          class="primary-button w-52 ml-3"
+          (click)="onBookingAndExit()"
+          [routerLink]="['../status-booking']"
+        >
+          Save & Exit
+        </button>
+      </div>
     </ng-container>
     <ng-template #editButton>
       <div class="flex justify-between items-center">
         <button class="noborder-button" (click)="location.back()">Cancel</button>
-        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">Save
-          </button>
+        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">Save</button>
       </div>
-</ng-template>
+    </ng-template>
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
@@ -36,49 +38,72 @@
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
-        <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
-          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s email id" formControlName="email" />
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
+        <div class="w-form">
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            [attr.disabled]="editMode ? '' : null"
+            placeholder="Enter customer’s email id"
+            formControlName="email"
+          />
         </div>
       </div>
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
-        <div class="w-form"><input type="number" class="input w-full py-3 px-4 focus:outline-none"
-          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s phone number" formControlName="phonenumber"></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
+        <div class="w-form">
+          <input
+            type="number"
+            class="input w-full py-3 px-4 focus:outline-none"
+            [attr.disabled]="editMode ? '' : null"
+            placeholder="Enter customer’s phone number"
+            formControlName="phonenumber"
+          />
+        </div>
       </div>
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Customer Name</label></div>
-        <div class="w-form"><input class="input w-full py-3 px-4 focus:outline-none"
-          [attr.disabled]="editMode ? '' : null" placeholder="Enter customer’s full name" formControlName="customername"></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Customer Name</label></div>
+        <div class="w-form">
+          <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            [attr.disabled]="editMode ? '' : null"
+            placeholder="Enter customer’s full name"
+            formControlName="customername"
+          />
+        </div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
         <div class="w-form" [attr.disabled]="editMode ? '' : null">
-          <app-dropdown [options]="classData" placeholder="Enter service name" [displayKey]="'title'" [emitId]="true" [idKey]="'product_id'" formControlName="service"></app-dropdown>
+          <app-dropdown [options]="classData" placeholder="Enter service name" [displayKey]="'title'" [disabled]="editMode" [emitId]="true" [idKey]="'product_id'" formControlName="service"></app-dropdown>
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class=" w-44 label text-right mt-4 mr-6"><label for="">Date*</label></div>
-        <div class="w-form">
-          <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
-            formControlName="date" />
-            <!-- <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker> -->
+        <div class="w-form calendar-1 font-poppins">
+          <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
+            formControlName="date" /> -->
+            <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker>
         </div>
       </div>
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Slot*</label></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Slot*</label></div>
         <div class="w-form">
-          <select class="input py-3 px-4 w-full" type="select" placeholder="Select Slot"
-            formControlName="slot">
+          <select
+            class="input py-3 px-4 w-full"
+            type="select"
+            placeholder="Select Slot"
+            formControlName="slot"
+          >
             <option hidden value="" disabled selected>Select Slot</option>
-            <option *ngFor="let timeSlot of times" >{{timeSlot?.start_time}}-{{timeSlot?.end_time}}</option>
+            <option *ngFor="let timeSlot of times">
+              {{ timeSlot?.start_time }}-{{ timeSlot?.end_time }}
+            </option>
           </select>
           <!-- <app-dropdown [options]="times" placeholder="Select Slot" [displayKey]="''" [emitId]="true" [idKey]="'product_id'" formControlName="slot"></app-dropdown> -->
-
         </div>
       </div>
       <div class="input-field flex mb-4" *ngIf="!editMode">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
         <div class="w-form">
           <div class="flex flex-col w-full rounded-lg radio-input">
             <label class="radio-container py-3 radio-input-border-b" for="online">
@@ -86,25 +111,35 @@
                 <p class="radio-container-name">Online</p>
                 <p class="radio-container-descri">Email payment link</p>
               </div>
-              <input type="radio" id="online" name="payment" value="ONLINE" formControlName="payment">
+              <input
+                type="radio"
+                id="online"
+                name="payment"
+                value="ONLINE"
+                formControlName="payment"
+              />
               <span class="radiomark"></span>
             </label>
             <label class="radio-container py-3" for="cash">
               <div class="flex flex-col">
                 <p class="radio-container-name">Off Platform</p>
-                <p class="radio-container-descri">Cash / Direct Transfe</p>
+                <p class="radio-container-descri">Cash / Direct Transfer</p>
               </div>
-              <input type="radio" id="cash" name="payment" value="OFFLINE" formControlName="payment">
+              <input
+                type="radio"
+                id="cash"
+                name="payment"
+                value="OFFLINE"
+                formControlName="payment"
+              />
               <span class="radiomark"></span>
             </label>
           </div>
-          <div class="w-full p-3 mt-3 rounded-lg input-section-info">💡 Upon registration a settled invoice
-            email
-            will be the sent to the walk-in guest.
+          <div class="w-full p-3 mt-3 rounded-lg input-section-info">
+            💡 Upon registration a settled invoice email will be the sent to the walk-in guest.
           </div>
         </div>
       </div>
-
     </div>
     <div class="detail-section w-5/12">
       <div class="px-8 py-8 relative"></div>
