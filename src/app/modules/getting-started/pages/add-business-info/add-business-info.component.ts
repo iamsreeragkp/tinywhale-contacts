@@ -8,12 +8,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { catchError, filter, forkJoin, map, Observable, of, Subject, takeUntil } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, filter, forkJoin, fromEvent, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
+import { ProductPhoto } from 'src/app/modules/service/shared/service.interface';
 import { addBusiness, getBusiness, initBusiness } from '../../../website/store/website.actions';
 import {
   BusinessInfo,
@@ -33,15 +34,16 @@ import { getAddBusinessStatus, getBusinessStatus } from '../../../website/store/
 export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   @ViewChild('photoContainer') photoContainer!: ElementRef<HTMLDivElement>;
   @ViewChild('punchline') punchline!: ElementRef<HTMLInputElement>;
+  // @ViewChild('companyName', { static: true }) companyName: ElementRef;
   isSaving = false;
-  @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
-    this.closeToPhoto = !!target.closest(
-      'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
-    );
-    this.closeToPunchline = !!target.closest(
-      'input.' + this.punchline.nativeElement.className.split(' ').join('.')
-    );
-  }
+  // @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
+  //   this.closeToPhoto = !!target.closest(
+  //     'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
+  //   );
+  //   this.closeToPunchline = !!target.closest(
+  //     'input.' + this.punchline.nativeElement.className.split(' ').join('.')
+  //   );
+  // }
   businessInfoForm!: FormGroup;
   recognitionTypeOptions = [
     {
@@ -77,7 +79,9 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
-    public location: Location
+    public location: Location,
+    private formBuilder: FormBuilder,
+    private utilsService: UtilsHelperService,
   ) {
     this.businessData$ = this.store.pipe(select(getBusinessStatus));
     this.saveBusinessStatus$ = this.store.pipe(select(getAddBusinessStatus));
@@ -97,12 +101,24 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
         }
       });
     this.isGettingStarted = this.router.url.split('/').includes('home');
+
+    // this.businessInfoForm = this.formBuilder.group({
+    //   companyname: [],
+      
+    // });
+
   }
 
   ngOnInit(): void {
     this.initializeBusinessForm();
     this.subscriptions();
-  }
+    if(!this.editMode){
+      this.addBasicInfoSubcription();
+    }
+
+}
+
+
 
   subscriptions() {
     this.businessData$
@@ -113,6 +129,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data?.status) {
           this.initializeBusinessForm(data.business);
+          this.addBasicInfoSubcription();
         } else {
           console.log(data?.error);
         }
@@ -125,13 +142,53 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.isSaving = false;
         if (data?.status) {
+          if(this.isSaving){
+            this.isSaving = false;
+            this.addBasicInfoSubcription();
+          }
           console.log('saved successfully');
-          this.clearImages();
-          this.router.navigate(['../'], { relativeTo: this.route });
+          // this.clearImages();
+          // this.router.navigate(['../']);
+        
         } else {
           console.log(data?.error);
         }
       });
+  }
+
+  addBasicInfoSubcription(){
+    this.businessInfoForm.valueChanges
+    .pipe(
+      debounceTime(3000),
+      distinctUntilChanged(),
+      switchMap((value) => of(value))
+    )
+    .subscribe((value) => {
+      console.log(value);
+      const {
+        companyname,
+        punchline,
+        aboutme,
+        socialitems,
+        photos,
+        licenceitems,
+        testimonialitems,
+        logo,
+      } = value;
+      const businessPayload = {
+        company_name: companyname,
+        logo: logo,
+        about_me: aboutme,
+        punchline: punchline,
+        social_links: socialitems,
+        photos: photos.filter((photo: BusinessPhotos) => photo.photo_url),
+        recognitions: licenceitems,
+        testimonials: testimonialitems,
+      };
+      this.store.dispatch(addBusiness({ businessData: businessPayload}));
+
+      return;
+    });
   }
 
   clearImages() {
@@ -144,6 +201,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   initializeBusinessForm(val?: BusinessInfo) {
+    console.log(val,"ssdmsb");
+    
     this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
@@ -151,9 +210,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       logo: [val?.logo ?? ''],
       aboutme: [val?.store?.about_me ?? ''],
       photos: this.fb.array(
-        val?.business_photos?.length
-          ? val?.business_photos?.map(this.createPhotos.bind(this))
-          : Array.from({ length: 3 }, _ => this.createPhotos())
+        Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
       ),
       socialitems: this.fb.array(
         val?.links?.length
@@ -189,7 +246,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
       recognition_name: [val?.recognition_name ?? ''],
-      expiry_date: [val?.expiry_date ?? ''],
+      expiry_date: [val?.expiry_date? (new Date(val.expiry_date)).toLocaleDateString() : ''],
       photo_url: [val?.photo_url ?? ''],
     });
   }
@@ -206,10 +263,10 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   createPhotos(val?: BusinessPhotos): FormGroup {
-    this.arrayPhotosImageUrl.push(val?.photo_url);
     return this.fb.group({
-      // photo_id: [val?.photo_id ?? ''],
       photo_url: [val?.photo_url ?? ''],
+      photo_data_url: [{ value: val?.photo_url ?? '', disabled: true }],
+      photo_file: [{ value: null, disabled: true }],
     });
   }
 
@@ -233,9 +290,12 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   async handleFileInputLogo(event: Event) {
     try {
-      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/');
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/',true);
       this.fileToUploadLogo = file;
       this.logoImageUrl = url;
+      console.log(file,file,"sjh");
+
+       this.businessInfoForm.get('logo')?.patchValue(fileKey);
     } catch (ex) {
       console.log(ex);
     }
@@ -245,6 +305,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.logoImageUrl = '';
     this.fileToUploadLogo = null;
     this.businessInfoForm.get('logo')?.patchValue(null);
+    this.businessInfoForm.patchValue({
+      photo_url: '',
+      photo_data_url: '',
+      photo_file: null,
+    });
   }
 
   // photos
@@ -252,38 +317,56 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   fileToUploadPhoto: (File | null | undefined)[] = [];
   arrayPhotosImageUrl: (string | undefined)[] = [];
 
+  
+
   async handleFileInput(event: Event, index: number) {
     try {
-      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+      const [file, url, fileKey] = await this.utilsService.handleFileInput(
         event,
         'business_photos',
-        'image/'
+        'image/',
+        true
       );
-      this.fileToUploadPhoto[index] = file;
-      this.arrayPhotosImageUrl[index] = url;
+      this.businessPhotosList.at(index).get('photo_file')?.patchValue(file);
+      this.businessPhotosList.at(index).get('photo_data_url')?.patchValue(url);
+      this.businessPhotosList.at(index).get('photo_url')?.patchValue(fileKey);
     } catch (ex) {
       console.log(ex);
     }
   }
   deletePhoto(index: number) {
-    this.arrayPhotosImageUrl[index] = '';
-    this.fileToUploadPhoto[index] = null;
-    this.photos.at(index)?.get('photo_url')?.patchValue(null);
+    // this.arrayPhotosImageUrl[index] = '';
+    // this.fileToUploadPhoto[index] = null;
+    // this.photos.at(index)?.get('photo_url')?.patchValue(null);
+
+      this.businessPhotosList.at(index).patchValue({
+        photo_url: '',
+        photo_data_url: '',
+        photo_file: null,
+      });
+    
   }
 
   // Licence or awarsds file
   fileToUploadLicence: (File | undefined | null)[] = [];
   arrayLicenceImageUrl: (string | undefined)[] = [];
 
-  async handleFileInputLicence(event: Event, i: number) {
+  async handleFileInputLicence(event: Event, index: number) {
     try {
       const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
         event,
         'recognitions',
-        'image/'
+        'image/',
+        true
       );
-      this.fileToUploadLicence[i] = file;
-      this.arrayLicenceImageUrl[i] = url;
+      this.fileToUploadLicence[index] = file;
+      this.arrayLicenceImageUrl[index] = url;
+
+      this.recognitions.at(index).get('photo_file')?.patchValue(file);
+      this.recognitions.at(index).get('photo_data_url')?.patchValue(url);
+      this.recognitions.at(index).get('photo_url')?.patchValue(fileKey);
+
+
     } catch (ex) {
       console.log(ex);
     }
@@ -297,24 +380,33 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
   arrayTestmonialImageUrl: (string | undefined)[] = [];
-  async handleFileTestimonial(event: Event, i: number) {
+
+  async handleFileTestimonial(event: Event, index: number) {
     try {
       const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
         event,
         'testimonial',
-        'image/'
+        'image/',
+        true
       );
-      this.fileToUploadTestimonial[i] = file;
-      this.arrayTestmonialImageUrl[i] = url;
+      this.fileToUploadTestimonial[index] = file;
+      this.arrayTestmonialImageUrl[index] = url;
+      this.testimonials.at(index).get('photo_file')?.patchValue(file);
+      this.testimonials.at(index).get('photo_data_url')?.patchValue(url);
+      this.testimonials.at(index).get('photo_url')?.patchValue(fileKey);
+
+  
     } catch (ex) {
       console.log(ex);
     }
+    console.log(this.testimonials,"datas this.testimonials");
   }
 
   deleteTestimonial(index: number) {
     this.arrayTestmonialImageUrl[index] = '';
     this.fileToUploadTestimonial[index] = null;
     this.testimonials.at(index)?.get('photo_url')?.patchValue(null);
+
   }
 
   getBase64(event: any) {
@@ -330,7 +422,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSubmitBusiness() {
+  onSubmitBusiness( route = false) {
+
     this.isSaving = true;
     this.fileNames = [];
     /*
@@ -342,53 +435,60 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       dashboardInfos: { customUsername: domain_name },
     } = userData;
     this.fileNames = [];
-    if (this.fileToUploadLogo) {
-      const logoKey = `${domain_name}/logo/${Date.now()}_${this.fileToUploadLogo?.name}`;
-      this.fileNames.push({ type: 'logo', name: logoKey });
-      this.businessInfoForm.get('logo')?.patchValue(logoKey);
-    }
-    this.fileToUploadPhoto.forEach((photo, index) => {
-      if (photo?.name) {
-        const photoKey = `${domain_name}/business-photos/${Date.now()}_${photo.name}`;
-        this.fileNames.push({ type: 'photos', name: photoKey });
-        this.photos.at(index)?.get('photo_url')?.patchValue(photoKey);
-      }
-    });
-    this.fileToUploadLicence.forEach((photo, index) => {
-      if (photo?.name) {
-        const recognitionKey = `${domain_name}/recognitions/${Date.now()}_${photo.name}`;
-        this.fileNames.push({ type: 'recognitions', name: recognitionKey });
-        this.recognitions.at(index)?.get('photo_url')?.patchValue(recognitionKey);
-      }
-    });
-    this.fileToUploadTestimonial.forEach((photo, index) => {
-      if (photo?.name) {
-        const testimonialKey = `${domain_name}/testimonials/${Date.now()}_${photo.name}`;
-        this.fileNames.push({ type: 'testimonials', name: testimonialKey });
-        this.testimonials.at(index)?.get('photo_url')?.patchValue(testimonialKey);
-      }
-    });
-    const {
-      companyname,
-      punchline,
-      aboutme,
-      socialitems,
-      photos,
-      licenceitems,
-      testimonialitems,
-      logo,
-    } = this.businessInfoForm.value;
-    const businessPayload = {
-      company_name: companyname,
-      logo: logo,
-      about_me: aboutme,
-      punchline: punchline,
-      social_links: socialitems,
-      photos,
-      recognitions: licenceitems,
-      testimonials: testimonialitems,
-    };
-    console.log('businessPayload', businessPayload);
+    
+    setTimeout(() => {
+      this.isSaving = false;
+      this.router.navigate(['../']);
+    }, 500);
+    
+  
+    // if (this.fileToUploadLogo) {
+    //   const logoKey = `${domain_name}/logo/${Date.now()}_${this.fileToUploadLogo?.name}`;
+    //   this.fileNames.push({ type: 'logo', name: logoKey });
+    //   this.businessInfoForm.get('logo')?.patchValue(logoKey);
+    // }
+    // this.fileToUploadPhoto.forEach((photo, index) => {
+    //   if (photo?.name) {
+    //     const photoKey = `${domain_name}/business-photos/${Date.now()}_${photo.name}`;
+    //     this.fileNames.push({ type: 'photos', name: photoKey });
+    //     this.photos.at(index)?.get('photo_url')?.patchValue(photoKey);
+    //   }
+    // });
+    // this.fileToUploadLicence.forEach((photo, index) => {
+    //   if (photo?.name) {
+    //     const recognitionKey = `${domain_name}/recognitions/${Date.now()}_${photo.name}`;
+    //     this.fileNames.push({ type: 'recognitions', name: recognitionKey });
+    //     this.recognitions.at(index)?.get('photo_url')?.patchValue(recognitionKey);
+    //   }
+    // });
+    // this.fileToUploadTestimonial.forEach((photo, index) => {
+    //   if (photo?.name) {
+    //     const testimonialKey = `${domain_name}/testimonials/${Date.now()}_${photo.name}`;
+    //     this.fileNames.push({ type: 'testimonials', name: testimonialKey });
+    //     this.testimonials.at(index)?.get('photo_url')?.patchValue(testimonialKey);
+    //   }
+    // });
+    // const {
+    //   companyname,
+    //   punchline,
+    //   aboutme,
+    //   socialitems,
+    //   photos,
+    //   licenceitems,
+    //   testimonialitems,
+    //   logo,
+    // } = this.businessInfoForm.value;
+    // const businessPayload = {
+    //   company_name: companyname,
+    //   logo: logo,
+    //   about_me: aboutme,
+    //   punchline: punchline,
+    //   social_links: socialitems,
+    //   photos,
+    //   recognitions: licenceitems,
+    //   testimonials: testimonialitems,
+    // };
+    // console.log('businessPayload', businessPayload);
 
     // this.websiteService.addBusinessInfo(businessPayload).subscribe(data => {
     //   console.log(data);
@@ -396,61 +496,62 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
     // this.store.dispatch(addBusiness({ businessData: businessPayload }));
 
-    const filePayload = {
-      key: this.fileNames.map(({ name }) => name),
-    };
-    console.log(filePayload);
-    if (!this.fileNames.length) {
-      this.store.dispatch(addBusiness({ businessData: businessPayload }));
-      return;
-    }
+    // const filePayload = {
+    //   key: this.fileNames.map(({ name }) => name),
+    // };
+    // console.log(filePayload);
+    // if (!this.fileNames.length) {
+    //   this.store.dispatch(addBusiness({ businessData: businessPayload }));
+    //   return;
+    // }
 
-    this.utilsHelper.uploadImage(filePayload).subscribe((data: any) => {
-      console.log(data);
-      const { signedURL } = data;
-      this.isUploadingImages = true;
-      forkJoin(
-        this.fileNames.map(({ type, name }) => {
-          const url = signedURL[name];
-          let file;
-          if (type === 'logo') {
-            file = this.fileToUploadLogo;
-          } else if (type === 'photos') {
-            file =
-              this.fileToUploadPhoto[
-                this.photos.controls.findIndex(photo => photo.get('photo_url')?.value === name)
-              ];
-          } else if (type === 'recognitions') {
-            file =
-              this.fileToUploadLicence[
-                this.recognitions.controls.findIndex(
-                  recognition => recognition.get('photo_url')?.value === name
-                )
-              ];
-          } else {
-            file =
-              this.fileToUploadTestimonial[
-                this.testimonials.controls.findIndex(
-                  testimonial => testimonial.get('photo_url')?.value === name
-                )
-              ];
-          }
-          return this.utilsHelper.uploadImageToS3(url, file);
-        })
-      )
-        .pipe(
-          map(val => true),
-          catchError(err => of(false))
-        )
-        .subscribe(status => {
-          this.isUploadingImages = false;
-          if (status) {
-            this.store.dispatch(addBusiness({ businessData: businessPayload }));
-          } else {
-            this.businessInfoForm.setErrors({ photoUploadFailed: 'Failed to upload photos' });
-          }
-        });
-    });
+    // this.utilsHelper.uploadImage(filePayload).subscribe((data: any) => {
+    //   console.log(data);
+    //   const { signedURL } = data;
+    //   this.isUploadingImages = true;
+    //   forkJoin(
+    //     this.fileNames.map(({ type, name }) => {
+    //       const url = signedURL[name];
+    //       let file;
+    //       if (type === 'logo') {
+    //         file = this.fileToUploadLogo;
+    //       } else if (type === 'photos') {
+    //         file =
+    //           this.fileToUploadPhoto[
+    //             this.photos.controls.findIndex(photo => photo.get('photo_url')?.value === name)
+    //           ];
+    //       } else if (type === 'recognitions') {
+    //         file =
+    //           this.fileToUploadLicence[
+    //             this.recognitions.controls.findIndex(
+    //               recognition => recognition.get('photo_url')?.value === name
+    //             )
+    //           ];
+    //       } else {
+    //         file =
+    //           this.fileToUploadTestimonial[
+    //             this.testimonials.controls.findIndex(
+    //               testimonial => testimonial.get('photo_url')?.value === name
+    //             )
+    //           ];
+    //       }
+    //       return this.utilsHelper.uploadImageToS3(url, file);
+    //     })
+    //   )
+    //     .pipe(
+    //       map(val => true),
+    //       catchError(err => of(false))
+    //     )
+    //     .subscribe(status => {
+    //       this.isUploadingImages = false;
+    //       if (status) {
+    //         this.store.dispatch(addBusiness({ businessData: businessPayload }));
+    //         // this.router.navigate(['../'], { relativeTo: this.route });
+    //       } else {
+    //         this.businessInfoForm.setErrors({ photoUploadFailed: 'Failed to upload photos' });
+    //       }
+    //     });
+    // });
   }
 
   get socialItems() {
@@ -476,6 +577,14 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   get punchlineContainerPos() {
     return `${(this.punchline.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
   }
+
+  get businessLogo() {
+    return this.businessInfoForm.get('logo') as FormControl;
+  }
+  get businessPhotosList() {
+    return <FormArray>this.businessInfoForm.get('photos');
+  }
+
 
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
