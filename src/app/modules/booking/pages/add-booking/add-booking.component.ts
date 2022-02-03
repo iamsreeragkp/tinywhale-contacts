@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { convert24HrsFormatToAmPm, getTimeRangeSerialized } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
 import { addBooking, getBookingById } from '../../store/booking.actions';
 import { BookingType } from '../../store/booking.interface';
@@ -16,7 +17,7 @@ import { getBookingByIds } from '../../store/booking.selectors';
   templateUrl: './add-booking.component.html',
   styleUrls: ['./add-booking.component.scss'],
 })
-export class AddBookingComponent implements OnInit,OnDestroy {
+export class AddBookingComponent implements OnInit, OnDestroy {
   bookingForm!: FormGroup;
   options = {
     format: 'yyyy-MM-dd',
@@ -69,38 +70,6 @@ export class AddBookingComponent implements OnInit,OnDestroy {
       }
     });
     this.subscriptions();
-    this.bookingForm.valueChanges
-    .pipe(
-      debounceTime(500),
-      switchMap((value) => of(value))
-    )
-    .subscribe((value) => {
-      const { email, phonenumber, customername, service, date, slot, payment } = value;
-      const bookingPayload = {
-        email: email,
-        phone_number: phonenumber,
-        name: customername,
-        date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
-        product_id: service,
-        booking_type: BookingType.BUSINESS_OWNER,
-        platform: payment,
-      };
-      this.store.dispatch(addBooking({ bookingData: bookingPayload }));
-      if(this.editMode){
-        const bookingPayload = {
-          email: email,
-          phone_number: phonenumber,
-          name: customername,
-          date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
-          product_id: service,
-          booking_type: BookingType.BUSINESS_OWNER,
-          platform: payment || 'ONLINE',
-          order_id: this.orderId,
-        };
-        this.store.dispatch(addBooking({ bookingData: bookingPayload }));
-      }
-
-    });
   }
 
   subscriptions() {
@@ -123,9 +92,9 @@ export class AddBookingComponent implements OnInit,OnDestroy {
     this.bookingForm.patchValue({
       email: val?.account?.User?.email,
       phonenumber: 8156778879,
-      customername: 'Mane',
+      customername: val?.account?.first_name,
       service: val?.order_line_item[0]?.product?.product_id,
-      date: val?.date_time,
+      date: new Date(val?.order_session[0]?.session?.date),
       slot: val?.slot,
       payment: val?.payment,
     });
@@ -150,30 +119,57 @@ export class AddBookingComponent implements OnInit,OnDestroy {
     });
   }
 
+  listNameArray: any = [];
   onBooking() {
     const { email, phonenumber, customername, service, date, slot, payment } =
       this.bookingForm.value;
+
+    const customerName = customername.split(' ').slice(0, -1).join(' ');
+    let lastName = customername.split(' ');
+
+    if (lastName[1]) {
+      lastName = lastName[1];
+    } else {
+      lastName = lastName[2];
+    }
+
     const bookingPayload = {
       email: email,
       phone_number: phonenumber,
-      name: customername,
-      date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      first_name: customerName ? customerName : customername,
+      last_name: lastName ? lastName : '',
+      date_time_range: [
+        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      ],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment,
     };
+
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     window.location.reload();
+    // this.router.navigate(['../booking/view-booking']);
   }
 
   onBookingAndExit() {
     const { email, phonenumber, customername, service, date, slot, payment } =
       this.bookingForm.value;
+    const customerName = customername.split(' ').slice(0, -1).join(' ');
+    let lastName = customername.split(' ');
+
+    if (lastName[1]) {
+      lastName = lastName[1];
+    } else {
+      lastName = lastName[2];
+    }
     const bookingPayload = {
       email: email,
       phone_number: phonenumber,
-      name: customername,
-      date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      first_name: customerName ? customerName : customername,
+      last_name: lastName ? lastName : '',
+      date_time_range: [
+        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      ],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment,
@@ -196,11 +192,23 @@ export class AddBookingComponent implements OnInit,OnDestroy {
   onUpdateBooking() {
     const { email, phonenumber, customername, service, date, slot, payment } =
       this.bookingForm.value;
+    const customerName = customername.split(' ').slice(0, -1).join(' ');
+    let lastName = customername.split(' ');
+
+    if (lastName[1]) {
+      lastName = lastName[1];
+    } else {
+      lastName = lastName[2];
+    }
     const bookingPayload = {
       email: email,
       phone_number: phonenumber,
-      name: customername,
-      date_time_range: { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      first_name: customerName ? customerName : customername,
+      last_name: lastName ? lastName : '',
+
+      date_time_range: [
+        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
+      ],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment || 'ONLINE',
@@ -208,7 +216,6 @@ export class AddBookingComponent implements OnInit,OnDestroy {
     };
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.location.back();
-
   }
 
   ngOnDestroy() {
