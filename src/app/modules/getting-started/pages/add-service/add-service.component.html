@@ -133,6 +133,7 @@
           >
             <button
               (click)="deletePhoto(i)"
+              type="button"
               *ngIf="photo.get('photo_data_url')?.value"
               class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
             >
@@ -232,7 +233,7 @@
                   >
                     <div class="w-36">
                       <app-dropdown
-                        [options]="timeOptions"
+                        [options]="getTimeSlotOptions(weekDay.value, weekDaySlots.get('id')?.value)"
                         [idKey]="'value'"
                         [emitId]="true"
                         [placeholder]="'Start Time'"
@@ -247,13 +248,18 @@
                       placeholder="End time"
                     />
                     <div class="h-full flex items-center mx-3">
-                      <button (click)="deleteTimeRangeFromWeekday(weekDay.value, i)">
+                      <button
+                        type="button"
+                        (click)="deleteTimeRangeFromWeekday(weekDay.value, i)"
+                        type="button"
+                      >
                         <img src="../../../../../assets/images/icons/delete.svg" alt="delete" />
                       </button>
                     </div>
                   </div>
                 </ng-container>
                 <button
+                  type="button"
                   class="add-another mt-2 font-normal text-base not-italic cursor-pointer"
                   (click)="addTimeRangeToWeekDay(weekDay.value)"
                 >
@@ -375,11 +381,12 @@
               [preventNegative]="true"
             />
             <span class="input-field-secondary-text mx-3">sessions</span>
-            <button class="h-full flex items-center" (click)="deletePricePackage(i)">
+            <button type="button" class="h-full flex items-center" (click)="deletePricePackage(i)">
               <img src="../../../../../assets/images/icons/delete.svg" alt="" />
             </button>
           </div>
           <button
+            type="button"
             class="add-another mt-2 font-normal text-base not-italic"
             (click)="addPricePackage()"
           >
