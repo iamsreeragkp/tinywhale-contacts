@@ -33,7 +33,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   productForm: FormGroup = new FormGroup({});
   locationOptions = locationOptions;
   // generating time options
-  timeOptions = timeOptions;
   weekDayOptions = weekDayOptions;
   ngUnsubscribe = new Subject<void>();
   startTimeUnsubscriber$ = new Subject<void>();
@@ -208,6 +207,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       this.weekDayOptions.find(weekDay => weekDay.value === val.day_of_week)!.selected = true;
     }
     return this._fb.group({
+      id: { value: Symbol('time_range'), disabled: true },
       day_of_week: [val?.day_of_week ?? null, [Validators.pattern(/^[1-7]$/)]],
       start_time: [val?.start_time ?? ''],
       end_time: [val?.end_time ?? ''],
@@ -266,6 +266,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   updateEndTime(timeRange: AbstractControl, duration: string) {
+    if (!timeRange.get('start_time')?.value) {
+      return;
+    }
     const [hour, minute] = timeRange.get('start_time')?.value.match(/\d{2}/g);
     timeRange
       .get('end_time')
@@ -314,6 +317,35 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   expireSubscriptions() {
     this.ngUnsubscribe.next();
+  }
+
+  /*
+    Get time slot options for each weekday
+    First find all time slots utilized
+    Considering the duration of session, remove adjacent timeslots if necessary
+    return timeslots array
+  */
+  getTimeSlotOptions(dayOfWeek: WeekDay, id: Symbol) {
+    const controlsOfSameWeekDay = this.timeRanges.controls.filter(
+      timeRange =>
+        timeRange.get('id')?.value !== id && timeRange.get('day_of_week')?.value === dayOfWeek
+    );
+    const usedTimeSlots = controlsOfSameWeekDay.map(timeRange => ({
+      slot: timeRange.get('start_time')?.value,
+      nos: this.productForm.get('duration')?.value
+        ? Math.ceil(this.productForm.get('duration')?.value / 30) - 1
+        : 0,
+    }));
+    let timeSlots = [];
+    for (let i = 0; i < timeOptions.length; i++) {
+      const usedTimeSlot = usedTimeSlots.find(timeSlot => timeSlot.slot === timeOptions[i].value);
+      if (usedTimeSlot) {
+        i = i + usedTimeSlot.nos;
+        continue;
+      }
+      timeSlots.push(timeOptions[i]);
+    }
+    return timeSlots;
   }
 
   saveProductForm(createAnother = false) {
