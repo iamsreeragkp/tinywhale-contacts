@@ -34,7 +34,13 @@
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Company Logo </label></div>
-        <input type="file" accept="image/*" style="display: none" #logo (change)="handleFileInputLogo($event)" />
+        <input
+          type="file"
+          accept="image/*"
+          style="display: none"
+          #logo
+          (change)="handleFileInputLogo($event)"
+        />
         <div class="relative">
           <button
             (click)="deleteLogo()"
@@ -198,30 +204,44 @@
           </div>
         </div> -->
         <div class="flex w-form" #photoContainer formArrayName="photos">
-        
-          <div class="relative mr-2" *ngFor="let photo of businessPhotosList?.controls; let i = index"
-            [formGroupName]="i">
-            <button (click)="deletePhoto(i)" *ngIf="photo.get('photo_data_url')?.value"
-              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2">
-              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove">
+          <div
+            class="relative mr-2"
+            *ngFor="let photo of businessPhotosList?.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <button
+              (click)="deletePhoto(i)"
+              *ngIf="photo.get('photo_data_url')?.value"
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
+            >
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
             </button>
             <div
               class="input-photo text-center relative cursor-pointer flex flex-col justify-evenly items-center overflow-hidden"
-              (click)="photoInput.click()">
-              <input type="file" #photoInput accept="image/*" class="hidden" (change)="handleFileInput($event, i)" />
-              <img *ngIf="photo.get('photo_data_url')?.value" [src]="photo.get('photo_data_url')?.value"
-                alt="{{'Photo_' + (i + 1)}}" class="image h-full w-full object-cover">
+              (click)="photoInput.click()"
+            >
+              <input
+                type="file"
+                #photoInput
+                accept="image/*"
+                class="hidden"
+                (change)="handleFileInput($event, i)"
+              />
+              <img
+                *ngIf="photo.get('photo_data_url')?.value"
+                [src]="photo.get('photo_data_url')?.value"
+                alt="{{ 'Photo_' + (i + 1) }}"
+                class="image h-full w-full object-cover"
+              />
               <ng-container *ngIf="!photo.get('photo_data_url')?.value">
                 <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
                 <span class="text-mediumGray">Add Photo</span>
               </ng-container>
-            
-          </div>
+            </div>
           </div>
           <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
           <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
         </div>
-
       </div>
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4">
@@ -385,8 +405,8 @@
           <div class="heading">💡 Tiny Tip</div>
           <div class="text pt-7 flex flex-col gap-7">
             <span>
-              Punchline is the first thing your customer will read on your Tiny Card™. Keep it
-              crisp! for eg:
+              Punchline is the first thing your customer will read on your TinyCard™. Keep it crisp!
+              for eg:
             </span>
             <span> “Transform your hobby into a business” </span>
             <span> “Your Own Personal Teacher Live!” </span>

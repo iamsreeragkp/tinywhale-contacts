@@ -1,5 +1,5 @@
 <form [formGroup]="productForm" (ngSubmit)="$event.preventDefault(); saveProductForm()">
-  <div class="fixed z-50 fixed-header">
+  <div class="fixed z-50 font-baloo fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
       <header class="header leading-9 font-normal not-italic flex items-center">
         <span
@@ -99,7 +99,7 @@
   </div>
   <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
 
-  <div class="add-info flex w-full">
+  <div class="add-info font-poppins flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <h5 class="input-section-subheading font-bold mb-4">About the service</h5>
       <div class="input-field flex mb-4">
@@ -402,7 +402,7 @@
             <label class="radio-container py-3 radio-input-border-b" for="public">
               <div class="flex flex-col">
                 <p class="radio-container-name">Public</p>
-                <p class="radio-container-descri">Anyone visiting my Tiny Card™</p>
+                <p class="radio-container-descri">Anyone visiting my TinyCard™</p>
               </div>
               <input type="radio" id="public" formControlName="visibility" value="PUBLIC" />
               <span class="radiomark"></span>
