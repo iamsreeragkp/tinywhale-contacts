@@ -30,9 +30,11 @@ import { GroupWeekDaysPipe } from './pipes/group-weekdays';
 import { ThreeDotsComponent } from './components/three-dots/three-dots.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
+import { WindowComponent } from './components/window/window.component';
+import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule,PortalModule],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
@@ -61,6 +63,7 @@ import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
     ThreeDotsComponent,
     ModalComponent,
     GoogleiconComponent,
+    WindowComponent
   ],
   exports: [
     CommonModule,
@@ -94,6 +97,7 @@ import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
     ThreeDotsComponent,
     ModalComponent,
     GoogleiconComponent,
+    WindowComponent
   ],
 })
 export class SharedModule {}
