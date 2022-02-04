@@ -1,10 +1,10 @@
 <div class="fixed z-40 fixed-header">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
     <header class="header leading-9 font-normal not-italic flex items-center">
-      <span class="text-4xl">Booking for Mary Jane</span>
+      <span class="text-4xl">Booking for {{ statusData?.account?.first_name }}</span>
     </header>
     <div class="flex justify-between">
-      <button class="secondary-button" (click)="navigateToEdit()"><span>Reschedule</span></button>
+      <button class="secondary-button" (click)="navigateToEdit()">Reschedule</button>
     </div>
   </div>
 </div>
@@ -32,7 +32,7 @@
         <div class="w-44 label text-right mr-6"><label for="">Phone Number</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>+65 3345 6503</span>
+            <span>{{ stdata?.account?.phone_number || '---' }}</span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div class="w-44 label text-right mr-6"><label for="">Customer Name</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>Mary Jane</span>
+            <span>{{ stdata?.account?.first_name || '---' }}</span>
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@
         <div class="w-44 label text-right mr-6"><label for="">Service*</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>Piano for adults</span>
+            <span>{{ stdata?.product?.title || '---' }}</span>
           </div>
         </div>
       </div>
@@ -56,8 +56,8 @@
         <div class="w-44 label text-right mr-6"><label for="">Slot*</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ getDayName(stdata?.session?.date) || '---' }}</span>
-            <span class="ml-8">{{ stdata?.session?.start_time }}</span>
+            <span>{{ getDayName(stdata?.session[0]?.date) || '---' }}</span>
+            <span class="ml-8">{{ stdata?.session[0]?.class_time_range?.start_time }}</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,21 @@
         <div class="w-44 label text-right mr-6"><label for="">Payment*</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span class="mr-2">$ {{ stdata?.invoice?.due_amount || '---' }} (Off Platform)</span>
+            <span class="mr-2"
+              >{{
+                stdata?.product?.currency === 'INR'
+                  ? '₹'
+                  : stdata?.product?.currency === 'USD'
+                  ? '$'
+                  : stdata?.product?.currency === 'SGD'
+                  ? 'S$'
+                  : stdata?.product?.currency === 'GBP'
+                  ? '£'
+                  : stdata?.product?.currency === 'AUD'
+                  ? 'A$'
+                  : ''
+              }}{{ stdata?.invoice?.due_amount || '---' }} (Off Platform)</span
+            >
             <div class="relative">
               <img
                 src="../../../../../assets/images/icons/check.svg"

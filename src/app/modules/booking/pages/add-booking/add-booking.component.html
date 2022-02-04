@@ -16,13 +16,7 @@
         <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">
           <span>Save & Add Another</span>
         </button>
-        <button
-          class="primary-button w-52 ml-3"
-          (click)="onBookingAndExit()"
-          [routerLink]="['../status-booking']"
-        >
-          Save & Exit
-        </button>
+        <button class="primary-button w-52 ml-3" (click)="onBookingAndExit()">Save & Exit</button>
       </div>
     </ng-container>
     <ng-template #editButton>
@@ -36,7 +30,7 @@
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
-<form [formGroup]="bookingForm">
+<form [formGroup]="bookingForm" autocomplete="off">
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <div class="input-field flex mb-4">

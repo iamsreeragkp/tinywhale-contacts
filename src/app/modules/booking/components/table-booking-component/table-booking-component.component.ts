@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
@@ -26,24 +26,21 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   status = [
     {
       title: 'Upcoming',
-      value: 'UPCOMING'
+      value: 'UPCOMING',
     },
     {
       title: 'Completed',
-      value: 'COMPLETED'
-
+      value: 'COMPLETED',
     },
   ];
   payment = [
     {
       title: 'Paid',
-      value: 'PAID'
-
+      value: 'PAID',
     },
     {
       title: 'Unpaid',
-      value: 'UNPAID'
-
+      value: 'UNPAID',
     },
   ];
 
@@ -52,16 +49,16 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private store: Store<IBookingState>,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private fb: FormBuilder
   ) {
-
     this.bookingData$ = store.pipe(
       select(getBookingListStatus),
       takeUntil(this.ngUnsubscribe),
       filter(val => !!val)
     );
 
-    this.store.dispatch(getBookingList({filters:{}}));
+    this.store.dispatch(getBookingList({ filters: {} }));
     this.bookingData$ = this.store.pipe(select(getBookingListStatus));
     this.getDropdownData();
     this.filterForm = this.createFilterForm();
@@ -71,6 +68,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     this.subscriptions();
   }
 
+  orderSession: any;
+  bookData: any;
   subscriptions() {
     this.bookingData$
       .pipe(
@@ -79,10 +78,12 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data) {
-
           this.bookingData = data.bookingList;
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
+          }
+          for (let i = 0; i < this.bookingData.length; i++) {
+            this.orderSession = this.bookingData[i].order_session;
           }
         } else {
           console.log(data?.error);
@@ -90,12 +91,20 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       });
 
     this.filterForm.valueChanges.subscribe(data => {
-      const productId=data?.service?.product_id;
-      const status=data?.status;
-      const payment=data?.payment;
-
-
-      this.store.dispatch(getBookingList({filters:{product_id:productId ? productId : '',payment_status:payment ? payment : '',status:status ? status : ''}}))
+      const productId = data?.service?.product_id;
+      const status = data?.status;
+      const payment = data?.payment;
+      if (productId || status || payment) {
+        this.store.dispatch(
+          getBookingList({
+            filters: {
+              product_id: productId ? productId : '',
+              payment_status: payment ? payment : '',
+              event_status: status ? status : '',
+            },
+          })
+        );
+      }
     });
   }
 
@@ -113,10 +122,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   createFilterForm() {
-    return new FormGroup({
-      service: new FormControl(''),
-      status: new FormControl(''),
-      payment: new FormControl(''),
+    // return new FormGroup({
+    //   service: new FormControl(null, Validators.maxLength(0)),
+    //   status: new FormControl(null, Validators.maxLength(0)),
+    //   payment: new FormControl(null, Validators.maxLength(0)),
+    // });
+    return this.fb.group({
+      service: [null, Validators.maxLength(0)],
+      status: [null, Validators.maxLength(0)],
+      payment: [null, Validators.maxLength(0)],
     });
   }
 
@@ -136,6 +150,11 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       this.visibleIndex = ind;
     }
   }
+
+  get isFilterEmpty() {
+    return this.filterForm.valid;
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(true);
