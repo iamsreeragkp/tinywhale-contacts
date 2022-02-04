@@ -11,7 +11,7 @@ import { BookingService } from '../../booking.service';
 import { addBooking, getBookingById } from '../../store/booking.actions';
 import { BookingType } from '../../store/booking.interface';
 import { IBookingState } from '../../store/booking.reducers';
-import { getBookingByIds } from '../../store/booking.selectors';
+import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
 @Component({
   selector: 'app-add-booking',
   templateUrl: './add-booking.component.html',
@@ -175,6 +175,11 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       platform: payment,
     };
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
+    this.store.select(getBookingInfo).subscribe((data: any) => {
+      if (data?.data?.user?.email) {
+        this.router.navigate(['../booking/status-booking']);
+      }
+    });
   }
 
   formatDate(date: any) {
