@@ -24,7 +24,8 @@
   & :hover {
     .active-border {
       display: block;
-      background: #00a4b7;
+      // background: #00a4b7;
+      background: linear-gradient(90deg, #359cbb, #64c299);
     }
     .color-fill {
       fill: #00a4b7 !important;
@@ -36,7 +37,8 @@
 .active {
   .active-border {
     display: block;
-    background: #00a4b7;
+    // background: #00a4b7;
+    background: linear-gradient(90deg, #359cbb, #64c299);
   }
   .color-fill {
     fill: #00a4b7 !important;

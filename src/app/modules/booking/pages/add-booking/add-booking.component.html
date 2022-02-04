@@ -14,7 +14,7 @@
       <div class="flex justify-between items-center">
         <button class="noborder-button" (click)="location.back()">Cancel</button>
         <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">
-          Save & Add Another
+          <span>Save & Add Another</span>
         </button>
         <button class="primary-button w-52 ml-3" (click)="onBookingAndExit()">Save & Exit</button>
       </div>
@@ -22,7 +22,9 @@
     <ng-template #editButton>
       <div class="flex justify-between items-center">
         <button class="noborder-button" (click)="location.back()">Cancel</button>
-        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">Save</button>
+        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">
+          <span>Save</span>
+        </button>
       </div>
     </ng-template>
   </div>
