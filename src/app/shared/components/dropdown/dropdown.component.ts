@@ -51,7 +51,9 @@ export class DropdownComponent {
       this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
         ...option,
         dropdown_field_data: {
-          selected: false,
+          selected:
+            this._options?.find(oldOption => oldOption[this._idKey] === option[this._idKey])
+              ?.dropdown_field_data?.selected ?? false,
         },
       }));
     } else {

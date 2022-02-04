@@ -1,12 +1,12 @@
 name: front end staging
 
 on:
-  pull_request_review:
-    branches:
-      [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   deploy:
+    if: ${{ github.event.pull_request.head.ref == 'development' }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -26,7 +26,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-${{ hashFiles('**/package-lock.json') }}
+          key:
+            ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-${{ hashFiles('**/package-lock.json')
+            }}
           restore-keys: |
             ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-npm-
 
@@ -50,7 +52,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-66-142-247.ap-south-1.compute.amazonaws.com
           scp build.tar.gz ubuntu@ec2-52-66-142-247.ap-south-1.compute.amazonaws.com:/home/ubuntu/
-
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master

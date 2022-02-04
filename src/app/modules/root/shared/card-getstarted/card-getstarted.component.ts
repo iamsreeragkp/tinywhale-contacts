@@ -47,7 +47,8 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
     this.showPortal = true;
   }
 
-  isCompleted(){                                                                                                                       
+  isCompleted()
+  {                                                                                                                       
     return ( !this.dashboardInfos?.businessInfo?.isCompleted || !this.dashboardInfos?.serviceInfo?.isCompleted || !this.dashboardInfos?.paymentInfo?.isCompleted)
   }
 

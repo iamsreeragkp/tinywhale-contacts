@@ -1,11 +1,8 @@
-<div class="fixed z-50 fixed-header">
+<div class="fixed z-50 font-baloo fixed-header">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
-    <header class="header leading-9 font-normal not-italic flex items-center">
+    <header class="header leading-9 font-normal flex items-center">
       <ng-container *ngIf="!editMode; else editTitle">
-        <span
-          class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"
-          *ngIf="isGettingStarted"
-        >
+        <span class="one -pb-4 font-normal text-7xl leading-6 mr-3" *ngIf="isGettingStarted">
           3
         </span>
         <span class="text-4xl">Add Payment Info</span>
@@ -22,7 +19,7 @@
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
-<form [formGroup]="paymentForm">
+<form class="font-poppins" [formGroup]="paymentForm">
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <h5 class="input-section-subheading font-bold mb-4 mt-8">Billing Details</h5>
