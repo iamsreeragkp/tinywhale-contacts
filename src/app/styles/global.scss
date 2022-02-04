@@ -42,21 +42,7 @@ body {
   }
   @apply font-poppins focus:outline-none leading-6 bg-white font-normal text-base  py-3 pl-4 pr-3;
 }
-// .primary-button {
-//   background-color: #00a4b7;
-//   border: 2px solid #00a4b7;
-//   &:hover {
-//     color: #00a4b7;
-//     @apply bg-white;
-//   }
-//   &:disabled {
-//     color: #fff !important;
-//     background-color: #d6e1e3 !important;
-//     border-color: #d6e1e3 !important;
-//     @apply cursor-not-allowed;
-//   }
-//   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 text-white font-baloo;
-// }
+
 .primary-button {
   background-image: linear-gradient(to right, #359cbb, #64c299);
   &:hover {
@@ -101,34 +87,20 @@ body {
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
 }
 
-// .secondary-button {
-//   color: #00a4b7;
-//   border: 2px solid #00a4b7;
-//   @apply bg-white;
-//   &:hover {
-//     background-color: #00a4b7;
-//     @apply text-white;
-//   }
-//   &:disabled {
-//     color: #d6e1e3 !important;
-//     background-color: #fff !important;
-//     border-color: #d6e1e3 !important;
-//     @apply cursor-not-allowed;
-//   }
-//   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
-// }
 .secondary-button {
-  color: #00a4b7;
-  // box-shadow: 0 0 6px 0 rgba(157, 96, 212, 0.5);
   border: solid 2px transparent;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
     linear-gradient(90deg, #359cbb, #64c299);
-  background-origin: border-box;
   background-clip: content-box, border-box;
   box-shadow: 2px 1000px 1px #fff inset;
-  @apply bg-white;
+  @apply bg-white bg-origin-border;
   &:hover {
     box-shadow: none;
+    span {
+      background: linear-gradient(90deg, white, white);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     @apply text-white;
   }
   &:disabled {
@@ -138,12 +110,21 @@ body {
     @apply cursor-not-allowed;
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;
+  span {
+    background: -webkit-linear-gradient(360deg, #359cbb, #64c299);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 .noborder-button {
-  color: #00a4b7;
+  background: -webkit-linear-gradient(360deg, #359cbb, #64c299);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   height: fit-content;
   &:hover {
-    color: #154f5b;
+    background: -webkit-linear-gradient(360deg, #246a80, #10bd72);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   &:disabled {
     color: #d6e1e3 !important;
@@ -254,7 +235,7 @@ body {
     input {
       @apply absolute opacity-0 cursor-pointer h-0 w-0;
       &:checked ~ .checkmark {
-        background-color: #00a4b7;
+        background: -webkit-linear-gradient(360deg, #359cbb, #64c299);
         border: 1px solid #00a4b7;
       }
       &:checked ~ .checkmark:after {
@@ -304,13 +285,13 @@ body {
     }
     .radiomark {
       border: 1px solid #154f5b;
-      @apply absolute bg-white rounded-full w-5 h-5 left-4 top-4;
+      @apply absolute  rounded-full w-5 h-5 left-4 top-4;
       &:after {
         content: '';
         top: 3px;
         left: 3px;
         border-radius: 50%;
-        background: #00a4b7;
+        background: -webkit-linear-gradient(360deg, #359cbb, #64c299);
         @apply hidden absolute rounded-full w-3 h-3;
       }
     }

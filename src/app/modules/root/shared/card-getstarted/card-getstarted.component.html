@@ -7,7 +7,7 @@
     </p>
   </div>
   <div class="flex">
-    <button class="secondary-button h-10 px-6 mr-2">See TinyCard™ Template</button>
+    <button class="secondary-button h-10 px-6 mr-2"><span>See TinyCard™ Template</span></button>
     <button
       class="gray-button h-10 ml-2 px-8"
       [disabled]="
@@ -68,7 +68,7 @@
             *ngIf="dashboardInfos?.businessInfo?.isCompleted"
             [routerLink]="'../../website/edit-business-info'"
           >
-            Edit
+            <span>Edit</span>
           </button>
           <button
             class="primary-button mt-auto px-10 h-10"
@@ -127,7 +127,7 @@
             *ngIf="dashboardInfos?.serviceInfo?.isCompleted"
             [routerLink]="'../../service'"
           >
-            View Services
+            <span>View Services</span>
           </button>
           <button
             class="primary-button mt-auto px-10 h-10"
@@ -183,7 +183,7 @@
             *ngIf="dashboardInfos?.paymentInfo?.isCompleted"
             [routerLink]="'../../account/edit-payment'"
           >
-            Edit
+            <span>Edit</span>
           </button>
           <button
             class="primary-button mt-auto px-10 h-10"

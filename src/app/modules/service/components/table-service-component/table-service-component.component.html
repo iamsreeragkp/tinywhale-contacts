@@ -217,8 +217,8 @@
             <div class="flex flex-col">
               <span class="italic whitespace-nowrap">$ xx / session</span>
               <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
-              <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
-              <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
+              <!-- <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span>
+              <span class="italic whitespace-nowrap">$ xxx / 4 sessions</span> -->
             </div>
           </td>
           <td class="align-top px-2 py-3">
@@ -355,7 +355,9 @@
   <p class="mt-2">This action cannot be undone</p>
   <div class="flex justify-between mt-5">
     <div class="w-1/2 pr-2">
-      <button class="secondary-button w-full" (click)="closeDeleteModal()">Cancel</button>
+      <button class="secondary-button w-full" (click)="closeDeleteModal()">
+        <span>Cancel</span>
+      </button>
     </div>
     <div class="w-1/2 pl-2">
       <button class="primary-button w-full" (click)="closeDeleteModal(true)">Yes, Delete</button>
