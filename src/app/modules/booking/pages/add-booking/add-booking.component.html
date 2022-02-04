@@ -16,13 +16,7 @@
         <button class="secondary-button w-52 mr-3 ml-6" (click)="onBooking()">
           Save & Add Another
         </button>
-        <button
-          class="primary-button w-52 ml-3"
-          (click)="onBookingAndExit()"
-          [routerLink]="['../status-booking']"
-        >
-          Save & Exit
-        </button>
+        <button class="primary-button w-52 ml-3" (click)="onBookingAndExit()">Save & Exit</button>
       </div>
     </ng-container>
     <ng-template #editButton>
@@ -34,7 +28,7 @@
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
-<form [formGroup]="bookingForm">
+<form [formGroup]="bookingForm" autocomplete="off">
   <div class="add-info flex w-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <div class="input-field flex mb-4">
@@ -72,17 +66,25 @@
         </div>
       </div>
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
         <div class="w-form" [attr.disabled]="editMode ? '' : null">
-          <app-dropdown [options]="classData" placeholder="Enter service name" [displayKey]="'title'" [disabled]="editMode" [emitId]="true" [idKey]="'product_id'" formControlName="service"></app-dropdown>
+          <app-dropdown
+            [options]="classData"
+            placeholder="Enter service name"
+            [displayKey]="'title'"
+            [disabled]="editMode"
+            [emitId]="true"
+            [idKey]="'product_id'"
+            formControlName="service"
+          ></app-dropdown>
         </div>
       </div>
       <div class="input-field flex mb-4">
-        <div class=" w-44 label text-right mt-4 mr-6"><label for="">Date*</label></div>
+        <div class="w-44 label text-right mt-4 mr-6"><label for="">Date*</label></div>
         <div class="w-form calendar-1 font-poppins">
           <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
             formControlName="date" /> -->
-            <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker>
+          <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker>
         </div>
       </div>
       <div class="input-field flex mb-4">
