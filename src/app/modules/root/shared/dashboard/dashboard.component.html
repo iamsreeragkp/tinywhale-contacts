@@ -11,9 +11,15 @@
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
       <div class="flex items-center border-b border-gray-300 border-solid pb-3">
         <h3 class="font-bold text-primaryFont mr-4">Overview</h3>
-        <button class="text-secondaryBlue font-bold mr-4 text-xs">MTD</button>
-        <button class="text-primaryFont font-medium mr-4 text-xs">QTD</button>
-        <button class="text-primaryFont font-medium mr-4 text-xs">YTD</button>
+        <button class="text-secondaryBlue font-bold mr-4 text-xs" (click)="onClickMtd()">
+          MTD
+        </button>
+        <button class="text-primaryFont font-medium mr-4 text-xs" (click)="onClickQtd()">
+          QTD
+        </button>
+        <button class="text-primaryFont font-medium mr-4 text-xs" (click)="onClickYtd()">
+          YTD
+        </button>
       </div>
       <div class="flex flex-col md:flex-row py-8">
         <div
@@ -27,7 +33,9 @@
             </div>
           </div>
           <div class="flex items-center">
-            <h3 class="text-primaryFont font-bold font-baloo text-tworem">S$ 0</h3>
+            <h3 class="text-primaryFont font-bold font-baloo text-tworem">
+              S$ {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
+            </h3>
 
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center ml-6 invisible">
@@ -49,7 +57,7 @@
               [xAxisLabel]="xAxisLabel"
               [yAxisLabel]="yAxisLabel"
               [timeline]="timeline"
-              [results]="multi"
+              [results]="chart1"
               [gradient]="true"
               [showGridLines]="showGridLines"
               (select)="onSelect($event)"
@@ -61,7 +69,10 @@
             <p class="dashboard-new-placeholder mt-3">No data available</p> -->
           </div>
         </div>
-        <div class="w-full md:w-4/12 h-72 flex flex-col px-8">
+        <div
+          class="w-full md:w-4/12 h-72 flex flex-col px-8"
+          *ngFor="let dashboard of [dashboardInfos]"
+        >
           <div
             class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid"
           >
@@ -78,7 +89,7 @@
               <h3
                 class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
               >
-                0
+                {{ dashboard?.bookings?.current_month || '0' }}
               </h3>
               <img
                 src="../../../../../assets/images/icons/right-blue.svg"
@@ -116,7 +127,10 @@
         </div>
       </div>
     </div>
-    <div class="w-full grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 font-poppins">
+    <div
+      class="w-full grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 font-poppins"
+      *ngFor="let dashboard of [dashboardInfos]"
+    >
       <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Active Services</h4>
@@ -125,7 +139,7 @@
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
-            0
+            {{ dashboard?.active_services || '0' }}
           </h3>
           <img
             src="../../../../../assets/images/icons/right-blue.svg"
@@ -138,7 +152,9 @@
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Total Customers</h4>
         </div>
-        <h3 class="text-primaryFont font-bold font-baloo text-tworem">0</h3>
+        <h3 class="text-primaryFont font-bold font-baloo text-tworem">
+          {{ dashboard?.total_customers || '0' }}
+        </h3>
       </div>
       <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
         <div class="flex items-center pb-4">
@@ -148,7 +164,7 @@
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
-            0
+            {{ dashboard?.pending_payments || '0' }}
           </h3>
           <img
             src="../../../../../assets/images/icons/right-blue.svg"
@@ -161,32 +177,47 @@
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Upcoming Payout</h4>
         </div>
-        <h3 class="text-primaryFont font-bold font-baloo text-tworem">0</h3>
+        <h3 class="text-primaryFont font-bold font-baloo text-tworem">
+          {{ dashboard?.upcoming_payout || '0' }}
+        </h3>
       </div>
     </div>
     <div class="w-full grid sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <div class="bg-white h-full shadow-lg pt-6 pb-4 px-8 rounded-2xl">
         <h4 class="text-primaryFont font-bold">Upcoming Sessions</h4>
-        <div class="w-full mt-3">
+        <div class="w-full mt-3" *ngFor="let upcoming of upcomingSessions">
           <div class="py-5 flex border-b border-gray-300 border-solid">
             <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Today</p>
+              <p class="text-primaryFont">
+                {{
+                  isToday(upcoming?.order_session[0]?.session?.date)
+                    ? 'Today'
+                    : isTomorrow(upcoming?.order_session[0]?.session?.date)
+                    ? 'Tomorrow'
+                    : getDayName(upcoming?.order_session[0]?.session?.date) +
+                      ',' +
+                      formatdate(upcoming?.order_session[0]?.session?.date)
+                }}
+              </p>
             </div>
             <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
+              <p class="text-primaryFont">
+                {{ upcoming?.order_session[0]?.session.class_time_range?.start_time }} -
+                {{ upcoming?.order_session[0]?.session.class_time_range?.end_time }}
+              </p>
+              <p class="text-primaryFont">{{ upcoming?.order_line_item[0]?.product?.title }}</p>
             </div>
           </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
+          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
             <div class="w-4/12 h-full">
               <p class="text-primaryFont">Tomorrow</p>
             </div>
             <div class="w-8/12 h-full">
               <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
+              <p class="text-primaryFont">lllll</p>
             </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
+          </div> -->
+          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
             <div class="w-4/12 h-full">
               <p class="text-primaryFont">Thu, 24 Jan</p>
             </div>
@@ -194,8 +225,8 @@
               <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
               <p class="text-primaryFont">Piano for kids under 3 years</p>
             </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
+          </div> -->
+          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
             <div class="w-4/12 h-full">
               <p class="text-primaryFont">Thu, 24 Jan</p>
             </div>
@@ -203,8 +234,8 @@
               <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
               <p class="text-primaryFont">Piano for kids under 3 years</p>
             </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
+          </div> -->
+          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
             <div class="w-4/12 h-full">
               <p class="text-primaryFont">Sat, 26 Jan</p>
             </div>
@@ -212,10 +243,10 @@
               <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
               <p class="text-primaryFont">Piano for kids under 3 years</p>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="w-full flex justify-center items-center mt-4">
-          <button class="noborder-button">View All</button>
+          <button class="noborder-button" (click)="navagateToBooking()">View All</button>
         </div>
         <div class="w-full h-full flex justify-center items-center hidden">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
@@ -230,7 +261,7 @@
       <div class="grid grid-rows-2 grid-flow-col gap-4">
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
           <div class="flex items-center pb-4">
-            <h4 class="text-primaryFont mr-3.5 font-medium">Gross Earnings</h4>
+            <h4 class="text-primaryFont mr-3.5 font-medium">Customer Lifetime Value</h4>
             <div class="tooltip-top">
               <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
               <span class="tooltiptext">Lifetime earnings / number of unique paying customers</span>
@@ -247,7 +278,7 @@
               [xAxis]="false"
               [yAxis]="false"
               [timeline]="false"
-              [results]="multi"
+              [results]="chart2"
               [gradient]="gradient"
               [showGridLines]="false"
               (select)="onSelect($event)"
@@ -259,7 +290,7 @@
         </div>
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
           <div class="flex items-center pb-4">
-            <h4 class="text-primaryFont mr-3.5 font-medium">Gross Earnings</h4>
+            <h4 class="text-primaryFont mr-3.5 font-medium">Services Utilization Rate</h4>
             <div class="tooltip-top">
               <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
               <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
@@ -270,7 +301,7 @@
             <p class="dashboard-new-placeholder mt-3">No data available</p> -->
             <ngx-charts-bar-vertical
               [scheme]="colorSchemeBar"
-              [results]="single"
+              [results]="chart3"
               [gradient]="gradient"
               [xAxis]="false"
               [yAxis]="false"

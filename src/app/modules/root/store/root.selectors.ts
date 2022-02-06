@@ -6,3 +6,7 @@ const getRootFeatureSelector = createFeatureSelector<IRootState>('root');
 export const getDashboardData = createSelector(getRootFeatureSelector, state => {
   return state?.dashboard;
 });
+
+export const getDashboardLists = createSelector(getRootFeatureSelector, state => {
+  return state?.getDashboardList;
+});
