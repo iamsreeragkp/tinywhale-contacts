@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { getDashboard, getDashboardListSuccess, getDashboardSuccess } from './root.actions';
+import { getDashboardSuccess } from './root.actions';
 
 export const rootFeatureKey = 'RootState';
 
@@ -18,11 +18,6 @@ export const reducer = createReducer(
   on(getDashboardSuccess, (state, { dashboard }) => ({
     ...state,
     dashboard,
-    error: '',
-  })),
-  on(getDashboardListSuccess, (state, { DashboardList }) => ({
-    ...state,
-    getDashboardList: DashboardList,
     error: '',
   }))
 );

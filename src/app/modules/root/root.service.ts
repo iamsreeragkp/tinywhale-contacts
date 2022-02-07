@@ -10,11 +10,7 @@ export class RootService {
 
   constructor(private http: HttpClient) {}
 
-  getDashboard() {
-    return this.http.get(`${this.api}/dashboard/dashboard-info`);
-  }
-
-  getBookingList(filters: any) {
+  getDashboard(filters: any) {
     const params = new HttpParams({ fromObject: { ...filters } });
     return this.http.get(`${this.api}/dashboard/dashboard-info`, { params });
   }

@@ -17,7 +17,7 @@ export class WebsiteEffects {
         this.websiteService.addBusinessInfo(businessData).pipe(
           mergeMap(response => [
             addBusinessStatus({ response: response, status: true }),
-            getDashboard(),
+            getDashboard({ filters: {} }),
           ]),
           catchError(error =>
             of(

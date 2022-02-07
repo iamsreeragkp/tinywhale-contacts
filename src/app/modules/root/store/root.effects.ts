@@ -8,8 +8,6 @@ import {
   getDashboardError,
   getDashboardSuccess,
   getDashboardList,
-  getDashboardListSuccess,
-  getDashboardListError,
 } from './root.actions';
 
 @Injectable()
@@ -19,22 +17,10 @@ export class RootEffects {
   getBusiness$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getDashboard),
-      switchMap(() =>
-        this.rootService.getDashboard().pipe(
+      switchMap(({ filters }) =>
+        this.rootService.getDashboard(filters).pipe(
           map((response: any) => getDashboardSuccess({ dashboard: response?.data })),
           catchError(err => of(getDashboardError({ error: err })))
-        )
-      )
-    )
-  );
-
-  getDashboard$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getDashboardList),
-      switchMap(({ filters }) =>
-        this.rootService.getBookingList(filters).pipe(
-          map((response: any) => getDashboardListSuccess({ DashboardList: response?.data })),
-          catchError(err => of(getDashboardListError({ error: err })))
         )
       )
     )

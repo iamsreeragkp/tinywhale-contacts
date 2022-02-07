@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
-import { getDashboardList } from '../../store/root.actions';
+import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
-import { getDashboardData, getDashboardLists } from '../../store/root.selectors';
+import { getDashboardData } from '../../store/root.selectors';
 import { multi, single } from './data';
 
 @Component({
@@ -73,14 +73,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<IRootState>, private router: Router) {
     this.dashboard$ = store.pipe(
-      select(getDashboardLists),
+      select(getDashboardData),
       takeUntil(this.ngUnsubscribe),
       filter(val => !!val)
     );
 
-    this.store.dispatch(getDashboardList({ filters: {} }));
-    this.dashboard$ = store.pipe(select(getDashboardLists));
-    // this.dashboard$ = store.pipe(select(getDashboardData));
+    this.store.dispatch(getDashboard({ filters: {} }));
+    this.dashboard$ = store.pipe(select(getDashboardData));
   }
 
   ngOnInit(): void {
@@ -154,16 +153,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onClickQtd() {
     const QTD = 'QTD';
-    this.store.dispatch(getDashboardList({ filters: { filter_type: QTD } }));
+    this.store.dispatch(getDashboard({ filters: { filter_type: QTD } }));
   }
 
   onClickYtd() {
     const YTD = 'YTD';
-    this.store.dispatch(getDashboardList({ filters: { filter_type: YTD } }));
+    this.store.dispatch(getDashboard({ filters: { filter_type: YTD } }));
   }
 
   onClickMtd() {
-    this.store.dispatch(getDashboardList({ filters: {} }));
+    this.store.dispatch(getDashboard({ filters: {} }));
   }
 
   formatdate(date: any) {
