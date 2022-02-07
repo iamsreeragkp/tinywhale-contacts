@@ -20,6 +20,9 @@
     border: 2px solid #d6e1e3;
     border-radius: 8px;
     min-height: 3rem;
+    &-open {
+      border-color: #154f5b !important;
+    }
     &-valueContainer {
       width: calc(100% - 1.25rem);
     }

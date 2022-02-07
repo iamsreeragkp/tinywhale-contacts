@@ -51,7 +51,7 @@
           </button>
           <div
             (click)="logo.click()"
-            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+            class="input-photo overflow-hidden cursor-pointer text-center flex flex-col justify-evenly items-center"
             placeholder="Add a Logo"
           >
             <img
@@ -62,7 +62,11 @@
               contain
             />
             <ng-container *ngIf="!logoImageUrl">
-              <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+              <img
+                class="h-7 cursor-pointer"
+                src="../../../../../assets/images/defualt-image.svg"
+                alt="logo"
+              />
               <span class="text-mediumGray text-center">Add a <br />logo</span>
             </ng-container>
           </div>
@@ -101,9 +105,9 @@
               <input class="input py-3 px-4" placeholder="Enter URL" formControlName="url" />
             </div>
           </ng-container>
-          <div class="add-another mt-2 font-normal text-base not-italic" (click)="addSocialItem()">
+          <button class="noborder-button add-another" (click)="addSocialItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
 
@@ -235,12 +239,12 @@
               />
               <ng-container *ngIf="!photo.get('photo_data_url')?.value">
                 <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
-                <span class="text-mediumGray">Add Photo</span>
+                <span class="text-mediumGray cursor-pointer">Add Photo</span>
               </ng-container>
             </div>
           </div>
-          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
-          <!-- <div><input type="file" class="input-photo text-center mr-2" placeholder="Add Photo" /></div> -->
+          <!-- <div><input type="file" class="input-photo text-center mr-2 cursor-pointer" placeholder="Add Photo" /></div> -->
+          <!-- <div><input type="file" class="input-photo text-center mr-2 cursor-pointer" placeholder="Add Photo" /></div> -->
         </div>
       </div>
       <div class="input-field flex mb-8">
@@ -312,15 +316,15 @@
                       src="../../../../../assets/images/defualt-image.svg"
                       alt="photo"
                     />
-                    <span class="text-mediumGray">Add Photo</span>
+                    <span class="text-mediumGray cursor-pointer">Add Photo</span>
                   </ng-container>
                 </div>
               </div>
             </div>
           </ng-container>
-          <div class="add-another mt-2 font-normal text-base not-italic" (click)="addLicenceItem()">
+          <button class="noborder-button add-another" (click)="addLicenceItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
       <div class="input-field flex mb-8">
@@ -377,11 +381,11 @@
                   />
                   <ng-container *ngIf="!arrayTestmonialImageUrl[i]">
                     <img
-                      class="h-7"
+                      class="h-7 cursor-pointer"
                       src="../../../../../assets/images/defualt-image.svg"
                       alt="photo"
                     />
-                    <span class="text-mediumGray"
+                    <span class="text-mediumGray cursor-pointer"
                       >Add Photo <br />
                       of Client</span
                     >
@@ -390,12 +394,9 @@
               </div>
             </div>
           </ng-container>
-          <div
-            class="add-another mt-2 font-normal text-base not-italic"
-            (click)="addTestimonialItem()"
-          >
+          <button class="noborder-button add-another" (click)="addTestimonialItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
     </div>

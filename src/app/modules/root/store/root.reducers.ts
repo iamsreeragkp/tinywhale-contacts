@@ -1,14 +1,16 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { getDashboard, getDashboardSuccess } from './root.actions';
+import { getDashboardSuccess } from './root.actions';
 
 export const rootFeatureKey = 'RootState';
 
 export interface IRootState {
   dashboard?: any;
+  getDashboardList: any;
 }
 
 export const initialRootState: IRootState = {
   dashboard: undefined,
+  getDashboardList: undefined,
 };
 
 export const reducer = createReducer(

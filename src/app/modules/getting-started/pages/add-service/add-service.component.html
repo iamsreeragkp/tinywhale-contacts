@@ -108,7 +108,7 @@
           <input
             formControlName="title"
             class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Company name"
+            placeholder="Service name"
           />
         </div>
       </div>
@@ -260,7 +260,7 @@
                 </ng-container>
                 <button
                   type="button"
-                  class="add-another mt-2 font-normal text-base not-italic cursor-pointer"
+                  class="noborder-button px-0 mt-2"
                   (click)="addTimeRangeToWeekDay(weekDay.value)"
                 >
                   + Add Another Slot
@@ -385,11 +385,7 @@
               <img src="../../../../../assets/images/icons/delete.svg" alt="" />
             </button>
           </div>
-          <button
-            type="button"
-            class="add-another mt-2 font-normal text-base not-italic"
-            (click)="addPricePackage()"
-          >
+          <button type="button" class="noborder-button px-0 mt-2" (click)="addPricePackage()">
             + Add Another Package Price
           </button>
         </div>

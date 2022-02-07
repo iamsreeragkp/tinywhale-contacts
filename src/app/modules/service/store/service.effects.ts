@@ -30,7 +30,7 @@ export class ServiceEffects {
         this.productService.addServiceInfo(productData).pipe(
           mergeMap(response => [
             addServiceStatus({ response: response.data, status: true }),
-            getDashboard(),
+            getDashboard({ filters: {} }),
           ]),
           catchError(error =>
             of(

@@ -1,21 +1,58 @@
 <div class="relative" #threeDots>
-  <button [disabled]="isDisabled" class="table-container-button w-12 h-12 flex items-center justify-center font-semibold rounded-full duration-700" (click)="open = !open">
-    <svg
-                  width="26"
-                  height="26"
-                  viewBox="0 0 26 26"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
-                    class="table-container-button-svgFill"
-                  />
-                </svg>
+  <button [disabled]="isDisabled" class="secondary-button px-0 w-12" (click)="open = !open">
+    <svg width="20" height="5" viewBox="0 0 20 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M4.58333 2.27018C4.58333 2.55471 4.52729 2.83646 4.41841 3.09933C4.30952 3.3622 4.14992 3.60105 3.94873 3.80225C3.74754 4.00344 3.50869 4.16304 3.24581 4.27192C2.98294 4.38081 2.7012 4.43685 2.41667 4.43685C2.13214 4.43685 1.85039 4.38081 1.58752 4.27192C1.32465 4.16304 1.0858 4.00344 0.884602 3.80225C0.683408 3.60105 0.523813 3.3622 0.414927 3.09933C0.306042 2.83646 0.25 2.55471 0.25 2.27018C0.25 1.69555 0.478273 1.14445 0.884602 0.738117C1.29093 0.331788 1.84203 0.103516 2.41667 0.103516C2.9913 0.103516 3.5424 0.331788 3.94873 0.738117C4.35506 1.14445 4.58333 1.69555 4.58333 2.27018Z"
+        fill="url(#paint0_linear_1654_56)"
+      />
+      <path
+        d="M12.1668 2.27018C12.1668 2.84482 11.9386 3.39592 11.5322 3.80225C11.1259 4.20858 10.5748 4.43685 10.0002 4.43685C9.42553 4.43685 8.87443 4.20858 8.4681 3.80225C8.06177 3.39592 7.8335 2.84482 7.8335 2.27018C7.8335 1.69555 8.06177 1.14445 8.4681 0.738117C8.87443 0.331788 9.42553 0.103516 10.0002 0.103516C10.5748 0.103516 11.1259 0.331788 11.5322 0.738117C11.9386 1.14445 12.1668 1.69555 12.1668 2.27018Z"
+        fill="url(#paint1_linear_1654_56)"
+      />
+      <path
+        d="M17.5832 4.43685C18.1578 4.43685 18.7089 4.20858 19.1152 3.80225C19.5216 3.39592 19.7498 2.84482 19.7498 2.27018C19.7498 1.69555 19.5216 1.14445 19.1152 0.738117C18.7089 0.331788 18.1578 0.103516 17.5832 0.103516C17.0085 0.103516 16.4574 0.331788 16.0511 0.738117C15.6448 1.14445 15.4165 1.69555 15.4165 2.27018C15.4165 2.84482 15.6448 3.39592 16.0511 3.80225C16.4574 4.20858 17.0085 4.43685 17.5832 4.43685Z"
+        fill="url(#paint2_linear_1654_56)"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_1654_56"
+          x1="1.26961"
+          y1="2.27018"
+          x2="3.70711"
+          y2="2.27018"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#359CBB" />
+          <stop offset="1" stop-color="#64C299" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_1654_56"
+          x1="8.8531"
+          y1="2.27018"
+          x2="11.2906"
+          y2="2.27018"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#359CBB" />
+          <stop offset="1" stop-color="#64C299" />
+        </linearGradient>
+        <linearGradient
+          id="paint2_linear_1654_56"
+          x1="16.4361"
+          y1="2.27018"
+          x2="18.8736"
+          y2="2.27018"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#359CBB" />
+          <stop offset="1" stop-color="#64C299" />
+        </linearGradient>
+      </defs>
+    </svg>
   </button>
   <!-- open more -->
   <div
-    class="absolute top-full right-0 z-50 -mt-5 pop-over overflow-hidden"
+    class="absolute top-full right-0 z-50 -mt-5 pop-over"
     [ngClass]="{ 'max-h-0': !open, 'max-h-screen': open }"
   >
     <div

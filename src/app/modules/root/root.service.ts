@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +10,8 @@ export class RootService {
 
   constructor(private http: HttpClient) {}
 
-  getDashboard() {
-    return this.http.get(`${this.api}/dashboard/dashboard-info`);
+  getDashboard(filters: any) {
+    const params = new HttpParams({ fromObject: { ...filters } });
+    return this.http.get(`${this.api}/dashboard/dashboard-info`, { params });
   }
 }
