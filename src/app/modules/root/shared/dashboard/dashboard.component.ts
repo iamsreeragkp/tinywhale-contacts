@@ -100,12 +100,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const currentTotal = getewayFeeCurrent + paymentFeeCurrent + processFeeCurrent;
       const lastTotal = getewayFeeLast + paymentFeeLast + processFeeLast;
-
-      const diff = currentTotal - lastTotal;
-
       const avg = (currentTotal + lastTotal) / 2;
 
-      this.percentage = (diff * 100) / avg;
+      if (currentTotal < lastTotal) {
+        const diff1 = lastTotal - currentTotal;
+        this.percentage = (diff1 * 100) / avg;
+      } else if (currentTotal > lastTotal) {
+        const diff2 = currentTotal - lastTotal;
+        this.percentage = (diff2 * 100) / avg;
+      }
 
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
