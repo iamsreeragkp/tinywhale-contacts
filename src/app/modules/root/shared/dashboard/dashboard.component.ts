@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
 import { multi, single } from './data';
@@ -34,6 +36,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   yAxisLabel: string = 'Population';
   timeline: boolean = false;
   barPadding: number = 50;
+  chart1: any;
+  chart2: any;
+  chart3: any;
+  percentage: any;
 
   colorScheme: Color = {
     name: 'primary',
@@ -53,18 +59,164 @@ export class DashboardComponent implements OnInit, OnDestroy {
     group: ScaleType.Ordinal,
     domain: ['#E1C700'],
   };
-  constructor(private store: Store<IRootState>) {
+
+  priceData: any;
+  priceLineData = [];
+  customerLifeTime: any;
+  customerLineData: any = [];
+  serviceUtilizationData: any;
+  serviceUtilizationLineData: any = [];
+  potential: any;
+  upcomingSessions: any;
+  orderLineItem: any;
+  ngUnsubscribe = new Subject<any>();
+
+  constructor(private store: Store<IRootState>, private router: Router) {
+    this.dashboard$ = store.pipe(
+      select(getDashboardData),
+      takeUntil(this.ngUnsubscribe),
+      filter(val => !!val)
+    );
+
+    this.store.dispatch(getDashboard({ filters: {} }));
     this.dashboard$ = store.pipe(select(getDashboardData));
   }
 
   ngOnInit(): void {
     this.subscriptions();
   }
-
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
+      console.log(this.dashboardInfos);
+
+      const getewayFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.gateway_fee;
+      const paymentFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.payment_amount;
+      const processFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.platform_fee;
+
+      const getewayFeeLast = this.dashboardInfos?.processing_fee?.last_month?.gateway_fee;
+      const paymentFeeLast = this.dashboardInfos?.processing_fee?.last_month?.payment_amount;
+      const processFeeLast = this.dashboardInfos?.processing_fee?.last_month?.platform_fee;
+
+      const currentTotal = getewayFeeCurrent + paymentFeeCurrent + processFeeCurrent;
+      const lastTotal = getewayFeeLast + paymentFeeLast + processFeeLast;
+      const avg = (currentTotal + lastTotal) / 2;
+
+      if (currentTotal < lastTotal) {
+        const diff1 = lastTotal - currentTotal;
+        this.percentage = (diff1 * 100) / avg;
+      } else if (currentTotal > lastTotal) {
+        const diff2 = currentTotal - lastTotal;
+        this.percentage = (diff2 * 100) / avg;
+      }
+
+      this.priceData = this.dashboardInfos?.price_data;
+      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
+      for (let i = 0; i < this.priceData?.length; i++) {
+        this.priceLineData = this.priceData[i];
+        this.chart1 = [
+          {
+            name: 'Price Data',
+            series: [
+              {
+                name: this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date),
+                value: this.priceData[i]?.total,
+              },
+            ],
+          },
+        ];
+      }
+      this.customerLifeTime = this.dashboardInfos?.customer_lifetime_value;
+      for (let i = 0; i < this.customerLifeTime?.length; i++) {
+        this.customerLineData = this.customerLifeTime[i];
+        const date = this.formatdate(this.customerLineData?.date);
+        const total = this.customerLineData?.total;
+        const uniqueCustomers = this.customerLineData?.unique_customers;
+        const value = total / uniqueCustomers;
+        this.chart2 = [
+          {
+            name: 'Customer life time',
+            series: [
+              {
+                name: this.formatdate(this.priceData[i]?.date_time),
+                value: value,
+              },
+            ],
+          },
+        ];
+      }
+
+      this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
+      for (let i = 0; i < this.serviceUtilizationData?.length; i++) {
+        this.serviceUtilizationLineData = this.serviceUtilizationData[i];
+        this.potential = this.serviceUtilizationLineData?.potential;
+        let totalPrice = this.potential?.reduce(function (accumulator: any, item: any) {
+          return accumulator + item?.capacity * item?.slot;
+        }, 0);
+        const value = this.serviceUtilizationData[i]?.bookings / totalPrice;
+        this.chart3 = [
+          {
+            name: 'Service Utilization',
+            value: value,
+          },
+        ];
+      }
     });
+  }
+
+  onClickQtd() {
+    const QTD = 'QTD';
+    this.store.dispatch(getDashboard({ filters: { filter_type: QTD } }));
+  }
+
+  onClickYtd() {
+    const YTD = 'YTD';
+    this.store.dispatch(getDashboard({ filters: { filter_type: YTD } }));
+  }
+
+  onClickMtd() {
+    this.store.dispatch(getDashboard({ filters: {} }));
+  }
+
+  formatdate(date: any) {
+    var newDate = new Date(date);
+    const dates =
+      newDate?.toLocaleDateString(undefined, { day: '2-digit' }) +
+      ' ' +
+      newDate?.toLocaleDateString(undefined, { month: 'short' });
+    return dates;
+  }
+
+  isTomorrow(date: any) {
+    const tomorrow = new Date();
+    tomorrow?.setDate(tomorrow.getDate() + 1);
+    let data = new Date(date);
+    if (tomorrow?.toDateString() === data?.toDateString()) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isToday(someDate: any) {
+    const today = new Date();
+    let data = new Date(someDate);
+    return (
+      data?.getDate() + 1 == today?.getDate() + 1 &&
+      data?.getMonth() == today?.getMonth() &&
+      data?.getFullYear() == today?.getFullYear()
+    );
+  }
+
+  getDayName(date: any) {
+    const days = ['Sun', 'Mon', 'Tue', 'Wedn', 'Thu', 'Fri', 'Sat'];
+    const d = new Date(date);
+    const dayName = days[d.getDay()];
+    return dayName;
+  }
+
+  navagateToBooking() {
+    this.router.navigateByUrl('booking/view-booking');
   }
 
   ngOnDestroy(): void {
