@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { getDashboardData } from '../../../root/store/root.selectors';
@@ -9,8 +9,7 @@ import { IRootState } from 'src/app/modules/root/store/root.reducers';
   templateUrl: './service-list.component.html',
   styleUrls: ['./service-list.component.scss'],
 })
-export class ServiceListComponent {
-
+export class ServiceListComponent implements OnInit, OnDestroy {
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
@@ -23,18 +22,18 @@ export class ServiceListComponent {
   }
 
   subscriptions() {
-    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
-      this.dashboardInfos = data; 
-    }, err=> {
-      console.log("ERROR OCCURED",err);
-      
-    });
-    
+    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(
+      data => {
+        this.dashboardInfos = data;
+      },
+      err => {
+        console.log('ERROR OCCURED', err);
+      }
+    );
   }
 
-  hasStarted()
-  {                                                                                       
-    return ( this.dashboardInfos?.businessInfo?.isStarted || this.dashboardInfos?.serviceInfo?.isStarted || this.dashboardInfos?.paymentInfo?.isStarted)
+  get hasStarted() {
+    return this.dashboardInfos?.serviceInfo?.isStarted;
   }
 
   ngOnDestroy(): void {

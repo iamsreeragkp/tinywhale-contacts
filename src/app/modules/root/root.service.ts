@@ -14,4 +14,8 @@ export class RootService {
     const params = new HttpParams({ fromObject: { ...filters } });
     return this.http.get(`${this.api}/dashboard/dashboard-info`, { params });
   }
+
+  publishWebsite() {
+    return this.http.post(`${this.api}/publish-website`, {});
+  }
 }

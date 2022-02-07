@@ -1,9 +1,10 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
 import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
 import { ServiceService } from '../../service.service';
 import { Product, ServiceListFilter, VisibilityType } from '../../shared/service.interface';
@@ -19,6 +20,7 @@ import { getServiceListStatus } from '../../store/service.selectors';
 })
 export class TableServiceComponentComponent implements OnInit, OnDestroy {
   productsList: Product[] = [];
+  productsCount?: number;
   scheduleOptions = [
     {
       id: 'CLASS',
@@ -52,19 +54,24 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     },
   ];
 
-  productList$: Observable<{ products?: Product[]; error?: string; status: boolean } | undefined>;
+  productList$: Observable<
+    { products?: Product[]; productsCount?: number; error?: string; status: boolean } | undefined
+  >;
   ngUnsubscribe = new Subject<void>();
   filterForm!: FormGroup;
   threeDotsOpen?: number;
   productToDelete?: number;
   openProductDeleteModal = false;
+  page: number;
+  limit: number;
 
   constructor(
     private store: Store<IServiceState>,
     private _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private titleCasePipe: TitleCasePipe
+    private titleCasePipe: TitleCasePipe,
+    @Inject(APP_CONFIG) private appConfig: AppConfigType
   ) {
     this.productList$ = store.pipe(
       select(getServiceListStatus),
@@ -72,7 +79,9 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       filter(val => !!val)
     );
     this.filterForm = this.createFilterForm();
-    store.dispatch(getServiceList({ filters: {} }));
+    this.page = appConfig.defaultStartPage;
+    this.limit = appConfig.defaultPageLimit;
+    store.dispatch(getServiceList({ filters: { page: this.page, limit: this.limit } }));
   }
 
   ngOnInit(): void {
@@ -83,17 +92,33 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.productList$.subscribe(data => {
       if (data?.status && data?.products) {
         this.productsList = data.products;
+        this.productsCount = data.productsCount;
       } else {
         console.log(data?.error);
       }
     });
     this.filterForm.valueChanges.subscribe(data => {
-      this.store.dispatch(
-        getServiceList({
-          filters: this.constructFilterPayload(),
-        })
-      );
+      this.resetPage();
+      this.fetchServiceList();
     });
+  }
+
+  resetPage() {
+    this.page = this.appConfig.defaultStartPage;
+    this.limit = this.appConfig.defaultPageLimit;
+  }
+
+  loadMore() {
+    this.limit += this.appConfig.defaultPageLimit;
+    this.fetchServiceList();
+  }
+
+  fetchServiceList() {
+    this.store.dispatch(
+      getServiceList({
+        filters: { ...this.constructFilterPayload(), page: this.page, limit: this.limit },
+      })
+    );
   }
 
   createFilterForm() {

@@ -8,10 +8,11 @@
   </div>
   <div class="flex">
     <button
-      class="secondary-button h-10 px-6 mr-2 group relative"
-      (click)="iframeOpen('seeTinyCard')"
+      class="secondary-button h-10 px-6 mr-2 relative"
+      [ngClass]="{ 'primary-button': !isCompleted(), 'secondary-button group': isCompleted() }"
+      (click)="iframeOpen()"
     >
-      <span>See TinyCard™ Template</span>
+      <span>{{ isCompleted() ? 'See TinyCard™ Template' : 'Preview your TinyCard™' }}</span>
       <ng-container
         *ngTemplateOutlet="
           tinyCard;
@@ -23,7 +24,7 @@
       <button
         class="gray-button h-10 ml-2 px-8 group relative"
         [disabled]="isCompleted()"
-        (click)="iframeOpen('publishTinyCard')"
+        (click)="publishWebsite()"
       >
         Publish your TinyCard™
       </button>

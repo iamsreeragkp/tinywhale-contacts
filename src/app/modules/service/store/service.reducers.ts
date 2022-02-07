@@ -26,19 +26,20 @@ export interface IServiceState {
   };
   getServiceList?: {
     products?: Product[];
+    productsCount?: number;
     status: boolean;
     error?: string;
   };
-  productId:any;
-  visibility?:any;
+  productId: any;
+  visibility?: any;
 }
 
 export const initialServiceState: IServiceState = {
   addService: undefined,
   getService: undefined,
   getServiceList: undefined,
-  productId:undefined,
-  visibility:undefined
+  productId: undefined,
+  visibility: undefined,
 };
 
 export const reducer = createReducer(
@@ -55,21 +56,22 @@ export const reducer = createReducer(
       status,
     },
   })),
-  on(getServiceListStatus, (state, { products, error, status }) => ({
+  on(getServiceListStatus, (state, { products, error, status, productsCount }) => ({
     ...state,
     getServiceList: {
       products,
       error,
+      productsCount,
       status,
     },
   })),
-  on(deleteServiceList, (state,{productId}) => ({
+  on(deleteServiceList, (state, { productId }) => ({
     ...state,
-    productId:productId
+    productId: productId,
   })),
-  on(changeVisibilitySuccess, (state,{products}) => ({
+  on(changeVisibilitySuccess, (state, { products }) => ({
     ...state,
-    visibility:products
+    visibility: products,
   })),
   on(initService, () => initialServiceState)
 );
