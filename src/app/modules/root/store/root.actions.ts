@@ -14,3 +14,5 @@ export const getDashboardList = createAction(
   '[Dashboard] GET Dashboard LIST',
   props<{ filters: any }>()
 );
+
+export const publishWebsite = createAction('[Dashboard] PUBLISH WEBSITE');

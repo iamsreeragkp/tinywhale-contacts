@@ -6,7 +6,6 @@ import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
-import { OptionsType } from 'src/app/shared/interfaces/dropdown.interface';
 import {
   convert24HrsFormatToAmPm,
   locationOptions,
@@ -17,6 +16,7 @@ import {
   LocationType,
   PricePackage,
   Product,
+  ProductPayload,
   ProductPhoto,
   TimeRange,
   WeekDay,
@@ -133,7 +133,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(3000), takeUntil(this.startTimeUnsubscriber$))
       .subscribe(() => {
         this.autoSaving = true;
-        console.log('********saving', this.autoSaving);
         this.saveProductForm();
       });
     this.productForm
@@ -148,15 +147,15 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   initForms(val?: Product) {
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null, Validators.required],
-      title: [val?.title ?? null],
-      description: [val?.description ?? null],
-      price: [val?.price ?? null],
-      currency: [val?.currency ?? null],
-      visibility: [val?.visibility ?? null],
+      title: [val?.title ?? null, Validators.required],
+      description: [val?.description ?? null, Validators.required],
+      price: [val?.price ?? null, Validators.required],
+      // currency: [val?.currency ?? null],
+      visibility: [val?.visibility ?? null, Validators.required],
       photos: this._fb.array(
         Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
       ),
-      location: [this.createLocation(val)],
+      location: [this.createLocation(val), Validators.required],
       price_package: this._fb.array(
         val?.class?.class_packages?.length
           ? val.class.class_packages.map(pkg => this.createPricePackages(pkg))
@@ -167,8 +166,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range))
           : []
       ),
-      capacity: [val?.class?.capacity ?? null, Validators.pattern(/^[0-9]$/)],
-      duration: [val?.class?.duration_in_minutes ?? null],
+      capacity: [val?.class?.capacity ?? null, [Validators.required]],
+      duration: [val?.class?.duration_in_minutes ?? null, Validators.required],
     });
     if (val?.product_id) {
       this.productForm.addControl('product_id', this._fb.control(val.product_id));
@@ -208,7 +207,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     }
     return this._fb.group({
       id: { value: Symbol('time_range'), disabled: true },
-      day_of_week: [val?.day_of_week ?? null, [Validators.pattern(/^[1-7]$/)]],
+      day_of_week: [val?.day_of_week ?? null],
       start_time: [val?.start_time ?? ''],
       end_time: [val?.end_time ?? ''],
       end_time_label: [{ value: convert24HrsFormatToAmPm(val?.end_time), disabled: true }],
@@ -359,9 +358,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       currency,
       visibility,
       location,
-      photos,
-      price_package,
-      time_ranges,
+      photos: photosWithEmpty,
+      price_package: pricePackagesWithEmpty,
+      time_ranges: timeRangesWithEmpty,
       capacity,
       duration,
     } = this.productForm.value;
@@ -369,7 +368,14 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     if (location_type !== LocationType.BUSINESS_LOCATION) {
       location_id = undefined;
     }
-    const payload = {
+    const photos: ProductPhoto[] = photosWithEmpty.filter((photo: ProductPhoto) => photo.photo_url);
+    const price_package: PricePackage[] = pricePackagesWithEmpty.filter(
+      (pkg: PricePackage) => pkg.price || pkg.no_of_sessions
+    );
+    const time_ranges: TimeRange[] = timeRangesWithEmpty.filter(
+      (tR: TimeRange) => tR.end_time || tR.start_time
+    );
+    const payload: ProductPayload = {
       product_id,
       product_type,
       title,
@@ -383,12 +389,17 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         location_type,
         address,
       },
-      photos: photos.filter((photo: ProductPhoto) => photo.photo_url),
-      price_package: price_package.filter((pkg: PricePackage) => pkg.price && pkg.no_of_sessions),
-      time_ranges: time_ranges.filter((tR: TimeRange) => tR.end_time && tR.start_time),
+      photos,
+      price_package,
+      time_ranges,
       capacity,
       duration,
     };
+    payload.is_active =
+      this.productForm.valid &&
+      !!photos.length &&
+      !!time_ranges.length &&
+      time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
     this.store.dispatch(addService({ productData: payload }));
   }
 

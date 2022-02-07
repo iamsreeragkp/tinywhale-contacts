@@ -62,7 +62,13 @@ export class ServiceEffects {
       ofType(getServiceList),
       switchMap(({ filters }) =>
         this.productService.getServiceList(filters).pipe(
-          map((response: any) => getServiceListStatus({ products: response.data, status: true })),
+          map((response: any) =>
+            getServiceListStatus({
+              products: response.data,
+              productsCount: response.count,
+              status: true,
+            })
+          ),
           catchError(err => of(getServiceListStatus({ error: err, status: false })))
         )
       )

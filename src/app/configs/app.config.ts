@@ -3,8 +3,8 @@ import { InjectionToken } from '@angular/core';
 export let APP_CONFIG = new InjectionToken('app.config');
 
 export const AppConfig: any = {
-  topHeroesLimit: 5,
-  snackBarDuration: 3000,
+  defaultStartPage: 1,
+  defaultPageLimit: 10,
   sentryDSN: 'https://www.tinywhale.com/errorlogs',
   cspDirectives: {
     defaultSrc: [
@@ -33,3 +33,5 @@ export const AppConfig: any = {
     ],
   },
 };
+
+export type AppConfigType = typeof AppConfig;

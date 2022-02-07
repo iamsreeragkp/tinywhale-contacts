@@ -146,9 +146,9 @@ export const locationOptions = [
     location_type: LocationType.CUSTOMER_LOCATION,
     location_name: "Customer's Location",
   },
-  {
-    location_id: LocationType.ONLINE,
-    location_type: LocationType.ONLINE,
-    location_name: 'Online (Zoom - connect)',
-  },
+  // {
+  //   location_id: LocationType.ONLINE,
+  //   location_type: LocationType.ONLINE,
+  //   location_name: 'Online (Zoom - connect)',
+  // },
 ];

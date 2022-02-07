@@ -367,15 +367,18 @@
       </tr>
       <tr>
         <td colspan="7">
-          <div class="w-full h-12 flex justify-center items-center" *ngIf="true">
-            <button class="noborder-button">Load More</button>
+          <div
+            class="w-full h-12 flex justify-center items-center"
+            *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
+          >
+            <button class="noborder-button" (click)="loadMore()">Load More</button>
           </div>
         </td>
       </tr>
       <tr>
         <td colspan="7">
           <div class="w-full" *ngIf="isFilterEmpty && !productsList?.length">
-            <app-no-data-service-component  class="flex flex-1"></app-no-data-service-component>
+            <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
           </div>
           <app-no-result-service-component
             class="flex flex-1"
