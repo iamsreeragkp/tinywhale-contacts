@@ -3,17 +3,33 @@
   <h1 class="title not-italic font-normal text-2xl leading-6 mb-0 mt-12">
     Your services will be displayed here
   </h1>
-  <p class="content font-normal not-italic text-base mt-3">
+  <p *ngIf="doesProductListExists ; else noProductContent" class="content font-normal not-italic text-base mt-3">
     Start adding the services you offer and share them with your customers
   </p>
+  <ng-template #noProductContent>
+    <p class="content font-normal not-italic text-base mt-3">
+      Create your TinyCard™, start adding services and share them with your customers
+    </p>
+  </ng-template> 
   <div class="flex justify-evenly mt-8">
     <!-- <button class="secondary-button mr-2"><span>See TinyCard™ Template</span></button> -->
     <button
+    *ngIf="doesProductListExists ; else noProductButton"
       class="primary-button w-48 ml-2"
       [routerLink]="['../add-service']"
       routerLinkActive="router-link-active"
     >
       Add A Service
     </button>
+    <ng-template #noProductButton>
+      <button class="secondary-button w-60 mr-3"><span>See TinyCard™ Template</span></button>
+      <button
+        class="primary-button w-48 ml-3"
+        [routerLink]="['/home']"
+        routerLinkActive="router-link-active"
+      >
+        Get Started
+      </button>
+    </ng-template>
   </div>
 </div>
