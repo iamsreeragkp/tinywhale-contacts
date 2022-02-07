@@ -114,7 +114,9 @@
                 <span class="tooltiptext">Payment processing fees upon actuals</span>
               </div>
             </div>
-            <h3 class="text-primaryFont font-bold font-baloo text-tworem">0 %</h3>
+            <h3 class="text-primaryFont font-bold font-baloo text-tworem">
+              {{ percentage || '0' }} %
+            </h3>
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center invisible">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />

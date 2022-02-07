@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   chart1: any;
   chart2: any;
   chart3: any;
+  percentage: any;
 
   colorScheme: Color = {
     name: 'primary',
@@ -88,6 +89,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
+      console.log(this.dashboardInfos);
+
+      const currentMonth = this.dashboardInfos?.processing_fee?.current_month;
+      const lastMonth = this.dashboardInfos?.processing_fee?.last_month;
+
+      const difference = currentMonth - lastMonth;
+      const lastMonthMeasurement = difference / lastMonth;
+      this.percentage = lastMonthMeasurement * 100;
+
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       for (let i = 0; i < this.priceData?.length; i++) {
