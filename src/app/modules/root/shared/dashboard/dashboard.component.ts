@@ -90,12 +90,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.dashboardInfos = data;
       console.log(this.dashboardInfos);
 
-      const currentMonth = this.dashboardInfos?.processing_fee?.current_month;
-      const lastMonth = this.dashboardInfos?.processing_fee?.last_month;
+      const getewayFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.gateway_fee;
+      const paymentFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.payment_amount;
+      const processFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.platform_fee;
 
-      const difference = currentMonth - lastMonth;
-      const lastMonthMeasurement = difference / lastMonth;
-      this.percentage = lastMonthMeasurement * 100;
+      const getewayFeeLast = this.dashboardInfos?.processing_fee?.last_month?.gateway_fee;
+      const paymentFeeLast = this.dashboardInfos?.processing_fee?.last_month?.payment_amount;
+      const processFeeLast = this.dashboardInfos?.processing_fee?.last_month?.platform_fee;
+
+      const currentTotal = getewayFeeCurrent + paymentFeeCurrent + processFeeCurrent;
+      const lastTotal = getewayFeeLast + paymentFeeLast + processFeeLast;
+
+      const diff = currentTotal - lastTotal;
+
+      const avg = (currentTotal + lastTotal) / 2;
+
+      this.percentage = (diff * 100) / avg;
 
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
