@@ -16,6 +16,7 @@ import {
 export class ThreeDotsComponent {
   open = false;
   _actions: string[] = [];
+  @Input() isDisabled: Boolean = false;
   @ViewChild('threeDots') threeDots!: ElementRef<HTMLDivElement>;
   @Input() set actions(val: string[]) {
     this._actions = val;

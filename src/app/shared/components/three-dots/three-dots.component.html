@@ -1,10 +1,17 @@
 <div class="relative" #threeDots>
-  <button class="secondary-button w-12" (click)="open = !open">
-    <!-- <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
-        class="table-container-button-svgFill" />
-    </svg> -->
+  <button [disabled]="isDisabled" class="table-container-button w-12 h-12 flex items-center justify-center font-semibold rounded-full duration-700" (click)="open = !open">
+    <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 26 26"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.583 13.27a2.167 2.167 0 1 1-4.333 0 2.167 2.167 0 0 1 4.333 0zM15.167 13.27a2.166 2.166 0 1 1-4.333 0 2.166 2.166 0 0 1 4.333 0zM20.583 15.437a2.166 2.166 0 1 0 0-4.332 2.166 2.166 0 0 0 0 4.332z"
+                    class="table-container-button-svgFill"
+                  />
+                </svg>
   </button>
   <!-- open more -->
   <div
