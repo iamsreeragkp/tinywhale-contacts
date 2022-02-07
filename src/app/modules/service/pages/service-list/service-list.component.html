@@ -3,7 +3,7 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Services</span>
     </header>
-    <button class="primary-button px-12" [routerLink]="['../add-service']">
+    <button *ngIf="hasStarted()" class="primary-button px-12" [routerLink]="['../add-service']">
       Add A Service
     </button>
   </div>
