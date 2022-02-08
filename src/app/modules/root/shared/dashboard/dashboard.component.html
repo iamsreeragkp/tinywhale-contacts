@@ -38,10 +38,10 @@
             </h3>
 
             <!-- used hidden to occupy space of element when not showing -->
-            <div class="flex items-center ml-6 invisible">
+            <div class="flex items-center ml-6">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">S$ 80</span>
+              <span class="green-text ml-3">S$ {{ currentMonthGross || '0' }}</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
@@ -98,10 +98,10 @@
               />
             </div>
             <!-- used hidden to occupy space of element when not showing -->
-            <div class="flex items-center invisible">
+            <div class="flex items-center">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">4</span>
+              <span class="green-text ml-3">{{ bookingGross || '0' }}</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
@@ -118,10 +118,10 @@
               {{ percentage || '0' }} %
             </h3>
             <!-- used hidden to occupy space of element when not showing -->
-            <div class="flex items-center invisible">
+            <div class="flex items-center">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">.02%</span>
+              <span class="green-text ml-3">{{ fromLastMonthProcessGross || '0' }}%</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
