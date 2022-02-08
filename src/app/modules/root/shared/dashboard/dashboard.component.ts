@@ -85,10 +85,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
   }
+  currentMonthGross: any;
+  bookingGross: any;
+  fromLastMonthProcessGross: any;
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
-      console.log(this.dashboardInfos);
+      // console.log(this.dashboardInfos);
+
+      const fromCurrentMonth = this.dashboardInfos?.gross_earnings?.current_month;
+      const fromLastMonth = this.dashboardInfos?.gross_earnings?.last_month;
+      this.currentMonthGross = fromCurrentMonth - fromLastMonth;
+
+      const fromCurrentMonthBooking = this.dashboardInfos?.bookings?.current_month;
+      const fromLastMonthBooking = this.dashboardInfos?.bookings?.last_month;
+      this.bookingGross = fromCurrentMonthBooking - fromLastMonthBooking;
 
       const getewayFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.gateway_fee;
       const paymentFeeCurrent = this.dashboardInfos?.processing_fee?.current_month?.payment_amount;
@@ -100,6 +111,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const currentTotal = getewayFeeCurrent + paymentFeeCurrent + processFeeCurrent;
       const lastTotal = getewayFeeLast + paymentFeeLast + processFeeLast;
+
+      const fromLastprocess = (currentTotal - lastTotal) / 2;
+      this.fromLastMonthProcessGross = fromLastprocess * 100;
+
       const avg = (currentTotal + lastTotal) / 2;
 
       if (currentTotal < lastTotal) {
