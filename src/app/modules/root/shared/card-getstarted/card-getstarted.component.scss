@@ -63,6 +63,15 @@
     line-height: 1.63rem;
     color: #154f5b;
   }
+  .card-tooltip-text {
+    width: 17rem !important;
+    &::after {
+      content: '';
+      margin-top: -13px !important;
+      border-width: 8px !important;
+    }
+  }
+
   .completedetails-button {
     font-family: Baloo;
     background: #00a4b7;
@@ -90,4 +99,3 @@
     font-size: 15px !important;
   }
 }
-

@@ -57,7 +57,7 @@
 <div class="pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
   <!--Card 1-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white mr-2 mt-2 mb-2">
+    <div class="flex flex-col card shadow-lg p-8 bg-white mr-2 mt-2 mb-2">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.businessInfo?.isStarted && dashboardInfos?.businessInfo?.isCompleted"
@@ -84,7 +84,15 @@
       </div>
       <div class="flex-1 flex flex-col justify-between">
         <p class="card-content not-italic font-normal text-base py-4">
-          Create a stunning and professional TinyCard™ in minutes
+          Create a stunning and professional TinyCard™&nbsp;
+
+          <span class="tooltip-right">
+            <span class="dashboard-new-i-blue cursor-help relative top-1"
+              ><img src="../../../../../assets/images/tooltip-icon.svg"
+            /></span>
+            <span class="tooltiptext card-tooltip-text">Text defining Tiny Card</span>
+          </span>
+          &nbsp;
         </p>
 
         <div>
