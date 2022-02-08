@@ -232,11 +232,11 @@
         </span>
       </div>
       <!-- </div> -->
-      <div class="input-field flex mb-4" *ngIf="checkedInfo">
+      <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <button
-            [disabled]="paymentForm.invalid"
+            [disabled]="!checkedInfo"
             class="primary-button w-56"
             (click)="onConnectBank()"
             *ngIf="!idStatus"

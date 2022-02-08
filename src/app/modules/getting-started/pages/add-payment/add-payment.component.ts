@@ -76,7 +76,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
           this.initializePaymentForm(data);
           if (data?.payout_info?.beneficiary_id) {
             this.idStatus = true;
-            this.store.dispatch(addKyc());
+            //   this.store.dispatch(addKyc());
           }
         } else {
           console.log(data?.error);
@@ -172,6 +172,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       postal_code: parseInt(postelcode),
       default_currency: currency,
     };
+
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
     this.isSaving = false;
     this.router.navigate(['/']);
@@ -207,11 +208,11 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       default_currency: currency,
       connect_rapyd: true,
     };
-    if (this.idStatus) {
-      this.store.dispatch(addKyc());
-    } else {
-      this.store.dispatch(addPayment({ paymentData: rapidPayload }));
-    }
+    this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+    // if (this.idStatus) {
+    //   this.store.dispatch(addKyc());
+    // } else {
+    // }
   }
 
   onUpdateBank() {

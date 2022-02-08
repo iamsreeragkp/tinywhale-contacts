@@ -28,7 +28,7 @@
         </p>
       </div>
     </div>
-    <div class="input-field flex mb-8">
+    <div class="input-field flex mb-8" *ngIf="payInfo?.type === 'COMPANY'">
       <div class="w-44 label text-right mr-12"><label for="">Company Name</label></div>
       <div class="w-form">
         <p
@@ -38,6 +38,28 @@
         </p>
       </div>
     </div>
+    <ng-container *ngIf="payInfo?.type === 'INDIVIDUAL'">
+      <div class="input-field flex mb-8">
+        <div class="w-44 label text-right mr-12"><label for="">First Name</label></div>
+        <div class="w-form">
+          <p
+            class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+          >
+            {{ payInfo?.first_name || '---' }}
+          </p>
+        </div>
+      </div>
+      <div class="input-field flex mb-8">
+        <div class="w-44 label text-right mr-12"><label for="">Last Name</label></div>
+        <div class="w-form">
+          <p
+            class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+          >
+            {{ payInfo?.last_name || '---' }}
+          </p>
+        </div>
+      </div>
+    </ng-container>
     <div class="input-field flex mb-8">
       <div class="w-44 label text-right mr-12"><label for="">Address</label></div>
       <div class="w-form">
