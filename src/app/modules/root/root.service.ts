@@ -16,6 +16,6 @@ export class RootService {
   }
 
   publishWebsite() {
-    return this.http.post(`${this.api}/publish-website`, {});
+    return this.http.post(`${this.api}/dashboard/publish-website`, {});
   }
 }
