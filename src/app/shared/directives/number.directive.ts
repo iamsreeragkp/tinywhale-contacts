@@ -37,7 +37,10 @@ export class NumberDirective {
       e.preventDefault();
     }
   }
-
+  @HostListener('wheel', ['$event'])
+  onWheel(event: Event) {
+    event.preventDefault();
+  }
   @HostListener('paste', ['$event'])
   onPaste(event: ClipboardEvent) {
     const clipBoardData = event?.clipboardData?.getData('text/plain');
