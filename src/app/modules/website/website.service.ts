@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -14,29 +14,10 @@ export class WebsiteService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   addBusinessInfo(payload: BusinessEditPayload): Observable<any> {
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = userData;
-    return this.http.post(`${this.businessApi}/dashboard/business-info`, {
-      ...payload,
-      business_id,
-    });
+    return this.http.post(`${this.businessApi}/dashboard/business-info`, payload);
   }
 
   getBusiness() {
-    console.log('reached');
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId },
-    } = userData;
-    return this.http.get(`${this.businessApi}/dashboard/business-info/${businessId}`);
-  }
-
-  // if query params
-
-  public getBusi(id: any) {
-    let param1 = new HttpParams().set('id', id);
-    return this.http.get(`${this.businessApi}/dashboard/business-info`, { params: param1 });
+    return this.http.get(`${this.businessApi}/dashboard/business-info`);
   }
 }

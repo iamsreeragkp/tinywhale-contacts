@@ -1,5 +1,4 @@
 export interface AccountAddPayload {
-  business_id?: any;
   business_name?: any;
   type?: any;
   address_line_1?: string;

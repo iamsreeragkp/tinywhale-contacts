@@ -15,26 +15,31 @@ export const currencyList = [
     id: 'USD',
     name: 'US Dollar (USD)',
     symbol: '$',
+    country: 'US',
   },
   {
     id: 'INR',
     name: 'Indian Rupee (INR)',
     symbol: '₹',
+    country: 'IN',
   },
   {
     id: 'SGD',
     name: 'Singapore Dollar (SGD)',
     symbol: 'S$',
+    country: 'SG',
   },
   {
     id: 'GBP',
     name: 'Pound Sterling (GBP)',
     symbol: '£',
+    country: 'GB',
   },
   {
     id: 'AUD',
     name: 'Australian Dollar (AUD)',
     symbol: 'A$',
+    country: 'AU',
   },
 ];
 
