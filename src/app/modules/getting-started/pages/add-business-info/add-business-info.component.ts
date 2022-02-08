@@ -217,8 +217,6 @@ onKeyUpPunchLine(punchline:any){
          business_photos:[cover],
          testimonials: testimonialitems
       };
-
-      console.log(businessPayload,"paload");
       this.store.dispatch(addBusiness({ businessData: businessPayload}));
 
       return;
@@ -235,10 +233,7 @@ onKeyUpPunchLine(punchline:any){
   }
 
   initializeBusinessForm(val?: BusinessInfo) {
-    // console.log(val,"ssdmsb");
-    console.log(val,"wdjhwjehw");
-    
-    
+
     this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
@@ -268,14 +263,11 @@ onKeyUpPunchLine(punchline:any){
       ),
     });
     if (val?.logo) {
-    
-      
+  
       this.logoImageUrl = val.logo;
-      console.log(this.logoImageUrl,"sdsdsdsd");
     }
     if((val?.business_photos?.[0]?.photo_url)){
       this.coverImageUrl = val?.business_photos?.[0]?.photo_url;
-      console.log(this.coverImageUrl,"sdsd");
     }
   }
 
@@ -287,9 +279,7 @@ onKeyUpPunchLine(punchline:any){
   }
 
   createLicences(val?: Recognitions): FormGroup {
-    this.arrayLicenceImageUrl.push(val?.photo_url);
-    console.log(val?.expiry_date,"condolldd");
-    
+    this.arrayLicenceImageUrl.push(val?.photo_url);    
     return this.fb.group({
       // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
@@ -356,10 +346,7 @@ onKeyUpPunchLine(punchline:any){
             const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'cover', 'image/',true);
             this.fileToUploadCover = file;
             this.coverImageUrl = url;
-
-            console.log(file, url, fileKey);
-            
-            this.businessInfoForm.get('cover')?.patchValue([{"photo_url":fileKey}]);
+            this.businessInfoForm.get('cover')?.patchValue({"photo_url":fileKey});
           } catch (ex) {
             
           }
@@ -381,7 +368,7 @@ onKeyUpPunchLine(punchline:any){
       this.coverImageUrl = '';
       this.fileToUploadCover = null;
       // this.businessCoverPhoto?.patchValue(null);
-      this.businessCoverPhoto?.patchValue([{  photo_url: '',}]);
+      this.businessCoverPhoto?.patchValue({  photo_url: ''});
    
   }
 
