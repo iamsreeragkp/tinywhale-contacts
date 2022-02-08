@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { getPayment } from '../../store/account.actions';
-import { AccountInfo } from '../../store/account.interface';
 import { IAccountState } from '../../store/account.reducers';
 import { getPayments } from '../../store/account.selectors';
 
@@ -13,7 +11,7 @@ import { getPayments } from '../../store/account.selectors';
   templateUrl: './view-payment.component.html',
   styleUrls: ['./view-payment.component.scss'],
 })
-export class ViewPaymentComponent implements OnInit {
+export class ViewPaymentComponent {
   paymentInfo: any;
   constructor(
     private store: Store<IAccountState>,
@@ -26,12 +24,8 @@ export class ViewPaymentComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
   onLogout() {
     this.authService.onlogout();
-    this.router.navigate(['/']);
-    window.location.reload();
   }
 
   navigateToEdit() {
