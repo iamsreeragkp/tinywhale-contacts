@@ -10,12 +10,6 @@
   .nav-link {
     height: 4.5rem;
   }
-
-  svg {
-    .color-fill {
-      fill: #6b9eb6 !important;
-    }
-  }
   .active-border {
     display: none;
   }
@@ -27,9 +21,21 @@
       // background: #00a4b7;
       background: linear-gradient(90deg, #359cbb, #64c299);
     }
-    .color-fill {
-      fill: #00a4b7 !important;
+    .icon {
+      @apply hidden;
     }
+    .active-icon {
+      @apply block;
+    }
+    .nav-text {
+      @apply font-bold;
+    }
+  }
+  .icon {
+    @apply block;
+  }
+  .active-icon {
+    @apply hidden;
   }
 }
 // <!--Active item Condition --!>
@@ -37,11 +43,16 @@
 .active {
   .active-border {
     display: block;
-    // background: #00a4b7;
     background: linear-gradient(90deg, #359cbb, #64c299);
   }
-  .color-fill {
-    fill: #00a4b7 !important;
+  .icon {
+    @apply hidden;
+  }
+  .active-icon {
+    @apply block;
+  }
+  .nav-text {
+    @apply font-bold;
   }
 }
 

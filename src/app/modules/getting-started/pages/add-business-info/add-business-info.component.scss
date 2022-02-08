@@ -130,9 +130,8 @@
     color: #154f5b;
   }
   .add-another {
-    font-family: Baloo;
-    color: #00a4b7;
-    cursor: pointer;
+    width: fit-content;
+    @apply mt-4 px-0;
   }
 }
 

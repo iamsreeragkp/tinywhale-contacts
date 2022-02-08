@@ -5,6 +5,7 @@ import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { publishWebsite } from '../../store/root.actions';
 
 @Component({
   selector: 'app-card-getstarted',
@@ -16,12 +17,11 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
   showPortal = false;
-  baseURL= environment.tinyCardURL;
-  iframeURL:any;
-  @ViewChild('openWindow', { static: false }) openWindow:any;
+  baseURL = environment.tinyCardURL;
+  iframeURL: any;
+  @ViewChild('openWindow', { static: false }) openWindow: any;
   constructor(private store: Store<IRootState>, private sanitizer: DomSanitizer) {
-    this.dashboard$ = store.pipe(select(getDashboardData),
-    );
+    this.dashboard$ = store.pipe(select(getDashboardData));
   }
 
   ngOnInit(): void {
@@ -30,26 +30,33 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
 
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
-      this.dashboardInfos = data; 
+      this.dashboardInfos = data;
     });
-    
   }
 
-  iframeOpen(type:any){
+  iframeOpen() {
     // // this.showPortal = false;
-    if (type === "publishTinyCard") {
-      this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseURL+'/'+this.dashboardInfos.domainName}`);
-    }
-    else{   
+    if (!this.isCompleted()) {
+      this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `${this.baseURL + '/' + this.dashboardInfos.domainName}`
+      );
+    } else {
       this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseURL}/preview`);
     }
     this.openWindow.openDialog();
     this.showPortal = true;
   }
 
-  isCompleted()
-  {                                                                                                                       
-    return ( !this.dashboardInfos?.businessInfo?.isCompleted || !this.dashboardInfos?.serviceInfo?.isCompleted || !this.dashboardInfos?.paymentInfo?.isCompleted)
+  isCompleted() {
+    return (
+      !this.dashboardInfos?.businessInfo?.isCompleted ||
+      !this.dashboardInfos?.serviceInfo?.isCompleted ||
+      !this.dashboardInfos?.paymentInfo?.isCompleted
+    );
+  }
+
+  publishWebsite() {
+    this.store.dispatch(publishWebsite());
   }
 
   ngOnDestroy(): void {

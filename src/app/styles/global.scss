@@ -101,12 +101,23 @@ body {
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    svg {
+      path {
+        fill: white;
+      }
+    }
     @apply text-white;
   }
   &:disabled {
     color: #d6e1e3 !important;
-    background-color: #fff !important;
     border-color: #d6e1e3 !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+      linear-gradient(90deg, white, white);
+    svg {
+      path {
+        fill: #d6e1e3;
+      }
+    }
     @apply cursor-not-allowed;
   }
   @apply flex items-center justify-center h-12 rounded-full px-5 duration-500 font-baloo;

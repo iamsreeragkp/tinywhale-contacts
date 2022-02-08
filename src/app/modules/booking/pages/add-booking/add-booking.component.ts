@@ -146,6 +146,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       platform: payment,
     };
 
+    if (bookingPayload.phone_number === null) {
+      delete bookingPayload['phone_number'];
+    }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     window.location.reload();
     // this.router.navigate(['../booking/view-booking']);
@@ -174,6 +177,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment,
     };
+    if (bookingPayload.phone_number === null) {
+      delete bookingPayload['phone_number'];
+    }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.store.select(getBookingInfo).subscribe((data: any) => {
       if (data?.data?.user?.email) {
@@ -219,6 +225,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       platform: payment || 'ONLINE',
       order_id: this.orderId,
     };
+    if (bookingPayload.phone_number === null) {
+      delete bookingPayload['phone_number'];
+    }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.location.back();
   }

@@ -211,10 +211,10 @@ onKeyUpPunchLine(punchline:any){
         logo: logo,
         social_links: socialitems,
         recognitions: licenceitems,
-        phone_number:phone_number,
+        phone_number:phone_number.toString(),
          email:email,
          contact_type: contact_type,
-         photos:cover,
+         business_photos:[cover],
          testimonials: testimonialitems
       };
 
@@ -235,14 +235,16 @@ onKeyUpPunchLine(punchline:any){
   }
 
   initializeBusinessForm(val?: BusinessInfo) {
-    console.log(val,"ssdmsb");
+    // console.log(val,"ssdmsb");
+    console.log(val,"wdjhwjehw");
+    
     
     this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
-      cover:[val?.cover ?? ''],
+      cover:[val?.business_photos?.[0]?.photo_url ?? ''],
       email:[val?.email ?? ''],
       phone_number:[val?.phone_number ?? ''],
       contact_type :[val?.contact_type ?? ''],
@@ -266,10 +268,14 @@ onKeyUpPunchLine(punchline:any){
       ),
     });
     if (val?.logo) {
+    
+      
       this.logoImageUrl = val.logo;
+      console.log(this.logoImageUrl,"sdsdsdsd");
     }
-    if(val?.cover){
-      this.coverImageUrl = val.cover;
+    if((val?.business_photos?.[0]?.photo_url)){
+      this.coverImageUrl = val?.business_photos?.[0]?.photo_url;
+      console.log(this.coverImageUrl,"sdsd");
     }
   }
 
@@ -282,11 +288,13 @@ onKeyUpPunchLine(punchline:any){
 
   createLicences(val?: Recognitions): FormGroup {
     this.arrayLicenceImageUrl.push(val?.photo_url);
+    console.log(val?.expiry_date,"condolldd");
+    
     return this.fb.group({
       // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
       recognition_name: [val?.recognition_name ?? ''],
-      expiry_date: [val?.expiry_date? (new Date(val.expiry_date)).toLocaleDateString() : ''],
+      expiry_date: [val?.expiry_date? (new Date(val?.expiry_date)) : ''],
       photo_url: [val?.photo_url ?? ''],
     });
   }
@@ -351,7 +359,7 @@ onKeyUpPunchLine(punchline:any){
 
             console.log(file, url, fileKey);
             
-            this.businessCoverPhoto?.patchValue([{"photo_url":fileKey}]);
+            this.businessInfoForm.get('cover')?.patchValue([{"photo_url":fileKey}]);
           } catch (ex) {
             
           }
@@ -372,12 +380,8 @@ onKeyUpPunchLine(punchline:any){
     deleteCover() {
       this.coverImageUrl = '';
       this.fileToUploadCover = null;
-      this.businessCoverPhoto?.patchValue(null);
-      this.businessCoverPhoto.patchValue({
-        photo_url: '',
-        photo_data_url: '',
-        photo_file: null,
-      });
+      // this.businessCoverPhoto?.patchValue(null);
+      this.businessCoverPhoto?.patchValue([{  photo_url: '',}]);
    
   }
 

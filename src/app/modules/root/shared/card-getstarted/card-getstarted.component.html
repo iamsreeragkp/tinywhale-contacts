@@ -8,33 +8,58 @@
   </div>
   <div class="flex">
     <span class="group relative">
-    <button class="secondary-button h-10 px-6 mr-2 " (click)="iframeOpen('seeTinyCard')">See TinyCard™ Template
-           <ng-container *ngTemplateOutlet="tinyCard;context:{tinyCardData: 'The template has dummy information for now.'}"></ng-container>
+    <button
+      class="secondary-button h-10 px-6 mr-2 relative"
+      [ngClass]="{ 'primary-button': !isCompleted(), 'secondary-button group': isCompleted() }"
+      (click)="iframeOpen()"
+    >
+      <span>{{ isCompleted() ? 'See TinyCard™ Template' : 'Preview your TinyCard™' }}</span>
+      <ng-container
+        *ngTemplateOutlet="
+          tinyCard;
+          context: { tinyCardData: 'The template has dummy information for now.' }
+        "
+      ></ng-container>
     </button>
     </span>
     <span class="group relative">
-    <button class="gray-button h-10 ml-2 px-8" 
-    [disabled]="isCompleted()" (click)="iframeOpen('publishTinyCard')">Publish your TinyCard™
-    </button>
-    <ng-container *ngTemplateOutlet="tinyCard;context:{tinyCardData: isCompleted() ? 'TinyCard™ Publish is allowed after mandatory infomation is filled': 'After publishing, your TinyCard™ will be visible to everyone.'}"></ng-container>
-  </span>
+      <button
+        class="gray-button h-10 ml-2 px-8 group relative"
+        [disabled]="isCompleted()"
+        (click)="publishWebsite()"
+      >
+        Publish your TinyCard™
+      </button>
+      <ng-container
+        *ngTemplateOutlet="
+          tinyCard;
+          context: {
+            tinyCardData: isCompleted()
+              ? 'TinyCard™ Publish is allowed after mandatory infomation is filled'
+              : 'After publishing, your TinyCard™ will be visible to everyone.'
+          }
+        "
+      ></ng-container>
+    </span>
   </div>
   <!-- popover div starts here -->
 
-  <ng-template  #tinyCard let-cardData="tinyCardData ">
-    <div class="absolute border border-grey-100   hidden group-hover:block rounded-[20px] w-64  top-14  z-10  text-white font-medium bg-[#00a4b7]">
-    <p class="text-left items-center flex h-full text-base tracking-normal leading-normal p-5 "> {{cardData}}</p>
-      
+  <ng-template #tinyCard let-cardData="tinyCardData ">
+    <div
+      class="absolute border border-grey-100 hidden group-hover:block rounded-[20px] w-64 top-14 z-10 text-white font-medium bg-[#6B9EB6]"
+    >
+      <p class="text-left items-center flex h-full text-base tracking-normal leading-normal p-5">
+        {{ cardData }}
+      </p>
     </div>
   </ng-template>
-   <!-- popover div ends here -->
-
+  <!-- popover div ends here -->
 </div>
 
 <div class="pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
   <!--Card 1-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white mr-2 mt-2 mb-2">
+    <div class="flex flex-col card shadow-lg p-8 bg-white mr-2 mt-2 mb-2">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.businessInfo?.isStarted && dashboardInfos?.businessInfo?.isCompleted"
@@ -61,8 +86,17 @@
       </div>
       <div class="flex-1 flex flex-col justify-between">
         <p class="card-content not-italic font-normal text-base py-4">
-          Create a stunning and professional TinyCard™ in minutes
+          Create a stunning and professional TinyCard™&nbsp;
+
+          <span class="tooltip-right">
+            <span class="dashboard-new-i-blue cursor-help relative top-1"
+              ><img src="../../../../../assets/images/tooltip-icon.svg"
+            /></span>
+            <span class="tooltiptext card-tooltip-text">Text defining Tiny Card</span>
+          </span>
+          &nbsp;
         </p>
+
         <div>
           <button
             class="primary-button px-10 h-10 mt-auto"
@@ -210,10 +244,28 @@
   </div>
 </div>
 
-    <!-- Whatever you wrap with the '<window>' component will be rendered on a new window  -->
-      <app-window  #openWindow>
-        <div class="relative overflow-hidden m-0 p-0">
-        <iframe *ngIf="iframeURL" [src]='iframeURL' width="100%" height='100%' frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"></iframe>
-      </div>
-      </app-window>
+<!-- Whatever you wrap with the '<window>' component will be rendered on a new window  -->
+<app-window #openWindow>
+  <div class="relative overflow-hidden m-0 p-0">
+    <iframe
+      *ngIf="iframeURL"
+      [src]="iframeURL"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      style="
+        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+      "
+    ></iframe>
+  </div>
+</app-window>
 <!-- </div> -->

@@ -1,4 +1,4 @@
-<div class="table-container w-full rounded-t-lg overflow-hidden">
+<div class="table-container w-full rounded-t-lg">
   <form [formGroup]="filterForm" *ngIf="bookingData?.length || !isFilterEmpty">
     <div class="flex flex-wrap items-center mb-4">
       <div class="relative mb-2 mr-2">
@@ -80,7 +80,7 @@
     <thead>
       <tr class="bg-gray-100">
         <th class="px-2 py-3 text-left font-semibold">
-          <div class="flex items-center text-secondaryBlue">
+          <div class="flex items-center">
             <span> Session Date </span>
             <!-- <div class="ml-2">
               <img
@@ -140,7 +140,7 @@
           <td class="align-top px-2 py-3">
             <div class="relative flex justify-end">
               <ng-container>
-                <app-three-dots [actions]="threeDotsActions"></app-three-dots>
+                <app-three-dots [isDisabled]="true" [actions]="threeDotsActions"></app-three-dots>
               </ng-container>
             </div>
           </td>
@@ -154,7 +154,7 @@
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
             <span class="italic whitespace-nowrap">{{
-              bookData?.order_session[0].session.date || '---'
+              bookData?.order_session?.[0]?.session?.date || '---'
             }}</span>
             <span class="italic whitespace-nowrap">(1/2)</span>
           </div>
@@ -180,7 +180,10 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <span class="italic">{{ bookData?.order_line_item[0]?.product?.title || '---' }}</span>
+            <span
+              class="italic"
+              >{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span
+            >
           </div>
         </td>
         <td class="align-top px-2 py-3">
@@ -188,19 +191,19 @@
             <div class="italic flex items-center">
               <span class="mr-2"
                 >{{
-                  bookData?.order_line_item[0]?.currency === 'INR'
+                  bookData?.order_line_item?.[0]?.currency === 'INR'
                     ? '₹'
-                    : bookData?.order_line_item[0]?.currency === 'USD'
+                    : bookData?.order_line_item?.[0]?.currency === 'USD'
                     ? '$'
-                    : bookData?.order_line_item[0]?.currency === 'SGD'
+                    : bookData?.order_line_item?.[0]?.currency === 'SGD'
                     ? 'S$'
-                    : bookData?.order_line_item[0]?.currency === 'GBP'
+                    : bookData?.order_line_item?.[0]?.currency === 'GBP'
                     ? '£'
-                    : bookData?.order_line_item[0]?.currency === 'AUD'
+                    : bookData?.order_line_item?.[0]?.currency === 'AUD'
                     ? 'A$'
                     : ''
                 }}
-                {{ bookData?.order_line_item[0]?.price || '---' }}</span
+                {{ bookData?.order_line_item?.[0]?.price || '---' }}</span
               >
               <img
                 src="../../../../../assets/images/icons/check.svg"

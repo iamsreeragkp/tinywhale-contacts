@@ -30,7 +30,7 @@ export const getServiceList = createAction(
 );
 export const getServiceListStatus = createAction(
   '[ServiceModule] GET SERVICE LIST STATUS',
-  props<{ products?: Product[]; status: boolean; error?: string }>()
+  props<{ products?: Product[]; productsCount?: number; status: boolean; error?: string }>()
 );
 
 export const initService = createAction('[ServiceModule] INIT');

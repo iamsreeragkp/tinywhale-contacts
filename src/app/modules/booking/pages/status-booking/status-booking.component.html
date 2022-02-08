@@ -84,7 +84,7 @@
               <img
                 src="../../../../../assets/images/icons/check.svg"
                 alt=""
-                *ngIf="stdata?.invoice?.status === 'COMPLETED'"
+                *ngIf="stdata?.invoice?.status === 'SETTLED'"
               />
               <img
                 src="../../../../../assets/images/icons/pending.svg"
@@ -96,7 +96,7 @@
               />
               <div
                 class="absolute status-payment px-4 py-2 whitespace-nowrap rounded-lg"
-                *ngIf="stdata?.invoice?.status === 'COMPLETED'"
+                *ngIf="stdata?.invoice?.status === 'SETTLED'"
               >
                 <span class="text-white">Payment Complete</span>
               </div>

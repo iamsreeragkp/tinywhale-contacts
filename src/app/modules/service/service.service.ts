@@ -14,14 +14,7 @@ export class ServiceService {
   constructor(private authService: AuthService, private http: HttpClient) {}
 
   addServiceInfo(payload: ProductPayload): Observable<any> {
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = userData;
-    return this.http.post(`${this.api}/dashboard/service`, {
-      ...payload,
-      business_id,
-    });
+    return this.http.post(`${this.api}/dashboard/service`, payload);
   }
 
   getService(productId: number) {
@@ -29,18 +22,15 @@ export class ServiceService {
   }
 
   getServiceList(filters: ServiceListFilter) {
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = this.authService.decodeUserToken();
-    const params = new HttpParams({ fromObject: { ...filters, business_id } });
+    const params = new HttpParams({ fromObject: { ...filters } });
     return this.http.get(`${this.api}/dashboard/service`, { params });
   }
 
-  visibilityChange(product_id:number,payload:any){
-    return this.http.patch(`${this.api}/dashboard/service/${product_id}`,payload);
+  visibilityChange(product_id: number, payload: any) {
+    return this.http.patch(`${this.api}/dashboard/service/${product_id}`, payload);
   }
 
-  deleteService(product_id:number){
+  deleteService(product_id: number) {
     return this.http.delete(`${this.api}/dashboard/service/${product_id}`);
   }
 }

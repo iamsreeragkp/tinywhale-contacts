@@ -55,7 +55,7 @@
           </button>
           <div
             (click)="logo.click()"
-            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center cursor-pointer hover:cursor-pointer"
             placeholder="Add a Picture "
           >
             <img
@@ -66,7 +66,7 @@
               contain
             />
             <ng-container *ngIf="!logoImageUrl">
-              <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+              <img class="h-7 cursor-pointer" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
               <span class="text-mediumGray text-center">Add a <br />Picture</span>
             </ng-container>
           </div>
@@ -95,7 +95,7 @@
           </button>
           <div
             (click)="cover.click()"
-            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
             placeholder="Add Cover Photo"
           >
             <img
@@ -166,9 +166,9 @@
               <input class="input py-3 px-4" placeholder="Enter URL" formControlName="url" />
             </div>
           </ng-container>
-          <div class="add-another mt-2 font-normal text-base not-italic" (click)="addSocialItem()">
+          <button class="noborder-button add-another" (click)="addSocialItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
 
@@ -207,7 +207,7 @@
               />
               <ng-container *ngIf="!photo.get('photo_data_url')?.value">
                 <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
-                <span class="text-mediumGray">Add Photo</span>
+                <span class="text-mediumGray cursor-pointer">Add Photo</span>
               </ng-container>
             </div>
           </div>
@@ -234,7 +234,7 @@
               <input type="email" class="input py-3 px-4 mb-3" placeholder="Enter Email Address" formControlName="email" />
            
               <input type="number"
-              [preventNegative]="true"
+                  [preventNegative]="true"
                 class="input py-3 px-4 "
                 placeholder="Enter Phone Number"
                 formControlName="phone_number"
@@ -329,11 +329,10 @@
               <!-- <input
                 class="input py-3 px-4 mb-4"
                 placeholder="Expiry date (MM/DD/YY)"
-                *ngIf="item.get('recognition_type')?.value !== 'AWARD'"
                 formControlName="expiry_date"
               /> -->
 
-              <div class="w-form calendar-1 font-poppins mb-4">
+              <div class="w-form calendar-1 font-poppins mb-4" *ngIf="item.get('recognition_type')?.value !== 'AWARD'">
                 <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
                   formControlName="date" /> -->
                 <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker>
@@ -357,7 +356,7 @@
                   <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
                 </button>
                 <div
-                  class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center"
+                  class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
                   placeholder="Add a Logo"
                   (click)="licenceLogo.click()"
                 >
@@ -372,7 +371,7 @@
                       src="../../../../../assets/images/defualt-image.svg"
                       alt="photo"
                     />
-                    <span class="text-mediumGray">Add Photo</span>
+                    <span class="text-mediumGray cursor-pointer">Add Photo</span>
                   </ng-container>
                 </div>
               </div>
@@ -392,9 +391,9 @@
               
             </div>
           </ng-container>
-          <div class="add-another mt-2 font-normal text-base not-italic" (click)="addLicenceItem()">
+          <button class="noborder-button add-another" (click)="addLicenceItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
 
@@ -429,7 +428,7 @@
                     #title
                     (onChange)="onKeyUp(title)"  maxlength="100"
                   ></textarea>
-                  <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{title.value.length}}/200</span>
+                  <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{title.value.length}}/100</span>
   
              </div>
               <!-- <input
@@ -447,9 +446,9 @@
                   placeholder="Enter testimonial"
                   appTextareaAutoresize
                   #box
-                  (onChange)="onKeyUp(box)"  maxlength="100"
+                  (onChange)="onKeyUp(box)"  maxlength="200"
                 ></textarea>
-                <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{box.value.length}}/100</span>
+                <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{box.value.length}}/200</span>
                 </div>
                 <div class="flex items-center justify-between ">
 
@@ -470,7 +469,7 @@
                             <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
                           </button>
                           <div
-                            class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center"
+                            class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center hover:cursor-pointer"
                             placeholder="Add photo of client"
                             (click)="clientPhoto.click()"
                           >
@@ -506,12 +505,9 @@
           
             </div>
           </ng-container>
-          <div
-            class="add-another mt-2 font-normal text-base not-italic"
-            (click)="addTestimonialItem()"
-          >
+          <button class="noborder-button add-another" (click)="addTestimonialItem()">
             + Add Another
-          </div>
+          </button>
         </div>
       </div>
     </div>

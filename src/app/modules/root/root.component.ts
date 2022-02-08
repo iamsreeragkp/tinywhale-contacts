@@ -22,6 +22,6 @@ import { getDashboard } from './store/root.actions';
 })
 export class RootComponent {
   constructor(private store: Store<IRootState>) {
-    this.store.dispatch(getDashboard());
+    this.store.dispatch(getDashboard({ filters: {} }));
   }
 }

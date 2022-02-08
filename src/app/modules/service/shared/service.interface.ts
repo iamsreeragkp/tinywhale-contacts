@@ -14,6 +14,7 @@ export interface ProductPayload {
   price_package?: PricePackage[];
   duration?: number | null;
   time_ranges?: TimeRange[] | null;
+  is_active?: boolean;
 }
 
 export interface Product {

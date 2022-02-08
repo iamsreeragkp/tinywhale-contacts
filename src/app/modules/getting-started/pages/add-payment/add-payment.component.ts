@@ -4,11 +4,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/modules/auth/auth.service';
 import { countryList, currencyList } from 'src/app/shared/utils';
-import { addKyc, addPayment, getPayment } from '../../../accounts/store/account.actions';
+import { addPayment, getPayment } from '../../../accounts/store/account.actions';
 import { IAccountState } from '../../../accounts/store/account.reducers';
-import { getAccountInfo, getKycInfo, getPayments } from '../../../accounts/store/account.selectors';
+import { getPayments } from '../../../accounts/store/account.selectors';
 
 @Component({
   selector: 'app-add-payment',
@@ -18,7 +17,7 @@ import { getAccountInfo, getKycInfo, getPayments } from '../../../accounts/store
 export class AddPaymentComponent implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   ngUnsubscribe = new Subject<any>();
-  unSubscribeAccountType = new Subject<void>();
+  unSubscribeFormFields = new Subject<void>();
   editMode = false;
   paymentData$: Observable<any>;
   isSaving = false;
@@ -29,7 +28,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
   checkedInfo = true;
 
   constructor(
-    private authService: AuthService,
     private store: Store<IAccountState>,
     private router: Router,
     private route: ActivatedRoute,
@@ -37,7 +35,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     public location: Location
   ) {
     this.paymentForm = this.createPaymentForm();
-    this.subscribeAccountTypeChange();
+    this.subscribeFormFieldChanges();
     this.paymentData$ = this.store.pipe(select(getPayments));
     route.url
       .pipe(
@@ -76,7 +74,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
           this.initializePaymentForm(data);
           if (data?.payout_info?.beneficiary_id) {
             this.idStatus = true;
-            this.store.dispatch(addKyc());
+            //   this.store.dispatch(addKyc());
           }
         } else {
           console.log(data?.error);
@@ -101,7 +99,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: new FormControl(val?.country),
       currency: new FormControl(val?.default_currency),
     });
-    this.subscribeAccountTypeChange();
+    this.subscribeFormFieldChanges();
   }
 
   createPaymentForm() {
@@ -120,11 +118,11 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     });
   }
 
-  subscribeAccountTypeChange() {
-    this.unSubscribeAccountType.next();
+  subscribeFormFieldChanges() {
+    this.unSubscribeFormFields.next();
     this.paymentForm
       .get('company')
-      ?.valueChanges.pipe(takeUntil(this.unSubscribeAccountType))
+      ?.valueChanges.pipe(takeUntil(this.unSubscribeFormFields))
       .subscribe(val => {
         if (val === 'INDIVIDUAL') {
           this.paymentForm.get('firstname')?.enable();
@@ -136,14 +134,22 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
           this.paymentForm.get('companyname')?.enable();
         }
       });
+    this.paymentForm
+      .get('country')
+      ?.valueChanges.pipe(takeUntil(this.unSubscribeFormFields))
+      .subscribe(val => {
+        if (val) {
+          this.paymentForm
+            .get('currency')
+            ?.patchValue(this.defaultCurrencies.find(currency => currency.country === val)?.id);
+        } else {
+          this.paymentForm.get('currency')?.patchValue(null);
+        }
+      });
   }
 
   onSubmitPayment() {
     this.isSaving = true;
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = userData;
     const {
       company,
       companyname,
@@ -159,7 +165,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     } = this.paymentForm.value;
 
     const paymentPayload = {
-      business_id: business_id,
       business_name: companyname,
       first_name: firstname,
       last_name: lastname,
@@ -172,16 +177,13 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       postal_code: parseInt(postelcode),
       default_currency: currency,
     };
+
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
     this.isSaving = false;
     this.router.navigate(['/']);
   }
 
   onConnectBank() {
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = userData;
     const {
       company,
       companyname,
@@ -195,7 +197,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     } = this.paymentForm.value;
 
     const rapidPayload = {
-      business_id: business_id,
       business_name: companyname,
       type: company,
       address_line_1: addressline1,
@@ -207,18 +208,14 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       default_currency: currency,
       connect_rapyd: true,
     };
-    if (this.idStatus) {
-      this.store.dispatch(addKyc());
-    } else {
-      this.store.dispatch(addPayment({ paymentData: rapidPayload }));
-    }
+    this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+    // if (this.idStatus) {
+    //   this.store.dispatch(addKyc());
+    // } else {
+    // }
   }
 
   onUpdateBank() {
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId: business_id },
-    } = userData;
     const {
       company,
       companyname,
@@ -232,7 +229,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     } = this.paymentForm.value;
 
     const rapidPayload = {
-      business_id: business_id,
       business_name: companyname,
       type: company,
       address_line_1: addressline1,
