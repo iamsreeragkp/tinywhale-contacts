@@ -1,17 +1,17 @@
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { StorageService } from '../../../shared/services/storage.service';
-import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../../auth/auth.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private storageService: StorageService, private toastrService: ToastrService) {}
+  constructor(private storageService: StorageService, private auth: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(!request?.url?.includes(environment.api_end_point)){
-      return next.handle(request)
+    if (!request?.url?.includes(environment.api_end_point)) {
+      return next.handle(request);
     }
     const token = this.storageService.getToken();
     const customReq = request.clone({
@@ -20,7 +20,16 @@ export class TokenInterceptor implements HttpInterceptor {
       },
     });
     return next.handle(customReq).pipe(
+      tap((res: any) => {
+        const token = res?.headers?.get('X-Auth-Token');
+        if (token) {
+          this.storageService.setAccessToken(token);
+        }
+      }),
       catchError(err => {
+        if (err?.status === 401) {
+          this.auth.onlogout();
+        }
         throw err;
       })
     );

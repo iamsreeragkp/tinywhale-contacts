@@ -42,7 +42,8 @@ export class AuthService {
   }
 
   onlogout() {
-    return localStorage.clear();
+    localStorage.clear();
+    window.location.href = '';
   }
 
   checkEmailExits({ email }: { email: string }): Observable<any> {
