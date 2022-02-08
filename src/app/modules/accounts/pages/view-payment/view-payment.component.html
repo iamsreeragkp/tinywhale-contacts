@@ -24,7 +24,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.type || '---' }}
+          {{ payInfo?.type || '-' }}
         </p>
       </div>
     </div>
@@ -34,18 +34,18 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.business_name || '---' }}
+          {{ payInfo?.business_name || '-' }}
         </p>
       </div>
     </div>
-    <ng-container *ngIf="payInfo?.type === 'INDIVIDUAL'">
+    <ng-container *ngIf="payInfo?.type !== 'COMPANY'">
       <div class="input-field flex mb-8">
         <div class="w-44 label text-right mr-12"><label for="">First Name</label></div>
         <div class="w-form">
           <p
             class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
           >
-            {{ payInfo?.first_name || '---' }}
+            {{ payInfo?.first_name || '-' }}
           </p>
         </div>
       </div>
@@ -55,7 +55,7 @@
           <p
             class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
           >
-            {{ payInfo?.last_name || '---' }}
+            {{ payInfo?.last_name || '-' }}
           </p>
         </div>
       </div>
@@ -76,7 +76,7 @@
               (payInfo?.state || '') +
               ' -' +
               ' ' +
-              (payInfo?.postal_code ? payInfo?.postal_code : 'Pincode') || '---'
+              (payInfo?.postal_code ? payInfo?.postal_code + ' Pincode' : '') || '-'
           }}
         </p>
       </div>
@@ -87,7 +87,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.default_currency || '---' }}
+          {{ payInfo?.default_currency || '-' }}
         </p>
       </div>
     </div>
@@ -100,8 +100,12 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont flex"
         >
-          {{ payInfo?.payout_info?.account_id || payInfo?.payout_info?.beneficiary_id || '---'
-          }}<span class="ml-4"><app-formright></app-formright></span>
+          {{ payInfo?.payout_info?.account_id || payInfo?.payout_info?.beneficiary_id || '-'
+          }}<span
+            class="ml-4"
+            *ngIf="payInfo?.payout_info?.account_id ?? payInfo?.payout_info?.beneficiary_id"
+            ><app-formright></app-formright
+          ></span>
         </p>
       </div>
     </div>

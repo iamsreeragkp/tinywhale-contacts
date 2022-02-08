@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StorageService } from 'src/app/shared/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { AccountAddPayload } from './store/account.interface';
@@ -19,14 +18,10 @@ export class AccountService {
   }
 
   getPayment() {
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { businessId },
-    } = userData;
-    return this.http.get(`${this.paymentApi}/account/account-info/${businessId}`);
+    return this.http.get(`${this.paymentApi}/account/account-info`);
   }
 
-  kycRegister(){
-    return this.http.get(`${this.paymentApi}/account/kyc`)
+  kycRegister() {
+    return this.http.get(`${this.paymentApi}/account/kyc`);
   }
 }
