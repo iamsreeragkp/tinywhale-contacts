@@ -10,6 +10,73 @@
     background-color: #6b9eb6;
   }
 }
+
+
+
+
+.input-section {
+  border-bottom-left-radius: 20px;
+  &-subheading {
+    color: #154f5b;
+  }
+  &-info {
+    color: #154f5b;
+    background-color: #f6f5ea;
+  }
+  .input-field {
+    &-secondary-text {
+      color: #154f5b;
+    }
+    .label {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #154f5b;
+    }
+    .input {
+      background: #ffffff;
+      border: 2px solid #d6e1e3;
+      border-radius: 8px;
+      // width: 360px;
+      color: #154f5b;
+    }
+    .input-photo {
+      background: #f6f9fa;
+      border: 2px dashed #d6e1e3;
+      border-radius: 8px;
+      @apply h-28 w-28;
+    }
+    .input-award {
+      background: #f6f9fa;
+      border: 1px solid #d6e1e3;
+      border-radius: 8px;
+      width: 360px;
+      .input {
+        background: #ffffff;
+        border: 2px solid #d6e1e3;
+        border-radius: 8px;
+        width: 300px;
+        color: #154f5b;
+      }
+      .input-photo {
+        background: #f6f9fa;
+        border: 2px dashed #d6e1e3;
+        border-radius: 8px;
+        width: 120px;
+        height: 120px;
+      }
+    }
+  }
+  .radio-input {
+    border: 2px solid #d6e1e4;
+    &-border-b {
+      border-bottom: 2px solid #d6e1e4;
+    }
+  }
+}
+
 .website-page-heading {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -125,6 +192,15 @@
   border-width: 27px 24px;
   border-style: solid;
   border-color: transparent #eaf3f6 transparent transparent;
+}
+.textarea-wrapper{
+  .textarea-focus + span{
+    display:none;
+  }
+  .textarea-focus:focus + span{
+    display:inline-block;
+  }
+
 }
 
 .image {

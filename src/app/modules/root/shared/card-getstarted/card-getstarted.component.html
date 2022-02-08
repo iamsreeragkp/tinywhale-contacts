@@ -7,11 +7,13 @@
     </p>
   </div>
   <div class="flex">
-    <button class="secondary-button h-10 px-6 mr-2 group relative" (click)="iframeOpen('seeTinyCard')">See TinyCard™ Template
+    <span class="group relative">
+    <button class="secondary-button h-10 px-6 mr-2 " (click)="iframeOpen('seeTinyCard')">See TinyCard™ Template
            <ng-container *ngTemplateOutlet="tinyCard;context:{tinyCardData: 'The template has dummy information for now.'}"></ng-container>
     </button>
+    </span>
     <span class="group relative">
-    <button class="gray-button h-10 ml-2 px-8 group relative" 
+    <button class="gray-button h-10 ml-2 px-8" 
     [disabled]="isCompleted()" (click)="iframeOpen('publishTinyCard')">Publish your TinyCard™
     </button>
     <ng-container *ngTemplateOutlet="tinyCard;context:{tinyCardData: isCompleted() ? 'TinyCard™ Publish is allowed after mandatory infomation is filled': 'After publishing, your TinyCard™ will be visible to everyone.'}"></ng-container>

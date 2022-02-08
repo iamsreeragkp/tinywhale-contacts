@@ -32,6 +32,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
 import { WindowComponent } from './components/window/window.component';
 import { PortalModule } from '@angular/cdk/portal';
+import { TextareaAutoresizeDirective } from './directives/auto-resize.directive';
 
 @NgModule({
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule,PortalModule],
@@ -63,7 +64,9 @@ import { PortalModule } from '@angular/cdk/portal';
     ThreeDotsComponent,
     ModalComponent,
     GoogleiconComponent,
-    WindowComponent
+    WindowComponent, 
+    TextareaAutoresizeDirective
+    
   ],
   exports: [
     CommonModule,
@@ -97,7 +100,8 @@ import { PortalModule } from '@angular/cdk/portal';
     ThreeDotsComponent,
     ModalComponent,
     GoogleiconComponent,
-    WindowComponent
+    WindowComponent,
+    TextareaAutoresizeDirective
   ],
 })
 export class SharedModule {}
