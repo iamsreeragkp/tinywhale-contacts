@@ -54,7 +54,12 @@ export class NoDataBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   hasStarted() {
-    return this.dashboardInfos?.domainActive || this.dashboardInfos?.paymentInfo?.isStarted;
+    return (
+      this.dashboardInfos?.domainActive ||
+      (this.dashboardInfos?.paymentInfo?.isCompleted &&
+        this.dashboardInfos?.businessInfo?.isCompleted &&
+        this.dashboardInfos?.serviceInfo?.isCompleted)
+    );
   }
 
   ngOnDestroy(): void {

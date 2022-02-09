@@ -242,7 +242,7 @@ onKeyUpPunchLine(punchline:any){
       cover:[val?.business_photos?.[0]?.photo_url ?? ''],
       email:[val?.email ?? ''],
       phone_number:[val?.phone_number ?? ''],
-      contact_type :[val?.contact_type ?? ''],
+      contact_type :[val?.contact_type ?? null],
       // photos: this.fb.array(
       //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
       // ),
