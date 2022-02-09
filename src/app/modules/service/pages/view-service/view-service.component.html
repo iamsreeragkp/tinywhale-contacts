@@ -4,7 +4,15 @@
       <span class="text-4xl">{{ productObj?.title ?? '' }}</span>
     </header>
     <div class="flex">
-      <button type="button" class="primary-button mr-2 px-8">Share</button>
+      <div class="relative">
+           <button type="button" class="primary-button mr-2 px-8"  (click)="copyViewBox()">Share</button>
+           <ng-container  *ngIf="copyView "  >
+           <ng-container
+           *ngTemplateOutlet="share; context: { ShareLink: 'data' }
+           "
+         ></ng-container> 
+         </ng-container>
+         </div>
       <app-three-dots
         [actions]="threeDotsActions"
         (actionTriggered)="handleAction($event)"
@@ -176,3 +184,25 @@
     </div>
   </div>
 </app-modal>
+
+<!-- popover div ends here -->
+
+<ng-template #share let-copyLink="ShareLink"    (click)="$event.stopPropagation();"   >
+  <div
+    class="absolute border border-grey-100  rounded-[20px] top-12 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 w-96  cursor-auto" 
+  >
+
+  <p class="flex items-center justify-between text-white font-poppins text-base "><span class="">Share service link with clients</span> <span class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700 " (click)=" copyView =false ">&times;</span></p>
+
+        <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
+          <input type="text" [value]="copyURL" class=" absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none" #userinput />
+          <div class=" select-none  leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4  z-0 focus:shadow focus:outline-none">
+            {{copyURL}}
+          </div>
+          <button type="submit" class="copy-text justify-center pl-2 pr-4" (click)="copyInputMessage(userinput)  "><span class="copy-text bg-clip-text font-semibold">{{copyStatus}}</span></button> 
+      </div>
+
+  </div>
+</ng-template>
+<!-- popover div ends here -->
+

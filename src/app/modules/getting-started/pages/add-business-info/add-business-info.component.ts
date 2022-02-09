@@ -32,17 +32,19 @@ import { getAddBusinessStatus, getBusinessStatus } from '../../../website/store/
   styleUrls: ['./add-business-info.component.scss'],
 })
 export class AddBusinessInfoComponent implements OnInit, OnDestroy {
-  @ViewChild('photoContainer') photoContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('socialContainer') socialContainer!: ElementRef<HTMLDivElement>;
   @ViewChild('punchline') punchline!: ElementRef<HTMLInputElement>;
+  @ViewChild('radioContainer') radioContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('imageContainer') imageContainer!: ElementRef<HTMLDivElement>;
   // @ViewChild('companyName', { static: true }) companyName: ElementRef;
   isSaving = false;
   @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
-    this.closeToPhoto = !!target.closest(
-      'div.' + this.photoContainer.nativeElement.className.split(' ').join('.')
-    );
-    this.closeToPunchline = !!target.closest(
-      'input.' + this.punchline.nativeElement.className.split(' ').join('.')
-    );
+    this.closeToSocial = this.socialContainer.nativeElement.contains(target); 
+    this.closeToPunchline = this.punchline.nativeElement.contains(target); 
+    this.closeToRadio =  this.radioContainer.nativeElement.contains(target); 
+    this.closeToImage = this.imageContainer.nativeElement.contains(target); 
+    
+  
   }
   businessInfoForm!: FormGroup;
   recognitionTypeOptions = [
@@ -58,7 +60,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       value: 'LICENSE',
       label: 'License',
     },
-  ];
+  ]
 
   ngUnsubscribe = new Subject<any>();
   businessData$: Observable<
@@ -68,8 +70,15 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   isUploadingImages = false;
   editMode = false;
   closeToPunchline = false;
-  closeToPhoto = false;
+  closeToRadio = false;
+  closeToSocial = false;
+  closeToImage = false;
   isGettingStarted = false;
+  textCount= 0;
+  options = {
+    format: 'yyyy-MM-dd',
+    placeholder: 'Select date',
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -115,11 +124,18 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     if(!this.editMode){
       this.addBasicInfoSubcription();
     }
-
 }
 
+onKeyUp(boxInput:any){
+return boxInput.value.length ;
 
-
+}
+onKeyUpTesmonialsTitle(title:any){
+  return title.value.length ;
+}
+onKeyUpPunchLine(punchline:any){
+  return punchline.value.length ; //this will have the length of the text entered in the input box
+}
   subscriptions() {
     this.businessData$
       .pipe(
@@ -157,6 +173,17 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   addBasicInfoSubcription(){
+    // this.testimonials.valueChanges
+    //   .subscribe( testimonials=>{
+    //   console.log(testimonials,"sdsds");
+      
+    //   if(testimonials.name === "" && testimonials.photo_url === "" && testimonials.testimonial  === "" &&
+    //   testimonials.title === ""){
+    //     console.log("kkshdkskdjskjdk");
+        
+    //   }
+      
+    // })
     this.businessInfoForm.valueChanges
     .pipe(
       debounceTime(3000),
@@ -164,26 +191,31 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       switchMap((value) => of(value))
     )
     .subscribe((value) => {
-      console.log(value);
+     
       const {
         companyname,
         punchline,
-        aboutme,
         socialitems,
-        photos,
+        email,
         licenceitems,
         testimonialitems,
         logo,
+        phone_number,
+        contact_type,
+        cover
       } = value;
-      const businessPayload = {
+     const businessPayload = {
+
         company_name: companyname,
-        logo: logo,
-        about_me: aboutme,
         punchline: punchline,
+        logo: logo,
         social_links: socialitems,
-        photos: photos.filter((photo: BusinessPhotos) => photo.photo_url),
         recognitions: licenceitems,
-        testimonials: testimonialitems,
+        phone_number:phone_number.toString(),
+         email:email,
+         contact_type: contact_type,
+         business_photos:[cover],
+         testimonials: testimonialitems
       };
       this.store.dispatch(addBusiness({ businessData: businessPayload}));
 
@@ -201,17 +233,19 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   initializeBusinessForm(val?: BusinessInfo) {
-    console.log(val,"ssdmsb");
-    
+
     this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
-      aboutme: [val?.store?.about_me ?? ''],
-      photos: this.fb.array(
-        Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
-      ),
+      cover:[val?.business_photos?.[0]?.photo_url ?? ''],
+      email:[val?.email ?? ''],
+      phone_number:[val?.phone_number ?? ''],
+      contact_type :[val?.contact_type ?? ''],
+      // photos: this.fb.array(
+      //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
+      // ),
       socialitems: this.fb.array(
         val?.links?.length
           ? val?.links?.map(this.createSocialItem.bind(this))
@@ -229,7 +263,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       ),
     });
     if (val?.logo) {
+  
       this.logoImageUrl = val.logo;
+    }
+    if((val?.business_photos?.[0]?.photo_url)){
+      this.coverImageUrl = val?.business_photos?.[0]?.photo_url;
     }
   }
 
@@ -241,12 +279,12 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   createLicences(val?: Recognitions): FormGroup {
-    this.arrayLicenceImageUrl.push(val?.photo_url);
+    this.arrayLicenceImageUrl.push(val?.photo_url);    
     return this.fb.group({
       // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
       recognition_name: [val?.recognition_name ?? ''],
-      expiry_date: [val?.expiry_date? (new Date(val.expiry_date)).toLocaleDateString() : ''],
+      expiry_date: [val?.expiry_date? (new Date(val?.expiry_date)) : ''],
       photo_url: [val?.photo_url ?? ''],
     });
   }
@@ -286,30 +324,52 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   fileNames: any[] = [];
   fileToUploadLogo: File | null | undefined;
+  fileToUploadCover: File | null | undefined;
   logoImageUrl = '';
+  coverImageUrl = '';
 
   async handleFileInputLogo(event: Event) {
-    try {
-      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/',true);
-      this.fileToUploadLogo = file;
-      this.logoImageUrl = url;
-      console.log(file,file,"sjh");
 
-       this.businessInfoForm.get('logo')?.patchValue(fileKey);
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
+        try {
+            const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/',true);
+            this.fileToUploadLogo = file;
+            this.logoImageUrl = url;
+
+            this.businessInfoForm.get('logo')?.patchValue(fileKey);
+          } catch (ex) {
+            
+          }
+        }
+
+        async handleFileInputCover(event: Event) {
+          try {
+            const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'cover', 'image/',true);
+            this.fileToUploadCover = file;
+            this.coverImageUrl = url;
+            this.businessInfoForm.get('cover')?.patchValue({"photo_url":fileKey});
+          } catch (ex) {
+            
+          }
+
+        }
 
   deleteLogo() {
-    this.logoImageUrl = '';
-    this.fileToUploadLogo = null;
-    this.businessInfoForm.get('logo')?.patchValue(null);
-    this.businessInfoForm.patchValue({
-      photo_url: '',
-      photo_data_url: '',
-      photo_file: null,
-    });
+   
+      this.logoImageUrl = '';
+      this.fileToUploadLogo = null;
+      this.businessInfoForm.get('logo')?.patchValue(null);
+      this.businessInfoForm.patchValue({
+        photo_url: '',
+        photo_data_url: '',
+        photo_file: null,
+      });
+    }
+    deleteCover() {
+      this.coverImageUrl = '';
+      this.fileToUploadCover = null;
+      // this.businessCoverPhoto?.patchValue(null);
+      this.businessCoverPhoto?.patchValue({  photo_url: ''});
+   
   }
 
   // photos
@@ -380,12 +440,17 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   deleteAwardOrLicence(index:any){
     const remove = this.businessInfoForm.get('licenceitems') as FormArray;
-    remove.removeAt(index)
+    if(remove.controls.length >1){
+      remove.removeAt(index)
+    }    
   }
 
   deleteTestmonials(index:any){
     const remove = this.businessInfoForm.get('testimonialitems') as FormArray;
-    remove.removeAt(index)
+    if(remove.controls.length >1){
+      remove.removeAt(index)
+    }    
+    // 
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
@@ -581,20 +646,27 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   get photoContainerPos() {
-    return `${(this.photoContainer.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
+    return `${(this.socialContainer.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
   }
 
   get punchlineContainerPos() {
     return `${(this.punchline.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
   }
-
+  get radioContainerPos() {
+    return `${(this.radioContainer.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
+  }
+  get imageContainerPos() {
+    return `${(this.imageContainer.nativeElement?.offsetParent as HTMLElement)?.offsetTop ?? 0}px`;
+  }
   get businessLogo() {
     return this.businessInfoForm.get('logo') as FormControl;
   }
   get businessPhotosList() {
     return <FormArray>this.businessInfoForm.get('photos');
   }
-
+  get businessCoverPhoto() {
+    return this.businessInfoForm.get('cover') as FormControl;
+  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
