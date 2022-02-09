@@ -14,6 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TimeRangeSerialized } from 'src/app/shared/interfaces/time-range.interface';
 import { getTimeRangeSerialized } from 'src/app/shared/utils';
 import { TitleCasePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/modules/auth/auth.service';
 
 @Component({
   selector: 'app-view-service',
@@ -28,12 +30,18 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   product$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   threeDotsActions: string[] = [];
   openProductDeleteModal = false;
+  copyView :any = null;
+  copyStatus:string ="Copy";
+  baseURL = environment.tinyWhaleBaseUrl;
+  copyURL :string ='';
+  customUsername!:string;
 
   constructor(
     private store: Store<IAppState>,
     private route: ActivatedRoute,
     private titleCasePipe: TitleCasePipe,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {
     this.product$ = store.pipe(select(getServiceStatus));
     // store.dispatch(getDashboard());
@@ -42,6 +50,8 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
+    const userData = this.authService.decodeUserToken();
+   this.customUsername = userData.dashboardInfos.customUsername;
   }
 
   getProduct() {
@@ -132,6 +142,20 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
       this.productObj?.class?.class_packages?.filter(pkg => pkg?.price && pkg?.no_of_sessions) ?? []
     );
   }
+
+  copyViewBox(){
+
+    this.copyView = !this.copyView;
+     this.copyStatus ="Copy";
+    this.copyURL =  `${this.baseURL+'/'+this.customUsername+'/service/'+this.productObj?.product_id}`
+}
+
+copyInputMessage(inputElement:any){
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  this.copyStatus="Copied"
+}
 
   ngOnDestroy() {
     this.store.dispatch(initService());
