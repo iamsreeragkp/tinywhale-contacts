@@ -489,5 +489,17 @@ input[type='number'] {
   }
 }
 // Last line should be this
+// copy button style
+
+.copy-text{
+  background: linear-gradient(to right, #359cbb 24%, #64c299 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// copy button style
+
+
+
 
 @import 'tailwindcss/utilities';

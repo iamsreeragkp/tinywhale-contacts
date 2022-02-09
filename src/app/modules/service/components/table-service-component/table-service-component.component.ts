@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
+import { AuthService } from 'src/app/modules/auth/auth.service';
 import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
+import { environment } from 'src/environments/environment';
 import { ServiceService } from '../../service.service';
 import { Product, ServiceListFilter, VisibilityType } from '../../shared/service.interface';
 import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
@@ -64,6 +66,11 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   openProductDeleteModal = false;
   page: number;
   limit: number;
+  copyView :any = null;
+  copyStatus:string ="Copy";
+  baseURL = environment.tinyWhaleBaseUrl;
+  copyURL :string ='';
+  customUsername!:string;
 
   constructor(
     private store: Store<IServiceState>,
@@ -71,6 +78,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private titleCasePipe: TitleCasePipe,
+    private authService: AuthService,
     @Inject(APP_CONFIG) private appConfig: AppConfigType
   ) {
     this.productList$ = store.pipe(
@@ -86,10 +94,28 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
+   const userData = this.authService.decodeUserToken();
+   this.customUsername = userData.dashboardInfos.customUsername;
   }
+  copyViewBox(index:number,productId:number){
+    index === this.copyView ?  this.copyView = null : this.copyView = index;
+    this.copyStatus ="Copy";
+    this.copyURL =  `${this.baseURL+'/'+this.customUsername+'/service/'+ productId}`
+}
+
+copyInputMessage(inputElement:any){
+  console.log(inputElement);
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  this.copyStatus="Copied"
+}
 
   subscriptions() {
+    
+    
     this.productList$.subscribe(data => {
+      console.log(data);
       if (data?.status && data?.products) {
         this.productsList = data.products;
         this.productsCount = data.productsCount;

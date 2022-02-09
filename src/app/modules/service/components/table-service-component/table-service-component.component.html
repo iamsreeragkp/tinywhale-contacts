@@ -349,11 +349,21 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <button
-              class="table-container-button w-24 h-12 flex items-center justify-center font-semibold rounded-full duration-700"
+            <div class="relative">
+              <button
+              class="table-container-button w-24 h-12 flex items-center justify-center font-semibold rounded-full duration-700"  (click)="copyViewBox(i, product.product_id)"
             >
-              Share
+              Share 
             </button>
+
+              <ng-container  *ngIf="copyView === i "  >
+                <ng-container
+                *ngTemplateOutlet="share; context: { ShareLink: 'data' }
+                "
+                
+              ></ng-container> 
+            </ng-container>
+          </div>
             <!-- confrim popup -->
             <div class="flex-1 flex justify-end">
               <app-three-dots
@@ -390,6 +400,27 @@
     </tbody>
   </table>
 </div>
+
+ <!-- copy to clipboard div starts here -->
+
+ <ng-template #share let-copyLink="ShareLink"    (click)="$event.stopPropagation();"   >
+  <div
+    class="absolute border border-grey-100  rounded-[20px] top-12 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 w-96  cursor-auto" 
+  >
+
+  <p class="flex items-center justify-between text-white font-poppins text-base "><span class="">Share service link with clients</span> <span class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700 " (click)=" copyView= null ">&times;</span></p>
+
+        <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
+          <input type="text" [value]="copyURL" class=" absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none" #userinput />
+          <div class=" select-none  leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4  z-0 focus:shadow focus:outline-none ">
+            {{copyURL}}
+          </div>
+          <button type="submit" class=" copy-text justify-center pl-2 pr-4" (click)="copyInputMessage(userinput)  "><span class="copy-text bg-clip-text font-semibold">{{copyStatus}}</span></button> 
+      </div>
+
+  </div>
+</ng-template>
+<!-- popover div ends here -->
 
 <app-modal [(open)]="openProductDeleteModal" [modalConfig]="{ closeOnOutsideClick: true }">
   <h3 class="text-xl font-bold">Delete Service ?</h3>

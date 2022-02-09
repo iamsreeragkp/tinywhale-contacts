@@ -17,7 +17,7 @@ export class NoDataViewComponentComponent implements OnInit {
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
   showPortal = false;
-  baseURL= environment.tinyCardURL;
+  baseURL= environment.tinyWhaleBaseUrl;
   iframeURL:any;
   @ViewChild('openWindow', { static: false }) openWindow:any;
 
