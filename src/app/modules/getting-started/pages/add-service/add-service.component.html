@@ -200,7 +200,7 @@
               formControlName="duration"
               type="number"
               [preventDecimal]="true"
-              [preventNegative]="true"
+              min="0"
               class="input w-24 py-3 px-4 focus:outline-none"
               placeholder="60"
               formControlName="duration"
@@ -315,7 +315,7 @@
             <input
               type="number"
               [preventDecimal]="true"
-              [preventNegative]="true"
+              min="0"
               class="input w-full py-3 px-4 focus:outline-none"
               placeholder="Enter number of students per session"
               formControlName="capacity"
@@ -334,7 +334,7 @@
           <div class="w-full flex items-center">
             <input
               type="number"
-              [preventNegative]="true"
+              min="0"
               class="input w-24 py-3 px-4 focus:outline-none"
               placeholder="$ 50"
               formControlName="price"
@@ -369,7 +369,7 @@
               placeholder="$ 100"
               formControlName="price"
               type="number"
-              [preventNegative]="true"
+              min="0"
             />
             <span class="input-field-secondary-text mx-3">for</span>
             <input
@@ -378,7 +378,7 @@
               placeholder="2"
               formControlName="no_of_sessions"
               [preventDecimal]="true"
-              [preventNegative]="true"
+              min="2"
             />
             <span class="input-field-secondary-text mx-3">sessions</span>
             <button type="button" class="h-full flex items-center" (click)="deletePricePackage(i)">

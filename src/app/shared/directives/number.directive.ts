@@ -5,6 +5,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
   selector: 'input[type=number]',
 })
 export class NumberDirective {
+  preventNegative = false;
   // private navigationKeys = [
   //   'Backspace',
   //   'Delete',
@@ -20,8 +21,9 @@ export class NumberDirective {
   //   'Paste',
   // ];
 
-  constructor(private _el: ElementRef) {}
-  @Input() preventNegative = false;
+  constructor(private _el: ElementRef) {
+    this.preventNegative = +this.inputElement?.min >= 0;
+  }
   @Input() preventDecimal = false;
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
@@ -36,10 +38,6 @@ export class NumberDirective {
     if (this.preventDecimal && e.key === '.') {
       e.preventDefault();
     }
-  }
-  @HostListener('wheel', ['$event'])
-  onWheel(event: Event) {
-    event.preventDefault();
   }
   @HostListener('paste', ['$event'])
   onPaste(event: ClipboardEvent) {
@@ -64,5 +62,9 @@ export class NumberDirective {
     ) {
       event.preventDefault();
     }
+  }
+
+  get inputElement() {
+    return this._el.nativeElement as HTMLInputElement;
   }
 }
