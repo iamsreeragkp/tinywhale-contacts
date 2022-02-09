@@ -9,11 +9,13 @@ import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
 import { PreviewProductComponent } from './component/preview-product/preview-product.component';
 import { AddBusinessInfoComponent } from './pages/add-business-info/add-business-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatepickerModule } from 'ng2-datepicker';
 
 @NgModule({
   imports: [CommonModule, SharedModule, WebsiteStoreModule, ServiceStoreModule, AccountStoreModule,
      FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DatepickerModule
    ],
   declarations: [
     AddBusinessInfoComponent,
