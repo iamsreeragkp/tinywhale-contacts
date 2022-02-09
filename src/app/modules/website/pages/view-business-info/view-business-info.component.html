@@ -3,14 +3,17 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">TinyCard™</span>
     </header>
-    <div class="flex" *ngIf="dashboardData?.businessInfo?.isStarted">
+    <div class="flex" *ngIf="dashboardData?.domainActive || dashboardData?.businessInfo?.isStarted">
       <a class="primary-button w-48 ml-2" [routerLink]="['../edit-business-info']">Edit</a>
     </div>
   </div>
   <hr class="line" />
   <div
     class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
-    *ngIf="dashboardData?.businessInfo?.isStarted; else noWebsiteInfo"
+    *ngIf="
+      dashboardData?.domainActive || dashboardData?.businessInfo?.isStarted;
+      else noWebsiteInfo
+    "
   >
     <main>
       <div class="flex mb-4">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { select, Store } from '@ngrx/store';
@@ -11,7 +11,7 @@ import { IRootState } from 'src/app/modules/root/store/root.reducers';
   templateUrl: './no-data-service-component.component.html',
   styleUrls: ['./no-data-service-component.component.scss'],
 })
-export class NoDataServiceComponentComponent implements OnInit {
+export class NoDataServiceComponentComponent implements OnInit, OnDestroy {
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
@@ -54,7 +54,7 @@ export class NoDataServiceComponentComponent implements OnInit {
   }
 
   hasStarted() {
-    return this.dashboardInfos?.serviceInfo?.isStarted;
+    return this.dashboardInfos?.domainActive || this.dashboardInfos?.serviceInfo?.isStarted;
   }
 
   ngOnDestroy(): void {

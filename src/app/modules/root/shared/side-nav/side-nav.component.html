@@ -1,68 +1,87 @@
 <div class="side-nav w-28 shadow-lg text-center h-screen bg-white flex flex-col fixed top-0 left-0">
-  <div class="logo my-10 px-4"><app-logo></app-logo></div>
-  <nav class="nav-bar">
-    <ul>
-      <li class="active-item nav-item relative py-2">
-        <a
-          routerLinkActive="active"
-          routerLink="home"
-          class="nav-link flex flex-col items-center justify-around w-full"
-        >
-          <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
-          <img class="icon" src="../../../../../assets/images/home.svg" />
-          <img class="active-icon" src="../../../../../assets/images/leanear-home.svg" />
-          <p class="nav-text">Get Started</p>
-        </a>
-      </li>
-      <li class="active-item nav-item relative py-2">
-        <a
-          class="nav-link flex flex-col items-center justify-around w-full"
-          routerLinkActive="active"
-          routerLink="/website"
-        >
-          <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
-          <img class="icon" src="../../../../../assets/images/website.svg" alt="" />
-          <img class="active-icon" src="../../../../../assets/images/leanear-website.svg" alt="" />
-          <div class="nav-text">TinyCard™</div>
-        </a>
-      </li>
-      <li class="active-item nav-item relative py-2">
-        <a
-          routerLink="service"
-          routerLinkActive="active"
-          class="nav-link flex flex-col items-center justify-around w-full"
-        >
-          <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
-          <img class="icon" src="../../../../../assets/images/service.svg" alt="" />
-          <img class="active-icon" src="../../../../../assets/images/leanear-service.svg" alt="" />
+  <div class="h-full relative">
+    <div class="absolute inset-0 z-10 opacity-40 bg-white" *ngIf="disabled"></div>
+    <div class="logo my-10 px-4"><app-logo></app-logo></div>
+    <nav class="nav-bar">
+      <ul>
+        <li class="active-item nav-item relative py-2">
+          <a
+            routerLinkActive="active"
+            routerLink="home"
+            class="nav-link flex flex-col items-center justify-around w-full"
+          >
+            <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
+            <img class="icon" src="../../../../../assets/images/home.svg" />
+            <img class="active-icon" src="../../../../../assets/images/leanear-home.svg" />
+            <p class="nav-text">Get Started</p>
+          </a>
+        </li>
+        <li class="active-item nav-item relative py-2">
+          <a
+            class="nav-link flex flex-col items-center justify-around w-full"
+            routerLinkActive="active"
+            routerLink="/website"
+          >
+            <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
+            <img class="icon" src="../../../../../assets/images/website.svg" alt="" />
+            <img
+              class="active-icon"
+              src="../../../../../assets/images/leanear-website.svg"
+              alt=""
+            />
+            <div class="nav-text">TinyCard™</div>
+          </a>
+        </li>
+        <li class="active-item nav-item relative py-2">
+          <a
+            routerLink="service"
+            routerLinkActive="active"
+            class="nav-link flex flex-col items-center justify-around w-full"
+          >
+            <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
+            <img class="icon" src="../../../../../assets/images/service.svg" alt="" />
+            <img
+              class="active-icon"
+              src="../../../../../assets/images/leanear-service.svg"
+              alt=""
+            />
 
-          <div class="nav-text">Services</div>
-        </a>
-      </li>
-      <li class="active-item nav-item relative py-2">
-        <a
-          routerLink="booking"
-          routerLinkActive="active"
-          class="nav-link flex flex-col items-center justify-around w-full"
-        >
-          <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
-          <img class="icon" src="../../../../../assets/images/booking.svg" alt="" />
-          <img class="active-icon" src="../../../../../assets/images/leanear-booking.svg" alt="" />
-          <div class="nav-text">Bookings</div>
-        </a>
-      </li>
-      <li class="active-item nav-item relative py-2">
-        <a
-          routerLink="account"
-          routerLinkActive="active"
-          class="nav-link flex flex-col items-center justify-around w-full"
-        >
-          <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
-          <img class="icon" src="../../../../../assets/images/account.svg" alt="" />
-          <img class="active-icon" src="../../../../../assets/images/leanear-account.svg" alt="" />
-          <div class="nav-text">Account</div>
-        </a>
-      </li>
-    </ul>
-  </nav>
+            <div class="nav-text">Services</div>
+          </a>
+        </li>
+        <li class="active-item nav-item relative py-2">
+          <a
+            routerLink="booking"
+            routerLinkActive="active"
+            class="nav-link flex flex-col items-center justify-around w-full"
+          >
+            <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
+            <img class="icon" src="../../../../../assets/images/booking.svg" alt="" />
+            <img
+              class="active-icon"
+              src="../../../../../assets/images/leanear-booking.svg"
+              alt=""
+            />
+            <div class="nav-text">Bookings</div>
+          </a>
+        </li>
+        <li class="active-item nav-item relative py-2">
+          <a
+            routerLink="account"
+            routerLinkActive="active"
+            class="nav-link flex flex-col items-center justify-around w-full"
+          >
+            <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
+            <img class="icon" src="../../../../../assets/images/account.svg" alt="" />
+            <img
+              class="active-icon"
+              src="../../../../../assets/images/leanear-account.svg"
+              alt=""
+            />
+            <div class="nav-text">Account</div>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

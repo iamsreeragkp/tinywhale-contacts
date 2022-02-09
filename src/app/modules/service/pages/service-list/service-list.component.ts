@@ -28,7 +28,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   get hasStarted() {
-    return this.dashboardInfos?.serviceInfo?.isStarted;
+    return this.dashboardInfos?.domainActive || this.dashboardInfos?.serviceInfo?.isStarted;
   }
 
   ngOnDestroy(): void {
