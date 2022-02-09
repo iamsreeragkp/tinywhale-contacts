@@ -314,7 +314,7 @@
                 />
               </div>
             </div>
-            <span class="ml-2">{{ product?.title ?? '-' }}</span>
+            <span [routerLink] ="['../view-service', product.product_id]"class="ml-2 cp">{{ product?.title ?? '-' }}</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
