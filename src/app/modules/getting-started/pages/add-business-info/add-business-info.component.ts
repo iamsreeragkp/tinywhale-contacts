@@ -269,6 +269,9 @@ onKeyUpPunchLine(punchline:any){
     if((val?.business_photos?.[0]?.photo_url)){
       this.coverImageUrl = val?.business_photos?.[0]?.photo_url;
     }
+    if (val?.store?.punchline) {
+      setTimeout(() =>this.punchline?.nativeElement.dispatchEvent(new Event('input')));
+    }
   }
 
   createSocialItem(val?: BusinessLinks): FormGroup {
