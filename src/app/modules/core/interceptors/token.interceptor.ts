@@ -27,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       }),
       catchError(err => {
-        if (err?.status === 401) {
+        if (err?.status === 401 && this.storageService.getToken()) {
           this.auth.onlogout();
         }
         throw err;

@@ -22,14 +22,9 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   subscriptions() {
-    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(
-      data => {
-        this.dashboardInfos = data;
-      },
-      err => {
-        console.log('ERROR OCCURED', err);
-      }
-    );
+    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
+      this.dashboardInfos = data;
+    });
   }
 
   get hasStarted() {

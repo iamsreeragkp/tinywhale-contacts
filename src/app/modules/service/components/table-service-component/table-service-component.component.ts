@@ -5,9 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
-import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
-import { ServiceService } from '../../service.service';
-import { Product, ServiceListFilter, VisibilityType } from '../../shared/service.interface';
+import { locationFilterOptions, weekDayOptions } from 'src/app/shared/utils';
+import {
+  LocationType,
+  Product,
+  ServiceListFilter,
+  VisibilityType,
+} from '../../shared/service.interface';
 import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
 import { IServiceState } from '../../store/service.reducers';
 import { getServiceListStatus } from '../../store/service.selectors';
@@ -42,7 +46,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       label: 'Per Package',
     },
   ];
-  locationOptions = locationOptions;
+  locationOptions = locationFilterOptions;
   visibilityOptions = [
     {
       id: 'PUBLIC',
@@ -215,6 +219,10 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   get isFilterEmpty() {
     return this.filterForm.valid;
+  }
+
+  get LocationType() {
+    return LocationType;
   }
 
   ngOnDestroy() {
