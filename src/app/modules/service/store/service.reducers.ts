@@ -4,12 +4,14 @@ import {
   changeVisibilitySuccess,
   deleteServiceList,
   deleteServiceListSuccess,
+  getBusinessLocationsStatus,
   getServiceList,
   getServiceListStatus,
   getServiceStatus,
   initService,
 } from './service.actions';
-import { Product } from '../shared/service.interface';
+import { LocationType, Product } from '../shared/service.interface';
+import { BusinessLocation } from '../../accounts/store/account.interface';
 
 export const userFeatureKey = 'AuthState';
 
@@ -30,6 +32,11 @@ export interface IServiceState {
     status: boolean;
     error?: string;
   };
+  getBusinessLocations?: {
+    businessLocations?: BusinessLocation[];
+    status: boolean;
+    error?: string;
+  };
   productId: any;
   visibility?: any;
 }
@@ -40,6 +47,7 @@ export const initialServiceState: IServiceState = {
   getServiceList: undefined,
   productId: undefined,
   visibility: undefined,
+  getBusinessLocations: undefined,
 };
 
 export const reducer = createReducer(
@@ -72,6 +80,14 @@ export const reducer = createReducer(
   on(changeVisibilitySuccess, (state, { products }) => ({
     ...state,
     visibility: products,
+  })),
+  on(getBusinessLocationsStatus, (state, { businessLocations, status, error }) => ({
+    ...state,
+    getBusinessLocations: {
+      businessLocations,
+      status,
+      error,
+    },
   })),
   on(initService, () => initialServiceState)
 );

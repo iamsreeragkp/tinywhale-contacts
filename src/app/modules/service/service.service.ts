@@ -33,4 +33,8 @@ export class ServiceService {
   deleteService(product_id: number) {
     return this.http.delete(`${this.api}/dashboard/service/${product_id}`);
   }
+
+  getBusinessLocations() {
+    return this.http.get(`${this.api}/dashboard/business-locations`);
+  }
 }

@@ -5,11 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
-import { AuthService } from 'src/app/modules/auth/auth.service';
-import { locationOptions, weekDayOptions } from 'src/app/shared/utils';
+import { locationFilterOptions, weekDayOptions } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
-import { ServiceService } from '../../service.service';
-import { Product, ServiceListFilter, VisibilityType } from '../../shared/service.interface';
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import {
+  LocationType,
+  Product,
+  ServiceListFilter,
+  VisibilityType,
+} from '../../shared/service.interface';
 import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
 import { IServiceState } from '../../store/service.reducers';
 import { getServiceListStatus } from '../../store/service.selectors';
@@ -44,7 +48,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       label: 'Per Package',
     },
   ];
-  locationOptions = locationOptions;
+  locationOptions = locationFilterOptions;
   visibilityOptions = [
     {
       id: 'PUBLIC',
@@ -241,6 +245,10 @@ copyInputMessage(inputElement:any){
 
   get isFilterEmpty() {
     return this.filterForm.valid;
+  }
+
+  get LocationType() {
+    return LocationType;
   }
 
   ngOnDestroy() {

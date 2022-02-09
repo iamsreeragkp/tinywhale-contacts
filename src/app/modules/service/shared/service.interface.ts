@@ -51,7 +51,7 @@ export interface ProductPhoto {
 }
 
 export interface ProductLocationPayload {
-  location_id?: number | null;
+  location_id?: number | null | LocationType;
   location_type?: LocationType | null;
   location_name?: string | null;
   address?: string | null;
