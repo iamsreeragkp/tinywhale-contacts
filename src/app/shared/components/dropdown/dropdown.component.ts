@@ -132,7 +132,6 @@ export class DropdownComponent {
 
   // Event emitters
   @Output() selectedValue = new EventEmitter<OptionType | OptionsType>();
-  @Output() customValue = new EventEmitter<OptionType>();
 
   constructor() {}
 
@@ -207,15 +206,23 @@ export class DropdownComponent {
     if (!this.customValueInput) {
       return;
     }
+    this._options.forEach(option => {
+      option.dropdown_field_data!.selected = false;
+    });
     const customValue = {
-      [this._idKey]: 'CUSTOM_VALUE',
+      [this._idKey]: Symbol('CUSTOM_VALUE'),
       [this._displayKey]: this.customValueInput,
       dropdown_field_data: {
         selected: true,
+        custom_value: true,
       },
     };
     this._options.push(customValue);
-    this.customValue.emit(customValue);
+    this.selectedValue.emit(this.selectedValues());
+    this._onChange(this.selectedValues());
+    this._onTouched();
+    this.openAddCustomValue = false;
+    this.customValueInput = '';
     this.open = !this.open;
   }
 

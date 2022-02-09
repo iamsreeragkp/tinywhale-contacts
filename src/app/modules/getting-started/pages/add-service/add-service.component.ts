@@ -4,6 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
+import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import {
@@ -16,13 +17,23 @@ import {
   LocationType,
   PricePackage,
   Product,
+  ProductLocationPayload,
   ProductPayload,
   ProductPhoto,
   TimeRange,
   WeekDay,
 } from '../../../service/shared/service.interface';
-import { addService, getService, initService } from '../../../service/store/service.actions';
-import { getAddServiceStatus, getServiceStatus } from '../../../service/store/service.selectors';
+import {
+  addService,
+  getBusinessLocations,
+  getService,
+  initService,
+} from '../../../service/store/service.actions';
+import {
+  getAddServiceStatus,
+  getBusinessLocationsStatus,
+  getServiceStatus,
+} from '../../../service/store/service.selectors';
 
 @Component({
   selector: 'app-add-service',
@@ -31,17 +42,20 @@ import { getAddServiceStatus, getServiceStatus } from '../../../service/store/se
 })
 export class AddServiceComponent implements OnInit, OnDestroy {
   productForm: FormGroup = new FormGroup({});
-  locationOptions = locationOptions;
+  locationOptions: ProductLocationPayload[] = locationOptions;
   // generating time options
   weekDayOptions = weekDayOptions;
   ngUnsubscribe = new Subject<void>();
-  startTimeUnsubscriber$ = new Subject<void>();
+  productFormUnsubscriber$ = new Subject<void>();
   editMode = false;
   createAnother = false;
   autoSaving = false;
   isGettingStarted = false;
   addServiceStatus$: Observable<{ status: boolean; error?: string; response?: any } | undefined>;
   productData$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
+  businessLocations$: Observable<
+    { businessLocations?: BusinessLocation[]; status: boolean; error?: string } | undefined
+  >;
   constructor(
     private store: Store<IAppState>,
     private _fb: FormBuilder,
@@ -52,8 +66,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     public location: Location
   ) {
     this.initForms();
+    store.dispatch(getBusinessLocations());
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
     this.productData$ = this.store.pipe(select(getServiceStatus));
+    this.businessLocations$ = this.store.pipe(select(getBusinessLocationsStatus));
     route.params
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -81,6 +97,26 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   subscriptions() {
+    this.businessLocations$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        if (data?.status && data?.businessLocations?.length) {
+          this.locationOptions = [
+            ...locationOptions,
+            ...data?.businessLocations.map(({ location_id, location_name, address }) => ({
+              location_id,
+              location_name,
+              address,
+              location_type: LocationType.BUSINESS_LOCATION,
+            })),
+          ];
+        } else {
+          console.log(data?.error);
+        }
+      });
     this.productData$
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -128,16 +164,16 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   productFormSubscriptions() {
-    this.startTimeUnsubscriber$.next();
+    this.productFormUnsubscriber$.next();
     this.productForm.valueChanges
-      .pipe(debounceTime(3000), takeUntil(this.startTimeUnsubscriber$))
+      .pipe(debounceTime(3000), takeUntil(this.productFormUnsubscriber$))
       .subscribe(() => {
         this.autoSaving = true;
         this.saveProductForm();
       });
     this.productForm
       .get('duration')
-      ?.valueChanges.pipe(takeUntil(this.startTimeUnsubscriber$))
+      ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
       .subscribe(duration => {
         this.timeRanges.controls.forEach(timeRange => this.updateEndTime(timeRange, duration));
       });
@@ -179,7 +215,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     if (val?.class?.location_type) {
       if (val?.class?.location_type === 'BUSINESS_LOCATION') {
         return {
-          location_id: val?.class?.location_id,
+          location_id: val?.class?.business_location?.location_id,
           location_type: val?.class?.location_type,
           location_name: val?.class?.business_location?.location_name,
           address: val?.class?.business_location?.address,
@@ -259,7 +295,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.timeRanges.controls.forEach(timeRange => {
       timeRange
         .get('start_time')
-        ?.valueChanges.pipe(takeUntil(this.startTimeUnsubscriber$))
+        ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
         .subscribe(() => this.updateEndTime(timeRange, this.productForm.get('duration')?.value));
     });
   }
@@ -316,6 +352,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   expireSubscriptions() {
     this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.productFormUnsubscriber$.next();
+    this.productFormUnsubscriber$.complete();
   }
 
   /*
@@ -364,8 +403,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
-    let { location_id, location_name, location_type, address } = location ?? {};
-    if (location_type !== LocationType.BUSINESS_LOCATION) {
+    let { location_id, location_name, location_type, address, dropdown_field_data } =
+      location ?? {};
+    if (dropdown_field_data?.custom_value) {
+      location_type = LocationType.BUSINESS_LOCATION;
+    }
+    if (location_type !== LocationType.BUSINESS_LOCATION || dropdown_field_data?.custom_value) {
       location_id = undefined;
     }
     const photos: ProductPhoto[] = photosWithEmpty.filter((photo: ProductPhoto) => photo.photo_url);
@@ -433,7 +476,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     console.log('on destroy');
     this.expireSubscriptions();
-    this.ngUnsubscribe.complete();
     this.store.dispatch(initService());
   }
 }

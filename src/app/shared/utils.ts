@@ -157,3 +157,14 @@ export const locationOptions = [
   //   location_name: 'Online (Zoom - connect)',
   // },
 ];
+
+export const locationFilterOptions = [
+  {
+    id: LocationType.CUSTOMER_LOCATION,
+    label: "Customer's Location",
+  },
+  {
+    id: LocationType.BUSINESS_LOCATION,
+    label: 'Business Location',
+  },
+];

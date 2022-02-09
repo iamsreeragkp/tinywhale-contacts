@@ -1,9 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { BusinessLocation } from '../../accounts/store/account.interface';
 import {
   ProductPayload,
   Product,
   ServiceListFilter,
   VisibilityType,
+  LocationType,
 } from '../shared/service.interface';
 
 export const addService = createAction(
@@ -62,4 +64,11 @@ export const deleteServiceListSuccess = createAction(
 export const deleteServiceListError = createAction(
   '[ServiceModule] DELETE SERVICE LIST Error',
   props<{ error?: string }>()
+);
+
+export const getBusinessLocations = createAction('[ServiceModule] GET BUSINESS LOCATIONS');
+
+export const getBusinessLocationsStatus = createAction(
+  '[ServiceModule] GET BUSINESS LOCATIONS STATUS',
+  props<{ businessLocations?: BusinessLocation[]; status: boolean; error?: string }>()
 );

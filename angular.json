@@ -53,6 +53,7 @@
             },
             "scripts": [
               "src/assets/js/modernizr.js",
+              "src/assets/js/gtm.js",
               "node_modules/js-cookie/dist/js.cookie.min.js"
             ],
             "serviceWorker": true,
@@ -154,7 +155,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "scripts": ["src/assets/js/modernizr.js"],
+            "scripts": ["src/assets/js/modernizr.js", "src/assets/js/gtm.js"],
             "styles": [
               "src/assets/css/reset.css",
               "src/assets/css/loading.css",

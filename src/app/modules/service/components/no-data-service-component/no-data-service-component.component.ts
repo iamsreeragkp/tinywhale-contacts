@@ -9,18 +9,17 @@ import { IRootState } from 'src/app/modules/root/store/root.reducers';
 @Component({
   selector: 'app-no-data-service-component',
   templateUrl: './no-data-service-component.component.html',
-  styleUrls: ['./no-data-service-component.component.scss']
+  styleUrls: ['./no-data-service-component.component.scss'],
 })
 export class NoDataServiceComponentComponent implements OnInit {
-
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
   showPortal = false;
-  baseURL= environment.tinyCardURL;
-  iframeURL:any;
-  @ViewChild('openWindow', { static: false }) openWindow:any;
-  constructor(private store: Store<IRootState>, private sanitizer: DomSanitizer) { 
+  baseURL = environment.tinyCardURL;
+  iframeURL: any;
+  @ViewChild('openWindow', { static: false }) openWindow: any;
+  constructor(private store: Store<IRootState>, private sanitizer: DomSanitizer) {
     this.dashboard$ = store.pipe(select(getDashboardData));
   }
 
@@ -29,37 +28,37 @@ export class NoDataServiceComponentComponent implements OnInit {
   }
 
   subscriptions() {
-    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
-      console.log("DATA",data);
-      
-      this.dashboardInfos = data; 
-    }, err=> {
-      console.log("ERROR OCCURED",err);
-      
-    });
-    
+    this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(
+      data => {
+        console.log('DATA', data);
+
+        this.dashboardInfos = data;
+      },
+      err => {
+        console.log('ERROR OCCURED', err);
+      }
+    );
   }
 
-  iframeOpen(type:any){
+  iframeOpen(type: any) {
     // // this.showPortal = false;
-    if (type === "publishTinyCard") {
-      this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseURL+'/'+this.dashboardInfos.domainName}`);
-    }
-    else{   
+    if (type === 'publishTinyCard') {
+      this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `${this.baseURL + '/' + this.dashboardInfos.domainName}`
+      );
+    } else {
       this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseURL}/preview`);
     }
     this.openWindow.openDialog();
     this.showPortal = true;
   }
 
-  hasStarted()
-  {                                                                                       
-    return ( this.dashboardInfos?.businessInfo?.isStarted || this.dashboardInfos?.serviceInfo?.isStarted || this.dashboardInfos?.paymentInfo?.isStarted)
+  hasStarted() {
+    return this.dashboardInfos?.serviceInfo?.isStarted;
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscriber.next();
     this.ngUnsubscriber.complete();
   }
-
 }

@@ -13,6 +13,8 @@ import {
   deleteServiceList,
   deleteServiceListError,
   deleteServiceListSuccess,
+  getBusinessLocations,
+  getBusinessLocationsStatus,
   getService,
   getServiceList,
   getServiceListStatus,
@@ -106,6 +108,20 @@ export class ServiceEffects {
               })
             )
           )
+        )
+      )
+    )
+  );
+
+  getBusinessLocations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBusinessLocations),
+      switchMap(() =>
+        this.productService.getBusinessLocations().pipe(
+          map((response: any) =>
+            getBusinessLocationsStatus({ businessLocations: response.data, status: true })
+          ),
+          catchError(err => of(getBusinessLocationsStatus({ error: err, status: false })))
         )
       )
     )

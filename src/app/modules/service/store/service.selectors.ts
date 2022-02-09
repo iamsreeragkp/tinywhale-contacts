@@ -15,3 +15,7 @@ export const getAddServiceStatus = createSelector(
 export const getServiceListStatus = createSelector(getServiceFeatureSelector, state => {
   return state?.getServiceList;
 });
+
+export const getBusinessLocationsStatus = createSelector(getServiceFeatureSelector, state => {
+  return state?.getBusinessLocations;
+});
