@@ -646,7 +646,7 @@ onKeyUpPunchLine(punchline:any){
 
   isTestimonialFilled(){   
     const testimonialsList = this.testimonials && this.testimonials.value;
-    return filterData = testimonialsList.filter((data:any)=>{
+    return testimonialsList.filter((data:any)=>{
        return data.name && data.photo_url && data.testimonial && data.title
     });
   }
