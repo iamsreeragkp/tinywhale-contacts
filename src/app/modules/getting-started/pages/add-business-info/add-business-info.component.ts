@@ -641,20 +641,11 @@ onKeyUpPunchLine(punchline:any){
     // });
   }
 
-  isTestimonialFilled(){
-
-        const emptyTestimonial =  {
-              name :"",
-              photo_url:'',
-              testimonial: '',
-              title :'',
-          }
-   
+  isTestimonialFilled(){   
     const testimonialsList = this.testimonials && this.testimonials.value;
-    const filterData = testimonialsList.filter((data:any)=>{
-       return !(data.name === '' || data.photo_url === '' || data.testimonial==='' || data.title === '' )
+    return filterData = testimonialsList.filter((data:any)=>{
+       return data.name && data.photo_url && data.testimonial && data.title
     });
-    return filterData.length ? filterData : [ emptyTestimonial]
   }
 
   get socialItems() {
