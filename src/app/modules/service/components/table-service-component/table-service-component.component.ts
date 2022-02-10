@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
-import { locationFilterOptions, weekDayOptions } from 'src/app/shared/utils';
+import { locationFilterOptions, weekDayFilterOptions } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import {
@@ -37,7 +37,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       label: 'Flexible',
     },
   ];
-  weekDayOptions = weekDayOptions;
+  weekDayOptions = weekDayFilterOptions;
   pricingTypeOptions = [
     {
       id: 'PER_SESSION',
@@ -70,11 +70,11 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   openProductDeleteModal = false;
   page: number;
   limit: number;
-  copyView :any = null;
-  copyStatus:string ="Copy";
+  copyView: any = null;
+  copyStatus: string = 'Copy';
   baseURL = environment.tinyWhaleBaseUrl;
-  copyURL :string ='';
-  customUsername!:string;
+  copyURL: string = '';
+  customUsername!: string;
 
   constructor(
     private store: Store<IServiceState>,
@@ -98,26 +98,24 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
-   const userData = this.authService.decodeUserToken();
-   this.customUsername = userData.dashboardInfos.customUsername;
+    const userData = this.authService.decodeUserToken();
+    this.customUsername = userData.dashboardInfos.customUsername;
   }
-  copyViewBox(index:number,productId:number){
-    index === this.copyView ?  this.copyView = null : this.copyView = index;
-    this.copyStatus ="Copy";
-    this.copyURL =  `${this.baseURL+'/'+this.customUsername+'/service/'+ productId}`
-}
+  copyViewBox(index: number, productId: number) {
+    index === this.copyView ? (this.copyView = null) : (this.copyView = index);
+    this.copyStatus = 'Copy';
+    this.copyURL = `${this.baseURL + '/' + this.customUsername + '/service/' + productId}`;
+  }
 
-copyInputMessage(inputElement:any){
-  console.log(inputElement);
-  inputElement.select();
-  document.execCommand('copy');
-  inputElement.setSelectionRange(0, 0);
-  this.copyStatus="Copied"
-}
+  copyInputMessage(inputElement: any) {
+    console.log(inputElement);
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    this.copyStatus = 'Copied';
+  }
 
   subscriptions() {
-    
-    
     this.productList$.subscribe(data => {
       console.log(data);
       if (data?.status && data?.products) {
