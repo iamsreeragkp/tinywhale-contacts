@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
@@ -40,6 +41,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   chart2: any;
   chart3: any;
   percentage: any;
+  copyView :any = null;
+  copyStatus:string ="Copy";
+  copyURL :string ='';
+  customUsername!:string;
+  baseURL = environment.tinyWhaleBaseUrl;
 
   colorScheme: Color = {
     name: 'primary',
@@ -233,6 +239,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   navagateToBooking() {
     this.router.navigateByUrl('booking/view-booking');
   }
+
+  copyViewBox(){
+    console.log( this.dashboardInfos,"akkskajsk");
+    
+    this.copyView = !this.copyView;
+     this.copyStatus ="Copy";
+    this.copyURL =  `${this.baseURL + '/' + this.dashboardInfos.customUsername}`
+}
+
+copyInputMessage(inputElement:any){
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  this.copyStatus="Copied"
+}
+
 
   ngOnDestroy(): void {
     this.ngUnsubscriber.next();
