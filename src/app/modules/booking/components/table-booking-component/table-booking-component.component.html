@@ -153,10 +153,10 @@
       >
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <span class="italic whitespace-nowrap">{{
+            <span class=" whitespace-nowrap">{{
               bookData?.order_session?.[0]?.session?.date || '---'
             }}</span>
-            <span class="italic whitespace-nowrap">(1/2)</span>
+            <span class=" whitespace-nowrap">(1/2)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
@@ -175,20 +175,20 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <span class="italic">{{ bookData?.account?.first_name || '---' }}</span>
+            <span class="">{{ bookData?.account?.first_name || '---' }}</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
             <span
-              class="italic"
+              class=""
               >{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span
             >
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <div class="italic flex items-center">
+            <div class=" flex items-center">
               <span class="mr-2"
                 >{{
                   bookData?.order_line_item?.[0]?.currency === 'INR'
@@ -219,7 +219,7 @@
                 "
               />
             </div>
-            <span class="italic whitespace-nowrap">(2 sessions)</span>
+            <span class=" whitespace-nowrap">(2 sessions)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
@@ -242,7 +242,7 @@
       </tr>
       <tr>
         <td colspan="7">
-          <div class="w-full">
+          <div class="w-full" *ngIf="isFilterEmpty && !bookingData?.length">
             <app-no-data-booking-component
               class="flex flex-1"
               *ngIf="isFilterEmpty"
