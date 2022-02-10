@@ -11,7 +11,8 @@
       <div class="input-field relative pb-9 error-active">
         <div class="relative">
           <div
-            class="input-signup truncate relative overflow-hidden w-full bg-white not-italic font-normal text-base leading-6 py-3 pl-4 pr-3 focus:outline-none"
+            tabindex="1"
+            class="input-data w-full focus:"
             (click)="domainName.focus()"
             [ngClass]="{'border-red': !isChecking && (isDomainAvailable || signUpForm?.errors?.['signUpFail'])}"
           >
@@ -19,7 +20,7 @@
               #domainName
               type="text"
               (ngModelChange)="search$.next($event)"
-              class="domain-input-width pl-24 pr-14 absolute w-full focus:outline-none border-none bg-transparent min-w-0"
+              class="domain-input-width pl-24 pr-14 absolute w-full truncate focus:outline-none border-none bg-transparent min-w-0"
               formControlName="domain"
               placeholder="yourbusinessname"
             />
