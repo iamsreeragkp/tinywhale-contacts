@@ -44,7 +44,7 @@
     </button>
   </div>
   <div
-    class="absolute top-full left-0 min-w-full z-10 rounded overflow-y-auto custom-select-drop"
+    class="absolute top-full left-0 min-w-full z-10 rounded custom-select-drop"
     [ngClass]="{
       'max-h-0 overflow-hidden': !open,
       'max-h-56 border border-gray-200 border-solid shadow-lg': open
@@ -55,8 +55,8 @@
       <div class="w-full checkbox-input mt-2 px-4" *ngIf="_multiSelect">
         <div
           class="w-full mb-4"
-          *ngFor="let option of _options; let isFirst = first"
-          [ngClass]="{ 'border-b border-gray-300': !isFirst }"
+          *ngFor="let option of _options; let isLast = last"
+          [ngClass]="{ 'border-b border-gray-300 border-solid': !isLast }"
         >
           <label class="check-container"
             >{{ option[_displayKey] }}

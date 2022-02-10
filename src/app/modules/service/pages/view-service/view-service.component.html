@@ -6,7 +6,7 @@
     <div class="flex">
       <div class="relative">
         <button type="button" class="secondary-button mr-2 px-8" (click)="copyViewBox()">
-          Share
+          <span>Share</span>
         </button>
         <ng-container *ngIf="copyView">
           <ng-container *ngTemplateOutlet="share; context: { ShareLink: 'data' }"></ng-container>
