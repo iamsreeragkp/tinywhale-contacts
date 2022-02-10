@@ -113,6 +113,11 @@ body {
     border-color: #d6e1e3 !important;
     background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
       linear-gradient(90deg, white, white);
+    span {
+      background: linear-gradient(90deg, #d6e1e3, #d6e1e3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     svg {
       path {
         fill: #d6e1e3;
