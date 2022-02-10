@@ -173,17 +173,7 @@ onKeyUpPunchLine(punchline:any){
   }
 
   addBasicInfoSubcription(){
-    // this.testimonials.valueChanges
-    //   .subscribe( testimonials=>{
-    //   console.log(testimonials,"sdsds");
-      
-    //   if(testimonials.name === "" && testimonials.photo_url === "" && testimonials.testimonial  === "" &&
-    //   testimonials.title === ""){
-    //     console.log("kkshdkskdjskjdk");
-        
-    //   }
-      
-    // })
+
     this.businessInfoForm.valueChanges
     .pipe(
       debounceTime(3000),
@@ -204,8 +194,8 @@ onKeyUpPunchLine(punchline:any){
         contact_type,
         cover
       } = value;
+     
      const businessPayload = {
-
         company_name: companyname,
         punchline: punchline,
         logo: logo,
@@ -215,13 +205,12 @@ onKeyUpPunchLine(punchline:any){
          email:email,
          contact_type: contact_type,
          business_photos:[cover],
-         testimonials: testimonialitems
+         testimonials: this.isTestimonialFilled()
       };
       this.store.dispatch(addBusiness({ businessData: businessPayload}));
-
       return;
     });
-  }
+  } 
 
   clearImages() {
     this.arrayLicenceImageUrl = [];
@@ -233,13 +222,12 @@ onKeyUpPunchLine(punchline:any){
   }
 
   initializeBusinessForm(val?: BusinessInfo) {
-
     this.clearImages();
     this.businessInfoForm = this.fb.group({
       companyname: [val?.store?.company_name ?? ''],
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
-      cover:[val?.business_photos?.[0]?.photo_url ?? ''],
+      cover:[val?.business_photos?.[0] ?? ''],
       email:[val?.email ?? ''],
       phone_number:[val?.phone_number ?? ''],
       contact_type :[val?.contact_type ?? ''],
@@ -511,10 +499,34 @@ onKeyUpPunchLine(punchline:any){
     } = userData;
     this.fileNames = [];
     
-    setTimeout(() => {
-      this.isSaving = false;
-      this.router.navigate(['../']);
-    }, 500);
+    const {
+      companyname,
+      punchline,
+      socialitems,
+      email,
+      licenceitems,
+      testimonialitems,
+      logo,
+      phone_number,
+      contact_type,
+      cover
+    } = this.businessInfoForm.value;
+   const businessPayload = {
+
+      company_name: companyname,
+      punchline: punchline,
+      logo: logo,
+      social_links: socialitems,
+      recognitions: licenceitems,
+      phone_number:phone_number.toString(),
+       email:email,
+       contact_type: contact_type,
+       business_photos:[cover],
+       testimonials: this.isTestimonialFilled()
+    };
+    this.store.dispatch(addBusiness({ businessData: businessPayload}));
+    this.router.navigate(['../']);
+    return;
     
   
     // if (this.fileToUploadLogo) {
@@ -627,6 +639,22 @@ onKeyUpPunchLine(punchline:any){
     //       }
     //     });
     // });
+  }
+
+  isTestimonialFilled(){
+
+        const emptyTestimonial =  {
+              name :"",
+              photo_url:'',
+              testimonial: '',
+              title :'',
+          }
+   
+    const testimonialsList = this.testimonials && this.testimonials.value;
+    const filterData = testimonialsList.filter((data:any)=>{
+       return !(data.name === '' || data.photo_url === '' || data.testimonial==='' || data.title === '' )
+    });
+    return filterData.length ? filterData : [ emptyTestimonial]
   }
 
   get socialItems() {
