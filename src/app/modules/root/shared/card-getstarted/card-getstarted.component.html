@@ -8,19 +8,19 @@
   </div>
   <div class="flex">
     <span class="group relative">
-    <button
-      class="secondary-button h-10 px-6 mr-2 relative"
-      [ngClass]="{ 'primary-button': !isCompleted(), 'secondary-button group': isCompleted() }"
-      (click)="iframeOpen()"
-    >
-      <span>{{ isCompleted() ? 'See TinyCard™ Template' : 'Preview your TinyCard™' }}</span>
-      <ng-container
-        *ngTemplateOutlet="
-          tinyCard;
-          context: { tinyCardData: 'The template has dummy information for now.' }
-        "
-      ></ng-container>
-    </button>
+      <button
+        class="secondary-button h-10 px-6 mr-2 relative"
+        [ngClass]="{ 'primary-button': !isCompleted(), 'secondary-button group': isCompleted() }"
+        (click)="iframeOpen()"
+      >
+        <span>{{ isCompleted() ? 'See TinyCard™ Template' : 'Preview Your TinyCard™' }}</span>
+        <ng-container
+          *ngTemplateOutlet="
+            tinyCard;
+            context: { tinyCardData: 'The template has dummy information for now.' }
+          "
+        ></ng-container>
+      </button>
     </span>
     <span class="group relative">
       <button
@@ -28,7 +28,7 @@
         [disabled]="isCompleted()"
         (click)="publishWebsite()"
       >
-        Publish your TinyCard™
+        Publish Your TinyCard™
       </button>
       <ng-container
         *ngTemplateOutlet="
@@ -46,7 +46,7 @@
 
   <ng-template #tinyCard let-cardData="tinyCardData ">
     <div
-      class="absolute border border-grey-100 hidden group-hover:block rounded-[20px] w-64 top-14 z-10 text-white font-medium bg-[#6B9EB6]"
+      class="absolute border border-grey-100 hidden group-hover:block rounded-[20px] w-64 top-14 z-10 text-white font-medium font-poppins bg-[#6B9EB6]"
     >
       <p class="text-left items-center flex h-full text-base tracking-normal leading-normal p-5">
         {{ cardData }}
@@ -92,7 +92,11 @@
             <span class="dashboard-new-i-blue cursor-help relative top-1"
               ><img src="../../../../../assets/images/tooltip-icon.svg"
             /></span>
-            <span class="tooltiptext card-tooltip-text">TinyCard is the modern business card of the service professionals. Showcase your web presence, licenses, awards, and certifications, and allow customers to book your services.</span>
+            <span class="tooltiptext card-tooltip-text"
+              >TinyCard™ is the modern business card of the service professionals. Showcase your web
+              presence, licenses, awards, and certifications, and allow customers to book your
+              services.</span
+            >
           </span>
           &nbsp;
         </p>
@@ -121,7 +125,7 @@
             "
             [routerLink]="'../../website/edit-business-info'"
           >
-            Complete the details
+            Complete The Details
           </button>
         </div>
       </div>
@@ -180,7 +184,7 @@
             "
             [routerLink]="'../../service'"
           >
-            Complete the details
+            Complete The Details
           </button>
         </div>
       </div>
@@ -236,7 +240,7 @@
             "
             [routerLink]="'../../account/edit-payment'"
           >
-            Complete the details
+            Complete The Details
           </button>
         </div>
       </div>

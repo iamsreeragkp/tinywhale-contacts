@@ -130,18 +130,15 @@ export function convert24HrsFormatToAmPm(time?: string | null) {
   }
   return `${hour}:${minute} ${amPm}`;
 }
-
-export const weekDayOptions = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-].map(weekDay => ({
+const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const weekDayOptions = weekDays.map(weekDay => ({
   value: WeekDay[weekDay as keyof typeof WeekDay],
   label: weekDay,
+  selected: false,
+}));
+export const weekDayFilterOptions = weekDays.map(weekDay => ({
+  value: WeekDay[weekDay as keyof typeof WeekDay],
+  label: weekDay.substring(0, 3),
   selected: false,
 }));
 
