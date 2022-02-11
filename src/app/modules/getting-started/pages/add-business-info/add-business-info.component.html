@@ -33,10 +33,10 @@
         </div>
       </div>
       <div class="input-field flex mb-8">
-        <div class="w-36 label mt-4"><label for="">Profile Picture* </label>
-        <span class="block">
-          (Logo /Display Picture)
-        </span></div>
+        <div class="w-36 label mt-4">
+          <label for="">Profile Picture* </label>
+          <span class="block"> (Logo /Display Picture) </span>
+        </div>
 
         <input
           type="file"
@@ -66,7 +66,11 @@
               contain
             />
             <ng-container *ngIf="!logoImageUrl">
-              <img class="h-7 cursor-pointer" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+              <img
+                class="h-7 cursor-pointer"
+                src="../../../../../assets/images/defualt-image.svg"
+                alt="logo"
+              />
               <span class="text-mediumGray text-center">Add a <br />Picture</span>
             </ng-container>
           </div>
@@ -76,7 +80,7 @@
       <!-- Cover photo -->
 
       <div class="input-field flex mb-8">
-        <div class="w-36 label mt-4"><label for="">Cover Photo* </label></div>  
+        <div class="w-36 label mt-4"><label for="">Cover Photo* </label></div>
         <input
           type="file"
           accept="image/*"
@@ -85,39 +89,38 @@
           (change)="handleFileInputCover($event)"
         />
         <div class="relative">
-        <div class="relative" #imageContainer>
-          <button
-            (click)="deleteCover()"
-            *ngIf="coverImageUrl"
-            class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
-          >
-            <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
-          </button>
-          <div
-            (click)="cover.click()"
-            class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
-            placeholder="Add Cover Photo"
-          >
-            <img
+          <div class="relative" #imageContainer>
+            <button
+              (click)="deleteCover()"
               *ngIf="coverImageUrl"
-              [src]="coverImageUrl"
-              class="image h-full w-full object-cover"
-              object-fit:
-              contain
-            />
-            <ng-container *ngIf="!coverImageUrl">
-              <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
-              <span class="text-mediumGray text-center">Add Cover <br />Photo</span>
-            </ng-container>
+              class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
+            >
+              <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
+            </button>
+            <div
+              (click)="cover.click()"
+              class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
+              placeholder="Add Cover Photo"
+            >
+              <img
+                *ngIf="coverImageUrl"
+                [src]="coverImageUrl"
+                class="image h-full w-full object-cover"
+                object-fit:
+                contain
+              />
+              <ng-container *ngIf="!coverImageUrl">
+                <img class="h-7" src="../../../../../assets/images/defualt-image.svg" alt="logo" />
+                <span class="text-mediumGray text-center">Add Cover <br />Photo</span>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>
-      </div>
 
-       <!-- Cover photo ends -->
+      <!-- Cover photo ends -->
 
-
-      <div class="input-field flex mb-8 ">
+      <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Punchline* </label></div>
         <!-- <div>
           <textarea
@@ -129,20 +132,20 @@
           </textarea>
         </div> -->
 
-        <div class=" textarea-wrapper relative input w-full p-0.5 focus-within:pb-4 mb-4" >
+        <div class="textarea-wrapper relative input w-full p-0.5 focus-within:pb-4 mb-4">
           <textarea
-          formControlName="punchline"
-          class=" focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
-          placeholder="Eg: I help kids learn the basics of Music"
-          appTextareaAutoresize
-          #punchline
-          (onChange)="onKeyUpPunchLine(punchline)"  maxlength="100"
-        ></textarea>
-        <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{punchline.value.length}}/100</span>
-
-   </div>
-        
-
+            formControlName="punchline"
+            class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
+            placeholder="Eg: I help kids learn the basics of Music"
+            appTextareaAutoresize
+            #punchline
+            (onChange)="onKeyUpPunchLine(punchline)"
+            maxlength="100"
+          ></textarea>
+          <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic"
+            >{{ punchline.value.length }}/100</span
+          >
+        </div>
       </div>
       <!-- <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">About Me* </label></div>
@@ -159,7 +162,6 @@
         <div class="w-36 label mt-4"><label for="">Social Links* </label></div>
         <div class="flex flex-col" formArrayName="socialitems" #socialContainer>
           <ng-container
-            
             *ngFor="let item of socialItems.controls; let i = index; let isFirst = first"
           >
             <div [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
@@ -220,64 +222,59 @@
 
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4">
-          <label for="">
-            Contact Details*</label
-          >
+          <label for=""> Contact Details*</label>
         </div>
         <div class="flex flex-col">
-          <ng-container
-          >
-            <div
-              class="input-award flex flex-col px-4 py-4"
-            >
-            
-              <input type="email" class="input py-3 px-4 mb-3" placeholder="Enter Email Address" formControlName="email" />
-           
-              <input type="number"
+          <ng-container>
+            <div class="input-award flex flex-col px-4 py-4">
+              <input
+                type="email"
+                class="input py-3 px-4 mb-3"
+                placeholder="Enter Email Address"
+                formControlName="email"
+              />
+
+              <input
+                type="number"
                 min="0"
-                class="input py-3 px-4 "
+                class="input py-3 px-4"
                 placeholder="Enter Phone Number"
                 formControlName="phone_number"
               />
               <div class="w-form input-field">
-              
                 <p class="label py-4">Allow customers to contact you via</p>
                 <div class="relative">
-              <div class="flex flex-col w-full rounded-lg radio-input bg-white " #radioContainer >
-                <label class="radio-container py-3 radio-input-border-b" for="fixed">
-                  <div class="flex flex-col">
-                    <p class="text-primaryFont pt-0.5">SMS</p>
+                  <div class="flex flex-col w-full rounded-lg radio-input bg-white" #radioContainer>
+                    <label class="radio-container py-3 radio-input-border-b" for="fixed">
+                      <div class="flex flex-col">
+                        <p class="text-primaryFont pt-0.5">SMS</p>
+                      </div>
+                      <input
+                        type="radio"
+                        id="fixed"
+                        name="contact_type"
+                        value="SMS"
+                        formControlName="contact_type"
+                      />
+                      <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container py-3" for="flexible">
+                      <div class="flex flex-col">
+                        <p class="text-primaryFont pt-0.5">WhatsApp</p>
+                      </div>
+                      <input
+                        type="radio"
+                        id="flexible"
+                        name="contact_type"
+                        value="WHATSAPP"
+                        formControlName="contact_type"
+                      />
+                      <span class="radiomark"></span>
+                    </label>
                   </div>
-                  <input
-                    type="radio"
-                    id="fixed"
-                    name="contact_type"
-                    value="SMS"
-                    formControlName="contact_type"
-                   
-                   
-                  />
-                  <span class="radiomark"></span>
-                </label>
-                <label class="radio-container py-3" for="flexible">
-                  <div class="flex flex-col">
-                    <p class="text-primaryFont pt-0.5">WhatsApp</p>
-                  </div>
-                  <input
-                    type="radio"
-                    id="flexible"
-                    name="contact_type"
-                    value="WHATSAPP"
-                    formControlName="contact_type"
-                    
-                  />
-                  <span class="radiomark"></span>
-                </label>
+                </div>
               </div>
             </div>
-            </div>
-         
-          </div>
           </ng-container>
         </div>
       </div>
@@ -312,14 +309,14 @@
                 </option>
               </select> -->
               <div class="mb-4">
-              <app-dropdown
-              [options]="recognitionTypeOptions"
-              placeholder="Select Type"
-              formControlName="recognition_type"
-              [emitId]="true"
-              [idKey]="'value'"
-            ></app-dropdown>
-               </div>
+                <app-dropdown
+                  [options]="recognitionTypeOptions"
+                  placeholder="Select Type"
+                  formControlName="recognition_type"
+                  [emitId]="true"
+                  [idKey]="'value'"
+                ></app-dropdown>
+              </div>
 
               <input
                 class="input py-3 px-4 mb-4"
@@ -332,63 +329,63 @@
                 formControlName="expiry_date"
               /> -->
 
-              <div class="w-form calendar-1 font-poppins mb-4" *ngIf="item.get('recognition_type')?.value !== 'AWARD'">
+              <div
+                class="w-form calendar-1 font-poppins mb-4"
+                *ngIf="item.get('recognition_type')?.value !== 'AWARD'"
+              >
                 <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
                   formControlName="date" /> -->
                 <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker>
               </div>
 
-              <div class="flex items-center justify-between ">
+              <div class="flex items-center justify-between">
                 <div class="image-wrapper">
-              <input
-                type="file"
-                accept="image/*"
-                #licenceLogo
-                style="display: none"
-                (change)="handleFileInputLicence($event, i)"
-              />
-              <div class="relative w-28">
-                <button
-                  (click)="deleteLicense(i)"
-                  *ngIf="arrayLicenceImageUrl[i]"
-                  class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
-                >
-                  <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
-                </button>
-                <div
-                  class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
-                  placeholder="Add a Logo"
-                  (click)="licenceLogo.click()"
-                >
-                  <img
-                    *ngIf="arrayLicenceImageUrl[i]"
-                    [src]="arrayLicenceImageUrl[i]"
-                    class="image h-full w-full object-cover"
+                  <input
+                    type="file"
+                    accept="image/*"
+                    #licenceLogo
+                    style="display: none"
+                    (change)="handleFileInputLicence($event, i)"
                   />
-                  <ng-container *ngIf="!arrayLicenceImageUrl[i]">
-                    <img
-                      class="h-7"
-                      src="../../../../../assets/images/defualt-image.svg"
-                      alt="photo"
-                    />
-                    <span class="text-mediumGray cursor-pointer">Add Photo</span>
-                  </ng-container>
+                  <div class="relative w-28">
+                    <button
+                      (click)="deleteLicense(i)"
+                      *ngIf="arrayLicenceImageUrl[i]"
+                      class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
+                    >
+                      <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
+                    </button>
+                    <div
+                      class="input-photo overflow-hidden text-center flex flex-col justify-evenly items-center hover:cursor-pointer"
+                      placeholder="Add a Logo"
+                      (click)="licenceLogo.click()"
+                    >
+                      <img
+                        *ngIf="arrayLicenceImageUrl[i]"
+                        [src]="arrayLicenceImageUrl[i]"
+                        class="image h-full w-full object-cover"
+                      />
+                      <ng-container *ngIf="!arrayLicenceImageUrl[i]">
+                        <img
+                          class="h-7"
+                          src="../../../../../assets/images/defualt-image.svg"
+                          alt="photo"
+                        />
+                        <span class="text-mediumGray cursor-pointer">Add Photo</span>
+                      </ng-container>
+                    </div>
+                  </div>
                 </div>
+                <button
+                  *ngIf="recognitions.length > 1"
+                  class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
+                  type="button"
+                  (click)="deleteAwardOrLicence(i)"
+                >
+                  <img src="../../../../../assets/images/icons/delete.svg" alt="delete" />
+                  <span class="noborder-button px-0 font-normal text-base mt-1">Delete </span>
+                </button>
               </div>
-            </div>
-              <button
-              *ngIf=" recognitions.length > 1"
-              class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
-              type="button"
-              (click)="deleteAwardOrLicence(i)"
-            >
-              <img src="../../../../../assets/images/icons/delete.svg" alt="delete" /> <span class="text-base">Delete </span>
-            </button>
-
-            </div>
-
-
-              
             </div>
           </ng-container>
           <button class="noborder-button add-another" (click)="addLicenceItem()">
@@ -419,90 +416,94 @@
                 placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
                 formControlName="title"
               /> -->
-              <div class=" textarea-wrapper relative input w-full p-0.5  mb-4">
-                    <textarea
-                    formControlName="title"
-                    class=" focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full "
-                    placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
-                    appTextareaAutoresize
-                    #title
-                    (onChange)="onKeyUp(title)"  maxlength="100"
-                  ></textarea>
-                  <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{title.value.length}}/100</span>
-  
-             </div>
+              <div class="textarea-wrapper relative input w-full p-0.5 mb-4">
+                <textarea
+                  formControlName="title"
+                  class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
+                  placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
+                  appTextareaAutoresize
+                  #title
+                  (onChange)="onKeyUp(title)"
+                  maxlength="100"
+                ></textarea>
+                <span
+                  class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic"
+                  >{{ title.value.length }}/100</span
+                >
+              </div>
               <!-- <input
                 class="input py-3 px-4 mb-4"
                 placeholder="Enter testimonial"
                 formControlName="testimonial"
               /> -->
 
-            
-                <div class=" textarea-wrapper relative input w-full p-0.5  mb-4">
-                  <textarea
-                  
+              <div class="textarea-wrapper relative input w-full p-0.5 mb-4">
+                <textarea
                   formControlName="testimonial"
-                  class=" focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full "
+                  class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
                   placeholder="Enter testimonial"
                   appTextareaAutoresize
                   #box
-                  (onChange)="onKeyUp(box)"  maxlength="200"
+                  (onChange)="onKeyUp(box)"
+                  maxlength="200"
                 ></textarea>
-                <span class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic">{{box.value.length}}/200</span>
-                </div>
-                <div class="flex items-center justify-between ">
-
-                  <div class="image-wrapper">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          #clientPhoto
-                          style="display: none"
-                          (change)="handleFileTestimonial($event, i)"
-                        />
-                        <div class="relative w-28">
-                          <button
-                            (click)="deleteTestimonial(i)"
-                            *ngIf="arrayTestmonialImageUrl[i]"
-                            class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
-                          >
-                            <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
-                          </button>
-                          <div
-                            class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center hover:cursor-pointer"
-                            placeholder="Add photo of client"
-                            (click)="clientPhoto.click()"
-                          >
-                            <img
-                              *ngIf="arrayTestmonialImageUrl[i]"
-                              [src]="arrayTestmonialImageUrl[i]"
-                              class="image h-full w-full object-cover"
-                            />
-                            <ng-container *ngIf="!arrayTestmonialImageUrl[i]">
-                              <img
-                                class="h-7"
-                                src="../../../../../assets/images/defualt-image.svg"
-                                alt="photo"
-                              />
-                              <span class="text-mediumGray"
-                                >Add Photo <br />
-                                of Client</span
-                              >
-                            </ng-container>
-                          </div>
-                        </div>
-                  </div>
-        
-                    <button
-                       *ngIf=" testimonials.length > 1"
-                        class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
-                        type="button"
-                        (click)="deleteTestmonials(i)"
-                      >
-                        <img src="../../../../../assets/images/icons/delete.svg" alt="delete" /> <span class="text-base">Delete </span>
-                      </button>
+                <span
+                  class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic"
+                  >{{ box.value.length }}/200</span
+                >
               </div>
-          
+              <div class="flex items-center justify-between">
+                <div class="image-wrapper">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    #clientPhoto
+                    style="display: none"
+                    (change)="handleFileTestimonial($event, i)"
+                  />
+                  <div class="relative w-28">
+                    <button
+                      (click)="deleteTestimonial(i)"
+                      *ngIf="arrayTestmonialImageUrl[i]"
+                      class="absolute right-0 z-10 transform -translate-y-1/2 translate-x-1/2"
+                    >
+                      <img src="../../../../../assets/images/icons/cross-circle.svg" alt="remove" />
+                    </button>
+                    <div
+                      class="input-photo overflow-hidden text-center mr-2 flex flex-col justify-evenly items-center hover:cursor-pointer"
+                      placeholder="Add photo of client"
+                      (click)="clientPhoto.click()"
+                    >
+                      <img
+                        *ngIf="arrayTestmonialImageUrl[i]"
+                        [src]="arrayTestmonialImageUrl[i]"
+                        class="image h-full w-full object-cover"
+                      />
+                      <ng-container *ngIf="!arrayTestmonialImageUrl[i]">
+                        <img
+                          class="h-7"
+                          src="../../../../../assets/images/defualt-image.svg"
+                          alt="photo"
+                        />
+                        <span class="text-mediumGray"
+                          >Add Photo <br />
+                          of Client</span
+                        >
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  *ngIf="testimonials.length > 1"
+                  class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
+                  type="button"
+                  (click)="deleteTestmonials(i)"
+                >
+                  <img src="../../../../../assets/images/icons/delete.svg" alt="delete" />
+                  <span class="noborder-button px-0 text-base font-normal mt-1">Delete </span>
+                </button>
+              </div>
             </div>
           </ng-container>
           <button class="noborder-button add-another" (click)="addTestimonialItem()">
@@ -529,10 +530,8 @@
         <div class="px-8 py-8 tinytiptext relative">
           <div class="heading">💡 Tiny Tip</div>
           <div class="text pt-7 flex flex-col gap-7">
-            
-            <p> You can add upto 5 social links through which your customers can find you  </p>
-            <p> One of the links can be your own  website!  </p>
-           
+            <p>You can add upto 5 social links through which your customers can find you</p>
+            <p>One of the links can be your own website!</p>
           </div>
         </div>
       </div>
@@ -540,10 +539,7 @@
         <div class="px-8 py-8 tinytiptext relative">
           <div class="heading">💡 Tiny Tip</div>
           <div class="text pt-7 flex flex-col gap-7">
-            
-            <p> Choose a channel where you can comfortably communicate with your customers</p>
-           
-           
+            <p>Choose a channel where you can comfortably communicate with your customers</p>
           </div>
         </div>
       </div>
@@ -552,10 +548,9 @@
         <div class="px-8 py-8 tinytiptext relative">
           <div class="heading">💡 Tiny Tip</div>
           <div class="text pt-7 flex flex-col gap-7">
-
-            <p> Cover photo is the larger photo on top of your TinyCard™, above your profile photo.  </p>
-      
-           
+            <p>
+              Cover photo is the larger photo on top of your TinyCard™, above your profile photo.
+            </p>
           </div>
         </div>
       </div>
