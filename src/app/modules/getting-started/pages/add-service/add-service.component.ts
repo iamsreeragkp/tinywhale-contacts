@@ -187,8 +187,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   initForms(val?: Product) {
-    console.log(val,"sdsd");
-    
+
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
@@ -451,7 +450,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       !!photos.length &&
       !!time_ranges.length &&
       time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
-      console.log(payload,"adsdsds");
       
     this.store.dispatch(addService({ productData: payload }));
   }
