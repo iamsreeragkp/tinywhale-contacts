@@ -104,9 +104,15 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data?.status && data?.businessLocations?.length) {
+          const locationArray = data?.businessLocations.filter((locationItem, index, self) =>
+          index === self.findIndex((locationData) => {
+           return locationData.location_name === locationItem.location_name 
+          }
+          ))
+      
           this.locationOptions = [
             ...locationOptions,
-            ...data?.businessLocations.map(({ location_id, location_name, address }) => ({
+            ...locationArray.map(({ location_id, location_name, address }) => ({
               location_id,
               location_name,
               address,
@@ -181,6 +187,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   initForms(val?: Product) {
+
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
@@ -443,6 +450,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       !!photos.length &&
       !!time_ranges.length &&
       time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
+      
     this.store.dispatch(addService({ productData: payload }));
   }
 
