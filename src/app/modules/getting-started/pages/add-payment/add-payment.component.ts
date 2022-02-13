@@ -206,7 +206,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_rapyd: true,
+      connect_bank: true,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
     // if (this.idStatus) {
@@ -238,7 +238,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_rapyd: true,
+      connect_bank: true,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
   }
