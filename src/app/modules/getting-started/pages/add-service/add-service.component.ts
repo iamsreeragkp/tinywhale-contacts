@@ -44,7 +44,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   productForm: FormGroup = new FormGroup({});
   locationOptions: ProductLocationPayload[] = locationOptions;
   // generating time options
-  weekDayOptions = weekDayOptions;
+  weekDayOptions = JSON.parse(JSON.stringify(weekDayOptions)) as {
+    value: WeekDay;
+    label: string;
+    selected: boolean;
+  }[];
   ngUnsubscribe = new Subject<void>();
   productFormUnsubscriber$ = new Subject<void>();
   editMode = false;
@@ -151,6 +155,14 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             } else {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
+            this.productForm.setControl(
+              'time_ranges',
+              this._fb.array(
+                (data.response.time_ranges?.length ? data.response.time_ranges : []).map(
+                  (time_range: TimeRange) => this.createTimeRanges(time_range)
+                )
+              )
+            );
             this.productFormSubscriptions();
           } else if (this.createAnother) {
             if (this.editMode) {
@@ -249,11 +261,17 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       this.weekDayOptions.find(weekDay => weekDay.value === val.day_of_week)!.selected = true;
     }
     return this._fb.group({
-      id: { value: Symbol('time_range'), disabled: true },
+      class_time_range_id: [
+        {
+          value: val?.class_time_range_id ?? Symbol('time_range'),
+          disabled: !val?.class_time_range_id,
+        },
+      ],
       day_of_week: [val?.day_of_week ?? null],
       start_time: [val?.start_time ?? ''],
       end_time: [val?.end_time ?? ''],
       end_time_label: [{ value: convert24HrsFormatToAmPm(val?.end_time), disabled: true }],
+      is_deleted: [false],
     });
   }
 
@@ -271,7 +289,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       this.addTimeRangeToWeekDay(dayOfWeek);
     } else {
       for (let i = this.timeRanges.controls.length; i >= 0; i--) {
-        if (this.timeRanges.at(i)?.get('day_of_week')?.value === dayOfWeek) {
+        if (
+          this.timeRanges.at(i)?.get('day_of_week')?.value === dayOfWeek &&
+          !this.timeRanges.at(i)?.get('is_deleted')?.value
+        ) {
           this.deleteTimeRangeFromWeekday(dayOfWeek, i);
         }
       }
@@ -284,7 +305,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   deleteTimeRangeFromWeekday(dayOfWeek: WeekDay, index: number) {
-    this.timeRanges.removeAt(index);
+    const timeRangeToDelete = this.timeRanges.at(index);
+    if (timeRangeToDelete.get('class_time_range_id')?.disabled) {
+      this.timeRanges.removeAt(index);
+    } else {
+      timeRangeToDelete.get('is_deleted')?.patchValue(true, { emitEvent: true });
+    }
     if (!this.getTimeSlotsOfWeekday(dayOfWeek).length) {
       this.addRemoveTimeRange(dayOfWeek, false);
     }
@@ -293,7 +319,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   getTimeSlotsOfWeekday(dayOfWeek: string) {
     return this.timeRanges.controls.filter(
-      weekDay => weekDay?.get('day_of_week')?.value === dayOfWeek
+      weekDay =>
+        weekDay?.get('day_of_week')?.value === dayOfWeek && !weekDay.get('is_deleted')?.value
     );
   }
 
@@ -373,7 +400,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   getTimeSlotOptions(dayOfWeek: WeekDay, id: Symbol) {
     const controlsOfSameWeekDay = this.timeRanges.controls.filter(
       timeRange =>
-        timeRange.get('id')?.value !== id && timeRange.get('day_of_week')?.value === dayOfWeek
+        timeRange.get('class_time_range_id')?.value !== id &&
+        timeRange.get('day_of_week')?.value === dayOfWeek
     );
     const usedTimeSlots = controlsOfSameWeekDay.map(timeRange => ({
       slot: timeRange.get('start_time')?.value,
@@ -410,6 +438,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
+    if (product_type === 'FLEXIBLE') {
+      this.productForm.get('location')?.clearValidators();
+      this.productForm.get('capacity')?.clearValidators();
+    }
     let { location_id, location_name, location_type, address, dropdown_field_data } =
       location ?? {};
     if (dropdown_field_data?.custom_value) {
@@ -448,6 +480,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     payload.is_active =
       this.productForm.valid &&
       !!photos.length &&
+      product_type === 'FIXED' &&
       !!time_ranges.length &&
       time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
       
@@ -482,7 +515,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('on destroy');
     this.expireSubscriptions();
     this.store.dispatch(initService());
   }
