@@ -31,6 +31,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   editMode = false;
   bookingData$: Observable<any>;
   orderId!: number;
+  classTimeRanged: any;
+  isToastError = false;
+  slotNow: any;
 
   constructor(
     private authService: AuthService,
@@ -43,6 +46,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   ) {
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
+    this.getDataDate();
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
       .pipe(
@@ -62,13 +66,22 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.bookingForm.get('service')?.valueChanges?.subscribe(val => {
-      const currClass = this.classData?.find((item: any) => item?.product_id === val);
-      if (currClass?.class?.class_time_ranges) {
-        this.times = currClass?.class?.class_time_ranges;
-        this.classTimerangeId = this.times[0]?.class_time_range_id;
-      }
-    });
+    this.bookingForm
+      .get('service')
+      ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(val => {
+        const currClass = this.classData?.find((item: any) => item?.product_id === val);
+        if (currClass?.class?.class_time_ranges) {
+          this.classTimeRanged = currClass?.class?.class_time_ranges.map((classTimeRange: any) => ({
+            id: classTimeRange?.class_time_range_id,
+            label:
+              convert24HrsFormatToAmPm(classTimeRange?.start_time) +
+              ' - ' +
+              convert24HrsFormatToAmPm(classTimeRange?.end_time),
+          }));
+          this.classTimerangeId = this.classTimeRanged?.id;
+        }
+      });
     this.subscriptions();
   }
 
@@ -88,35 +101,58 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       });
   }
 
+  getDataDate() {
+    this.bookingForm.get('service')?.valueChanges?.subscribe((data: any) => {
+      console.log(data);
+      this.bookingService.getBookingDates(data).subscribe((datas: any) => {
+        console.log(datas);
+      });
+    });
+  }
+
   initializeBookingForm(val?: any) {
+    const timeRanges = val?.order_session?.[0]?.session?.class_time_range;
+    this.slotNow = {
+      id: timeRanges?.class_time_range_id,
+      label:
+        convert24HrsFormatToAmPm(timeRanges?.start_time) +
+        ' - ' +
+        convert24HrsFormatToAmPm(timeRanges?.end_time),
+    };
     this.bookingForm.patchValue({
       email: val?.account?.User?.email,
-      phonenumber: 8156778879,
+      phonenumber: val?.phone_number,
       customername: val?.account?.first_name,
       service: val?.order_line_item[0]?.product?.product_id,
       date: new Date(val?.order_session[0]?.session?.date),
-      slot: val?.slot,
+      slot: this.slotNow,
       payment: val?.payment,
     });
   }
 
   createBookingForm() {
     return new FormGroup({
-      email: new FormControl(''),
-      phonenumber: new FormControl(''),
-      customername: new FormControl(''),
-      service: new FormControl(''),
-      date: new FormControl(''),
-      slot: new FormControl(''),
-      payment: new FormControl(''),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ]),
+      phonenumber: new FormControl('', Validators.required),
+      customername: new FormControl('', Validators.required),
+      service: new FormControl('', Validators.required),
+      date: new FormControl('', Validators.required),
+      slot: new FormControl('', Validators.required),
+      payment: new FormControl('', Validators.required),
     });
   }
 
   getDropdownData() {
-    this.bookingService.getServiceDropdown().subscribe((data: any) => {
-      this.classData = data?.data;
-      this.classTimeRanges = data?.Classes;
-    });
+    this.bookingService
+      .getServiceDropdown()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: any) => {
+        this.classData = data?.data;
+        this.classTimeRanges = data?.Classes;
+      });
   }
 
   listNameArray: any = [];
@@ -138,9 +174,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       phone_number: phonenumber,
       first_name: customerName ? customerName : customername,
       last_name: lastName ? lastName : '',
-      date_time_range: [
-        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
-      ],
+      date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment,
@@ -151,7 +185,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     window.location.reload();
-    // this.router.navigate(['../booking/view-booking']);
+    this.router.navigate(['../booking/view-booking']);
   }
 
   onBookingAndExit() {
@@ -170,22 +204,28 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       phone_number: phonenumber,
       first_name: customerName ? customerName : customername,
       last_name: lastName ? lastName : '',
-      date_time_range: [
-        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
-      ],
+      date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment,
     };
+
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
     }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
-    this.store.select(getBookingInfo).subscribe((data: any) => {
-      if (data?.data?.user?.email) {
-        this.router.navigate(['../booking/status-booking']);
-      }
-    });
+    this.store
+      .select(getBookingInfo)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: any) => {
+        if (data?.data?.user?.email) {
+          this.router.navigate(['../booking/status-booking']);
+        }
+      });
+
+    setTimeout(() => {
+      this.isToastError = false;
+    }, 3000);
   }
 
   formatDate(date: any) {
@@ -217,14 +257,13 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       first_name: customerName ? customerName : customername,
       last_name: lastName ? lastName : '',
 
-      date_time_range: [
-        { date: this.formatDate(date), class_time_range_id: this.classTimerangeId },
-      ],
+      date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
       platform: payment || 'ONLINE',
       order_id: this.orderId,
     };
+
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
     }
@@ -236,4 +275,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(true);
   }
+}
+function getBookings(getBookings: any): import('rxjs').OperatorFunction<IBookingState, any> {
+  throw new Error('Function not implemented.');
 }
