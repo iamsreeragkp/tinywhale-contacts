@@ -6,14 +6,11 @@
       </div>
       <div class="flex items-center">
         <span class="relative">
-        <button class="primary-button w-52" (click)="copyViewBox()">Share Your TinyCard™</button>
-        <ng-container  *ngIf="copyView "  >
-          <ng-container
-          *ngTemplateOutlet="share; context: { ShareLink: 'data' }
-          "
-        ></ng-container> 
-        </ng-container>
-      </span>
+          <button class="primary-button w-52" (click)="copyViewBox()">Share Your TinyCard™</button>
+          <ng-container *ngIf="copyView">
+            <ng-container *ngTemplateOutlet="share; context: { ShareLink: 'data' }"></ng-container>
+          </ng-container>
+        </span>
       </div>
     </div>
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
@@ -200,22 +197,22 @@
             <div class="w-4/12 h-full">
               <p class="text-primaryFont">
                 {{
-                  isToday(upcoming?.order_session[0]?.session?.date)
+                  isToday(upcoming?.order_session?.[0]?.session?.date)
                     ? 'Today'
-                    : isTomorrow(upcoming?.order_session[0]?.session?.date)
+                    : isTomorrow(upcoming?.order_session?.[0]?.session?.date)
                     ? 'Tomorrow'
-                    : getDayName(upcoming?.order_session[0]?.session?.date) +
+                    : getDayName(upcoming?.order_session?.[0]?.session?.date) +
                       ',' +
-                      formatdate(upcoming?.order_session[0]?.session?.date)
+                      formatdate(upcoming?.order_session?.[0]?.session?.date)
                 }}
               </p>
             </div>
             <div class="w-8/12 h-full">
               <p class="text-primaryFont">
-                {{ upcoming?.order_session[0]?.session.class_time_range?.start_time }} -
-                {{ upcoming?.order_session[0]?.session.class_time_range?.end_time }}
+                {{ upcoming?.order_session?.[0]?.session.class_time_range?.start_time }} -
+                {{ upcoming?.order_session?.[0]?.session.class_time_range?.end_time }}
               </p>
-              <p class="text-primaryFont">{{ upcoming?.order_line_item[0]?.product?.title }}</p>
+              <p class="text-primaryFont">{{ upcoming?.order_line_item?.[0]?.product?.title }}</p>
             </div>
           </div>
           <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
@@ -334,21 +331,39 @@
 
 <!-- share link div ends here -->
 
-<ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation();"   >
+<ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation()">
   <div
-    class="absolute border border-grey-100  rounded-[20px] top-16 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 md:w-96 w-80  cursor-auto font-poppins" 
+    class="absolute border border-grey-100 rounded-[20px] top-16 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 md:w-96 w-80 cursor-auto font-poppins"
   >
+    <p class="flex items-center justify-between text-white text-base">
+      <span class="">Share service link with clients</span>
+      <span
+        class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700"
+        (click)="copyView = false"
+        >&times;</span
+      >
+    </p>
 
-  <p class="flex items-center justify-between text-white text-base "><span class="">Share service link with clients</span> <span class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700 " (click)=" copyView =false ">&times;</span></p>
-
-        <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
-          <input type="text" [value]="copyURL" class=" absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none" #userinput />
-          <div class="  select-none  leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4  z-0 focus:shadow focus:outline-none ">
-            {{copyURL}}
-          </div>
-          <button type="submit" class="copy-text justify-center pl-2 pr-4" (click)="copyInputMessage(userinput)  "><span class="copy-text bg-clip-text font-semibold">{{copyStatus}}</span></button> 
+    <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
+      <input
+        type="text"
+        [value]="copyURL"
+        class="absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none"
+        #userinput
+      />
+      <div
+        class="select-none leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4 z-0 focus:shadow focus:outline-none"
+      >
+        {{ copyURL }}
       </div>
-
+      <button
+        type="submit"
+        class="copy-text justify-center pl-2 pr-4"
+        (click)="copyInputMessage(userinput)"
+      >
+        <span class="copy-text bg-clip-text font-semibold">{{ copyStatus }}</span>
+      </button>
+    </div>
   </div>
 </ng-template>
 <!-- share link div ends here -->
