@@ -72,7 +72,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
         if (data) {
           console.log(data);
           this.initializePaymentForm(data);
-          if (data?.payout_info?.beneficiary_id) {
+          if (data?.payout_info?.connect_bank) {
             this.idStatus = true;
             //   this.store.dispatch(addKyc());
           }
@@ -86,6 +86,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     if (!val) {
       return;
     }
+
     this.paymentForm = new FormGroup({
       company: new FormControl(val?.type),
       companyname: new FormControl(val?.business_name),
@@ -98,7 +99,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       state: new FormControl(val?.state),
       country: new FormControl(val?.country),
       currency: new FormControl(val?.default_currency),
-      connectbank: new FormControl(val?.connect_bank),
+      connectbank: new FormControl(val?.payout_info?.connect_bank === false ? true : false),
     });
     this.subscribeFormFieldChanges();
   }
@@ -179,7 +180,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       postal_code: parseInt(postelcode),
       default_currency: currency,
     };
-
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
     this.isSaving = false;
     this.router.navigate(['/']);
@@ -240,7 +240,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_bank: this.connectbanks,
+      connect_bank: this.idStatus === true ? true : false,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
   }
