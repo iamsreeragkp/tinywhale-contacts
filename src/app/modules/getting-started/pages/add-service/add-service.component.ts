@@ -108,12 +108,14 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data?.status && data?.businessLocations?.length) {
-          const locationArray = data?.businessLocations.filter((locationItem, index, self) =>
-          index === self.findIndex((locationData) => {
-           return locationData.location_name === locationItem.location_name 
-          }
-          ))
-      
+          const locationArray = data?.businessLocations.filter(
+            (locationItem, index, self) =>
+              index ===
+              self.findIndex(locationData => {
+                return locationData.location_name === locationItem.location_name;
+              })
+          );
+
           this.locationOptions = [
             ...locationOptions,
             ...locationArray.map(({ location_id, location_name, address }) => ({
@@ -199,7 +201,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   initForms(val?: Product) {
-
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
@@ -208,7 +209,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
       photos: this._fb.array(
-        Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
+        Array.from({ length: 1 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
       ),
       location: [this.createLocation(val), Validators.required],
       price_package: this._fb.array(
@@ -438,7 +439,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
-    if (product_type === 'FLEXIBLE') {
+    if (product_type === 'SERVICE') {
       this.productForm.get('location')?.clearValidators();
       this.productForm.get('capacity')?.clearValidators();
     }
@@ -480,10 +481,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     payload.is_active =
       this.productForm.valid &&
       !!photos.length &&
-      product_type === 'FIXED' &&
-      !!time_ranges.length &&
-      time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
-      
+      (product_type === 'CLASS'
+        ? !!time_ranges.length &&
+          time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
+        : true);
     this.store.dispatch(addService({ productData: payload }));
   }
 

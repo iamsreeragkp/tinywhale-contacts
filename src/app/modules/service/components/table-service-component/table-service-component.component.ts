@@ -163,17 +163,22 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
   }
 
+  visibilities: any;
+
   handleAction(event: string, product: Product) {
     if (event === 'Edit') {
       this.router.navigate(['../edit-service', product.product_id], {
         relativeTo: this.route,
       });
     } else if (['Mark as Private', 'Mark as Public'].includes(event)) {
-      const visibility = event.includes('Public') ? VisibilityType.PRIVATE : VisibilityType.PUBLIC;
+      this.visibilities = event.includes('Private')
+        ? VisibilityType.PRIVATE
+        : VisibilityType.PUBLIC;
+
       this.store.dispatch(
         changeVisibility({
           productId: product.product_id,
-          visibility: visibility,
+          visibility: { visibility: this.visibilities },
           filters: this.constructFilterPayload(),
         })
       );
