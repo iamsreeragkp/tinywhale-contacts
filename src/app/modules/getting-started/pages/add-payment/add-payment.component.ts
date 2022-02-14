@@ -164,7 +164,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       state,
       country,
       currency,
-      connectbank,
     } = this.paymentForm.value;
 
     const paymentPayload = {
@@ -179,7 +178,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_bank: connectbank === false ? true : false,
     };
 
     this.store.dispatch(addPayment({ paymentData: paymentPayload }));
