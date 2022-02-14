@@ -473,11 +473,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     payload.is_active =
       this.productForm.valid &&
       !!photos.length &&
-      (
-        product_type === 'FIXED' &&
-        !!time_ranges.length &&
-        time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
-      )
+      product_type === 'FIXED' &&
+      !!time_ranges.length &&
+      time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
     this.store.dispatch(addService({ productData: payload }));
   }
 
