@@ -431,6 +431,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
+    if (product_type === 'FLEXIBLE') {
+      this.productForm.get('location')?.clearValidators();
+      this.productForm.get('capacity')?.clearValidators();
+    }
     let { location_id, location_name, location_type, address, dropdown_field_data } =
       location ?? {};
     if (dropdown_field_data?.custom_value) {
@@ -469,8 +473,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     payload.is_active =
       this.productForm.valid &&
       !!photos.length &&
-      !!time_ranges.length &&
-      time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
+      (
+        product_type === 'FIXED' &&
+        !!time_ranges.length &&
+        time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
+      )
     this.store.dispatch(addService({ productData: payload }));
   }
 
