@@ -123,9 +123,9 @@
               />
             </div>
             <div class="flex flex-1 flex-col justify-center gap-2">
-              <div class="font-medium break-all lg:w-3/4">{{ recognition?.recognition_name }}</div>
+              <div class="font-medium break-all w-3/4">{{ recognition?.recognition_name }}</div>
               <span *ngIf="recognition?.expiry_date"
-                >Valid till {{ formatDate(recognition?.expiry_date) }}</span
+                >Valid till {{ recognition?.expiry_date?.toLocaleDateString('us') }}</span
               >
             </div>
           </div>
