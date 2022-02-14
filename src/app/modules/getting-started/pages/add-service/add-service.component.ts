@@ -439,7 +439,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
-    if (product_type === 'FLEXIBLE') {
+    if (product_type === 'SERVICE') {
       this.productForm.get('location')?.clearValidators();
       this.productForm.get('capacity')?.clearValidators();
     }
@@ -481,10 +481,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     payload.is_active =
       this.productForm.valid &&
       !!photos.length &&
-      product_type === 'FIXED' &&
-      !!time_ranges.length &&
-      time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time);
-
+      (product_type === 'CLASS'
+        ? !!time_ranges.length &&
+          time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
+        : true);
     this.store.dispatch(addService({ productData: payload }));
   }
 
