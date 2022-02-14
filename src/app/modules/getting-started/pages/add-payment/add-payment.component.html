@@ -236,7 +236,7 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <button
-            [disabled]="!checkedInfo"
+            [disabled]="connectbanks?.value"
             class="primary-button w-56"
             (click)="onConnectBank()"
             *ngIf="!idStatus"
@@ -253,10 +253,9 @@
         <div class="w-form" *ngIf="!idStatus">
           <label
             class="check-container not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
-            (change)="onChangeData($event)"
             >It’s okay, I do not intend to collect online payments right now.
 
-            <input type="checkbox" />
+            <input type="checkbox" formControlName="connectbank" />
             <span class="checkmark"></span>
           </label>
         </div>

@@ -98,6 +98,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       state: new FormControl(val?.state),
       country: new FormControl(val?.country),
       currency: new FormControl(val?.default_currency),
+      connectbank: new FormControl(val?.connect_bank),
     });
     this.subscribeFormFieldChanges();
   }
@@ -115,6 +116,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       state: new FormControl(''),
       country: new FormControl(''),
       currency: new FormControl(''),
+      connectbank: new FormControl(false),
     });
   }
 
@@ -206,7 +208,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_rapyd: true,
+      connect_bank: true,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
     // if (this.idStatus) {
@@ -238,7 +240,7 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       country: country,
       postal_code: parseInt(postelcode),
       default_currency: currency,
-      connect_rapyd: true,
+      connect_bank: this.connectbanks,
     };
     this.store.dispatch(addPayment({ paymentData: rapidPayload }));
   }
@@ -249,6 +251,10 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     } else {
       this.checkedInfo = true;
     }
+  }
+
+  get connectbanks() {
+    return this.paymentForm.get('connectbank');
   }
 
   ngOnDestroy() {

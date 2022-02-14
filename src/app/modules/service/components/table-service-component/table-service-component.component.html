@@ -393,6 +393,7 @@
           <app-no-result-service-component
             class="flex flex-1"
             *ngIf="!isFilterEmpty && !productsList?.length"
+            [item]="productsList"
           >
           </app-no-result-service-component>
         </td>

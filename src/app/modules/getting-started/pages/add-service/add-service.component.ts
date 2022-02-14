@@ -209,7 +209,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
       photos: this._fb.array(
-        Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
+        Array.from({ length: 1 }, (_, i) => this.createPhotos(val?.product_photos?.[i]))
       ),
       location: [this.createLocation(val), Validators.required],
       price_package: this._fb.array(
@@ -485,7 +485,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         ? !!time_ranges.length &&
           time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
         : true);
-
     this.store.dispatch(addService({ productData: payload }));
   }
 
