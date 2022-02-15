@@ -33,9 +33,20 @@ import { GoogleiconComponent } from './svgs/googleicon/googleicon.component';
 import { WindowComponent } from './components/window/window.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { TextareaAutoresizeDirective } from './directives/auto-resize.directive';
+import { AngularMyDatePickerModule } from 'angular-mydatepicker';
+import { SelectCalendarComponent } from './components/select-calendar/select-calendar.component';
+import { CalendarSvgComponent } from './svgs/calendarSvg/calendar-svg.component';
 
 @NgModule({
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule, LazyLoadImageModule,PortalModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    LazyLoadImageModule,
+    PortalModule,
+    AngularMyDatePickerModule,
+  ],
   declarations: [
     SpinnerComponent,
     LoadingPlaceholderComponent,
@@ -64,9 +75,10 @@ import { TextareaAutoresizeDirective } from './directives/auto-resize.directive'
     ThreeDotsComponent,
     ModalComponent,
     GoogleiconComponent,
-    WindowComponent, 
-    TextareaAutoresizeDirective
-    
+    WindowComponent,
+    TextareaAutoresizeDirective,
+    SelectCalendarComponent,
+    CalendarSvgComponent,
   ],
   exports: [
     CommonModule,
@@ -101,7 +113,8 @@ import { TextareaAutoresizeDirective } from './directives/auto-resize.directive'
     ModalComponent,
     GoogleiconComponent,
     WindowComponent,
-    TextareaAutoresizeDirective
+    TextareaAutoresizeDirective,
+    SelectCalendarComponent,
   ],
 })
 export class SharedModule {}

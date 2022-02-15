@@ -176,7 +176,7 @@
 
       <!-- <div class="input-field flex mb-8 relative">
         <div class="w-36 label mt-4"><label for="">Photos*</label></div>
-    
+
         <div class="flex w-form" formArrayName="photos">
           <div
             class="relative mr-2"
@@ -214,8 +214,8 @@
             </div>
           </div>
         </div>
-   
-     
+
+
       </div>  -->
 
       <!-- Contact Details -->
@@ -335,7 +335,11 @@
               >
                 <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
                   formControlName="date" /> -->
-                <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker>
+                <!-- <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker> -->
+                <app-select-calendar
+                  formControlName="expiry_date"
+                  placeholder="Enter Date"
+                ></app-select-calendar>
               </div>
 
               <div class="flex items-center justify-between">
