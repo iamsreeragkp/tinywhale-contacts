@@ -162,7 +162,7 @@
   </form>
   <table class="table-auto w-full">
     <thead>
-      <tr class="bg-gray-100">
+      <tr class="bg-gray-100 border-b border-white border-solid">
         <th class="px-2 py-3 text-left font-semibold">
           <div class="flex items-center">
             <span> Service Name </span>
@@ -189,7 +189,7 @@
         <tr>
           <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Service Listing</td>
         </tr>
-        <tr class="table-container-borderRow">
+        <tr class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50">
           <td class="align-top px-2 py-3">
             <div class="flex items-start">
               <div>
@@ -295,7 +295,8 @@
           </td>
         </tr>
       </ng-container>
-      <tr class="table-container-borderRow" *ngFor="let product of productsList; let i = index">
+      <ng-container *ngFor="let product of productsList; let i = index" >
+      <tr [routerLink]="['../view-service', product.product_id]" class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50" >
         <td class="align-top px-2 py-3">
           <div class="flex">
             <div>
@@ -312,7 +313,7 @@
                 />
               </div>
             </div>
-            <span [routerLink]="['../view-service', product.product_id]" class="ml-2 cp">{{
+            <span class="ml-2 cp">{{
               product?.title ?? '-'
             }}</span>
           </div>
@@ -353,7 +354,7 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <div class="relative">
+            <div class="relative" (click)="$event.stopPropagation()" >
               <button class="secondary-button w-24" (click)="copyViewBox(i, product.product_id)">
                 <span>Share</span>
               </button>
@@ -365,7 +366,7 @@
               </ng-container>
             </div>
             <!-- confrim popup -->
-            <div class="flex-1 flex justify-end">
+            <div class="flex-1 flex justify-end" (click)="$event.stopPropagation()">
               <app-three-dots
                 [actions]="getActions(product)"
                 (actionTriggered)="handleAction($event, product)"
@@ -375,6 +376,7 @@
         </td>
         <td class="align-top px-2 py-3"></td>
       </tr>
+    </ng-container>
       <tr>
         <td colspan="7">
           <div
