@@ -38,7 +38,7 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
     // // this.showPortal = false;
     if (!this.isCompleted()) {
       this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-        `${this.baseURL + '/' + this.dashboardInfos.domainName}`
+        `${this.baseURL + '/' + this.dashboardInfos.domainName}?preview-app=true`
       );
     } else {
       this.iframeURL = this.sanitizer.bypassSecurityTrustResourceUrl(`${this.baseURL}/preview`);

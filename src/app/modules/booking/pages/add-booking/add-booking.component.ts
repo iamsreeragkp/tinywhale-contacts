@@ -19,10 +19,10 @@ import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
 })
 export class AddBookingComponent implements OnInit, OnDestroy {
   bookingForm!: FormGroup;
-  options = {
-    format: 'yyyy-MM-dd',
-    placeholder: 'Select date',
-  };
+  // options = {
+  //   format: 'yyyy-MM-dd',
+  //   placeholder: 'Select date',
+  // };
   classData: any;
   classTimeRanges: any;
   times: any;

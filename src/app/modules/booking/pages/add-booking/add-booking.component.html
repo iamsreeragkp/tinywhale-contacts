@@ -86,7 +86,11 @@
         <div class="w-form calendar-1 font-poppins">
           <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
             formControlName="date" /> -->
-          <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker>
+          <!-- <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker> -->
+          <app-select-calendar
+            formControlName="date"
+            placeholder="Enter Date"
+          ></app-select-calendar>
         </div>
       </div>
       <div class="input-field flex mb-4">

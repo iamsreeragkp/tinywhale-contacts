@@ -28,6 +28,7 @@ module.exports = {
         mediumGray: '#73959d',
         primaryFont: '#154F5B',
         secondaryBlue: '#00a4b7',
+        veryDarkGray: 'rgb(21, 79, 91)'
       }
     },
   },
