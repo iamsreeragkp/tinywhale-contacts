@@ -154,7 +154,7 @@
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
             <span class="italic whitespace-nowrap">{{
-              bookData?.session_to_display?.displayDate || '---'
+              bookData?.order_session?.[0]?.session?.date || '---'
             }}</span>
             <span class="italic whitespace-nowrap">{{"(" +bookData?.session_to_display?.sessionNo+"/"+bookData?.session_to_display?.totalSessions+")"}}</span>
           </div>
@@ -175,20 +175,19 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <span class="italic">{{ bookData?.account?.first_name || '---' }}</span>
+            <span class="">{{ bookData?.account?.first_name || '---' }}</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
             <span
-              class="italic"
               >{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span
             >
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <div class="italic flex items-center">
+            <div class="flex items-center">
               <span class="mr-2"
                 >{{
                   bookData?.order_line_item?.[0]?.currency === 'INR'
@@ -219,14 +218,13 @@
                 "
               />
             </div>
-            <span class="italic whitespace-nowrap">(2 sessions)</span>
+            <span class=" whitespace-nowrap">(2 sessions)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="relative flex justify-end">
             <ng-container *ngIf="bookData?.invoice?.status !== 'SETTLED'">
               <app-three-dots
-              *ngIf="bookData.session_to_display?.status.toUpperCase() === 'UPCOMING'"
                 [actions]="threeDotsActions"
                 (actionTriggered)="handleAction($event, i, bookData?.order_id)"
               ></app-three-dots>
@@ -237,9 +235,12 @@
       <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
       <tr>
         <td colspan="7">
-          <div class="w-full h-12 flex justify-center items-center">
-            <button class="noborder-button">Load More</button>
-          </div>
+          <div
+          class="w-full h-12 mt-8 flex justify-center items-center"
+          *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)"
+        >
+          <button class="noborder-button" (click)="loadMore()">Load More</button>
+        </div>
         </td>
       </tr>
     </ng-container>

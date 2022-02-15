@@ -56,7 +56,7 @@ export class BookingEffects {
     ofType(getBookingList),
     switchMap(({filters}) =>
       this.bookingService.getBookingList(filters).pipe(
-        map((response: any) => getBookingListSuccess({ bookingList: response?.data , status: true})),
+        map((response: any) => getBookingListSuccess({ bookingList: response?.data , bookingsCount: response?.count, status: true})),
         catchError(err => of(getBookingListError({ error: err, status: false })))
       )
     )
@@ -81,7 +81,7 @@ export class BookingEffects {
       switchMap(({ filters }) =>
         this.bookingService.getBookingList(filters).pipe(
           map((response: any) =>
-            getBookingListSuccess({ bookingList: response.data, status: true })
+            getBookingListSuccess({ bookingList: response.data, bookingsCount: response.count, status: true })
           ),
           catchError(err => of(getBookingListError({ error: err, status: false })))
         )
