@@ -90,7 +90,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.filterForm.valueChanges.subscribe(data => {
+    this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
       const productId = data?.service?.product_id;
       const status = data?.status;
       const payment = data?.payment;
@@ -115,10 +115,13 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   getDropdownData() {
-    this.bookingService.getServiceDropdown().subscribe((data: any) => {
-      this.serviceData = data?.data;
-      this.classTimeRanges = data?.Classes;
-    });
+    this.bookingService
+      .getServiceDropdown()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: any) => {
+        this.serviceData = data?.data;
+        this.classTimeRanges = data?.Classes;
+      });
   }
 
   createFilterForm() {
