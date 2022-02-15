@@ -77,20 +77,23 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         filter(val => !!val)
       )
       .subscribe(data => {
+        
         if (data) {
-          this.bookingData = data.bookingList;
+           this.formatData(data);
+          this.bookingData = this.formatData(data);
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderSession = this.bookingData[i].order_session;
           }
+          
         } else {
           console.log(data?.error);
         }
       });
 
-    this.filterForm.valueChanges.subscribe(data => {
+    this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
       const productId = data?.service?.product_id;
       const status = data?.status;
       const payment = data?.payment;
@@ -115,10 +118,13 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   getDropdownData() {
-    this.bookingService.getServiceDropdown().subscribe((data: any) => {
-      this.serviceData = data?.data;
-      this.classTimeRanges = data?.Classes;
-    });
+    this.bookingService
+      .getServiceDropdown()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: any) => {
+        this.serviceData = data?.data;
+        this.classTimeRanges = data?.Classes;
+      });
   }
 
   createFilterForm() {
@@ -154,6 +160,115 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   get isFilterEmpty() {
     return this.filterForm.valid;
   }
+
+  formatData(data: any){
+
+    const sortedBookingList = data["bookingList"].map((booking: any) => {
+    const timingArray:any[] = [];
+    let displaySession: any = null;
+     
+     if(booking["order_session"].length > 1){
+     
+      const sortedOrderList =  booking["order_session"].slice().sort((a: any,b: any) => {
+
+        return +new Date(this.convertToDate(a["session"]["date"],a["session"]["class_time_range"]["start_time"])) - +new Date(this.convertToDate(a["session"]["date"],a["session"]["class_time_range"]["start_time"]));
+      }
+      )
+
+      sortedOrderList.map((order: any, index: number,data : any) => {
+
+
+        const sessionData = this.createDataStructure(order,index, data.length)
+        timingArray.push(sessionData)
+      })
+
+      const upcomingSessions = timingArray.filter(session => {
+        return session.difference < 0;
+      });
+
+      if(upcomingSessions.length){
+        displaySession = upcomingSessions.reduce(function(prev, current) {
+          if (+current.difference > +prev.difference) {
+              return current;
+          } else {
+              return prev;
+          }
+      });
+     
+      }
+      else{
+         displaySession = timingArray.reduce(function(prev, current) {
+          if (+current.difference > +prev.difference) {
+              return current;
+          } else {
+              return prev;
+          }
+      });
+
+      }
+      return {
+        ...booking,
+        session_to_display : displaySession
+      }
+    }
+    else{
+
+      const order = booking["order_session"][0]
+      const sessionData = this.createDataStructure(order,0)
+
+      return {
+        ...booking,
+      session_to_display : sessionData
+      }
+    }
+    
+  });
+
+  return sortedBookingList
+    
+  }
+
+  convertToDate(dateString: string, timeString: string = '0000'){
+    
+    const dateArray = dateString.split('-');
+    const date = new Date(+dateArray[0], +dateArray[1] - 1, +dateArray[2]);
+    const time = timeString;
+    const minutes = parseInt(timeString.slice(2));
+    const hours = parseInt(timeString.slice(0,2));
+    const totalTime = new Date(date.getTime() + (minutes * 60000) + (hours *60*60000) );
+    return totalTime;
+  }
+
+  formatDate(date: Date){
+    const monthNames =["Jan","Feb","Mar","Apr",
+                      "May","Jun","Jul","Aug",
+                      "Sep", "Oct","Nov","Dec"];
+    
+    const day = date.getDate();
+    
+    const monthIndex = date.getMonth();
+    const monthName = monthNames[monthIndex];
+    
+    const year = date.getFullYear();
+    const yearString =  "`" + year.toString().slice(2);
+    return `${day} ${monthName} ${yearString}`;  
+  }
+
+  createDataStructure(order: any, index: number, noOfSessions = 1){
+    const date = order['session']['date'];
+      const exactDate = this.convertToDate(order["session"]["date"],order["session"]["class_time_range"]["start_time"]);
+      const difference  = +new Date() - +exactDate;
+      const status = difference < 0 ? "upcoming": "completed";
+      const sessionNo = index + 1;
+      const totalSessions = noOfSessions;
+      return {
+        displayDate : this.formatDate(exactDate),
+        difference,status, 
+        sessionNo, 
+        totalSessions
+      }
+  }
+
 
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
