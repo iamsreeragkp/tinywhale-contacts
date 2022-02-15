@@ -18,3 +18,8 @@ export const getBookingInfo = createSelector(getBookingFeatureSelector, state =>
 export const getBookingListStatus = createSelector(getBookingFeatureSelector, state => {
   return state?.getBookingList;
 });
+
+export const getBookableSlotsStatus = createSelector(
+  getBookingFeatureSelector,
+  state => state?.getBookableSlots
+);

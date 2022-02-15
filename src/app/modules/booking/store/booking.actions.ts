@@ -27,7 +27,10 @@ export const getBookingError = createAction(
   props<{ error?: any }>()
 );
 
-export const getBookingById = createAction('[BookingModule] get BookingById',props<{bookingId:any}>());
+export const getBookingById = createAction(
+  '[BookingModule] get BookingById',
+  props<{ bookingId: any }>()
+);
 
 export const getBookingByIdSuccess = createAction(
   '[BookingModule] get BookingById SUCCESS',
@@ -38,7 +41,6 @@ export const getBookingByIdError = createAction(
   '[BookingModule] get BookingById Error',
   props<{ error?: any }>()
 );
-
 
 export const getBookingList = createAction(
   '[BookingModule] GET BOOKING LIST',
@@ -53,4 +55,21 @@ export const getBookingListSuccess = createAction(
 export const getBookingListError = createAction(
   '[BookingModule] GET BOOKING LIST ERROR',
   props<{ status: boolean; error?: string }>()
+);
+
+export const initBooking = createAction('[Booking] INIT');
+
+export const getBookableSlots = createAction(
+  '[BookingModule] GET BOOKING SLOTS',
+  props<{ productId: any }>()
+);
+
+export const getBookableSlotsSuccess = createAction(
+  '[BookingModule] GET BOOKING SLOTS SUCCESS',
+  props<{ response?: any }>()
+);
+
+export const getBookableSlotsError = createAction(
+  '[BookingModule] GET BOOKING LIST ERROR',
+  props<{ error?: string }>()
 );

@@ -8,10 +8,19 @@ import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUnti
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { convert24HrsFormatToAmPm, getTimeRangeSerialized } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
-import { addBooking, getBookingById } from '../../store/booking.actions';
-import { BookingType } from '../../store/booking.interface';
+import {
+  addBooking,
+  getBookableSlots,
+  getBookingById,
+  initBooking,
+} from '../../store/booking.actions';
+import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
 import { IBookingState } from '../../store/booking.reducers';
-import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
+import {
+  getBookableSlotsStatus,
+  getBookingByIds,
+  getBookingInfo,
+} from '../../store/booking.selectors';
 @Component({
   selector: 'app-add-booking',
   templateUrl: './add-booking.component.html',
@@ -34,6 +43,14 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   classTimeRanged: any;
   isToastError = false;
   slotNow: any;
+
+  filledSlotsData$!: Observable<
+    { response?: FilledSlotDetails; status: boolean; error?: string } | undefined
+  >;
+  filledSlots?: any;
+
+  disabledWeekdays: any[] = [];
+  disabledDates: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -65,6 +82,8 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       });
   }
 
+  isFree = false;
+
   ngOnInit(): void {
     this.bookingForm
       .get('service')
@@ -72,6 +91,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .subscribe(val => {
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.class?.class_time_ranges) {
+          this.isFree = false;
           this.classTimeRanged = currClass?.class?.class_time_ranges.map((classTimeRange: any) => ({
             id: classTimeRange?.class_time_range_id,
             label:
@@ -79,7 +99,14 @@ export class AddBookingComponent implements OnInit, OnDestroy {
               ' - ' +
               convert24HrsFormatToAmPm(classTimeRange?.end_time),
           }));
+          // this.updateSelectableSlots();
+          this.store.dispatch(getBookableSlots({ productId: val }));
+
           this.classTimerangeId = this.classTimeRanged?.id;
+        }
+
+        if (currClass?.class?.class_packages?.[0]?.price === 0) {
+          this.isFree = true;
         }
       });
     this.subscriptions();
@@ -100,14 +127,44 @@ export class AddBookingComponent implements OnInit, OnDestroy {
         }
       });
   }
-
+  disableDated: any;
   getDataDate() {
-    this.bookingForm.get('service')?.valueChanges?.subscribe((data: any) => {
-      console.log(data);
-      this.bookingService.getBookingDates(data).subscribe((datas: any) => {
-        console.log(datas);
+    this.bookingForm
+      .get('service')
+      ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: any) => {
+        this.store.select(getBookableSlotsStatus).subscribe((data: any) => {
+          this.disableDated = data?.response
+            ?.filter((item: any) => !item?.is_date_selectable)
+            .map((slot: any) => {
+              const [year, month, day] = slot?.date?.split('-');
+              return { year: +year, month: +month, day: +day };
+            });
+        });
       });
-    });
+  }
+
+  // updateSelectableSlots() {
+  //   // this.sessions?.controls?.forEach(session => {
+  //   //   session.get('selectableSlots')?.patchValue(this.getSelectableSlots(session.get('id')?.value));
+  //   // });
+  //   this.disabledDates = this.getDisabledDates();
+  // }
+
+  // getDisabledDates() {
+  //   return [
+  //     ...[this.filledSlots]
+  //       .filter((slot: any) => !slot?.is_date_selectable)
+  //       .map((slot: any) => {
+  //         const [year, month, day] = slot?.date?.split('-');
+  //         return { year: +year, month: +month, day: +day };
+  //       }),
+  //     // ...this.getAllSlotsUsedDates(),
+  //   ];
+  // }
+
+  updateDate(event: any) {
+    // console.log(event, 'eeeee');
   }
 
   initializeBookingForm(val?: any) {
@@ -141,7 +198,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       service: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
       slot: new FormControl('', Validators.required),
-      payment: new FormControl('', Validators.required),
+      payment: new FormControl(''),
     });
   }
 
@@ -183,6 +240,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
     }
+    if (bookingPayload.platform === null || bookingPayload.platform === '') {
+      delete bookingPayload['platform'];
+    }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     window.location.reload();
     this.router.navigate(['../booking/view-booking']);
@@ -212,6 +272,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
+    }
+    if (bookingPayload.platform === null || bookingPayload.platform === '') {
+      delete bookingPayload['platform'];
     }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.store
@@ -267,8 +330,15 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
     }
+    if (bookingPayload.platform === null || bookingPayload.platform === '') {
+      delete bookingPayload['platform'];
+    }
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.location.back();
+  }
+
+  get sessions() {
+    return this.bookingForm.get('slot');
   }
 
   ngOnDestroy() {

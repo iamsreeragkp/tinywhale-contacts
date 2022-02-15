@@ -11,9 +11,10 @@
   }
 }
 
-
-
-
+.error {
+  font-family: Poppins;
+  color: #ff725e;
+}
 .input-section {
   border-bottom-left-radius: 20px;
   &-subheading {
@@ -192,14 +193,13 @@
   border-style: solid;
   border-color: transparent #eaf3f6 transparent transparent;
 }
-.textarea-wrapper{
-  .textarea-focus + span{
-    display:none;
+.textarea-wrapper {
+  .textarea-focus + span {
+    display: none;
   }
-  .textarea-focus:focus + span{
-    display:inline-block;
+  .textarea-focus:focus + span {
+    display: inline-block;
   }
-
 }
 
 .image {
