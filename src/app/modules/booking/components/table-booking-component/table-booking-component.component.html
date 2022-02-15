@@ -226,6 +226,7 @@
           <div class="relative flex justify-end">
             <ng-container *ngIf="bookData?.invoice?.status !== 'SETTLED'">
               <app-three-dots
+              *ngIf="bookData.session_to_display?.status.toUpperCase() === 'UPCOMING'"
                 [actions]="threeDotsActions"
                 (actionTriggered)="handleAction($event, i, bookData?.order_id)"
               ></app-three-dots>
