@@ -377,6 +377,21 @@ body {
           opacity: 100% !important;
         }
       }
+      .myDpTableSingleDay,
+      .myDpTableSingleMonth,
+      .myDpTableSingleYear {
+        border-radius: 50%;
+        &:hover {
+          background: linear-gradient(to right, #359cbb, #64c299) !important;
+          color: #fff !important;
+          opacity: 100% !important;
+          .myDpDayValue,
+          .myDpMonthValue,
+          .myDpYearValue {
+            color: #fff !important;
+          }
+        }
+      }
       .myDpDaycell {
         @apply bg-transparent;
       }
@@ -400,7 +415,6 @@ body {
       .myDpSelectedMonth,
       .myDpSelectedYear {
         background: linear-gradient(to right, #359cbb, #64c299) !important;
-        border-radius: 50%;
         .myDpDayValue,
         .myDpMonthValue,
         .myDpYearValue {

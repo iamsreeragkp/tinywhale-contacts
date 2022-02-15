@@ -104,7 +104,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   copyViewBox(index: number, productId: number) {
     index === this.copyView ? (this.copyView = null) : (this.copyView = index);
     this.copyStatus = 'Copy';
-    this.copyURL = `${this.baseURL + '/' + this.customUsername + '/service/' + productId}`;
+    this.copyURL = `${this.baseURL}/${this.customUsername}/service/${productId}/booknow`;
   }
 
   copyInputMessage(inputElement: any) {
