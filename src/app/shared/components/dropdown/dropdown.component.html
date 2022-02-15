@@ -44,19 +44,21 @@
     </button>
   </div>
   <div
-    class="absolute top-full left-0 min-w-full z-10 rounded overflow-y-auto custom-select-drop"
+    class="absolute top-full left-0 min-w-full z-10 rounded custom-select-drop"
     [ngClass]="{
       'max-h-0 overflow-hidden': !open,
-      'max-h-56 border border-gray-200 border-solid shadow-lg': open
+      'max-h-56 border border-gray-200 border-solid overflow-y-auto shadow-lg': open
     }"
   >
     <div class="bg-white w-fit min-w-full flex flex-col">
       <!-- multi select -->
-      <div class="w-full checkbox-input mt-2 px-4" *ngIf="_multiSelect">
+      <div class="w-full checkbox-input mt-2 px-4 cursor-auto" *ngIf="_multiSelect">
         <div
           class="w-full mb-4"
-          *ngFor="let option of _options; let isFirst = first"
-          [ngClass]="{ 'border-b border-gray-300': !isFirst }"
+          *ngFor="let option of _options; let isLast = last"
+          [ngClass]="{
+            'border-b border-gray-300 border-solid': !isLast
+          }"
         >
           <label class="check-container"
             >{{ option[_displayKey] }}
@@ -111,26 +113,27 @@
       <div class="w-full relative px-4 my-3" *ngIf="_addCustomValue">
         <button
           type="button"
-          class="text-secondaryBlue font-bold"
+          class="noborder-button px-0"
           (click)="openAddCustomValue = !openAddCustomValue"
         >
           + Add New {{ _label | titlecase }}
         </button>
         <ng-container *ngIf="openAddCustomValue">
-          <input
-            class="input w-full py-3 pr-14 px-4 focus:outline-none"
-            placeholder="Enter new {{ _label | lowercase }} name"
-            [(ngModel)]="customValueInput"
-          />
-          <div class="absolute right-0 top-1/2 -translate-y-1/2 mr-4 flex items-center">
-            <button
-              type="button"
-              class="text-secondaryBlue font-bold mr-3"
-              (click)="selectCustomValue()"
-            >
-              Add
-            </button>
+          <div class="relative">
+            <input
+              class="input w-full py-3 pr-14 px-4 focus:outline-none truncate"
+              placeholder="Enter new {{ _label | lowercase }} name"
+              [(ngModel)]="customValueInput"
+            />
+            <div class="absolute right-0 top-1/2 mr-5 flex items-center">
+              <button type="button" class="noborder-button px-0 mr-3" (click)="selectCustomValue()">
+                Add
+              </button>
+            </div>
           </div>
+          <!-- <div class="absolute right-0 top-1/2 -translate-y-1/2 mr-4 flex items-center">
+
+          </div> -->
         </ng-container>
       </div>
     </div>

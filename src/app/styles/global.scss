@@ -113,6 +113,11 @@ body {
     border-color: #d6e1e3 !important;
     background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
       linear-gradient(90deg, white, white);
+    span {
+      background: linear-gradient(90deg, #d6e1e3, #d6e1e3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     svg {
       path {
         fill: #d6e1e3;
@@ -222,7 +227,7 @@ body {
           color: #154f5b !important;
           height: 42px !important;
           &:hover {
-            background: #00a4b7 !important;
+            background-image: linear-gradient(to right, #359cbb, #64c299) !important;
             color: #fff !important;
             opacity: 100% !important;
           }
@@ -231,7 +236,7 @@ body {
           opacity: 33%;
         }
         .is-selected {
-          background: #00a4b7 !important;
+          background-image: linear-gradient(to right, #359cbb, #64c299) !important;
           color: #fff !important;
         }
       }
@@ -489,7 +494,7 @@ input[type='number'] {
     }
   }
 }
-// Last line should be this
+
 // copy button style
 
 .copy-text {
@@ -500,4 +505,10 @@ input[type='number'] {
 
 // copy button style
 
+//placeholder color
+::placeholder {
+  color: #73959d !important;
+}
+
+// Last line should be this
 @import 'tailwindcss/utilities';

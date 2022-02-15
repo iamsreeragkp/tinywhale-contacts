@@ -6,8 +6,8 @@
   <div class="flex justify-evenly mt-8">
     <button
       class="primary-button w-48 ml-2"
-      [routerLink]="['../add-service']"
       routerLinkActive="router-link-active"
+      (click)="onNavigateService()"
     >
       Clear Filters
     </button>

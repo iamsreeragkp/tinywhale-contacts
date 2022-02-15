@@ -39,7 +39,7 @@ export const initService = createAction('[ServiceModule] INIT');
 
 export const changeVisibility = createAction(
   '[ServiceModule] CHANGE VISIBILITY',
-  props<{ productId: number; visibility: VisibilityType; filters?: ServiceListFilter }>()
+  props<{ productId: number; visibility: any; filters?: ServiceListFilter }>()
 );
 export const changeVisibilitySuccess = createAction(
   '[ServiceModule] CHANGE VISIBILITY SUCCESS',
