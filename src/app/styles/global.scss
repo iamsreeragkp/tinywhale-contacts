@@ -337,6 +337,7 @@ body {
 
     .myDpDisabled {
       background: unset !important;
+      border-radius: 50%;
       @apply bg-veryDarkGray opacity-[33%];
     }
 
