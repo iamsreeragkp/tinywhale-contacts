@@ -140,6 +140,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
               const [year, month, day] = slot?.date?.split('-');
               return { year: +year, month: +month, day: +day };
             });
+          // console.log(this.classTimeRanged, 'classTimeranged');
         });
       });
   }
@@ -339,6 +340,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 
   get sessions() {
     return this.bookingForm.get('slot');
+  }
+
+  onCancelBooking() {
+    this.router.navigateByUrl('booking/view-booking');
   }
 
   ngOnDestroy() {
