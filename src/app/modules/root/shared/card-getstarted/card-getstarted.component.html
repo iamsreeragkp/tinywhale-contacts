@@ -59,7 +59,7 @@
 <div class="pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
   <!--Card 1-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 bg-white mr-2 mt-2 mb-2">
+    <div class="flex flex-col shadow-lg p-8 bg-white mr-2 mt-2 mb-2 card">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.businessInfo?.isStarted && dashboardInfos?.businessInfo?.isCompleted"
@@ -85,7 +85,7 @@
         >
       </div>
       <div class="flex-1 flex flex-col justify-between">
-        <p class="card-content not-italic font-normal text-base py-4">
+        <p class="card-content">
           Create a stunning and professional TinyCard™&nbsp;
 
           <span class="tooltip-right">
@@ -98,7 +98,7 @@
               services.</span
             >
           </span>
-          &nbsp;
+          &nbsp; in minutes
         </p>
 
         <div>
@@ -133,7 +133,7 @@
   </div>
   <!--Card 2-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+    <div class="flex flex-col shadow-lg p-8 overflow-hidden bg-white m-2 card">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.serviceInfo?.isStarted && dashboardInfos?.serviceInfo?.isCompleted"
@@ -160,7 +160,7 @@
         <p class="card-content not-italic font-normal text-base py-4">
           Display bookable services and packages with scheduling options
           <button
-            class="noborder-button px-0 mt-2"
+            class="noborder-button px-0 mt-4 block"
             *ngIf="serviceLength"
             (click)="onNavigateToService()"
           >
@@ -178,7 +178,7 @@
             Add
           </button>
           <button
-            class="secondary-button px-10 h-10 mt-auto"
+            class="primary-button px-10 h-10 mt-auto"
             *ngIf="dashboardInfos?.serviceInfo?.isCompleted"
             [routerLink]="'../../service/add-service'"
           >
@@ -200,7 +200,7 @@
 
   <!--Card 3-->
   <div class="relative">
-    <div class="flex flex-col card shadow-lg p-8 overflow-hidden bg-white m-2">
+    <div class="flex flex-col shadow-lg p-8 overflow-hidden bg-white m-2 card">
       <div
         class="complete-icon absolute"
         *ngIf="dashboardInfos?.paymentInfo?.isStarted && dashboardInfos?.paymentInfo?.isCompleted"
@@ -220,9 +220,7 @@
         <span class="number mt-6 mr-4">3</span><span class="title">Add <br />Payment info</span>
       </div>
       <div class="flex-1 flex flex-col justify-between">
-        <p class="card-content not-italic font-normal text-base py-4">
-          We've partnered with Rapyd to make your payments seamless
-        </p>
+        <p class="card-content">We've partnered with Rapyd to make your payments seamless</p>
         <div>
           <button
             class="primary-button px-10 mt-auto h-10"

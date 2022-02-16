@@ -30,8 +30,7 @@
 }
 
 .card {
-  border-radius: 20px;
-  min-height: 100%;
+  @apply min-h-full rounded-5;
   .complete-icon {
     top: 0;
     left: -3px;
@@ -50,18 +49,13 @@
       color: #64c2bc;
     }
     .title {
-      font-family: Baloo;
-      font-size: 32px;
-      line-height: 2.25rem;
       letter-spacing: -2px;
-      color: #154f5b;
+      @apply font-baloo text-[2rem] leading-9 text-primaryFont;
     }
   }
 
   .card-content {
-    font-family: Poppins;
-    line-height: 1.63rem;
-    color: #154f5b;
+    @apply font-poppins text-primaryFont font-normal text-base py-4 leading-[1.63rem];
   }
   .card-tooltip-text {
     width: 17rem !important;
