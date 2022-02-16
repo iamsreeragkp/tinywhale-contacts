@@ -52,6 +52,10 @@
             </div>
           </div>
           <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
+            <ng-container *ngIf="!chart1">
+              <img src="../../../../../assets/images/nograph.svg" alt="" />
+              <p class="dashboard-new-placeholder mt-3">No data available</p>
+            </ng-container>
             <ngx-charts-line-chart
               [scheme]="colorScheme"
               [showXAxisLabel]="showXAxisLabel"
@@ -70,10 +74,6 @@
               (deactivate)="onDeactivate($event)"
             >
             </ngx-charts-line-chart>
-            <ng-container *ngIf="!chart1">
-              <img src="../../../../../assets/images/nograph.svg" alt="" />
-              <p class="dashboard-new-placeholder mt-3">No data available</p>
-            </ng-container>
           </div>
         </div>
         <div
