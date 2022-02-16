@@ -236,14 +236,19 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <button
-            [disabled]="connectbanks?.value"
+            [disabled]="connectbanks?.value || !paymentForm?.valid"
             class="primary-button w-56"
             (click)="onConnectBank()"
             *ngIf="!idStatus"
           >
             Connect Bank Account
           </button>
-          <button class="primary-button w-64" *ngIf="idStatus" (click)="onUpdateBank()">
+          <button
+            [disabled]="!paymentForm?.valid"
+            class="primary-button w-64"
+            *ngIf="idStatus"
+            (click)="onUpdateBank()"
+          >
             Update Bank Information
           </button>
         </div>
