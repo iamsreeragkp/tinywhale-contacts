@@ -100,8 +100,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont flex"
         >
-          {{ payInfo?.payout_info?.account_id || payInfo?.payout_info?.beneficiary_id || '-'
-          }}<span
+          <span
             class="ml-4"
             *ngIf="payInfo?.payout_info?.account_id ?? payInfo?.payout_info?.beneficiary_id"
             ><app-formright></app-formright

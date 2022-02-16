@@ -106,18 +106,18 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
 
   createPaymentForm() {
     return new FormGroup({
-      company: new FormControl(''),
-      companyname: new FormControl(''),
+      company: new FormControl('', Validators.required),
+      companyname: new FormControl('', Validators.required),
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
       addressline1: new FormControl('', Validators.required),
       addressline2: new FormControl('', Validators.required),
-      postelcode: new FormControl(''),
-      city: new FormControl(''),
-      state: new FormControl(''),
-      country: new FormControl(''),
-      currency: new FormControl(''),
-      connectbank: new FormControl(false),
+      postelcode: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required),
+      currency: new FormControl('', Validators.required),
+      connectbank: new FormControl(false, Validators.required),
     });
   }
 
