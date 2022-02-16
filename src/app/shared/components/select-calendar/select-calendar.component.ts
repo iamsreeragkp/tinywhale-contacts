@@ -73,7 +73,14 @@ export class SelectCalendarComponent {
   constructor() {}
 
   setPreviousValues(val: any) {
-    this.date = val;
+    console.log('value', val);
+    if (val instanceof Date) {
+      this.date = {
+        singleDate: { jsDate: val },
+      };
+    } else {
+      this.date = undefined;
+    }
   }
 
   _onChange = (val: any) => {};

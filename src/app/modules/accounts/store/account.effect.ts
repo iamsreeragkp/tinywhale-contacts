@@ -27,7 +27,7 @@ export class AccountEffects {
             if (res?.payment?.redirect_url) {
               const element = document.createElement('a');
               element.href = res?.payment?.redirect_url;
-              element.target = '_blank';
+              element.target = '_self';
               element.click();
             }
           }),
@@ -59,10 +59,10 @@ export class AccountEffects {
   registerKyc$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addKyc),
-      switchMap(({  }) =>
+      switchMap(({}) =>
         this.accountService.kycRegister().pipe(
-          tap((data:any)=>{
-            if(data?.data?.redirect_url){
+          tap((data: any) => {
+            if (data?.data?.redirect_url) {
               const element = document.createElement('a');
               element.href = data?.data?.redirect_url;
               element.target = '_blank';
