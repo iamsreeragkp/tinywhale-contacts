@@ -75,6 +75,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   baseURL = environment.tinyWhaleBaseUrl;
   copyURL: string = '';
   customUsername!: string;
+  dashboardInfos: any;
 
   constructor(
     private store: Store<IServiceState>,
@@ -100,6 +101,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
     this.customUsername = userData.dashboardInfos.customUsername;
+    this.dashboardInfos = userData.dashboardInfos;
   }
   copyViewBox(index: number, productId: number) {
     index === this.copyView ? (this.copyView = null) : (this.copyView = index);
@@ -108,7 +110,6 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   }
 
   copyInputMessage(inputElement: any) {
-    console.log(inputElement);
     inputElement.select();
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
@@ -117,9 +118,9 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   subscriptions() {
     this.productList$.subscribe(data => {
-      console.log(data);
       if (data?.status && data?.products) {
         this.productsList = data.products;
+
         this.productsCount = data.productsCount;
       } else {
         console.log(data?.error);
