@@ -159,6 +159,13 @@
       <div class="flex-1 flex flex-col justify-between">
         <p class="card-content not-italic font-normal text-base py-4">
           Display bookable services and packages with scheduling options
+          <button
+            class="noborder-button px-0 mt-2"
+            *ngIf="serviceLength"
+            (click)="onNavigateToService()"
+          >
+            View {{ serviceLength }} Added Services
+          </button>
         </p>
         <div>
           <button

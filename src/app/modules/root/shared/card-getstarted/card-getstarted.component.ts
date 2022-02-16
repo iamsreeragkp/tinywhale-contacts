@@ -6,6 +6,9 @@ import { getDashboardData } from '../../store/root.selectors';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { publishWebsite } from '../../store/root.actions';
+import { getServiceList } from 'src/app/modules/service/store/service.actions';
+import { getServiceListStatus } from 'src/app/modules/service/store/service.selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-getstarted',
@@ -14,14 +17,23 @@ import { publishWebsite } from '../../store/root.actions';
 })
 export class CardGetstartedComponent implements OnInit, OnDestroy {
   dashboard$: Observable<any>;
+  productList$: Observable<any>;
+
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
   showPortal = false;
   baseURL = environment.tinyWhaleBaseUrl;
   iframeURL: any;
+  serviceLength!: number;
   @ViewChild('openWindow', { static: false }) openWindow: any;
-  constructor(private store: Store<IRootState>, private sanitizer: DomSanitizer) {
+  constructor(
+    private store: Store<IRootState>,
+    private sanitizer: DomSanitizer,
+    private router: Router
+  ) {
     this.dashboard$ = store.pipe(select(getDashboardData));
+    store.dispatch(getServiceList({ filters: {} }));
+    this.productList$ = store.pipe(select(getServiceListStatus));
   }
 
   ngOnInit(): void {
@@ -31,6 +43,11 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
+    });
+    this.productList$.subscribe((data: any) => {
+      if (data?.products) {
+        this.serviceLength = data?.products?.length;
+      }
     });
   }
 
@@ -57,6 +74,10 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
 
   publishWebsite() {
     this.store.dispatch(publishWebsite());
+  }
+
+  onNavigateToService() {
+    this.router.navigateByUrl('service/home');
   }
 
   ngOnDestroy(): void {

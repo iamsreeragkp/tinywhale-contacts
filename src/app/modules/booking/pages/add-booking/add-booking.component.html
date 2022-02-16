@@ -12,7 +12,7 @@
     </header>
     <ng-container *ngIf="!editMode; else editButton">
       <div class="flex justify-between items-center">
-        <button class="noborder-button" (click)="location.back()">Cancel</button>
+        <button class="noborder-button" (click)="onCancelBooking()">Cancel</button>
         <button
           class="secondary-button w-52 mr-3 ml-6"
           (click)="onBooking()"
@@ -31,7 +31,7 @@
     </ng-container>
     <ng-template #editButton>
       <div class="flex justify-between items-center">
-        <button class="noborder-button" (click)="location.back()">Cancel</button>
+        <button class="noborder-button" (click)="onCancelBooking()">Cancel</button>
         <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">
           <span>Save</span>
         </button>

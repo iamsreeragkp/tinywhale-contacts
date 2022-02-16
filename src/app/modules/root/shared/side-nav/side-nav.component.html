@@ -13,7 +13,10 @@
             <div class="absolute left-0 top-0 w-2 h-full rounded active-border"></div>
             <img class="icon" src="../../../../../assets/images/home.svg" />
             <img class="active-icon" src="../../../../../assets/images/leanear-home.svg" />
-            <p class="nav-text">Get Started</p>
+            <p class="nav-text" *ngIf="dashboardInfos?.domainActive; else card">Dashboard</p>
+            <ng-template #card>
+              <p class="nav-text">Get Started</p>
+            </ng-template>
           </a>
         </li>
         <li class="active-item nav-item relative py-2">

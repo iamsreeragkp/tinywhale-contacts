@@ -515,6 +515,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     );
   }
 
+  scrollToTop() {
+    window.scroll(0, 0);
+  }
+
   ngOnDestroy(): void {
     this.expireSubscriptions();
     this.store.dispatch(initService());
