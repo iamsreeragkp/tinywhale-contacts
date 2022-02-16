@@ -253,6 +253,10 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCancelPayment() {
+    this.router.navigateByUrl('account/view-payment');
+  }
+
   get connectbanks() {
     return this.paymentForm.get('connectbank');
   }

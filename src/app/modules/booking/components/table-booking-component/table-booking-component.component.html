@@ -156,7 +156,13 @@
             <span class="italic whitespace-nowrap">{{
               bookData?.order_session?.[0]?.session?.date || '---'
             }}</span>
-            <span class="italic whitespace-nowrap">{{"(" +bookData?.session_to_display?.sessionNo+"/"+bookData?.session_to_display?.totalSessions+")"}}</span>
+            <span class="italic whitespace-nowrap">{{
+              '(' +
+                bookData?.session_to_display?.sessionNo +
+                '/' +
+                bookData?.session_to_display?.totalSessions +
+                ')'
+            }}</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
@@ -180,15 +186,12 @@
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex items-center">
-            <span
-              class=""
-              >{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span
-            >
+            <span class="">{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
           <div class="flex flex-col">
-            <div class=" flex items-center">
+            <div class="flex items-center">
               <span class="mr-2"
                 >{{
                   bookData?.order_line_item?.[0]?.currency === 'INR'
@@ -219,7 +222,7 @@
                 "
               />
             </div>
-            <span class=" whitespace-nowrap">(2 sessions)</span>
+            <span class="whitespace-nowrap">(2 sessions)</span>
           </div>
         </td>
         <td class="align-top px-2 py-3">
@@ -234,17 +237,17 @@
         </td>
       </tr>
       <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
+        <tr>
+          <td colspan="7">
+            <div class="w-full h-12 flex justify-center items-center">
+              <button class="noborder-button">Load More</button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
       <tr>
         <td colspan="7">
-          <div class="w-full h-12 flex justify-center items-center">
-            <button class="noborder-button">Load More</button>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-      <tr>
-        <td colspan="7">
-          <div class="w-full" *ngIf="isFilterEmpty && !bookingData?.length">
+          <div class="w-full" *ngIf="isFilterEmpty">
             <app-no-data-booking-component
               class="flex flex-1"
               *ngIf="isFilterEmpty"
@@ -253,7 +256,8 @@
           <!-- <ng-template #noResult> -->
           <app-no-result-booking-component
             class="flex flex-1"
-            *ngIf="!isFilterEmpty"
+            *ngIf="!isFilterEmpty && !bookingData?.length"
+            [item]="bookingData"
           ></app-no-result-booking-component>
           <!-- </ng-template> -->
         </td>
