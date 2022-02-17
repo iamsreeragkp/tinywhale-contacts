@@ -30,7 +30,7 @@
 }
 
 .card {
-  @apply min-h-full rounded-5;
+  @apply flex flex-col shadow-lg p-8  bg-white m-2 rounded-5;
   .complete-icon {
     top: 0;
     left: -3px;
@@ -72,7 +72,12 @@
     width: 231px;
   }
 }
-
+// .card-height {
+//   @apply min-h-full;
+// }
+// .card-height-none {
+//   @apply min-h-0;
+// }
 @media (min-width: 1024px) and (max-width: 1200px) {
   .card {
     .number {
