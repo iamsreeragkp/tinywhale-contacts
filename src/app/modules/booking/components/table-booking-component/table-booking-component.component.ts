@@ -303,6 +303,14 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
   }
 
+  displaySessions(number: number){
+    if(number === 1){
+      return `(1 session)`
+    }
+    else{
+      return `(${number ?? '-'} sessions)`
+    }
+  }
   resetPage() {
     this.page = this.appConfig.defaultStartPage;
     this.limit = this.appConfig.defaultPageLimit;
