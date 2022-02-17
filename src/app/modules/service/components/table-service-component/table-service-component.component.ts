@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/modules/auth/auth.service';
 import {
   LocationType,
   Product,
+  ProductType,
   ServiceListFilter,
   VisibilityType,
 } from '../../shared/service.interface';
@@ -255,36 +256,8 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     return LocationType;
   }
 
-  displayPrice(price: any){    
-    if(price == 0){ 
-      return 'Free'
-    }
-    else {
-      return `$ ${price ?? '-'} / session`
-    }
-  }
-
-  displayPackage(sessionPrice: any){
-    if(sessionPrice){
-      const sessionString = sessionPrice.no_of_sessions === 1? 'session' : 'sessions';
-
-    if(sessionPrice.price === 0){
-      return `Free / ${sessionPrice.no_of_sessions } ${sessionString}`
-    }
-    else{
-      return `$ ${ sessionPrice.price } / ${ sessionPrice.no_of_sessions } ${sessionString}`
-    }
-    }
-    else{
-      return "-"
-    }
-    
-  }
-
-  sessionPriceExists(sessionPrice: any){
-    const noOfSessions = sessionPrice?.no_of_sessions;
-    const priceExists = Number.isInteger(sessionPrice?.price);
-    return noOfSessions && priceExists;
+  get ProductType() {
+    return ProductType;
   }
 
   ngOnDestroy() {
