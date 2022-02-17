@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { PricePackage } from '../../../service/shared/service.interface';
+import { PricePackage, ProductType } from '../../../service/shared/service.interface';
 
 @Component({
   selector: 'app-preview-product',
@@ -14,5 +14,10 @@ export class PreviewProductComponent {
   @Input() duration?: number | null = null;
   @Input() price?: number | null = null;
   @Input() packages?: PricePackage[] = [];
+  @Input() product_type?: ProductType | null = ProductType.CLASS;
   constructor() {}
+
+  get ProductType() {
+    return ProductType;
+  }
 }

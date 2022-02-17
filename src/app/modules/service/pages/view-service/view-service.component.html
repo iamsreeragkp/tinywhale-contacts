@@ -130,17 +130,34 @@
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Price</span>
           </div>
-          <div class="flex-1 py-3 pl-4 flex">
-            <span>{{
-              productObj?.price
-                ? '$ ' +
-                  productObj?.price +
-                  ' for 1 session ' +
-                  (productObj?.class?.duration_in_minutes
-                    ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
-                    : '')
-                : '-'
-            }}</span>
+          <div class="flex-1 py-3 pl-4">
+            <p>
+              {{
+                productObj?.price
+                  ? '$ ' +
+                    productObj?.price +
+                    (productObj?.product_type === ProductType.CLASS
+                      ? ' for 1 session ' +
+                        (productObj?.class?.duration_in_minutes
+                          ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
+                          : '')
+                      : '')
+                  : '-'
+              }}
+            </p>
+            <ng-container *ngIf="productObj?.product_type === ProductType.CLASS">
+              <p
+                class="text font-poppins mb-3"
+                *ngFor="let pricePackage of productObj?.class?.class_packages"
+              >
+                $ {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
+                {{
+                  productObj?.class?.duration_in_minutes
+                    ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'
+                    : ''
+                }}
+              </p>
+            </ng-container>
           </div>
         </div>
         <div class="flex mb-4">
@@ -162,6 +179,7 @@
           [price]="productObj?.price"
           [duration]="productObj?.class?.duration_in_minutes"
           [packages]="previewablePackages"
+          [product_type]="productObj?.product_type"
         >
         </app-preview-product>
       </div>
