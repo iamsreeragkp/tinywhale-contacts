@@ -96,7 +96,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
-      if (productId || status || payment) {
         this.store.dispatch(
           getBookingList({
             filters: {
@@ -106,7 +105,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
             },
           })
         );
-      }
     });
   }
 
