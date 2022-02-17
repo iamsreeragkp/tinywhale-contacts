@@ -43,7 +43,10 @@ body {
   }
   @apply font-poppins focus:outline-none leading-6 bg-white font-normal text-base  py-3 pl-4 pr-3;
   &:disabled {
-    @apply bg-veryLightGrey;
+    @apply bg-veryLightGray;
+  }
+  &.ng-invalid.ng-touched.show-error {
+    border-color: #ff725e;
   }
 }
 
@@ -251,7 +254,7 @@ body {
 .calendar-1 {
   .disabled {
     .datepicker-container {
-      @apply cursor-not-allowed bg-veryLightGrey pointer-events-none;
+      @apply cursor-not-allowed bg-veryLightGray pointer-events-none;
     }
   }
   .bg-calender {

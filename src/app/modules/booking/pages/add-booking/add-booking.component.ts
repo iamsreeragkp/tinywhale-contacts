@@ -203,7 +203,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ]),
-      phonenumber: new FormControl('', Validators.required),
+      phonenumber: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,}$/),
+      ]),
       customername: new FormControl('', Validators.required),
       service: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),

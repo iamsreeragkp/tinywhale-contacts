@@ -2,11 +2,9 @@
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
     <header class="header leading-9 font-normal not-italic flex items-center">
       <ng-container *ngIf="!editMode; else editTitle">
-        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
         <span class="text-4xl">Register A Walk-In</span>
       </ng-container>
       <ng-template #editTitle>
-        <span class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"> 1 </span>
         <span class="text-4xl">Reschedule Booking</span>
       </ng-template>
     </header>
@@ -40,11 +38,10 @@
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input-data w-full py-3 px-4 focus:outline-none show-error"
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s email id"
             formControlName="email"
-            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
@@ -52,12 +49,11 @@
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
         <div class="w-form">
           <input
-            type="number"
-            class="input w-full py-3 px-4 focus:outline-none"
+            type="text"
+            class="input-data w-full py-3 px-4 focus:outline-none show-error"
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s phone number"
             formControlName="phonenumber"
-            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
@@ -65,11 +61,10 @@
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Customer Name</label></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input-data w-full py-3 px-4 focus:outline-none show-error"
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s full name"
             formControlName="customername"
-            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
@@ -84,6 +79,7 @@
               [disabled]="editMode"
               [emitId]="true"
               [idKey]="'product_id'"
+              class="show-error"
               formControlName="service"
             ></app-dropdown>
           </span>
@@ -92,12 +88,13 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Date*</label></div>
         <div class="w-form calendar-1 font-poppins">
-          <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
+          <!-- <input type="date" class="input-data w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
             formControlName="date" /> -->
           <!-- <ngx-datepicker formControlName="date" [options]="options"></ngx-datepicker> -->
           <app-select-calendar
             formControlName="date"
             placeholder="Enter Date"
+            class="show-error"
             [disabled]="disableDated"
             (ngModelChange)="updateDate($event)"
           ></app-select-calendar>
@@ -110,6 +107,7 @@
             [options]="classTimeRanged"
             placeholder="Select Slot"
             formControlName="slot"
+            class="show-error"
             [idKey]="'id'"
             [emitId]="true"
           >

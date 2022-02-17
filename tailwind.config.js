@@ -23,7 +23,7 @@ module.exports = {
       },
       colors: {
         'primaryBlue': "#00a4b7",
-        veryLightGrey: '#f1f4f5',
+        veryLightGray: '#f1f4f5',
         lightGrey: '#d6e1e3',
         mediumGray: '#73959d',
         primaryFont: '#154F5B',

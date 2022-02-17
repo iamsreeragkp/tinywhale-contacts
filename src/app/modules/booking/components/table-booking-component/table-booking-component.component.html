@@ -151,7 +151,7 @@
       </ng-container>
       <ng-container *ngFor="let bookData of bookingData; let i = index" (click)="showSubItem(i)">
         <tr
-          class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50"
+          class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
           (click)="onNavigateToList(bookData?.order_id)"
         >
           <td class="align-top px-2 py-3">
@@ -225,7 +225,9 @@
                   "
                 />
               </div>
-              <span class="whitespace-nowrap">{{displaySessions(bookData?.session_to_display?.totalSessions)}}</span>
+              <span class="whitespace-nowrap">{{
+                displaySessions(bookData?.session_to_display?.totalSessions)
+              }}</span>
             </div>
           </td>
           <td class="align-top px-2 py-3">
@@ -243,19 +245,19 @@
       <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
         <tr>
           <td colspan="7">
-            <div class="w-full h-12 mt-8 flex justify-center items-center"
-          *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)">
-          <button class="noborder-button" (click)="loadMore()">Load More</button>
-        </div>
+            <div
+              class="w-full h-12 mt-8 flex justify-center items-center"
+              *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)"
+            >
+              <button class="noborder-button" (click)="loadMore()">Load More</button>
+            </div>
           </td>
         </tr>
       </ng-container>
       <tr>
         <td colspan="7">
           <div class="w-full" *ngIf="isFilterEmpty && !bookingData?.length">
-            <app-no-data-booking-component
-              class="flex flex-1"
-            ></app-no-data-booking-component>
+            <app-no-data-booking-component class="flex flex-1"></app-no-data-booking-component>
           </div>
           <!-- <ng-template #noResult> -->
           <app-no-result-booking-component

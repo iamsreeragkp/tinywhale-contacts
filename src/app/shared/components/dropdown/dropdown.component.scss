@@ -63,3 +63,11 @@
 .check-container {
   margin-bottom: 1rem !important;
 }
+
+:host(.ng-touched.ng-invalid.show-error) {
+  .custom-select {
+    .custom-select-box {
+      border-color: #ff725e;
+    }
+  }
+}
