@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { convert24HrsFormatToAmPm } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
@@ -98,9 +99,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   lastTotal: any;
   average: any;
   processingFee: any;
+  startTime: any;
+  endTime: any;
+  classTimeRanged: any;
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
+      console.log('dashboard', this.dashboardInfos);
 
       const fromCurrentMonth = this.dashboardInfos?.gross_earnings?.current_month;
       const fromLastMonth = this.dashboardInfos?.gross_earnings?.last_month;
@@ -151,7 +156,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.processingFee = (sumOfGatewayAndProcessingFee / paymentFeeCurrent) * 100;
 
       this.priceData = this.dashboardInfos?.price_data;
-      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
+      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions[1];
       for (let i = 0; i < this.priceData?.length; i++) {
         this.priceLineData = this.priceData[i];
         this.chart1 = [
@@ -187,13 +192,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
 
       this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
+
       for (let i = 0; i < this.serviceUtilizationData?.length; i++) {
         this.serviceUtilizationLineData = this.serviceUtilizationData[i];
+
         this.potential = this.serviceUtilizationLineData?.potential;
-        let totalPrice = this.potential?.reduce(function (accumulator: any, item: any) {
+
+        const totalPrice = this.potential?.reduce(function (accumulator: any, item: any) {
           return accumulator + item?.capacity * item?.slot;
         }, 0);
+
         const value = this.serviceUtilizationData[i]?.bookings / totalPrice;
+
         this.chart3 = [
           {
             name: 'Service Utilization',
@@ -249,7 +259,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   getDayName(date: any) {
-    const days = ['Sun', 'Mon', 'Tue', 'Wedn', 'Thu', 'Fri', 'Sat'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const d = new Date(date);
     const dayName = days[d.getDay()];
     return dayName;
@@ -257,6 +267,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   navagateToBooking() {
     this.router.navigateByUrl('booking/view-booking');
+  }
+  convert24HrsFormatToAmPm(time?: string | null) {
+    if (!time) {
+      return '';
+    }
+    const [endHour, minute] = time.match(/\d{2}/g)!;
+    let amPm = 'AM';
+    let hour = endHour;
+    if (+endHour >= 12) {
+      amPm = 'PM';
+    }
+    if (+endHour > 12) {
+      hour = (+endHour - 12).toString().padStart(2, '0');
+    } else if (+endHour === 0) {
+      hour = '12';
+    }
+    return `${hour}:${minute} ${amPm}`;
   }
 
   copyViewBox() {

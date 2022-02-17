@@ -243,12 +243,7 @@
           >
             Connect Bank Account
           </button>
-          <button
-            [disabled]="!paymentForm?.valid"
-            class="primary-button w-64"
-            *ngIf="idStatus"
-            (click)="onUpdateBank()"
-          >
+          <button class="primary-button w-64" *ngIf="idStatus" (click)="onUpdateBank()">
             Update Bank Information
           </button>
         </div>

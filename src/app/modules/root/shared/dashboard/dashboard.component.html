@@ -212,62 +212,27 @@
               </div>
               <div class="w-8/12 h-full">
                 <p class="text-primaryFont">
-                  {{ upcoming?.order_session?.[0]?.session.class_time_range?.start_time }} -
-                  {{ upcoming?.order_session?.[0]?.session.class_time_range?.end_time }}
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.start_time) }}
+                  -
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.end_time) }}
                 </p>
                 <p class="text-primaryFont">{{ upcoming?.order_line_item?.[0]?.product?.title }}</p>
               </div>
             </div>
           </div>
-        </ng-container>
-        <ng-container *ngIf="!upcomingSessions">
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Tomorrow</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">lllll</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Sat, 26 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
+          <div class="w-full flex justify-center items-center mt-4">
+            <button class="noborder-button" (click)="navagateToBooking()">View All</button>
           </div>
         </ng-container>
-        <div class="w-full flex justify-center items-center mt-4">
-          <button class="noborder-button" (click)="navagateToBooking()">View All</button>
-        </div>
-        <div class="w-full h-full flex justify-center items-center hidden">
+        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
             <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
             <p class="text-primaryFont mt-3 text-center mb-6">
               You don’t have any upcoming sessions yet. Share your services and get bookings.
             </p>
-            <button class="secondary-button w-48"><span>Go to Services</span></button>
+            <button class="secondary-button w-48" (click)="navagateToBooking()">
+              <span>Go to Services</span>
+            </button>
           </div>
         </div>
       </div>

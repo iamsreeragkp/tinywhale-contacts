@@ -102,7 +102,7 @@
         >
           <span
             class="ml-4"
-            *ngIf="payInfo?.payout_info?.account_id ?? payInfo?.payout_info?.beneficiary_id"
+            *ngIf="payInfo?.payout_info?.connect_bank || payInfo?.payout_info?.beneficiary_id"
             ><app-formright></app-formright
           ></span>
         </p>
