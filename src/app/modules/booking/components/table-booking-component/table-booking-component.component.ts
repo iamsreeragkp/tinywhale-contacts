@@ -163,7 +163,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   onNavigateToList(id: any) {
-    this.router.navigateByUrl(`/booking/status-booking/${id}`);
+    this.router.navigate([`../booking/status-booking/${id}`], { queryParams: { fromList: true } });
   }
 
   get isFilterEmpty() {

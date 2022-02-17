@@ -150,7 +150,7 @@
       <ng-container *ngFor="let bookData of bookingData; let i = index" (click)="showSubItem(i)">
         <tr
           class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50"
-          [routerLink]="['../status-booking', bookData.order_id]"
+          (click)="onNavigateToList(bookData?.order_id)"
         >
           <td class="align-top px-2 py-3">
             <div class="flex flex-col">
