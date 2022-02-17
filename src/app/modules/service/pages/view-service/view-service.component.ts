@@ -8,7 +8,7 @@ import {
   getService,
   initService,
 } from '../../store/service.actions';
-import { Product, VisibilityType, WeekDay } from '../../shared/service.interface';
+import { Product, ProductType, VisibilityType, WeekDay } from '../../shared/service.interface';
 import { getServiceStatus } from '../../store/service.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeRangeSerialized } from 'src/app/shared/interfaces/time-range.interface';
@@ -141,6 +141,10 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
     return (
       this.productObj?.class?.class_packages?.filter(pkg => pkg?.price && pkg?.no_of_sessions) ?? []
     );
+  }
+
+  get ProductType() {
+    return ProductType;
   }
 
   copyViewBox() {

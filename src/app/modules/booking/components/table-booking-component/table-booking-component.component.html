@@ -103,7 +103,9 @@
     <tbody>
       <ng-container *ngIf="!bookingData?.length && isFilterEmpty">
         <tr>
-          <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Booking Listing</td>
+          <td class="italic text-xs text-[#73959d] pt-5 pb-1 px-2" colspan="7">
+            Sample Booking Listing
+          </td>
         </tr>
         <tr class="table-container-borderRow">
           <td class="align-top px-2 py-3">
@@ -154,10 +156,10 @@
         >
           <td class="align-top px-2 py-3">
             <div class="flex flex-col">
-              <span class="italic whitespace-nowrap">{{
+              <span class="whitespace-nowrap">{{
               bookData?.order_session?.[0]?.session?.date || '---'
               }}</span>
-              <span class="italic whitespace-nowrap">{{
+              <span class="whitespace-nowrap">{{
                 '(' +
                   bookData?.session_to_display?.sessionNo +
                   '/' +
@@ -223,7 +225,7 @@
                   "
                 />
               </div>
-              <span class="whitespace-nowrap">(2 sessions)</span>
+              <span class="whitespace-nowrap">{{displaySessions(bookData?.session_to_display?.totalSessions)}}</span>
             </div>
           </td>
           <td class="align-top px-2 py-3">
@@ -241,18 +243,18 @@
       <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
         <tr>
           <td colspan="7">
-            <div class="w-full h-12 flex justify-center items-center">
-              <button class="noborder-button">Load More</button>
-            </div>
+            <div class="w-full h-12 mt-8 flex justify-center items-center"
+          *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)">
+          <button class="noborder-button" (click)="loadMore()">Load More</button>
+        </div>
           </td>
         </tr>
       </ng-container>
       <tr>
         <td colspan="7">
-          <div class="w-full" *ngIf="isFilterEmpty">
+          <div class="w-full" *ngIf="isFilterEmpty && !bookingData?.length">
             <app-no-data-booking-component
               class="flex flex-1"
-              *ngIf="isFilterEmpty"
             ></app-no-data-booking-component>
           </div>
           <!-- <ng-template #noResult> -->

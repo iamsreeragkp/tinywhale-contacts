@@ -33,6 +33,9 @@
         width: 10px;
       }
     }
+    &.disabled {
+      @apply bg-veryLightGray cursor-not-allowed;
+    }
   }
   &-placeholder {
     color: #a2a3af;
