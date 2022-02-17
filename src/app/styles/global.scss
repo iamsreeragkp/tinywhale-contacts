@@ -371,18 +371,14 @@ body {
       }
 
       @apply bg-transparent;
-      .myDpTableSingleDay {
-        height: 42px !important;
-        &:hover {
-          background: linear-gradient(to right, #359cbb, #64c299) !important;
-          color: #fff !important;
-          opacity: 100% !important;
-        }
-      }
+
       .myDpTableSingleDay,
       .myDpTableSingleMonth,
       .myDpTableSingleYear {
-        border-radius: 50%;
+        border-top-left-radius: 9999px !important;
+        border-top-right-radius: 9999px !important;
+        border-bottom-left-radius: 9999px !important;
+        border-bottom-right-radius: 9999px !important;
         &:hover {
           background: linear-gradient(to right, #359cbb, #64c299) !important;
           color: #fff !important;
@@ -395,7 +391,7 @@ body {
         }
       }
       .myDpDaycell {
-        @apply bg-transparent;
+        @apply bg-transparent h-10;
       }
       .myDpYearcell {
         @apply h-[3.75rem];
