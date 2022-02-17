@@ -3,7 +3,17 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { countryList, currencyList } from 'src/app/shared/utils';
 import { addPayment, getPayment } from '../../../accounts/store/account.actions';
 import { IAccountState } from '../../../accounts/store/account.reducers';
@@ -58,6 +68,11 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializePaymentForm();
     this.subscriptions();
+    if (!this.editMode) {
+      this.addPaymentInfoSubcription();
+    } else {
+      this.editPaymentInfoSubscription();
+    }
   }
 
   idStatus = false;
@@ -70,7 +85,6 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data) {
-          console.log(data);
           this.initializePaymentForm(data);
           if (data?.payout_info?.connect_bank) {
             this.idStatus = true;
@@ -102,6 +116,44 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       connectbank: new FormControl(val?.payout_info?.connect_bank === false ? true : false),
     });
     this.subscribeFormFieldChanges();
+  }
+
+  addPaymentInfoSubcription() {
+    this.paymentForm.valueChanges
+      .pipe(
+        debounceTime(1500),
+        distinctUntilChanged(),
+        switchMap(value => of(value))
+      )
+      .subscribe(value => {
+        const {
+          company,
+          companyname,
+          firstname,
+          lastname,
+          addressline1,
+          addressline2,
+          postelcode,
+          city,
+          state,
+          country,
+          currency,
+        } = value;
+        const paymentPayload = {
+          business_name: companyname,
+          first_name: firstname,
+          last_name: lastname,
+          type: company,
+          address_line_1: addressline1,
+          address_line_2: addressline2,
+          city: city,
+          state: state,
+          country: country,
+          postal_code: parseInt(postelcode),
+          default_currency: currency,
+        };
+        this.store.dispatch(addPayment({ paymentData: paymentPayload }));
+      });
   }
 
   createPaymentForm() {
@@ -185,32 +237,35 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
+  isFormValid = false;
   onConnectBank() {
-    const {
-      company,
-      companyname,
-      addressline1,
-      addressline2,
-      postelcode,
-      city,
-      state,
-      country,
-      currency,
-    } = this.paymentForm.value;
+    if (this.paymentForm.valid) {
+      const {
+        company,
+        companyname,
+        addressline1,
+        addressline2,
+        postelcode,
+        city,
+        state,
+        country,
+        currency,
+      } = this.paymentForm.value;
 
-    const rapidPayload = {
-      business_name: companyname,
-      type: company,
-      address_line_1: addressline1,
-      address_line_2: addressline2,
-      city: city,
-      state: state,
-      country: country,
-      postal_code: parseInt(postelcode),
-      default_currency: currency,
-      connect_bank: true,
-    };
-    this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+      const rapidPayload = {
+        business_name: companyname,
+        type: company,
+        address_line_1: addressline1,
+        address_line_2: addressline2,
+        city: city,
+        state: state,
+        country: country,
+        postal_code: parseInt(postelcode),
+        default_currency: currency,
+        connect_bank: true,
+      };
+      this.store.dispatch(addPayment({ paymentData: rapidPayload }));
+    }
     // if (this.idStatus) {
     //   this.store.dispatch(addKyc());
     // } else {
@@ -259,6 +314,46 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
 
   get connectbanks() {
     return this.paymentForm.get('connectbank');
+  }
+
+  editPaymentInfoSubscription() {
+    setTimeout(() => {
+      this.paymentForm.valueChanges
+        .pipe(
+          debounceTime(1500),
+          distinctUntilChanged(),
+          switchMap(values => of(values))
+        )
+        .subscribe(values => {
+          const {
+            company,
+            companyname,
+            firstname,
+            lastname,
+            addressline1,
+            addressline2,
+            postelcode,
+            city,
+            state,
+            country,
+            currency,
+          } = values;
+          const paymentPayload = {
+            business_name: companyname,
+            first_name: firstname,
+            last_name: lastname,
+            type: company,
+            address_line_1: addressline1,
+            address_line_2: addressline2,
+            city: city,
+            state: state,
+            country: country,
+            postal_code: parseInt(postelcode),
+            default_currency: currency,
+          };
+          this.store.dispatch(addPayment({ paymentData: paymentPayload }));
+        });
+    }, 2000);
   }
 
   ngOnDestroy() {

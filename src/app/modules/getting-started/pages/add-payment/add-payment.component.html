@@ -186,52 +186,49 @@
           ></app-dropdown>
         </div>
       </div>
-      <div class="flex">
-        <h5 class="input-section-subheading font-bold mb-4 mt-8 mr-12">Bank Account Details</h5>
-        <div class="input-field">
-          <div class="w-form">
+      <div class="input-field flex mb-4">
+        <h5 class="input-section-subheading font-bold mb-0 mt-8 mr-8">Bank Account Details</h5>
+        <div class="w-form" *ngIf="idStatus">
+          <span class="flex">
+            <div class="mb-4 mt-9 mr-4"><app-formright></app-formright></div>
             <p
               class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
             >
-              We’ve partnered with
-              <span class="italic font-bold text-primaryFont text-base mr-1"> Rapyd </span> to help
-              you collect online payments securely.
+              Bank Account connected
             </p>
-
-            <!-- <p class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont">Account number/ID</p>     -->
-          </div>
+          </span>
         </div>
-      </div>
-      <!-- <div class="input-field flex mb-4"> -->
-      <!--Awaiting conformation-->
-
-      <!-- <div class="w-44 label text-right mt-4 mr-6"></div> -->
-
-      <!-- <div class="w-form">
-
-        <span class="flex">
-          <div class="mb-4 mt-9 mr-4"><app-awaiting></app-awaiting></div>
+        <div class="w-form" *ngIf="!idStatus">
           <p
             class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
           >
-            Bank Account connected
+            We’ve partnered with
+            <span class="italic font-bold text-primaryFont text-base mr-1"> Rapyd </span> to help
+            you <span class="block">collect online payments securely.</span>
           </p>
-        </span>
+        </div>
+        <!-- <div class="w-form">
+          <p
+            class="mb-4 mt-8 not-italic font-normal font-poppins text-base text-left text-primaryFont"
+          >
+            Account number/ID
+          </p>
+        </div> -->
+      </div>
+      <!-- <div class="input-field flex mb-4">
+        <div class="w-44 label text-right mt-4 mr-6"></div>
+
+        <div class="w-form">
+          <span class="flex">
+            <div class="mb-4 mt-0 mr-4"><app-awaiting></app-awaiting></div>
+            <p
+              class="mb-4 mt-0 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
+            >
+              Awaiting Confirmation
+            </p>
+          </span>
+        </div>
       </div> -->
-
-      <!-- Bank Account is connected -->
-
-      <div class="w-form" *ngIf="idStatus">
-        <span class="flex">
-          <div class="mb-4 mt-9 mr-4"><app-formright></app-formright></div>
-          <p
-            class="mb-4 mt-8 not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
-          >
-            Bank Account connected
-          </p>
-        </span>
-      </div>
-      <!-- </div> -->
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
@@ -243,12 +240,7 @@
           >
             Connect Bank Account
           </button>
-          <button
-            [disabled]="!paymentForm?.valid"
-            class="primary-button w-64"
-            *ngIf="idStatus"
-            (click)="onUpdateBank()"
-          >
+          <button class="primary-button w-64" *ngIf="idStatus" (click)="onUpdateBank()">
             Update Bank Information
           </button>
         </div>

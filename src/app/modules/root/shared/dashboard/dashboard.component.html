@@ -56,24 +56,26 @@
               <img src="../../../../../assets/images/nograph.svg" alt="" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ngx-charts-line-chart
-              [scheme]="colorScheme"
-              [showXAxisLabel]="showXAxisLabel"
-              [autoScale]="true"
-              [showYAxisLabel]="showYAxisLabel"
-              [xAxis]="xAxis"
-              [yAxis]="yAxis"
-              [xAxisLabel]="xAxisLabel"
-              [yAxisLabel]="yAxisLabel"
-              [timeline]="timeline"
-              [results]="chart1"
-              [gradient]="true"
-              [showGridLines]="showGridLines"
-              (select)="onSelect($event)"
-              (activate)="onActivate($event)"
-              (deactivate)="onDeactivate($event)"
-            >
-            </ngx-charts-line-chart>
+            <ng-container *ngIf="chart1">
+              <ngx-charts-line-chart
+                [scheme]="colorScheme"
+                [showXAxisLabel]="showXAxisLabel"
+                [autoScale]="true"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxis]="xAxis"
+                [yAxis]="yAxis"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [timeline]="timeline"
+                [results]="chart1"
+                [gradient]="true"
+                [showGridLines]="showGridLines"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+              >
+              </ngx-charts-line-chart>
+            </ng-container>
           </div>
         </div>
         <div
@@ -212,62 +214,27 @@
               </div>
               <div class="w-8/12 h-full">
                 <p class="text-primaryFont">
-                  {{ upcoming?.order_session?.[0]?.session.class_time_range?.start_time }} -
-                  {{ upcoming?.order_session?.[0]?.session.class_time_range?.end_time }}
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.start_time) }}
+                  -
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.end_time) }}
                 </p>
                 <p class="text-primaryFont">{{ upcoming?.order_line_item?.[0]?.product?.title }}</p>
               </div>
             </div>
           </div>
-        </ng-container>
-        <ng-container *ngIf="!upcomingSessions">
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Tomorrow</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">lllll</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div>
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Sat, 26 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
+          <div class="w-full flex justify-center items-center mt-4">
+            <button class="noborder-button" (click)="navagateToBooking()">View All</button>
           </div>
         </ng-container>
-        <div class="w-full flex justify-center items-center mt-4">
-          <button class="noborder-button" (click)="navagateToBooking()">View All</button>
-        </div>
-        <div class="w-full h-full flex justify-center items-center hidden">
+        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
             <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
             <p class="text-primaryFont mt-3 text-center mb-6">
               You don’t have any upcoming sessions yet. Share your services and get bookings.
             </p>
-            <button class="secondary-button w-48"><span>Go to Services</span></button>
+            <button class="secondary-button w-48" (click)="navagateToBooking()">
+              <span>Go to Services</span>
+            </button>
           </div>
         </div>
       </div>
@@ -285,22 +252,24 @@
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ngx-charts-line-chart
-              [scheme]="colorSchemeCurve"
-              [showXAxisLabel]="showXAxisLabel"
-              [autoScale]="true"
-              [showYAxisLabel]="false"
-              [xAxis]="false"
-              [yAxis]="false"
-              [timeline]="false"
-              [results]="chart2"
-              [gradient]="gradient"
-              [showGridLines]="false"
-              (select)="onSelect($event)"
-              (activate)="onActivate($event)"
-              (deactivate)="onDeactivate($event)"
-            >
-            </ngx-charts-line-chart>
+            <ng-container *ngIf="chart2">
+              <ngx-charts-line-chart
+                [scheme]="colorSchemeCurve"
+                [showXAxisLabel]="showXAxisLabel"
+                [autoScale]="true"
+                [showYAxisLabel]="false"
+                [xAxis]="false"
+                [yAxis]="false"
+                [timeline]="false"
+                [results]="chart2"
+                [gradient]="gradient"
+                [showGridLines]="false"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+              >
+              </ngx-charts-line-chart>
+            </ng-container>
           </div>
         </div>
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
@@ -316,19 +285,21 @@
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ngx-charts-bar-vertical
-              [scheme]="colorSchemeBar"
-              [results]="chart3"
-              [gradient]="gradient"
-              [xAxis]="false"
-              [yAxis]="false"
-              [legend]="false"
-              [showXAxisLabel]="false"
-              [barPadding]="barPadding"
-              [showYAxisLabel]="false"
-              (select)="onSelect($event)"
-            >
-            </ngx-charts-bar-vertical>
+            <ng-container *ngIf="chart3">
+              <ngx-charts-bar-vertical
+                [scheme]="colorSchemeBar"
+                [results]="chart3"
+                [gradient]="gradient"
+                [xAxis]="false"
+                [yAxis]="false"
+                [legend]="false"
+                [showXAxisLabel]="false"
+                [barPadding]="barPadding"
+                [showYAxisLabel]="false"
+                (select)="onSelect($event)"
+              >
+              </ngx-charts-bar-vertical>
+            </ng-container>
           </div>
         </div>
       </div>
