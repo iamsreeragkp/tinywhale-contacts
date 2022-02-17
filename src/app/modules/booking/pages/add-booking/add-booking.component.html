@@ -44,6 +44,7 @@
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s email id"
             formControlName="email"
+            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
@@ -56,6 +57,7 @@
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s phone number"
             formControlName="phonenumber"
+            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
@@ -67,21 +69,24 @@
             [attr.disabled]="editMode ? '' : null"
             placeholder="Enter customer’s full name"
             formControlName="customername"
+            [ngClass]="editMode ? 'bg-[#D6E1E3]' : 'bg-white'"
           />
         </div>
       </div>
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
-        <div class="w-form" [attr.disabled]="editMode ? '' : null">
-          <app-dropdown
-            [options]="classData"
-            placeholder="Enter service name"
-            [displayKey]="'title'"
-            [disabled]="editMode"
-            [emitId]="true"
-            [idKey]="'product_id'"
-            formControlName="service"
-          ></app-dropdown>
+        <div class="w-form">
+          <span [ngClass]="editMode ? 'pointer-events-none bg-green-100' : ''">
+            <app-dropdown
+              [options]="classData"
+              placeholder="Enter service name"
+              [displayKey]="'title'"
+              [disabled]="editMode"
+              [emitId]="true"
+              [idKey]="'product_id'"
+              formControlName="service"
+            ></app-dropdown>
+          </span>
         </div>
       </div>
       <div class="input-field flex mb-4">
