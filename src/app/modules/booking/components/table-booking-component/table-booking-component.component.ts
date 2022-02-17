@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../booking.service';
@@ -26,6 +26,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   filterForm!: FormGroup;
   page: number;
   limit: number;
+  defaultFilter :any= null;
+  filterStatus:any;
 
   status = [
     {
@@ -56,7 +58,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     private store: Store<IBookingState>,
     private bookingService: BookingService,
     private fb: FormBuilder,
-    @Inject(APP_CONFIG) private appConfig: AppConfigType
+    @Inject(APP_CONFIG) private appConfig: AppConfigType,
+    private _route: ActivatedRoute
   ) {
     this.bookingData$ = store.pipe(
       select(getBookingListStatus),
@@ -75,6 +78,29 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
+    this._route.queryParamMap.subscribe( param => {
+      this.defaultFilter = param.get('filter');
+    if(this.defaultFilter){
+
+  
+     const filter =   [{
+          title: 'Upcoming',
+          value: 'UPCOMING',
+        }]
+        console.log(filter,"filter");
+      
+      this.filterForm.get('status')?.patchValue('UPCOMING')
+
+    }
+     });
+     this.clearParam();
+  }
+
+
+  clearParam() {
+    if (this._route.snapshot.queryParams?.['filter']) {
+      this.router.navigate(['.'], { relativeTo: this._route });
+    }
   }
 
   orderSession: any;
@@ -107,7 +133,10 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
+      console.log(status,"dskhdskdsjd");
+      
         this.store.dispatch(
+
           getBookingList({
             filters: {
               product_id: productId ? productId : '',

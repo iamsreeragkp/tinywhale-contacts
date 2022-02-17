@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   baseURL = environment.tinyWhaleBaseUrl;
+  overviewType :string= 'MTD';
 
   colorScheme: Color = {
     name: 'primary',
@@ -156,7 +157,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.processingFee = (sumOfGatewayAndProcessingFee / paymentFeeCurrent) * 100;
 
       this.priceData = this.dashboardInfos?.price_data;
-      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions[1];
+      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions?.[1];
       for (let i = 0; i < this.priceData?.length; i++) {
         this.priceLineData = this.priceData[i];
         this.chart1 = [
@@ -214,17 +215,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onClickQtd() {
-    const QTD = 'QTD';
-    this.store.dispatch(getDashboard({ filters: { filter_type: QTD } }));
+  onClickQtd(type:string) {
+    this.overviewType = type;
+    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
   }
 
-  onClickYtd() {
-    const YTD = 'YTD';
-    this.store.dispatch(getDashboard({ filters: { filter_type: YTD } }));
+  onClickYtd(type:string) {
+    this.overviewType = type;
+    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
   }
 
-  onClickMtd() {
+  onClickMtd(type:string) {
+    this.overviewType = type
     this.store.dispatch(getDashboard({ filters: {} }));
   }
 
@@ -266,7 +268,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   navagateToBooking() {
-    this.router.navigateByUrl('booking/view-booking');
+    this.router.navigate(['booking/view-booking'],{
+      queryParams: { filter: 'upcoming' }
+      
+    });
+   
+  }
+  navagateToService() {
+    this.router.navigateByUrl('/service/home');
   }
   convert24HrsFormatToAmPm(time?: string | null) {
     if (!time) {
