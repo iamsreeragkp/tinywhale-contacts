@@ -133,20 +133,17 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
-      console.log(status,"dskhdskdsjd");
-      
-        this.store.dispatch(
-
-          getBookingList({
-            filters: {
-              product_id: productId ? productId : '',
-              payment_status: payment ? payment : '',
-              event_status: status ? status : '',
-              page: this.page,
-              limit: this.limit
-            }
-          })
-        );
+      this.store.dispatch(
+        getBookingList({
+          filters: {
+            product_id: productId ? productId : '',
+            payment_status: payment ? payment : '',
+            event_status: status ? status : '',
+            page: this.page,
+            limit: this.limit,
+          },
+        })
+      );
     });
   }
 
@@ -203,7 +200,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   onNavigateToList(id: any) {
-    this.router.navigateByUrl(`/booking/status-booking/${id}`);
+    this.router.navigate([`../booking/status-booking/${id}`], { queryParams: { fromList: true } });
   }
 
   get isFilterEmpty() {
@@ -332,12 +329,16 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
   }
 
-  displaySessions(number: number){
-    if(number === 1){
-      return `(1 session)`
+  filterEvent(event: any) {
+    if (event === true) {
+      this.filterForm.reset();
     }
-    else{
-      return `(${number ?? '-'} sessions)`
+  }
+  displaySessions(number: number) {
+    if (number === 1) {
+      return `(1 session)`;
+    } else {
+      return `(${number ?? '-'} sessions)`;
     }
   }
   resetPage() {
@@ -351,15 +352,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   fetchBookingList() {
-    const {product_id, status, payment} = this.filterForm.value
+    const { product_id, status, payment } = this.filterForm.value;
     const filterObj = {
       product_id: product_id ? product_id : '',
       payment_status: payment ? payment : '',
       event_status: status ? status : '',
-    }
+    };
     this.store.dispatch(
       getBookingList({
-        filters: {filterObj, page: this.page, limit: this.limit },
+        filters: { filterObj, page: this.page, limit: this.limit },
       })
     );
   }

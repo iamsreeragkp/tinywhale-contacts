@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
 import { convert24HrsFormatToAmPm } from 'src/app/shared/utils';
-import { getBookingById } from '../../store/booking.actions';
+import { getBookingById, initBooking } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
 import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
 
@@ -11,25 +12,34 @@ import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
   templateUrl: './status-booking.component.html',
   styleUrls: ['./status-booking.component.scss'],
 })
-export class StatusBookingComponent implements OnInit {
+export class StatusBookingComponent implements OnInit, OnDestroy {
   statusData: any;
   settledInvoice = true;
   orderId!: number;
   classTimeRanged: any;
   startTime: any;
   endTime: any;
+  ngUnsubscribe = new Subject<any>();
+  isVis = false;
   constructor(
     private router: Router,
     private store: Store<IBookingState>,
     private route: ActivatedRoute
   ) {
     this.store.dispatch(getBookingById({ bookingId: this.route.snapshot.params['id'] }));
+    this.route.queryParamMap.subscribe((data: any) => {
+      if (data?.params?.fromList) {
+        this.isVis = true;
+      }
+    });
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.settledInvoice = false;
-    }, 1000);
+    if (!this.isVis) {
+      setTimeout(() => {
+        this.settledInvoice = false;
+      }, 1000);
+    }
     this.subscriptions();
   }
 
@@ -55,5 +65,11 @@ export class StatusBookingComponent implements OnInit {
     const d = new Date(date);
     const dayName = days[d.getDay()];
     return dayName;
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(initBooking());
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next(true);
   }
 }
