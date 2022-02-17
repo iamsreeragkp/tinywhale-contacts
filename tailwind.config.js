@@ -1,5 +1,5 @@
 module.exports = {
- content: ["./src/**/*.{html,js}"],
+  content: ["./src/**/*.{html,js}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -12,19 +12,6 @@ module.exports = {
         tworem: '2rem',
         fourtyPx: '40px',
       },
-
-      backgroundColor:{
-        'primaryBlue':"#00a4b7"
-      },
-
-      textColor: {
-        primaryFont: '#154F5B',
-        secondaryBlue: '#00a4b7',
-        mediumGray: '#73959d',
-      },
-      borderColor: {
-        lightGrey: '#d6e1e3',
-      },
       borderRadius: {
         5: '1.25rem',
       },
@@ -35,11 +22,13 @@ module.exports = {
         68: '17rem',
       },
       colors: {
+        'primaryBlue': "#00a4b7",
         veryLightGrey: '#f1f4f5',
         lightGrey: '#d6e1e3',
         mediumGray: '#73959d',
         primaryFont: '#154F5B',
         secondaryBlue: '#00a4b7',
+        veryDarkGray: 'rgb(21, 79, 91)'
       }
     },
   },

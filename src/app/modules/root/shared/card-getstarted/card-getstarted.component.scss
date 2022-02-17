@@ -30,8 +30,7 @@
 }
 
 .card {
-  border-radius: 20px;
-  min-height: 100%;
+  @apply flex flex-col shadow-lg p-8  bg-white m-2 rounded-5;
   .complete-icon {
     top: 0;
     left: -3px;
@@ -50,18 +49,13 @@
       color: #64c2bc;
     }
     .title {
-      font-family: Baloo;
-      font-size: 32px;
-      line-height: 2.25rem;
       letter-spacing: -2px;
-      color: #154f5b;
+      @apply font-baloo text-[2rem] leading-9 text-primaryFont;
     }
   }
 
   .card-content {
-    font-family: Poppins;
-    line-height: 1.63rem;
-    color: #154f5b;
+    @apply font-poppins text-primaryFont font-normal text-base py-4 leading-[1.63rem];
   }
   .card-tooltip-text {
     width: 17rem !important;
@@ -78,7 +72,12 @@
     width: 231px;
   }
 }
-
+// .card-height {
+//   @apply min-h-full;
+// }
+// .card-height-none {
+//   @apply min-h-0;
+// }
 @media (min-width: 1024px) and (max-width: 1200px) {
   .card {
     .number {

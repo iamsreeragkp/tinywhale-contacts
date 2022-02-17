@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, of } from 'rxjs';
+import { IAppState } from '../../core/reducers';
 import { BookingService } from '../booking.service';
 import {
   addBooking,
   addBookingError,
   addBookingSuccess,
+  getBookableSlots,
+  getBookableSlotsError,
+  getBookableSlotsSuccess,
   getBooking,
   getBookingById,
   getBookingByIdError,
@@ -19,7 +24,11 @@ import {
 
 @Injectable()
 export class BookingEffects {
-  constructor(private actions$: Actions, private bookingService: BookingService) {}
+  constructor(
+    private actions$: Actions,
+    private bookingService: BookingService,
+    private store: Store<IAppState>
+  ) {}
 
   addBooking$ = createEffect(() =>
     this.actions$.pipe(
@@ -60,8 +69,8 @@ export class BookingEffects {
         catchError(err => of(getBookingListError({ error: err, status: false })))
       )
     )
-  )
-);
+    )
+  );
 
   getBookingById$ = createEffect(() =>
     this.actions$.pipe(
@@ -84,6 +93,40 @@ export class BookingEffects {
             getBookingListSuccess({ bookingList: response.data, bookingsCount: response.count, status: true })
           ),
           catchError(err => of(getBookingListError({ error: err, status: false })))
+        )
+      )
+    )
+  );
+
+  //   getBookableSlots$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(getBookableSlots),
+  //     withLatestFrom(this.store, (action, store) => {
+  //       console.log(store);
+  //       return {
+  //         productId: store.service.getBookingById?.product_id,
+  //       };
+  //     }),
+  //     switchMap(({ productId }) =>
+  //       this.bookingService.getBookingDates(productId).pipe(
+  //         map(response => getBookableSlotsStatus({ response: response?.data, status: true })),
+  //         catchError(err =>
+  //           of(
+  //             getBookableSlotsStatus({ error: err?.error?.message ?? err?.message, status: false })
+  //           )
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
+
+  getBookingSlot$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookableSlots),
+      switchMap(({ productId }) =>
+        this.bookingService.getBookingDates(productId).pipe(
+          map((response: any) => getBookableSlotsSuccess({ response: response?.data })),
+          catchError(err => of(getBookableSlotsError({ error: err })))
         )
       )
     )

@@ -17,7 +17,7 @@
         <button
           class="secondary-button mr-3 ml-6 w-52"
           type="button"
-          (click)="saveProductForm(true)"
+          (click)="saveProductForm(true); scrollToTop()"
         >
           <span>Save & Add Another</span>
         </button>
@@ -228,12 +228,20 @@
                 <ng-container *ngFor="let weekDaySlots of timeRanges.controls; let i = index">
                   <div
                     class="w-full flex items-center mb-4"
-                    *ngIf="weekDaySlots.get('day_of_week')?.value === weekDay.value"
+                    *ngIf="
+                      weekDaySlots.get('day_of_week')?.value === weekDay.value &&
+                      !weekDaySlots.get('is_deleted')?.value
+                    "
                     [formGroupName]="i"
                   >
                     <div class="w-36">
                       <app-dropdown
-                        [options]="getTimeSlotOptions(weekDay.value, weekDaySlots.get('id')?.value)"
+                        [options]="
+                          getTimeSlotOptions(
+                            weekDay.value,
+                            weekDaySlots.get('class_time_range_id')?.value
+                          )
+                        "
                         [idKey]="'value'"
                         [emitId]="true"
                         [placeholder]="'Start Time'"

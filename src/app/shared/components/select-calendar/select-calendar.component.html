@@ -1,0 +1,33 @@
+<div class="w-full calendar-1">
+  <div class="bg-calender md:hidden" *ngIf="showOverlay"></div>
+  <div class="w-full relative">
+    <!-- <ngx-datepicker
+      [options]="options"
+      [ngModel]="date"
+      (ngModelChange)="updateDate($event)"
+      [ngClass]="{ disabled: _isDisabled }"
+      [options]="options"
+    ></ngx-datepicker> -->
+    <input
+      type="text"
+      [placeholder]="placeholder"
+      angular-mydatepicker
+      [ngModel]="date"
+      (ngModelChange)="updateDate($event)"
+      readonly
+      class="input-data w-full text-base"
+      #dp="angular-mydatepicker"
+      autocomplete="off"
+      [disabled]="_isDisabled"
+      [options]="myDatePickerOptions"
+      (calendarToggle)="calendarOpenChanged($event)"
+      (click)="dp.toggleCalendar()"
+    />
+    <button
+      class="absolute top-0 right-0 h-full flex items-center mr-3.5"
+      (click)="dp.toggleCalendar()"
+    >
+      <app-calendar-svg></app-calendar-svg>
+    </button>
+  </div>
+</div>

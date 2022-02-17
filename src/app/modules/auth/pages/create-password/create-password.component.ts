@@ -19,7 +19,7 @@ export class CreatePasswordComponent implements OnInit, OnDestroy {
   isReset = false;
   ngUnsubscribe = new Subject<any>();
 
-  show = 'password';
+  show = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -80,8 +80,5 @@ export class CreatePasswordComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(false);
-  }
-  onClick(evnt: string) {
-    this.show = evnt;
   }
 }

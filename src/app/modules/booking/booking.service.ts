@@ -21,7 +21,7 @@ export class BookingService {
       dashboardInfos: { businessId },
     } = userData;
     const params = new HttpParams().set('business_id', businessId);
-    return this.http.get(`${this.bookingApi}/booking/order/${orderId}`,{params:params});
+    return this.http.get(`${this.bookingApi}/booking/order/${orderId}`, { params: params });
   }
 
   getAllBookings() {
@@ -30,7 +30,7 @@ export class BookingService {
       dashboardInfos: { businessId },
     } = userData;
     const params = new HttpParams().set('business_id', businessId);
-    return this.http.get(`${this.bookingApi}/booking/order`,{params:params});
+    return this.http.get(`${this.bookingApi}/booking/order`, { params: params });
   }
 
   getServiceDropdown() {
@@ -42,7 +42,6 @@ export class BookingService {
     return this.http.get(`${this.bookingApi}/dashboard/service`, { params: params });
   }
 
-
   getBookingList(filters: any) {
     const {
       dashboardInfos: { businessId: business_id },
@@ -51,5 +50,7 @@ export class BookingService {
     return this.http.get(`${this.bookingApi}/booking/order`, { params });
   }
 
-
+  getBookingDates(productId: any) {
+    return this.http.get(`${this.bookingApi}/booking/filled-slots/${productId}`);
+  }
 }

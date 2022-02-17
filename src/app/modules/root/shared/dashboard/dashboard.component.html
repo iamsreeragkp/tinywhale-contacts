@@ -6,14 +6,11 @@
       </div>
       <div class="flex items-center">
         <span class="relative">
-        <button class="primary-button w-52" (click)="copyViewBox()">Share Your TinyCard™</button>
-        <ng-container  *ngIf="copyView "  >
-          <ng-container
-          *ngTemplateOutlet="share; context: { ShareLink: 'data' }
-          "
-        ></ng-container> 
-        </ng-container>
-      </span>
+          <button class="primary-button w-52" (click)="copyViewBox()">Share Your TinyCard™</button>
+          <ng-container *ngIf="copyView">
+            <ng-container *ngTemplateOutlet="share; context: { ShareLink: 'data' }"></ng-container>
+          </ng-container>
+        </span>
       </div>
     </div>
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
@@ -55,26 +52,30 @@
             </div>
           </div>
           <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
-            <ngx-charts-line-chart
-              [scheme]="colorScheme"
-              [showXAxisLabel]="showXAxisLabel"
-              [autoScale]="true"
-              [showYAxisLabel]="showYAxisLabel"
-              [xAxis]="xAxis"
-              [yAxis]="yAxis"
-              [xAxisLabel]="xAxisLabel"
-              [yAxisLabel]="yAxisLabel"
-              [timeline]="timeline"
-              [results]="chart1"
-              [gradient]="true"
-              [showGridLines]="showGridLines"
-              (select)="onSelect($event)"
-              (activate)="onActivate($event)"
-              (deactivate)="onDeactivate($event)"
-            >
-            </ngx-charts-line-chart>
-            <!-- <img src="../../../../../assets/images/nograph.svg" alt="">
-            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
+            <ng-container *ngIf="!chart1">
+              <img src="../../../../../assets/images/nograph.svg" alt="" />
+              <p class="dashboard-new-placeholder mt-3">No data available</p>
+            </ng-container>
+            <ng-container *ngIf="chart1">
+              <ngx-charts-line-chart
+                [scheme]="colorScheme"
+                [showXAxisLabel]="showXAxisLabel"
+                [autoScale]="true"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxis]="xAxis"
+                [yAxis]="yAxis"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [timeline]="timeline"
+                [results]="chart1"
+                [gradient]="true"
+                [showGridLines]="showGridLines"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+              >
+              </ngx-charts-line-chart>
+            </ng-container>
           </div>
         </div>
         <div
@@ -123,13 +124,13 @@
               </div>
             </div>
             <h3 class="text-primaryFont font-bold font-baloo text-tworem">
-              {{ percentage || '0' }} %
+              {{ processingFee || '0' }} %
             </h3>
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">{{ fromLastMonthProcessGross || '0' }}%</span>
+              <span class="green-text ml-3">{{ percentage || '0' }}%</span>
               <!-- <span class="red-text ml-3">S$ 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
@@ -195,76 +196,45 @@
     <div class="w-full grid sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <div class="bg-white h-full shadow-lg pt-6 pb-4 px-8 rounded-2xl">
         <h4 class="text-primaryFont font-bold">Upcoming Sessions</h4>
-        <div class="w-full mt-3" *ngFor="let upcoming of upcomingSessions">
-          <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">
-                {{
-                  isToday(upcoming?.order_session[0]?.session?.date)
+        <ng-container *ngIf="upcomingSessions">
+          <div class="w-full mt-3" *ngFor="let upcoming of upcomingSessions">
+            <div class="py-5 flex border-b border-gray-300 border-solid">
+              <div class="w-4/12 h-full">
+                <p class="text-primaryFont">
+                  {{
+                  isToday(upcoming?.order_session?.[0]?.session?.date)
                     ? 'Today'
-                    : isTomorrow(upcoming?.order_session[0]?.session?.date)
+                    : isTomorrow(upcoming?.order_session?.[0]?.session?.date)
                     ? 'Tomorrow'
-                    : getDayName(upcoming?.order_session[0]?.session?.date) +
+                    : getDayName(upcoming?.order_session?.[0]?.session?.date) +
                       ',' +
-                      formatdate(upcoming?.order_session[0]?.session?.date)
-                }}
-              </p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">
-                {{ upcoming?.order_session[0]?.session.class_time_range?.start_time }} -
-                {{ upcoming?.order_session[0]?.session.class_time_range?.end_time }}
-              </p>
-              <p class="text-primaryFont">{{ upcoming?.order_line_item[0]?.product?.title }}</p>
+                      formatdate(upcoming?.order_session?.[0]?.session?.date)
+                  }}
+                </p>
+              </div>
+              <div class="w-8/12 h-full">
+                <p class="text-primaryFont">
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.start_time) }}
+                  -
+                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.end_time) }}
+                </p>
+                <p class="text-primaryFont">{{ upcoming?.order_line_item?.[0]?.product?.title }}</p>
+              </div>
             </div>
           </div>
-          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Tomorrow</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">lllll</p>
-            </div>
-          </div> -->
-          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div> -->
-          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Thu, 24 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div> -->
-          <!-- <div class="py-5 flex border-b border-gray-300 border-solid">
-            <div class="w-4/12 h-full">
-              <p class="text-primaryFont">Sat, 26 Jan</p>
-            </div>
-            <div class="w-8/12 h-full">
-              <p class="text-primaryFont">5:30 PM - 6:30 PM</p>
-              <p class="text-primaryFont">Piano for kids under 3 years</p>
-            </div>
-          </div> -->
-        </div>
-        <div class="w-full flex justify-center items-center mt-4">
-          <button class="noborder-button" (click)="navagateToBooking()">View All</button>
-        </div>
-        <div class="w-full h-full flex justify-center items-center hidden">
+          <div class="w-full flex justify-center items-center mt-4">
+            <button class="noborder-button" (click)="navagateToBooking()">View All</button>
+          </div>
+        </ng-container>
+        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
             <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
             <p class="text-primaryFont mt-3 text-center mb-6">
               You don’t have any upcoming sessions yet. Share your services and get bookings.
             </p>
-            <button class="secondary-button w-48"><span>Go to Services</span></button>
+            <button class="secondary-button w-48" (click)="navagateToBooking()">
+              <span>Go to Services</span>
+            </button>
           </div>
         </div>
       </div>
@@ -278,24 +248,28 @@
             </div>
           </div>
           <div class="w-full flex flex-col items-center justify-center">
-            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
-            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
-            <ngx-charts-line-chart
-              [scheme]="colorSchemeCurve"
-              [showXAxisLabel]="showXAxisLabel"
-              [autoScale]="true"
-              [showYAxisLabel]="false"
-              [xAxis]="false"
-              [yAxis]="false"
-              [timeline]="false"
-              [results]="chart2"
-              [gradient]="gradient"
-              [showGridLines]="false"
-              (select)="onSelect($event)"
-              (activate)="onActivate($event)"
-              (deactivate)="onDeactivate($event)"
-            >
-            </ngx-charts-line-chart>
+            <ng-container *ngIf="!chart2">
+              <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
+              <p class="dashboard-new-placeholder mt-3">No data available</p>
+            </ng-container>
+            <ng-container *ngIf="chart2">
+              <ngx-charts-line-chart
+                [scheme]="colorSchemeCurve"
+                [showXAxisLabel]="showXAxisLabel"
+                [autoScale]="true"
+                [showYAxisLabel]="false"
+                [xAxis]="false"
+                [yAxis]="false"
+                [timeline]="false"
+                [results]="chart2"
+                [gradient]="gradient"
+                [showGridLines]="false"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+              >
+              </ngx-charts-line-chart>
+            </ng-container>
           </div>
         </div>
         <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
@@ -307,21 +281,25 @@
             </div>
           </div>
           <div class="flex flex-col items-center justify-center">
-            <!-- <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32">
-            <p class="dashboard-new-placeholder mt-3">No data available</p> -->
-            <ngx-charts-bar-vertical
-              [scheme]="colorSchemeBar"
-              [results]="chart3"
-              [gradient]="gradient"
-              [xAxis]="false"
-              [yAxis]="false"
-              [legend]="false"
-              [showXAxisLabel]="false"
-              [barPadding]="barPadding"
-              [showYAxisLabel]="false"
-              (select)="onSelect($event)"
-            >
-            </ngx-charts-bar-vertical>
+            <ng-container *ngIf="!chart3">
+              <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
+              <p class="dashboard-new-placeholder mt-3">No data available</p>
+            </ng-container>
+            <ng-container *ngIf="chart3">
+              <ngx-charts-bar-vertical
+                [scheme]="colorSchemeBar"
+                [results]="chart3"
+                [gradient]="gradient"
+                [xAxis]="false"
+                [yAxis]="false"
+                [legend]="false"
+                [showXAxisLabel]="false"
+                [barPadding]="barPadding"
+                [showYAxisLabel]="false"
+                (select)="onSelect($event)"
+              >
+              </ngx-charts-bar-vertical>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -334,21 +312,39 @@
 
 <!-- share link div ends here -->
 
-<ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation();"   >
+<ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation()">
   <div
-    class="absolute border border-grey-100  rounded-[20px] top-16 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 md:w-96 w-80  cursor-auto font-poppins" 
+    class="absolute border border-grey-100 rounded-[20px] top-16 z-10 text-white font-medium bg-[#6B9EB6] p-6 right-0 md:w-96 w-80 cursor-auto font-poppins"
   >
+    <p class="flex items-center justify-between text-white text-base">
+      <span class="">Share service link with clients</span>
+      <span
+        class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700"
+        (click)="copyView = false"
+        >&times;</span
+      >
+    </p>
 
-  <p class="flex items-center justify-between text-white text-base "><span class="">Share service link with clients</span> <span class="text-white opacity-100 hover:opacity-80 text-3xl leading-none p-0 font-light cursor-pointer transform transition duration-700 " (click)=" copyView =false ">&times;</span></p>
-
-        <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
-          <input type="text" [value]="copyURL" class=" absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none" #userinput />
-          <div class="  select-none  leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4  z-0 focus:shadow focus:outline-none ">
-            {{copyURL}}
-          </div>
-          <button type="submit" class="copy-text justify-center pl-2 pr-4" (click)="copyInputMessage(userinput)  "><span class="copy-text bg-clip-text font-semibold">{{copyStatus}}</span></button> 
+    <div class="relative overflow-hidden mt-3 bg-white rounded-lg flex">
+      <input
+        type="text"
+        [value]="copyURL"
+        class="absolute top-0 left-0 opacity-0 truncate text-primaryFont h-0 overflow-hidden rounded-lg z-0 focus:shadow focus:outline-none"
+        #userinput
+      />
+      <div
+        class="select-none leading-[48px] text-base truncate text-primaryFont h-12 w-full pl-4 z-0 focus:shadow focus:outline-none"
+      >
+        {{ copyURL }}
       </div>
-
+      <button
+        type="submit"
+        class="copy-text justify-center pl-2 pr-4"
+        (click)="copyInputMessage(userinput)"
+      >
+        <span class="copy-text bg-clip-text font-semibold">{{ copyStatus }}</span>
+      </button>
+    </div>
   </div>
 </ng-template>
 <!-- share link div ends here -->

@@ -21,7 +21,7 @@
           <span class="font-medium text-right">Company Name</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex">
-          <span>{{ businessObj?.store?.company_name ?? '-' }}</span>
+          <span>{{ businessObj?.store?.company_name || '-' }}</span>
         </div>
       </div>
       <div class="flex mb-4">
@@ -33,7 +33,7 @@
             class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
           >
             <img
-              class="max-w-none h-full"
+              class="w-full object-cover"
               [src]="businessObj?.logo"
               *ngIf="businessObj?.logo"
               [alt]="'Business_Logo'"
@@ -56,7 +56,7 @@
             class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
           >
             <img
-              class="max-w-none h-full"
+              class="w-full object-cover"
               [src]="businessObj?.business_photos?.[0]?.photo_url"
               *ngIf="businessObj?.business_photos?.[0]?.photo_url"
               [alt]="'Cover_Photo'"
@@ -75,7 +75,7 @@
           <span class="font-medium text-right">Punchline</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex">
-          <span>{{ businessObj?.store?.punchline ?? '-' }}</span>
+          <span>{{ businessObj?.store?.punchline || '-' }}</span>
         </div>
       </div>
       <!-- <div class="flex mb-4">
@@ -90,14 +90,14 @@
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Social Links</span>
         </div>
-        <div class="flex-1 py-3 pl-4 flex">
+        <div class="flex-1 py-3 pl-4">
           <ng-container *ngFor="let link of businessObj?.links">
             <span>{{ link?.url }}</span>
             <br />
           </ng-container>
         </div>
       </div>
-      <div class="flex mb-4">
+      <div class="flex mb-4" *ngIf="recognitionsAvailable()">
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Awards / Certifications / Licenses</span>
         </div>
@@ -110,7 +110,7 @@
               class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
             >
               <img
-                class="max-w-none h-full"
+                class="w-full object-cover"
                 [src]="recognition?.photo_url"
                 *ngIf="recognition?.photo_url"
                 [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)"
@@ -122,16 +122,16 @@
                 [alt]="(recognition?.recognition_type ?? '' | titlecase) + '_' + (i + 1)"
               />
             </div>
-            <div class="flex flex-col justify-center gap-2">
-              <span class="font-medium">{{ recognition?.recognition_name }}</span>
+            <div class="flex flex-1 flex-col justify-center gap-2">
+              <div class="font-medium break-all w-3/4">{{ recognition?.recognition_name }}</div>
               <span *ngIf="recognition?.expiry_date"
-                >Valid till {{ recognition?.expiry_date?.toLocaleDateString('us') }}</span
+                >Valid till {{ formatDate(recognition?.expiry_date) }}</span
               >
             </div>
           </div>
         </div>
       </div>
-      <div class="flex mb-4">
+      <div class="flex mb-4" *ngIf="testimonialsAvailable()">
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Testimonial</span>
         </div>
@@ -144,7 +144,7 @@
               class="w-28 h-28 overflow-hidden rounded-lg border-solid border-2 border-lightGrey flex justify-center items-center"
             >
               <img
-                class="max-w-none h-full"
+                class="w-full object-cover"
                 [src]="testimonial?.photo_url"
                 *ngIf="testimonial?.photo_url"
                 [alt]="'Testimonial_' + (i + 1)"
@@ -157,10 +157,10 @@
               />
             </div>
             <div class="flex flex-col gap-2 flex-1">
-              <span class="font-medium">{{
-                testimonial?.name + (testimonial?.title ? ' / ' + testimonial.title : '')
-              }}</span>
-              <span>{{ testimonial?.testimonial }}</span>
+              <div class="font-medium break-all lg:w-3/4">
+                {{ testimonial?.name + (testimonial?.title ? ' / ' + testimonial.title : '') }}
+              </div>
+              <div class="break-all lg:w-3/4">{{ testimonial?.testimonial }}</div>
             </div>
           </div>
         </div>

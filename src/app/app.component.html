@@ -12,15 +12,22 @@
   </div>
 </ng-template>
 
-<router-outlet *ngIf="isOnline && !isMobile; else isOffline"></router-outlet>
+<div class="hidden md:block">
+  <router-outlet *ngIf="isOnline; else isOffline"></router-outlet>
+</div>
 <ng-template #isOffline>
   <ng-container
     [ngTemplateOutlet]="temp"
     [ngTemplateOutletContext]="{
-      content: isMobile
-        ? 'Open your TinyWhale dashboard on desktop'
-        : 'Please check your internet connection'
+      content: 'Please check your internet connection'
     }"
   >
   </ng-container>
 </ng-template>
+
+<div class="md:hidden">
+  <ng-container
+    [ngTemplateOutlet]="temp"
+    [ngTemplateOutletContext]="{ content: 'Open your TinyWhale dashboard on desktop' }"
+  ></ng-container>
+</div>

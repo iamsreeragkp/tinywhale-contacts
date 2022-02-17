@@ -8,10 +8,23 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { catchError, debounceTime, distinctUntilChanged, filter, forkJoin, fromEvent, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  forkJoin,
+  fromEvent,
+  map,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { ProductPhoto } from 'src/app/modules/service/shared/service.interface';
@@ -39,12 +52,10 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   // @ViewChild('companyName', { static: true }) companyName: ElementRef;
   isSaving = false;
   @HostListener('click', ['$event']) onClick({ target }: { target: HTMLElement }) {
-    this.closeToSocial = this.socialContainer.nativeElement.contains(target); 
-    this.closeToPunchline = this.punchline.nativeElement.contains(target); 
-    this.closeToRadio =  this.radioContainer.nativeElement.contains(target); 
-    this.closeToImage = this.imageContainer.nativeElement.contains(target); 
-    
-  
+    this.closeToSocial = this.socialContainer.nativeElement.contains(target);
+    this.closeToPunchline = this.punchline.nativeElement.contains(target);
+    this.closeToRadio = this.radioContainer.nativeElement.contains(target);
+    this.closeToImage = this.imageContainer.nativeElement.contains(target);
   }
   businessInfoForm!: FormGroup;
   recognitionTypeOptions = [
@@ -60,7 +71,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       value: 'LICENSE',
       label: 'License',
     },
-  ]
+  ];
 
   ngUnsubscribe = new Subject<any>();
   businessData$: Observable<
@@ -74,7 +85,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   closeToSocial = false;
   closeToImage = false;
   isGettingStarted = false;
-  textCount= 0;
+  textCount = 0;
   options = {
     format: 'yyyy-MM-dd',
     placeholder: 'Select date',
@@ -90,7 +101,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     private zone: NgZone,
     public location: Location,
     private formBuilder: FormBuilder,
-    private utilsService: UtilsHelperService,
+    private utilsService: UtilsHelperService
   ) {
     this.businessData$ = this.store.pipe(select(getBusinessStatus));
     this.saveBusinessStatus$ = this.store.pipe(select(getAddBusinessStatus));
@@ -113,29 +124,27 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
     // this.businessInfoForm = this.formBuilder.group({
     //   companyname: [],
-      
-    // });
 
+    // });
   }
 
   ngOnInit(): void {
     this.initializeBusinessForm();
     this.subscriptions();
-    if(!this.editMode){
+    if (!this.editMode) {
       this.addBasicInfoSubcription();
     }
-}
+  }
 
-onKeyUp(boxInput:any){
-return boxInput.value.length ;
-
-}
-onKeyUpTesmonialsTitle(title:any){
-  return title.value.length ;
-}
-onKeyUpPunchLine(punchline:any){
-  return punchline.value.length ; //this will have the length of the text entered in the input box
-}
+  onKeyUp(boxInput: any) {
+    return boxInput.value.length;
+  }
+  onKeyUpTesmonialsTitle(title: any) {
+    return title.value.length;
+  }
+  onKeyUpPunchLine(punchline: any) {
+    return punchline.value.length; //this will have the length of the text entered in the input box
+  }
   subscriptions() {
     this.businessData$
       .pipe(
@@ -158,59 +167,58 @@ onKeyUpPunchLine(punchline:any){
       .subscribe(data => {
         this.isSaving = false;
         if (data?.status) {
-          if(this.isSaving){
+          if (this.isSaving) {
             this.isSaving = false;
             this.addBasicInfoSubcription();
           }
           console.log('saved successfully');
           // this.clearImages();
           // this.router.navigate(['../']);
-        
         } else {
           console.log(data?.error);
         }
       });
   }
 
-  addBasicInfoSubcription(){
-
+  addBasicInfoSubcription() {
     this.businessInfoForm.valueChanges
-    .pipe(
-      debounceTime(3000),
-      distinctUntilChanged(),
-      switchMap((value) => of(value))
-    )
-    .subscribe((value) => {
-     
-      const {
-        companyname,
-        punchline,
-        socialitems,
-        email,
-        licenceitems,
-        testimonialitems,
-        logo,
-        phone_number,
-        contact_type,
-        cover
-      } = value;
-     
-     const businessPayload = {
-        company_name: companyname,
-        punchline: punchline,
-        logo: logo,
-        social_links: socialitems,
-        recognitions: licenceitems,
-        phone_number:phone_number.toString(),
-         email:email,
-         contact_type: contact_type,
-         business_photos:[cover],
-         testimonials: this.isTestimonialFilled()
-      };
-      this.store.dispatch(addBusiness({ businessData: businessPayload}));
-      return;
-    });
-  } 
+      .pipe(
+        debounceTime(3000),
+        distinctUntilChanged(),
+        switchMap(value => of(value))
+      )
+      .subscribe(value => {
+        const {
+          companyname,
+          punchline,
+          socialitems,
+          email,
+          licenceitems,
+          testimonialitems,
+          logo,
+          phone_number,
+          contact_type,
+          cover,
+        } = value;
+
+        const businessPayload = {
+          company_name: companyname,
+          punchline: punchline,
+          logo: logo,
+          social_links: this.isSocialLinkFilled(),
+          recognitions: licenceitems,
+          phone_number: phone_number.toString(),
+          email: email,
+          contact_type: contact_type,
+          business_photos: [cover],
+          testimonials: this.isTestimonialFilled(),
+        };
+        if (this.businessInfoForm?.valid) {
+          this.store.dispatch(addBusiness({ businessData: businessPayload }));
+        }
+        return;
+      });
+  }
 
   clearImages() {
     this.arrayLicenceImageUrl = [];
@@ -227,10 +235,10 @@ onKeyUpPunchLine(punchline:any){
       companyname: [val?.store?.company_name ?? ''],
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
-      cover:[val?.business_photos?.[0] ?? ''],
-      email:[val?.email ?? ''],
-      phone_number:[val?.phone_number ?? ''],
-      contact_type :[val?.contact_type ?? null],
+      cover: [val?.business_photos?.[0] ?? ''],
+      email: [val?.email ?? ''],
+      phone_number: [val?.phone_number ?? ''],
+      contact_type: [val?.contact_type ?? null],
       // photos: this.fb.array(
       //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
       // ),
@@ -251,31 +259,36 @@ onKeyUpPunchLine(punchline:any){
       ),
     });
     if (val?.logo) {
-  
       this.logoImageUrl = val.logo;
     }
-    if((val?.business_photos?.[0]?.photo_url)){
+    if (val?.business_photos?.[0]?.photo_url) {
       this.coverImageUrl = val?.business_photos?.[0]?.photo_url;
     }
     if (val?.store?.punchline) {
-      setTimeout(() =>this.punchline?.nativeElement.dispatchEvent(new Event('input')));
+      setTimeout(() => this.punchline?.nativeElement.dispatchEvent(new Event('input')));
     }
   }
 
   createSocialItem(val?: BusinessLinks): FormGroup {
     return this.fb.group({
       // link_id: [val?.link_id ?? ''],
-      url: [val?.url ?? ''],
+      url: [
+        val?.url ?? '',
+        Validators.pattern(
+          '((https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)'
+        ),
+      ],
     });
   }
 
   createLicences(val?: Recognitions): FormGroup {
-    this.arrayLicenceImageUrl.push(val?.photo_url);    
+    this.arrayLicenceImageUrl.push(val?.photo_url);
+
     return this.fb.group({
       // recognition_id: [val?.recognition_id ?? ''],
       recognition_type: [val?.recognition_type ?? ''],
       recognition_name: [val?.recognition_name ?? ''],
-      expiry_date: [val?.expiry_date? (new Date(val?.expiry_date)) : ''],
+      expiry_date: [val?.expiry_date ? new Date(val?.expiry_date) : ''],
       photo_url: [val?.photo_url ?? ''],
     });
   }
@@ -320,55 +333,55 @@ onKeyUpPunchLine(punchline:any){
   coverImageUrl = '';
 
   async handleFileInputLogo(event: Event) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'logo',
+        'image/',
+        true
+      );
+      this.fileToUploadLogo = file;
+      this.logoImageUrl = url;
 
-        try {
-            const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'logo', 'image/',true);
-            this.fileToUploadLogo = file;
-            this.logoImageUrl = url;
+      this.businessInfoForm.get('logo')?.patchValue(fileKey);
+    } catch (ex) {}
+  }
 
-            this.businessInfoForm.get('logo')?.patchValue(fileKey);
-          } catch (ex) {
-            
-          }
-        }
-
-        async handleFileInputCover(event: Event) {
-          try {
-            const [file, url, fileKey] = await this.utilsHelper.handleFileInput(event, 'cover', 'image/',true);
-            this.fileToUploadCover = file;
-            this.coverImageUrl = url;
-            this.businessInfoForm.get('cover')?.patchValue({"photo_url":fileKey});
-          } catch (ex) {
-            
-          }
-
-        }
+  async handleFileInputCover(event: Event) {
+    try {
+      const [file, url, fileKey] = await this.utilsHelper.handleFileInput(
+        event,
+        'cover',
+        'image/',
+        true
+      );
+      this.fileToUploadCover = file;
+      this.coverImageUrl = url;
+      this.businessInfoForm.get('cover')?.patchValue({ photo_url: fileKey });
+    } catch (ex) {}
+  }
 
   deleteLogo() {
-   
-      this.logoImageUrl = '';
-      this.fileToUploadLogo = null;
-      this.businessInfoForm.get('logo')?.patchValue(null);
-      this.businessInfoForm.patchValue({
-        photo_url: '',
-        photo_data_url: '',
-        photo_file: null,
-      });
-    }
-    deleteCover() {
-      this.coverImageUrl = '';
-      this.fileToUploadCover = null;
-      // this.businessCoverPhoto?.patchValue(null);
-      this.businessCoverPhoto?.patchValue({  photo_url: ''});
-   
+    this.logoImageUrl = '';
+    this.fileToUploadLogo = null;
+    this.businessInfoForm.get('logo')?.patchValue(null);
+    this.businessInfoForm.patchValue({
+      photo_url: '',
+      photo_data_url: '',
+      photo_file: null,
+    });
+  }
+  deleteCover() {
+    this.coverImageUrl = '';
+    this.fileToUploadCover = null;
+    // this.businessCoverPhoto?.patchValue(null);
+    this.businessCoverPhoto?.patchValue({ photo_url: '' });
   }
 
   // photos
 
   fileToUploadPhoto: (File | null | undefined)[] = [];
   arrayPhotosImageUrl: (string | undefined)[] = [];
-
-  
 
   async handleFileInput(event: Event, index: number) {
     try {
@@ -390,12 +403,11 @@ onKeyUpPunchLine(punchline:any){
     // this.fileToUploadPhoto[index] = null;
     // this.photos.at(index)?.get('photo_url')?.patchValue(null);
 
-      this.businessPhotosList.at(index).patchValue({
-        photo_url: '',
-        photo_data_url: '',
-        photo_file: null,
-      });
-    
+    this.businessPhotosList.at(index).patchValue({
+      photo_url: '',
+      photo_data_url: '',
+      photo_file: null,
+    });
   }
 
   // Licence or awarsds file
@@ -416,8 +428,6 @@ onKeyUpPunchLine(punchline:any){
       this.recognitions.at(index).get('photo_file')?.patchValue(file);
       this.recognitions.at(index).get('photo_data_url')?.patchValue(url);
       this.recognitions.at(index).get('photo_url')?.patchValue(fileKey);
-
-
     } catch (ex) {
       console.log(ex);
     }
@@ -429,19 +439,20 @@ onKeyUpPunchLine(punchline:any){
     this.recognitions.at(index)?.get('photo_url')?.patchValue(null);
   }
 
-  deleteAwardOrLicence(index:any){
+  deleteAwardOrLicence(index: any) {
     const remove = this.businessInfoForm.get('licenceitems') as FormArray;
-    if(remove.controls.length >1){
-      remove.removeAt(index)
-    }    
+    remove.removeAt(index);
+    this.fileToUploadLicence?.splice(index, 1);
+    this.arrayLicenceImageUrl?.splice(index, 1);
+  }
+  get testimonialItem() {
+    return this.businessInfoForm.get('testimonialitems') as FormArray;
   }
 
-  deleteTestmonials(index:any){
-    const remove = this.businessInfoForm.get('testimonialitems') as FormArray;
-    if(remove.controls.length >1){
-      remove.removeAt(index)
-    }    
-    // 
+  deleteTestmonials(index: any) {
+    this.testimonialItem.removeAt(index);
+    this.fileToUploadTestimonial?.splice(index, 1);
+    this.arrayTestmonialImageUrl?.splice(index, 1);
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
@@ -460,19 +471,15 @@ onKeyUpPunchLine(punchline:any){
       this.testimonials.at(index).get('photo_file')?.patchValue(file);
       this.testimonials.at(index).get('photo_data_url')?.patchValue(url);
       this.testimonials.at(index).get('photo_url')?.patchValue(fileKey);
-
-  
     } catch (ex) {
       console.log(ex);
     }
-    console.log(this.testimonials,"datas this.testimonials");
   }
 
   deleteTestimonial(index: number) {
     this.arrayTestmonialImageUrl[index] = '';
     this.fileToUploadTestimonial[index] = null;
     this.testimonials.at(index)?.get('photo_url')?.patchValue(null);
-
   }
 
   getBase64(event: any) {
@@ -480,7 +487,7 @@ onKeyUpPunchLine(punchline:any){
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
-      //me.modelvalue = reader.result;
+      //me.modelvalue = reader.result;Ad
       console.log(reader.result);
     };
     reader.onerror = function (error) {
@@ -488,8 +495,7 @@ onKeyUpPunchLine(punchline:any){
     };
   }
 
-  onSubmitBusiness( route = false) {
-
+  onSubmitBusiness(route = false) {
     this.isSaving = true;
     this.fileNames = [];
     /*
@@ -501,7 +507,7 @@ onKeyUpPunchLine(punchline:any){
       dashboardInfos: { customUsername: domain_name },
     } = userData;
     this.fileNames = [];
-    
+
     const {
       companyname,
       punchline,
@@ -512,26 +518,24 @@ onKeyUpPunchLine(punchline:any){
       logo,
       phone_number,
       contact_type,
-      cover
+      cover,
     } = this.businessInfoForm.value;
-   const businessPayload = {
-
+    const businessPayload = {
       company_name: companyname,
       punchline: punchline,
       logo: logo,
-      social_links: socialitems,
+      social_links: this.isSocialLinkFilled(),
       recognitions: licenceitems,
-      phone_number:phone_number.toString(),
-       email:email,
-       contact_type: contact_type,
-       business_photos:[cover],
-       testimonials: this.isTestimonialFilled()
+      phone_number: phone_number.toString(),
+      email: email,
+      contact_type: contact_type,
+      business_photos: [cover],
+      testimonials: this.isTestimonialFilled(),
     };
-    this.store.dispatch(addBusiness({ businessData: businessPayload}));
+    this.store.dispatch(addBusiness({ businessData: businessPayload }));
     this.router.navigate(['../']);
     return;
-    
-  
+
     // if (this.fileToUploadLogo) {
     //   const logoKey = `${domain_name}/logo/${Date.now()}_${this.fileToUploadLogo?.name}`;
     //   this.fileNames.push({ type: 'logo', name: logoKey });
@@ -644,10 +648,19 @@ onKeyUpPunchLine(punchline:any){
     // });
   }
 
-  isTestimonialFilled(){   
+  isSocialLinkFilled(){
+    const socialLinks = this.socialItems && this.socialItems.value;
+    return socialLinks.filter((data:any) => {    
+      console.log("URLL", typeof(data.url));
+      
+      return data.url
+    })
+  }
+
+  isTestimonialFilled() {
     const testimonialsList = this.testimonials && this.testimonials.value;
-    return testimonialsList.filter((data:any)=>{
-       return data.name && data.photo_url && data.testimonial && data.title
+    return testimonialsList.filter((data: any) => {
+      return data.name && data.photo_url && data.testimonial && data.title;
     });
   }
 
@@ -688,6 +701,10 @@ onKeyUpPunchLine(punchline:any){
   }
   get businessCoverPhoto() {
     return this.businessInfoForm.get('cover') as FormControl;
+  }
+
+  get social() {
+    return this.businessInfoForm.get('socialitems');
   }
 
   ngOnDestroy() {

@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../booking.service';
-import { getBooking, getBookingList } from '../../store/booking.actions';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
+import { getBooking, getBookingList, initBooking } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
 import { getBookingListStatus, getBookings } from '../../store/booking.selectors';
 
@@ -49,6 +49,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   ];
 
   threeDotsActions = ['Reshedule'];
+  serviceList: any;
 
   constructor(
     private router: Router,
@@ -85,8 +86,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         filter(val => !!val)
       )
       .subscribe(data => {
-        
-        if (data) { 
+        if (data) {
           this.formatData(data);
           this.bookingData = this.formatData(data);
           this.bookingsCount = data.bookingsCount;
@@ -96,7 +96,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderSession = this.bookingData[i].order_session;
           }
-          
         } else {
           console.log(data?.error);
         }
@@ -104,7 +103,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
     this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
       this.resetPage();
-      const productId = data?.service?.product_id;
+      // const productId = data?.service?.product_id;
+      const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
       if (productId || status || payment) {
@@ -128,13 +128,19 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(`/booking/edit-booking/${orderId}`);
     }
   }
-
   getDropdownData() {
     this.bookingService
       .getServiceDropdown()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.serviceData = data?.data;
+        this.serviceList = this.serviceData.map((data: any) => {
+          return {
+            title: data.title,
+            value: data?.product_id,
+          };
+        });
+
         this.classTimeRanges = data?.Classes;
       });
   }
@@ -169,116 +175,134 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     }
   }
 
+  onNavigateToList(id: any) {
+    this.router.navigateByUrl(`/booking/status-booking/${id}`);
+  }
+
   get isFilterEmpty() {
     return this.filterForm.valid;
   }
 
-  formatData(data: any){
+  formatData(data: any) {
+    const sortedBookingList = data['bookingList'].map((booking: any) => {
+      const timingArray: any[] = [];
+      let displaySession: any = null;
 
-    const sortedBookingList = data["bookingList"].map((booking: any) => {
-    const timingArray:any[] = [];
-    let displaySession: any = null;
-     
-     if(booking["order_session"].length > 1){
-     
-      const sortedOrderList =  booking["order_session"].slice().sort((a: any,b: any) => {
+      if (booking['order_session'].length > 1) {
+        const sortedOrderList = booking['order_session'].slice().sort((a: any, b: any) => {
+          return (
+            +new Date(
+              this.convertToDate(
+                a['session']['date'],
+                a['session']['class_time_range']['start_time']
+              )
+            ) -
+            +new Date(
+              this.convertToDate(
+                a['session']['date'],
+                a['session']['class_time_range']['start_time']
+              )
+            )
+          );
+        });
 
-        return +new Date(this.convertToDate(a["session"]["date"],a["session"]["class_time_range"]["start_time"])) - +new Date(this.convertToDate(a["session"]["date"],a["session"]["class_time_range"]["start_time"]));
-      }
-      )
+        sortedOrderList.map((order: any, index: number, data: any) => {
+          const sessionData = this.createDataStructure(order, index, data.length);
+          timingArray.push(sessionData);
+        });
 
-      sortedOrderList.map((order: any, index: number,data : any) => {
+        const upcomingSessions = timingArray.filter(session => {
+          return session.difference < 0;
+        });
 
-
-        const sessionData = this.createDataStructure(order,index, data.length)
-        timingArray.push(sessionData)
-      })
-
-      const upcomingSessions = timingArray.filter(session => {
-        return session.difference < 0;
-      });
-
-      if(upcomingSessions.length){
-        displaySession = upcomingSessions.reduce(function(prev, current) {
-          if (+current.difference > +prev.difference) {
+        if (upcomingSessions.length) {
+          displaySession = upcomingSessions.reduce(function (prev, current) {
+            if (+current.difference > +prev.difference) {
               return current;
-          } else {
+            } else {
               return prev;
-          }
-      });
-     
-      }
-      else{
-         displaySession = timingArray.reduce(function(prev, current) {
-          if (+current.difference > +prev.difference) {
+            }
+          });
+        } else {
+          displaySession = timingArray.reduce(function (prev, current) {
+            if (+current.difference > +prev.difference) {
               return current;
-          } else {
+            } else {
               return prev;
-          }
-      });
+            }
+          });
+        }
+        return {
+          ...booking,
+          session_to_display: displaySession,
+        };
+      } else {
+        const order = booking['order_session'][0];
+        const sessionData = this.createDataStructure(order, 0);
 
+        return {
+          ...booking,
+          session_to_display: sessionData,
+        };
       }
-      return {
-        ...booking,
-        session_to_display : displaySession
-      }
-    }
-    else{
+    });
 
-      const order = booking["order_session"][0]
-      const sessionData = this.createDataStructure(order,0)
-
-      return {
-        ...booking,
-      session_to_display : sessionData
-      }
-    }
-    
-  });
-
-  return sortedBookingList
-    
+    return sortedBookingList;
   }
 
-  convertToDate(dateString: string, timeString: string = '0000'){
-    
+  convertToDate(dateString: string, timeString: string = '0000') {
     const dateArray = dateString.split('-');
     const date = new Date(+dateArray[0], +dateArray[1] - 1, +dateArray[2]);
     const time = timeString;
     const minutes = parseInt(timeString.slice(2));
-    const hours = parseInt(timeString.slice(0,2));
-    const totalTime = new Date(date.getTime() + (minutes * 60000) + (hours *60*60000) );
+    const hours = parseInt(timeString.slice(0, 2));
+    const totalTime = new Date(date.getTime() + minutes * 60000 + hours * 60 * 60000);
     return totalTime;
   }
 
-  formatDate(date: Date){
-    const monthNames =["Jan","Feb","Mar","Apr",
-                      "May","Jun","Jul","Aug",
-                      "Sep", "Oct","Nov","Dec"];
-    
+  formatDate(date: Date) {
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
     const day = date.getDate();
-    
+
     const monthIndex = date.getMonth();
     const monthName = monthNames[monthIndex];
-    
+
     const year = date.getFullYear();
-    const yearString =  "`" + year.toString().slice(2);
-    return `${day} ${monthName} ${yearString}`;  
+    const yearString = '`' + year.toString().slice(2);
+    return `${day} ${monthName} ${yearString}`;
   }
 
-  createDataStructure(order: any, index: number, noOfSessions = 1){
+  createDataStructure(order: any, index: number, noOfSessions = 1) {
     const date = order['session']['date'];
-      const exactDate = this.convertToDate(order["session"]["date"],order["session"]["class_time_range"]["start_time"]);
-      const difference  = +new Date() - +exactDate;
-      const status = difference < 0 ? "upcoming": "completed";
-      const sessionNo = index + 1;
-      const totalSessions = noOfSessions;
-      return {
-        displayDate : this.formatDate(exactDate),
-        difference,status, 
-        sessionNo, 
-        totalSessions
-      }
+    const exactDate = this.convertToDate(
+      order['session']['date'],
+      order['session']['class_time_range']['start_time']
+    );
+    const difference = +new Date() - +exactDate;
+    const status = difference < 0 ? 'upcoming' : 'completed';
+    const sessionNo = index + 1;
+    const totalSessions = noOfSessions;
+    return {
+      displayDate: this.formatDate(exactDate),
+      difference,
+      status,
+      sessionNo,
+      totalSessions,
+    };
   }
 
   resetPage() {
@@ -306,6 +330,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(initBooking());
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(true);
   }

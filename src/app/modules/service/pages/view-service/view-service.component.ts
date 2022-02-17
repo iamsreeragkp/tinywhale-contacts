@@ -30,18 +30,18 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   product$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   threeDotsActions: string[] = [];
   openProductDeleteModal = false;
-  copyView :any = null;
-  copyStatus:string ="Copy";
+  copyView: any = null;
+  copyStatus: string = 'Copy';
   baseURL = environment.tinyWhaleBaseUrl;
-  copyURL :string ='';
-  customUsername!:string;
+  copyURL: string = '';
+  customUsername!: string;
 
   constructor(
     private store: Store<IAppState>,
     private route: ActivatedRoute,
     private titleCasePipe: TitleCasePipe,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     this.product$ = store.pipe(select(getServiceStatus));
     // store.dispatch(getDashboard());
@@ -51,7 +51,7 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
-   this.customUsername = userData.dashboardInfos.customUsername;
+    this.customUsername = userData.dashboardInfos.customUsername;
   }
 
   getProduct() {
@@ -143,19 +143,18 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  copyViewBox(){
-
+  copyViewBox() {
     this.copyView = !this.copyView;
-     this.copyStatus ="Copy";
-    this.copyURL =  `${this.baseURL+'/'+this.customUsername+'/service/'+this.productObj?.product_id}`
-}
+    this.copyStatus = 'Copy';
+    this.copyURL = `${this.baseURL}/${this.customUsername}/service/${this.productObj?.product_id}/booknow`;
+  }
 
-copyInputMessage(inputElement:any){
-  inputElement.select();
-  document.execCommand('copy');
-  inputElement.setSelectionRange(0, 0);
-  this.copyStatus="Copied"
-}
+  copyInputMessage(inputElement: any) {
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    this.copyStatus = 'Copied';
+  }
 
   ngOnDestroy() {
     this.store.dispatch(initService());
