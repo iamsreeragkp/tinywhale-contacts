@@ -247,6 +247,11 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     actionsArr.push('Use as Template', 'Delete');
     return actionsArr;
   }
+  filterClear(event: any) {
+    if (event === true) {
+      this.filterForm.reset();
+    }
+  }
 
   get isFilterEmpty() {
     return this.filterForm.valid;

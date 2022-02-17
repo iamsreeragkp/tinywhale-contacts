@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-no-result-booking-component',
@@ -6,14 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./no-result-booking-component.component.scss'],
 })
 export class NoResultBookingComponentComponent implements OnInit {
-  @Input() item: any;
+  @Output() newItemEvent = new EventEmitter<string>();
   constructor() {}
 
   ngOnInit(): void {}
 
-  onNavigateToBookings() {
-    if (!this.item?.length) {
-      window.location.reload();
-    }
+  onNavigateToBookings(value: any) {
+    this.newItemEvent.emit(value);
   }
 }

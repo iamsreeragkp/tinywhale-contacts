@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../booking.service';
@@ -26,6 +26,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   filterForm!: FormGroup;
   page: number;
   limit: number;
+  defaultFilter :any= null;
+  filterStatus:any;
 
   status = [
     {
@@ -56,7 +58,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     private store: Store<IBookingState>,
     private bookingService: BookingService,
     private fb: FormBuilder,
-    @Inject(APP_CONFIG) private appConfig: AppConfigType
+    @Inject(APP_CONFIG) private appConfig: AppConfigType,
+    private _route: ActivatedRoute
   ) {
     this.bookingData$ = store.pipe(
       select(getBookingListStatus),
@@ -75,6 +78,29 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
+    this._route.queryParamMap.subscribe( param => {
+      this.defaultFilter = param.get('filter');
+    if(this.defaultFilter){
+
+  
+     const filter =   [{
+          title: 'Upcoming',
+          value: 'UPCOMING',
+        }]
+        console.log(filter,"filter");
+      
+      this.filterForm.get('status')?.patchValue('UPCOMING')
+
+    }
+     });
+     this.clearParam();
+  }
+
+
+  clearParam() {
+    if (this._route.snapshot.queryParams?.['filter']) {
+      this.router.navigate(['.'], { relativeTo: this._route });
+    }
   }
 
   orderSession: any;
@@ -107,17 +133,17 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
-        this.store.dispatch(
-          getBookingList({
-            filters: {
-              product_id: productId ? productId : '',
-              payment_status: payment ? payment : '',
-              event_status: status ? status : '',
-              page: this.page,
-              limit: this.limit
-            }
-          })
-        );
+      this.store.dispatch(
+        getBookingList({
+          filters: {
+            product_id: productId ? productId : '',
+            payment_status: payment ? payment : '',
+            event_status: status ? status : '',
+            page: this.page,
+            limit: this.limit,
+          },
+        })
+      );
     });
   }
 
@@ -174,7 +200,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   onNavigateToList(id: any) {
-    this.router.navigateByUrl(`/booking/status-booking/${id}`);
+    this.router.navigate([`../booking/status-booking/${id}`], { queryParams: { fromList: true } });
   }
 
   get isFilterEmpty() {
@@ -303,12 +329,16 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
   }
 
-  displaySessions(number: number){
-    if(number === 1){
-      return `(1 session)`
+  filterEvent(event: any) {
+    if (event === true) {
+      this.filterForm.reset();
     }
-    else{
-      return `(${number ?? '-'} sessions)`
+  }
+  displaySessions(number: number) {
+    if (number === 1) {
+      return `(1 session)`;
+    } else {
+      return `(${number ?? '-'} sessions)`;
     }
   }
   resetPage() {
@@ -322,15 +352,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   fetchBookingList() {
-    const {product_id, status, payment} = this.filterForm.value
+    const { product_id, status, payment } = this.filterForm.value;
     const filterObj = {
       product_id: product_id ? product_id : '',
       payment_status: payment ? payment : '',
       event_status: status ? status : '',
-    }
+    };
     this.store.dispatch(
       getBookingList({
-        filters: {filterObj, page: this.page, limit: this.limit },
+        filters: { filterObj, page: this.page, limit: this.limit },
       })
     );
   }

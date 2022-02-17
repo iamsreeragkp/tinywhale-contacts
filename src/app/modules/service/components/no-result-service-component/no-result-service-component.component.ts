@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,13 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./no-result-service-component.component.scss'],
 })
 export class NoResultServiceComponentComponent implements OnInit {
-  @Input() item: any;
+  @Output() newItemEvent = new EventEmitter<string>();
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
-  onNavigateService() {
-    if (!this.item?.length) {
-      window.location.reload();
-    }
+  onNavigateService(value: any) {
+    this.newItemEvent.emit(value);
   }
 }
