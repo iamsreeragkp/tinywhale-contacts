@@ -57,7 +57,7 @@
         <div class="w-form">
           <div class="flex items-center">
             <span>{{ getDayName(stdata?.order_session?.[0]?.session?.date) || '---' }}</span>
-            <span class="ml-8">{{ classTimeRanged }}</span>
+            <span class="ml-8">{{ classTimeRanged || '---' }}</span>
           </div>
         </div>
       </div>
@@ -78,6 +78,7 @@
                   : stdata?.order_line_item?.[0]?.currency === 'AUD'
                   ? 'A$'
                   : ''
+
 
 
 

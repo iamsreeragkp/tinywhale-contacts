@@ -134,13 +134,22 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.store.select(getBookableSlotsStatus).subscribe((data: any) => {
+          console.log(data, 'kkk');
+
           this.disableDated = data?.response
             ?.filter((item: any) => !item?.is_date_selectable)
             .map((slot: any) => {
               const [year, month, day] = slot?.date?.split('-');
               return { year: +year, month: +month, day: +day };
             });
-          // console.log(this.classTimeRanged, 'classTimeranged');
+          console.log(this.classTimeRanged, 'classTimeranged');
+          const dt = this.classTimeRanged?.map((dt: any) => {
+            return dt?.id;
+          });
+          console.log('dt', dt);
+          const filledSlots = data?.response?.filter(
+            (item: any) => item?.filled_slots?.class_time_range_id
+          );
         });
       });
   }
@@ -249,8 +258,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .select(getBookingInfo)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
-        this.productId = data?.data?.product?.product_id;
-
+        this.productId = data?.data?.order?.order_id;
         if (data?.data?.user?.email) {
           this.router.navigate([`../booking/status-booking/${this.productId}`]);
         }

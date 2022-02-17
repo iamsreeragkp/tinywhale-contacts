@@ -259,7 +259,7 @@
           <app-no-result-booking-component
             class="flex flex-1"
             *ngIf="!isFilterEmpty && !bookingData?.length"
-            [item]="bookingData"
+            (newItemEvent)="filterEvent($event)"
           ></app-no-result-booking-component>
           <!-- </ng-template> -->
         </td>

@@ -292,6 +292,12 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
   }
 
+  filterEvent(event: any) {
+    if (event === true) {
+      this.filterForm.reset();
+    }
+  }
+
   ngOnDestroy() {
     this.store.dispatch(initBooking());
     this.ngUnsubscribe.complete();
