@@ -10,9 +10,10 @@
         <!-- <app-dropdown  placeholder="Service" [displayKey]="'title'" [emitId]="true" ></app-dropdown> -->
 
         <app-dropdown
-          [options]="serviceData"
+          [options]="serviceList"
           placeholder="Service"
           [displayKey]="'title'"
+          [idKey]="'value'"
           [emitId]="true"
           formControlName="service"
         ></app-dropdown>
@@ -146,54 +147,54 @@
           </td>
         </tr>
       </ng-container>
-      <tr
-        class="table-container-borderRow"
-        *ngFor="let bookData of bookingData; let i = index"
-        (click)="showSubItem(i)"
-      >
-        <td class="align-top px-2 py-3">
-          <div class="flex flex-col">
-            <span class="italic whitespace-nowrap">{{
+      <ng-container *ngFor="let bookData of bookingData; let i = index" (click)="showSubItem(i)">
+        <tr
+          class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50"
+          [routerLink]="['../status-booking', bookData.order_id]"
+        >
+          <td class="align-top px-2 py-3">
+            <div class="flex flex-col">
+              <span class="italic whitespace-nowrap">{{
               bookData?.order_session?.[0]?.session?.date || '---'
-            }}</span>
-            <span class="italic whitespace-nowrap">{{
-              '(' +
-                bookData?.session_to_display?.sessionNo +
-                '/' +
-                bookData?.session_to_display?.totalSessions +
-                ')'
-            }}</span>
-          </div>
-        </td>
-        <td class="align-top px-2 py-3">
-          <div
-            *ngIf="bookData.session_to_display?.status.toUpperCase() === 'COMPLETED'"
-            class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
-          >
-            <span>COMPLETED</span>
-          </div>
-          <div
-            *ngIf="bookData.session_to_display?.status.toUpperCase() === 'UPCOMING'"
-            class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm"
-          >
-            <span>UPCOMING</span>
-          </div>
-        </td>
-        <td class="align-top px-2 py-3">
-          <div class="flex items-center">
-            <span class="">{{ bookData?.account?.first_name || '---' }}</span>
-          </div>
-        </td>
-        <td class="align-top px-2 py-3">
-          <div class="flex items-center">
-            <span class="">{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span>
-          </div>
-        </td>
-        <td class="align-top px-2 py-3">
-          <div class="flex flex-col">
+              }}</span>
+              <span class="italic whitespace-nowrap">{{
+                '(' +
+                  bookData?.session_to_display?.sessionNo +
+                  '/' +
+                  bookData?.session_to_display?.totalSessions +
+                  ')'
+              }}</span>
+            </div>
+          </td>
+          <td class="align-top px-2 py-3">
+            <div
+              *ngIf="bookData.session_to_display?.status.toUpperCase() === 'COMPLETED'"
+              class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
+            >
+              <span>COMPLETED</span>
+            </div>
+            <div
+              *ngIf="bookData.session_to_display?.status.toUpperCase() === 'UPCOMING'"
+              class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm"
+            >
+              <span>UPCOMING</span>
+            </div>
+          </td>
+          <td class="align-top px-2 py-3">
             <div class="flex items-center">
-              <span class="mr-2"
-                >{{
+              <span class="">{{ bookData?.account?.first_name || '---' }}</span>
+            </div>
+          </td>
+          <td class="align-top px-2 py-3">
+            <div class="flex items-center">
+              <span class="">{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span>
+            </div>
+          </td>
+          <td class="align-top px-2 py-3">
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <span class="mr-2"
+                  >{{
                   bookData?.order_line_item?.[0]?.currency === 'INR'
                     ? '₹'
                     : bookData?.order_line_item?.[0]?.currency === 'USD'
@@ -205,38 +206,38 @@
                     : bookData?.order_line_item?.[0]?.currency === 'AUD'
                     ? 'A$'
                     : ''
-                }}
-                {{ bookData?.order_line_item?.[0]?.price || '---' }}</span
-              >
-              <img
-                src="../../../../../assets/images/icons/check.svg"
-                alt=""
-                *ngIf="bookData?.invoice?.status === 'SETTLED'"
-              />
-              <img
-                src="../../../../../assets/images/icons/pending.svg"
-                alt=""
-                *ngIf="
-                  bookData?.invoice?.status === 'PENDING_PAYMENT' ||
-                  bookData?.invoice?.status === 'OPEN'
-                "
-              />
+                  }}
+                  {{ bookData?.order_line_item?.[0]?.price || '---' }}</span
+                >
+                <img
+                  src="../../../../../assets/images/icons/check.svg"
+                  alt=""
+                  *ngIf="bookData?.invoice?.status === 'SETTLED'"
+                />
+                <img
+                  src="../../../../../assets/images/icons/pending.svg"
+                  alt=""
+                  *ngIf="
+                    bookData?.invoice?.status === 'PENDING_PAYMENT' ||
+                    bookData?.invoice?.status === 'OPEN'
+                  "
+                />
+              </div>
+              <span class="whitespace-nowrap">(2 sessions)</span>
             </div>
-            <span class="whitespace-nowrap">(2 sessions)</span>
-          </div>
-        </td>
-        <td class="align-top px-2 py-3">
-          <div class="relative flex justify-end">
-            <ng-container *ngIf="bookData?.invoice?.status !== 'SETTLED'">
-              <app-three-dots
-               [isDisabled]="!(bookData.session_to_display?.status.toUpperCase() === 'UPCOMING')"
-                [actions]="threeDotsActions"
-                (actionTriggered)="handleAction($event, i, bookData?.order_id)"
-              ></app-three-dots>
-            </ng-container>
-          </div>
-        </td>
-      </tr>
+          </td>
+          <td class="align-top px-2 py-3">
+            <div class="relative flex justify-end" (click)="$event.stopPropagation()">
+              <ng-container *ngIf="bookData?.invoice?.status !== 'SETTLED'">
+                <app-three-dots
+                  [actions]="threeDotsActions"
+                  (actionTriggered)="handleAction($event, i, bookData?.order_id)"
+                ></app-three-dots>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
       <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
         <tr>
           <td colspan="7">

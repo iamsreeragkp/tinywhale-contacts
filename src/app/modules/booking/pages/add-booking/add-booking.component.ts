@@ -179,7 +179,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     };
     this.bookingForm.patchValue({
       email: val?.account?.User?.email,
-      phonenumber: val?.phone_number,
+      phonenumber: val?.account?.phone_number,
       customername: val?.account?.first_name,
       service: val?.order_line_item[0]?.product?.product_id,
       date: new Date(val?.order_session[0]?.session?.date),
@@ -214,40 +214,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   }
 
   listNameArray: any = [];
-  onBooking() {
-    const { email, phonenumber, customername, service, date, slot, payment } =
-      this.bookingForm.value;
-
-    const customerName = customername.split(' ').slice(0, -1).join(' ');
-    let lastName = customername.split(' ');
-
-    if (lastName[1]) {
-      lastName = lastName[1];
-    } else {
-      lastName = lastName[2];
-    }
-
-    const bookingPayload = {
-      email: email,
-      phone_number: phonenumber,
-      first_name: customerName ? customerName : customername,
-      last_name: lastName ? lastName : '',
-      date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
-      product_id: service,
-      booking_type: BookingType.BUSINESS_OWNER,
-      platform: payment,
-    };
-
-    if (bookingPayload.phone_number === null) {
-      delete bookingPayload['phone_number'];
-    }
-    if (bookingPayload.platform === null || bookingPayload.platform === '') {
-      delete bookingPayload['platform'];
-    }
-    this.store.dispatch(addBooking({ bookingData: bookingPayload }));
-    window.location.reload();
-    this.router.navigate(['../booking/view-booking']);
-  }
+  productId: any;
 
   onBookingAndExit() {
     const { email, phonenumber, customername, service, date, slot, payment } =
@@ -282,8 +249,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .select(getBookingInfo)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
+        this.productId = data?.data?.product?.product_id;
+
         if (data?.data?.user?.email) {
-          this.router.navigate(['../booking/status-booking']);
+          this.router.navigate([`../booking/status-booking/${this.productId}`]);
         }
       });
 

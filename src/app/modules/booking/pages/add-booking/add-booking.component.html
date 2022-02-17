@@ -14,18 +14,11 @@
       <div class="flex justify-between items-center">
         <button class="noborder-button" (click)="onCancelBooking()">Cancel</button>
         <button
-          class="secondary-button w-52 mr-3 ml-6"
-          (click)="onBooking()"
-          [disabled]="!bookingForm?.valid"
-        >
-          <span>Save & Add Another</span>
-        </button>
-        <button
           class="primary-button w-52 ml-3"
           (click)="onBookingAndExit()"
           [disabled]="!bookingForm?.valid"
         >
-          Save & Exit
+          Register
         </button>
       </div>
     </ng-container>
