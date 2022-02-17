@@ -255,6 +255,15 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     return LocationType;
   }
 
+  displayPrice(price: any){    
+    if(price == 0){ 
+      return 'Free'
+    }
+    else {
+      return `$ ${price ?? '-'} / session`
+    }
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
