@@ -45,6 +45,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   ];
 
   threeDotsActions = ['Reshedule'];
+  serviceList: any;
 
   constructor(
     private router: Router,
@@ -92,7 +93,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       });
 
     this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
-      const productId = data?.service?.product_id;
+      const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
       if (productId || status || payment) {
@@ -114,13 +115,19 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(`/booking/edit-booking/${orderId}`);
     }
   }
-
   getDropdownData() {
     this.bookingService
       .getServiceDropdown()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.serviceData = data?.data;
+        this.serviceList = this.serviceData.map((data: any) => {
+          return {
+            title: data.title,
+            value: data?.product_id,
+          };
+        });
+
         this.classTimeRanges = data?.Classes;
       });
   }
@@ -153,6 +160,10 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     } else {
       this.visibleIndex = ind;
     }
+  }
+
+  onNavigateToList(id: any) {
+    this.router.navigateByUrl(`/booking/status-booking/${id}`);
   }
 
   get isFilterEmpty() {

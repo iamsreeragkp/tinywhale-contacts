@@ -323,7 +323,10 @@
           </td>
           <td class="align-top px-2 py-3">
             <div class="flex items-center">
-              <span>{{ product?.class?.class_time_ranges | groupWeekDays }}</span>
+              <span *ngIf="product?.class?.class_time_ranges?.length">{{
+                product?.class?.class_time_ranges | groupWeekDays
+              }}</span>
+              <span *ngIf="!product?.class?.class_time_ranges?.length">Flexible</span>
             </div>
           </td>
           <td class="align-top px-2 py-3">

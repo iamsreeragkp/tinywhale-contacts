@@ -186,16 +186,15 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   onPaste(event: ClipboardEvent) {
     this.copyValue =true;
     let clipboardData = event.clipboardData || (<any>window).clipboardData;
-    let pastedText = clipboardData.getData('text').split('').splice(0,6);
-    setTimeout(()=>{
-      this.fields.forEach((val,index)=>{
-        this.otpForm.get(val)?.setValue(pastedText[index])
-      })
-    },0)
+    let pastedText = clipboardData.getData('text').split('').splice(0, 6);
+    setTimeout(() => {
+      this.fields.forEach((val, index) => {
+        this.otpForm.get(val)?.setValue(pastedText[index]);
+      });
+    }, 0);
   }
 
   onInput(content: string) {
-
   }
 
   backToReset() {
