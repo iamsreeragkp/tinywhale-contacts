@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../booking.service';
+import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
 import { getBooking, getBookingList, initBooking } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
 import { getBookingListStatus, getBookings } from '../../store/booking.selectors';
@@ -18,10 +19,13 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   bookingData$: Observable<any>;
   ngUnsubscribe = new Subject<any>();
   bookingData: any;
+  bookingsCount?: number;
   orderLineItem: any;
   serviceData: any;
   classTimeRanges: any;
   filterForm!: FormGroup;
+  page: number;
+  limit: number;
 
   status = [
     {
@@ -51,7 +55,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<IBookingState>,
     private bookingService: BookingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(APP_CONFIG) private appConfig: AppConfigType
   ) {
     this.bookingData$ = store.pipe(
       select(getBookingListStatus),
@@ -63,6 +68,9 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     this.bookingData$ = this.store.pipe(select(getBookingListStatus));
     this.getDropdownData();
     this.filterForm = this.createFilterForm();
+    this.page = appConfig.defaultStartPage;
+    this.limit = appConfig.defaultPageLimit;
+    store.dispatch(getBookingList({ filters: { page: this.page, limit: this.limit } }));
   }
 
   ngOnInit(): void {
@@ -81,6 +89,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         if (data) {
           this.formatData(data);
           this.bookingData = this.formatData(data);
+          this.bookingsCount = data.bookingsCount;
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }
@@ -93,6 +102,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       });
 
     this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      this.resetPage();
+      // const productId = data?.service?.product_id;
       const productId = data?.service;
       const status = data?.status;
       const payment = data?.payment;
@@ -103,7 +114,9 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
               product_id: productId ? productId : '',
               payment_status: payment ? payment : '',
               event_status: status ? status : '',
-            },
+              page: this.page,
+              limit: this.limit
+            }
           })
         );
       }
@@ -290,6 +303,30 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       sessionNo,
       totalSessions,
     };
+  }
+
+  resetPage() {
+    this.page = this.appConfig.defaultStartPage;
+    this.limit = this.appConfig.defaultPageLimit;
+  }
+
+  loadMore() {
+    this.limit += this.appConfig.defaultPageLimit;
+    this.fetchBookingList();
+  }
+
+  fetchBookingList() {
+    const {product_id, status, payment} = this.filterForm.value
+    const filterObj = {
+      product_id: product_id ? product_id : '',
+      payment_status: payment ? payment : '',
+      event_status: status ? status : '',
+    }
+    this.store.dispatch(
+      getBookingList({
+        filters: {filterObj, page: this.page, limit: this.limit },
+      })
+    );
   }
 
   ngOnDestroy() {
