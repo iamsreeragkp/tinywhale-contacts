@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/modules/auth/auth.service';
 import {
   LocationType,
   Product,
+  ProductType,
   ServiceListFilter,
   VisibilityType,
 } from '../../shared/service.interface';
@@ -253,6 +254,10 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   get LocationType() {
     return LocationType;
+  }
+
+  get ProductType() {
+    return ProductType;
   }
 
   ngOnDestroy() {

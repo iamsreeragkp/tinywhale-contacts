@@ -49,7 +49,7 @@ export const getBookingList = createAction(
 
 export const getBookingListSuccess = createAction(
   '[BookingModule] GET BOOKING LIST SUCCESS',
-  props<{ bookingList?: any[]; status: boolean; error?: string }>()
+  props<{ bookingList?: any[]; bookingsCount: number; status: boolean; error?: string }>()
 );
 
 export const getBookingListError = createAction(

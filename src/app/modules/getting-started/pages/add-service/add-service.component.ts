@@ -20,6 +20,7 @@ import {
   ProductLocationPayload,
   ProductPayload,
   ProductPhoto,
+  ProductType,
   TimeRange,
   WeekDay,
 } from '../../../service/shared/service.interface';
@@ -35,6 +36,13 @@ import {
   getServiceStatus,
 } from '../../../service/store/service.selectors';
 
+const enableDisableFormFields = [
+  'capacity',
+  'location',
+  'time_ranges',
+  'price_package',
+  'duration',
+];
 @Component({
   selector: 'app-add-service',
   templateUrl: './add-service.component.html',
@@ -439,10 +447,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity,
       duration,
     } = this.productForm.value;
-    if (product_type === 'SERVICE') {
-      this.productForm.get('location')?.clearValidators();
-      this.productForm.get('capacity')?.clearValidators();
-    }
     let { location_id, location_name, location_type, address, dropdown_field_data } =
       location ?? {};
     if (dropdown_field_data?.custom_value) {
@@ -451,13 +455,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     if (location_type !== LocationType.BUSINESS_LOCATION || dropdown_field_data?.custom_value) {
       location_id = undefined;
     }
-    const photos: ProductPhoto[] = photosWithEmpty.filter((photo: ProductPhoto) => photo.photo_url);
-    const price_package: PricePackage[] = pricePackagesWithEmpty.filter(
-      (pkg: PricePackage) => pkg.price || pkg.no_of_sessions
-    );
-    const time_ranges: TimeRange[] = timeRangesWithEmpty.filter(
-      (tR: TimeRange) => tR.end_time || tR.start_time
-    );
+    const photos: ProductPhoto[] =
+      photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
+    const price_package: PricePackage[] =
+      pricePackagesWithEmpty?.filter((pkg: PricePackage) => pkg.price || pkg.no_of_sessions) ?? [];
+    const time_ranges: TimeRange[] =
+      timeRangesWithEmpty?.filter((tR: TimeRange) => tR.end_time || tR.start_time) ?? [];
     const payload: ProductPayload = {
       product_id,
       product_type,
@@ -486,6 +489,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
         : true);
     this.store.dispatch(addService({ productData: payload }));
+  }
+
+  productTypeChange(product_type: ProductType) {
+    enableDisableFormFields.forEach(field => {
+      this.productForm.get(field)?.[product_type === ProductType.CLASS ? 'enable' : 'disable']();
+    });
   }
 
   get productPhotos() {
