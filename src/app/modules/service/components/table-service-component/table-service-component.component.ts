@@ -264,6 +264,29 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     }
   }
 
+  displayPackage(sessionPrice: any){
+    if(sessionPrice){
+      const sessionString = sessionPrice.no_of_sessions === 1? 'session' : 'sessions';
+
+    if(sessionPrice.price === 0){
+      return `Free / ${sessionPrice.no_of_sessions } ${sessionString}`
+    }
+    else{
+      return `$ ${ sessionPrice.price } / ${ sessionPrice.no_of_sessions } ${sessionString}`
+    }
+    }
+    else{
+      return "-"
+    }
+    
+  }
+
+  sessionPriceExists(sessionPrice: any){
+    const noOfSessions = sessionPrice?.no_of_sessions;
+    const priceExists = Number.isInteger(sessionPrice?.price);
+    return noOfSessions && priceExists;
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
