@@ -118,7 +118,7 @@ export class DropdownComponent {
       return;
     }
     if (!this.dropdown.nativeElement.contains(target)) {
-      this.open = false;
+      this.openCloseDropdown();
     }
     // const dropDownSelector = 'div.' + this.dropdown.nativeElement.className.split(' ').join('.');
     // if (!target.closest(dropDownSelector)) {

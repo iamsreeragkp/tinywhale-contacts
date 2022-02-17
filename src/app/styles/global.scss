@@ -45,6 +45,9 @@ body {
   &:disabled {
     @apply bg-veryLightGray;
   }
+  &.ng-invalid.ng-touched.show-error {
+    border-color: #ff725e;
+  }
 }
 
 .primary-button {

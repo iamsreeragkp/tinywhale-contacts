@@ -62,7 +62,7 @@
             </div>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Session Duration</span>
           </div>
@@ -70,7 +70,7 @@
             <span>{{ productObj?.class?.duration_in_minutes ?? '-' }} min</span>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Time</span>
           </div>
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Location</span>
           </div>
@@ -118,7 +118,7 @@
             <span *ngIf="!productObj?.class?.location_type">-</span>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Capacity</span>
           </div>
@@ -165,7 +165,7 @@
             <span class="font-medium text-right">Visibility</span>
           </div>
           <div class="flex-1 py-3 pl-4 flex">
-            <span>{{ productObj?.visibility ?? '-' | titlecase }} min</span>
+            <span>{{ productObj?.visibility ?? '-' | titlecase }}</span>
           </div>
         </div>
       </main>
