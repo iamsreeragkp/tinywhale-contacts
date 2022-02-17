@@ -205,7 +205,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           company_name: companyname,
           punchline: punchline,
           logo: logo,
-          social_links: socialitems,
+          social_links: this.isSocialLinkFilled(),
           recognitions: licenceitems,
           phone_number: phone_number.toString(),
           email: email,
@@ -524,7 +524,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       company_name: companyname,
       punchline: punchline,
       logo: logo,
-      social_links: socialitems,
+      social_links: this.isSocialLinkFilled(),
       recognitions: licenceitems,
       phone_number: phone_number.toString(),
       email: email,
@@ -646,6 +646,15 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     //       }
     //     });
     // });
+  }
+
+  isSocialLinkFilled(){
+    const socialLinks = this.socialItems && this.socialItems.value;
+    return socialLinks.filter((data:any) => {    
+      console.log("URLL", typeof(data.url));
+      
+      return data.url
+    })
   }
 
   isTestimonialFilled() {
