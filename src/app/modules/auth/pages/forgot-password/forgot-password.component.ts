@@ -105,7 +105,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   keyUpEvent(event: any, index: any) {
-    if(event?.code==='Backspace' || event?.code==='Delete'){
+    if (event?.code === 'Backspace' || event?.code === 'Delete') {
       let pos = index;
       if (event.keyCode === 8 && event.which === 8) {
         pos = index - 1;
@@ -134,16 +134,16 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   onPaste(event: ClipboardEvent) {
     let clipboardData = event.clipboardData || (<any>window).clipboardData;
-    let pastedText = clipboardData.getData('text').split('').splice(0,6);
-    setTimeout(()=>{
-      this.fields.forEach((val,index)=>{
-        this.otpForm.get(val)?.setValue(pastedText[index])
-      })
-    },0)
+    let pastedText = clipboardData.getData('text').split('').splice(0, 6);
+    setTimeout(() => {
+      this.fields.forEach((val, index) => {
+        this.otpForm.get(val)?.setValue(pastedText[index]);
+      });
+    }, 0);
   }
 
   onInput(content: string) {
-  //   console.log("New content: ", content);
+    //   console.log("New content: ", content);
   }
 
   backToReset() {
