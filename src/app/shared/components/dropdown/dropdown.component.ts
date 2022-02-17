@@ -161,6 +161,16 @@ export class DropdownComponent {
 
   // component functions
 
+  openCloseDropdown() {
+    if (this._isDisabled) {
+      return;
+    }
+    this.open = !this.open;
+    if (!this.open) {
+      this._onTouched();
+    }
+  }
+
   setPreviousValues(val: any) {
     if (val instanceof Array) {
       let valArr = val;

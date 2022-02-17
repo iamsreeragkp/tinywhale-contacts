@@ -41,6 +41,12 @@ export class SelectCalendarComponent {
       disableWeekdays: val,
     };
   }
+  @Input() set disableUntil(val: Date) {
+    this.myDatePickerOptions = {
+      ...this.myDatePickerOptions,
+      disableUntil: { day: val.getDate(), month: val.getMonth() + 1, year: val.getFullYear() },
+    };
+  }
   // options = {
   //   format: 'yyyy-MM-dd',
   //   placeholder: 'Session 1',
@@ -73,10 +79,11 @@ export class SelectCalendarComponent {
   constructor() {}
 
   setPreviousValues(val: any) {
-    console.log('value', val);
     if (val instanceof Date) {
       this.date = {
-        singleDate: { jsDate: val },
+        singleDate: {
+          jsDate: val,
+        },
       };
     } else {
       this.date = undefined;
@@ -111,11 +118,14 @@ export class SelectCalendarComponent {
     if (this._isDisabled) {
       return;
     }
-    this.date = val?.singleDate?.jsDate;
-    this._onChange(this.date);
+    this.date = val;
+    this._onChange(this.date?.singleDate?.jsDate);
   }
 
   calendarOpenChanged(val: number) {
     this.showOverlay = val === 1;
+    if (val === 4) {
+      this._onTouched();
+    }
   }
 }
