@@ -21,7 +21,7 @@
           <span class="font-medium text-right">Company Name</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex">
-          <span>{{ businessObj?.store?.company_name ?? '-' }}</span>
+          <span>{{ businessObj?.store?.company_name || '-' }}</span>
         </div>
       </div>
       <div class="flex mb-4">
@@ -75,7 +75,7 @@
           <span class="font-medium text-right">Punchline</span>
         </div>
         <div class="flex-1 py-3 pl-4 flex">
-          <span>{{ businessObj?.store?.punchline ?? '-' }}</span>
+          <span>{{ businessObj?.store?.punchline || '-' }}</span>
         </div>
       </div>
       <!-- <div class="flex mb-4">
@@ -97,7 +97,7 @@
           </ng-container>
         </div>
       </div>
-      <div class="flex mb-4">
+      <div class="flex mb-4" *ngIf="recognitionsAvailable()">
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Awards / Certifications / Licenses</span>
         </div>
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="flex mb-4">
+      <div class="flex mb-4" *ngIf="testimonialsAvailable()">
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Testimonial</span>
         </div>
