@@ -292,6 +292,15 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
   }
 
+  displaySessions(number: number){
+    if(number === 1){
+      return `(1 session)`
+    }
+    else{
+      return `(${number ?? '-'} sessions)`
+    }
+  }
+
   ngOnDestroy() {
     this.store.dispatch(initBooking());
     this.ngUnsubscribe.complete();
