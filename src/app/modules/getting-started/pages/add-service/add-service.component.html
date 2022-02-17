@@ -178,7 +178,13 @@
                 <p class="radio-container-name">Fixed</p>
                 <p class="radio-container-descri">Predefined time slots in the week</p>
               </div>
-              <input type="radio" id="fixed" value="CLASS" formControlName="product_type" />
+              <input
+                type="radio"
+                id="fixed"
+                value="CLASS"
+                formControlName="product_type"
+                (ngModelChange)="productTypeChange($event)"
+              />
               <span class="radiomark"></span>
             </label>
             <label class="radio-container py-3" for="flexible">
@@ -186,7 +192,13 @@
                 <p class="radio-container-name">Flexible</p>
                 <p class="radio-container-descri">As per client’s requirement</p>
               </div>
-              <input type="radio" id="flexible" value="SERVICE" formControlName="product_type" />
+              <input
+                type="radio"
+                id="flexible"
+                value="SERVICE"
+                formControlName="product_type"
+                (ngModelChange)="productTypeChange($event)"
+              />
               <span class="radiomark"></span>
             </label>
           </div>
@@ -432,6 +444,7 @@
           [duration]="productForm.get('duration')?.value"
           [price]="productForm.get('price')?.value"
           [packages]="previewablePricePackages"
+          [product_type]="productForm.get('productForm')?.value"
         >
         </app-preview-product>
       </div>

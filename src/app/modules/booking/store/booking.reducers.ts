@@ -22,6 +22,7 @@ export interface IBookingState {
   getBookingById?: any;
   getBookingList?: {
     bookings?: any[];
+    bookingscount?: number;
     status: boolean;
     error?: string;
   };
@@ -63,10 +64,11 @@ export const reducer = createReducer(
       error: error,
     })
   ),
-  on(getBookingListSuccess, (state, { bookingList, error, status }) => ({
+  on(getBookingListSuccess, (state, { bookingList, bookingsCount, error, status }) => ({
     ...state,
     getBookingList: {
       bookingList,
+      bookingsCount,
       error,
       status,
     },

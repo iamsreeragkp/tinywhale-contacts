@@ -52,11 +52,11 @@
   </button>
   <!-- open more -->
   <div
-    class="absolute top-full right-0 z-50 -mt-5 pop-over overflow-hidden"
+    class="absolute top-full right-0 z-50 -mt-5 pop-over overflow-hidden text-primaryFont"
     [ngClass]="{ 'max-h-0': !open, 'max-h-screen': open }"
   >
     <div
-      class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded"
+      class="bg-white w-fit min-w-full flex flex-col border-2 border-lightGrey border-solid shadow-lg rounded-lg"
     >
       <button class="px-4 filter-item text-left hover:bg-gray-100" *ngFor="let action of _actions">
         <div
@@ -71,9 +71,7 @@
         disabled
         *ngIf="!_actions.length"
       >
-        <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">
-          Delete
-        </div>
+        <div class="w-full border-solid py-2 whitespace-nowrap">Delete</div>
       </button>
     </div>
   </div>
