@@ -25,6 +25,7 @@ export class CardGetstartedComponent implements OnInit, OnDestroy {
   baseURL = environment.tinyWhaleBaseUrl;
   iframeURL: any;
   serviceLength!: number;
+  // viewService: boolean = true;
   @ViewChild('openWindow', { static: false }) openWindow: any;
   constructor(
     private store: Store<IRootState>,
