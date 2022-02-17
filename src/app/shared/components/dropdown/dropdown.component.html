@@ -1,8 +1,8 @@
 <div class="relative w-full custom-select text-primaryFont" #dropdown>
   <div
-    class="w-full flex items-center justify-between bg-white py-3 px-4 custom-select-box cursor-pointer"
-    [ngClass]="{ 'custom-select-box-open': open }"
-    (click)="open = !open"
+    class="w-full flex items-center justify-between bg-white px-4 custom-select-box cursor-pointer"
+    (click)="openCloseDropdown()"
+    [ngClass]="{ disabled: _isDisabled, 'custom-select-box-open': open }"
   >
     <div class="custom-select-box-valueContainer flex flex-wrap items-center">
       <ng-container *ngIf="_multiSelect && selectedOption && _closableChip">
@@ -24,7 +24,7 @@
           </div>
         </ng-container>
       </ng-container>
-      <span *ngIf="selectedOption && !_multiSelect" class="truncate">{{
+      <span *ngIf="selectedOption && !_multiSelect" class="truncate text-primaryFont">{{
         selectedOption[_displayKey]
       }}</span>
       <span *ngIf="selectedOption && _multiSelect && !_closableChip" class="truncate">{{
@@ -46,8 +46,8 @@
   <div
     class="absolute top-full left-0 min-w-full z-10 rounded custom-select-drop"
     [ngClass]="{
-      'max-h-0 overflow-hidden': !open,
-      'max-h-56 border border-gray-200 border-solid overflow-y-auto shadow-lg': open
+      'max-h-0 overflow-hidden': _isDisabled || !open,
+      'max-h-56 border border-gray-200 border-solid overflow-y-auto shadow-lg': !_isDisabled && open
     }"
   >
     <div class="bg-white w-fit min-w-full flex flex-col">
@@ -56,9 +56,7 @@
         <div
           class="w-full mb-4"
           *ngFor="let option of _options; let isLast = last"
-          [ngClass]="{
-            'border-b border-gray-300 border-solid': !isLast
-          }"
+          [ngClass]="{ 'border-b border-gray-300 border-solid': !isLast }"
         >
           <label class="check-container"
             >{{ option[_displayKey] }}
