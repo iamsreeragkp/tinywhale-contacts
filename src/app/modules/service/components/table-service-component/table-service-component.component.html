@@ -331,13 +331,12 @@
           </td>
           <td class="align-top px-2 py-3">
             <div class="flex flex-col">
-              <span class="whitespace-nowrap">$ {{ product?.price ?? '-' }} / session</span>
+              <span class="whitespace-nowrap">{{displayPrice(product?.price)}}</span>
               <ng-container *ngFor="let sessionPrice of product?.class?.class_packages">
                 <span
                   class="whitespace-nowrap"
-                  *ngIf="sessionPrice?.no_of_sessions && sessionPrice?.price"
-                >
-                  $ {{ sessionPrice.price }} / {{ sessionPrice.no_of_sessions }} sessions
+                  *ngIf="sessionPriceExists(sessionPrice)"
+                >{{displayPackage(sessionPrice)}}
                 </span>
               </ng-container>
               <!-- <span class=" whitespace-nowrap">$ xxx / 4 sessions</span> -->
