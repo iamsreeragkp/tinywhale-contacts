@@ -1,4 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import { Currency, currencyList } from 'src/app/shared/utils';
 import { PricePackage, ProductType } from '../../../service/shared/service.interface';
 
 @Component({
@@ -15,7 +17,13 @@ export class PreviewProductComponent {
   @Input() price?: number | null = null;
   @Input() packages?: PricePackage[] = [];
   @Input() product_type?: ProductType | null = ProductType.CLASS;
-  constructor() {}
+  customerCurrency?: Currency;
+  constructor(authService: AuthService) {
+    const userData = authService.decodeUserToken();
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.currency
+    );
+  }
 
   get ProductType() {
     return ProductType;

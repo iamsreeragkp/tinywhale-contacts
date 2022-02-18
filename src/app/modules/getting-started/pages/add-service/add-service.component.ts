@@ -5,10 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
+import { AuthService } from 'src/app/modules/auth/auth.service';
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import {
   convert24HrsFormatToAmPm,
+  Currency,
+  currencyList,
   locationOptions,
   timeOptions,
   weekDayOptions,
@@ -68,6 +71,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   businessLocations$: Observable<
     { businessLocations?: BusinessLocation[]; status: boolean; error?: string } | undefined
   >;
+  customerCurrency?: Currency;
+
   constructor(
     private store: Store<IAppState>,
     private _fb: FormBuilder,
@@ -75,8 +80,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
-    public location: Location
+    public location: Location,
+    authService: AuthService
   ) {
+    const userData = authService.decodeUserToken();
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.default_currency
+    );
     this.initForms();
     store.dispatch(getBusinessLocations());
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));

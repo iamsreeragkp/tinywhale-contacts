@@ -5,7 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AppConfigType, APP_CONFIG } from 'src/app/configs/app.config';
-import { locationFilterOptions, weekDayFilterOptions } from 'src/app/shared/utils';
+import {
+  Currency,
+  currencyList,
+  locationFilterOptions,
+  weekDayFilterOptions,
+} from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import {
@@ -77,6 +82,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   dashboardInfos: any;
+  customerCurrency?: Currency;
 
   constructor(
     private store: Store<IServiceState>,
@@ -101,6 +107,9 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.currency
+    );
     this.customUsername = userData.dashboardInfos.customUsername;
     this.dashboardInfos = userData.dashboardInfos;
   }

@@ -356,7 +356,7 @@
               type="number"
               min="0"
               class="input w-24 py-3 px-4 focus:outline-none"
-              placeholder="$ 50"
+              placeholder="{{ customerCurrency?.symbol ?? '$' }} 50"
               formControlName="price"
             />
             <span
@@ -386,7 +386,7 @@
           >
             <input
               class="input w-24 py-3 px-4 focus:outline-none"
-              placeholder="$ 100"
+              placeholder="{{ customerCurrency?.symbol ?? '$' }} 100"
               formControlName="price"
               type="number"
               min="0"
