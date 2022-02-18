@@ -47,6 +47,7 @@ export class DropdownComponent {
   _closableChip = true;
   // Options
   @Input() set options(val: OptionsType) {
+    const previousSelectedValues = JSON.stringify(this.selectedValues());
     if (val?.length) {
       this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
         ...option,
@@ -58,6 +59,9 @@ export class DropdownComponent {
       }));
     } else {
       this._options = [];
+    }
+    if (previousSelectedValues !== JSON.stringify(this.selectedValues())) {
+      this.emitValues();
     }
   }
   // Whether multi select or not
@@ -203,8 +207,7 @@ export class DropdownComponent {
       }
     });
     if (emitEvent) {
-      this.selectedValue.emit(this.selectedValues());
-      this._onChange(this.selectedValues());
+      this.emitValues();
       this._onTouched();
     }
     if (!this._multiSelect) {
@@ -228,8 +231,7 @@ export class DropdownComponent {
       },
     };
     this._options.push(customValue);
-    this.selectedValue.emit(this.selectedValues());
-    this._onChange(this.selectedValues());
+    this.emitValues();
     this._onTouched();
     this.openAddCustomValue = false;
     this.customValueInput = '';
@@ -249,6 +251,12 @@ export class DropdownComponent {
       }
     }
     return values;
+  }
+
+  emitValues() {
+    const values = this.selectedValues();
+    this.selectedValue.emit(values);
+    this._onChange(values);
   }
 
   get selectedOption() {
