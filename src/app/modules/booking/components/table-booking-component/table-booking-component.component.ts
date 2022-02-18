@@ -87,8 +87,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
             value: 'UPCOMING',
           },
         ];
-        console.log(filter, 'filter');
-
         this.filterForm.get('status')?.patchValue('UPCOMING');
       }
     });

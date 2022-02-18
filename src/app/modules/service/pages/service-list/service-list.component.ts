@@ -3,6 +3,9 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { getDashboardData } from '../../../root/store/root.selectors';
 import { IRootState } from 'src/app/modules/root/store/root.reducers';
+import { getServiceList, initService } from '../../store/service.actions';
+import { IServiceState } from '../../store/service.reducers';
+import { getServiceListStatus } from '../../store/service.selectors';
 
 @Component({
   selector: 'app-service-list',
@@ -12,9 +15,19 @@ import { IRootState } from 'src/app/modules/root/store/root.reducers';
 export class ServiceListComponent implements OnInit, OnDestroy {
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
+  productList$!: Observable<any>;
   dashboardInfos: any = undefined;
-  constructor(private store: Store<IRootState>) {
+  productCount!: number;
+  constructor(private store: Store<IRootState>, private stores: Store<IServiceState>) {
     this.dashboard$ = store.pipe(select(getDashboardData));
+    store.dispatch(getServiceList({ filters: {} }));
+    this.productList$ = this.stores.pipe(
+      select(getServiceListStatus),
+      takeUntil(this.ngUnsubscriber)
+    );
+    this.productList$.subscribe((data: any) => {
+      this.productCount = data?.productsCount;
+    });
   }
 
   ngOnInit(): void {
@@ -34,5 +47,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscriber.next();
     this.ngUnsubscriber.complete();
+    this.stores.dispatch(initService());
   }
 }
