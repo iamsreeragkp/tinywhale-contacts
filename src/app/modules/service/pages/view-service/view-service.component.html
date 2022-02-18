@@ -134,7 +134,8 @@
             <p>
               {{
                 productObj?.price
-                  ? '$ ' +
+                  ? (customerCurrency?.symbol ?? '$') +
+                    ' ' +
                     productObj?.price +
                     (productObj?.product_type === ProductType.CLASS
                       ? ' for 1 session ' +
@@ -150,7 +151,8 @@
                 class="text font-poppins mb-3"
                 *ngFor="let pricePackage of productObj?.class?.class_packages"
               >
-                $ {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
+                {{ customerCurrency?.symbol ?? '$' }} {{ pricePackage?.price }} for
+                {{ pricePackage?.no_of_sessions }} sessions
                 {{
                   productObj?.class?.duration_in_minutes
                     ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'

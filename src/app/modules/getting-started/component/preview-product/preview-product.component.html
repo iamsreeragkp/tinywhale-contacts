@@ -18,14 +18,16 @@
   {{ description ?? 'Description' }}
 </p>
 <p class="text font-poppins mb-3" *ngIf="price">
-  $ {{ price + (product_type === ProductType.CLASS ? ' for 1 session ' : '') }}
+  {{ customerCurrency?.symbol ?? '$' }}
+  {{ price + (product_type === ProductType.CLASS ? ' for 1 session ' : '') }}
   {{ product_type === ProductType.CLASS && duration ? '(' + duration + ' minutes)' : '' }}
 </p>
 <p class="text font-poppins mb-3" *ngIf="!price">Price per session</p>
 <ng-container *ngIf="product_type === ProductType.CLASS">
   <p class="text font-poppins mb-3" *ngIf="!packages?.length">Package Price for N sessions</p>
   <p class="text font-poppins mb-3" *ngFor="let pricePackage of packages">
-    $ {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
+    {{ customerCurrency?.symbol ?? '$' }} {{ pricePackage?.price }} for
+    {{ pricePackage?.no_of_sessions }} sessions
     {{ duration ? '(' + duration + ' minutes each)' : '' }}
   </p>
 </ng-container>
