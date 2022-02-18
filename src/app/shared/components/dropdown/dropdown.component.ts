@@ -110,6 +110,8 @@ export class DropdownComponent {
   @Input() set closableChip(val: boolean) {
     this._closableChip = false;
   }
+  // No Options Text
+  @Input() noOptionsText = 'No Options';
 
   // component properties
   open = false;
@@ -199,7 +201,7 @@ export class DropdownComponent {
 
   selectUnSelectValue(val: OptionType, emitEvent = true) {
     this._options.forEach(option => {
-      if (option[this._idKey] === val[this._idKey]) {
+      if (option?.[this._idKey] === val?.[this._idKey]) {
         option.dropdown_field_data!.selected =
           !option.dropdown_field_data?.selected || (!this._multiSelect && !this.showRadio);
       } else if (!this._multiSelect) {

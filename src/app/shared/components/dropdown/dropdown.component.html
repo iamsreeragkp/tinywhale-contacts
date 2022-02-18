@@ -52,7 +52,10 @@
   >
     <div class="bg-white w-fit min-w-full flex flex-col">
       <!-- multi select -->
-      <div class="w-full checkbox-input mt-2 px-4 cursor-auto" *ngIf="_multiSelect">
+      <div
+        class="w-full checkbox-input mt-2 px-4 cursor-auto"
+        *ngIf="_multiSelect && _options.length"
+      >
         <div
           class="w-full mb-4"
           *ngFor="let option of _options; let isLast = last"
@@ -71,7 +74,10 @@
       </div>
 
       <!-- single select with radio -->
-      <div class="flex flex-col w-full rounded-lg radio-input" *ngIf="!_multiSelect && _showRadio">
+      <div
+        class="flex flex-col w-full rounded-lg radio-input"
+        *ngIf="!_multiSelect && _showRadio && _options.length"
+      >
         <label
           class="radio-container py-3 radio-input-border-b"
           [for]="_label + i"
@@ -92,7 +98,7 @@
       </div>
 
       <!-- Single select -->
-      <ng-container *ngIf="!_multiSelect && !_showRadio">
+      <ng-container *ngIf="!_multiSelect && !_showRadio && _options.length">
         <button
           type="button"
           class="px-4 custom-select-item text-left hover:bg-gray-100"
@@ -103,6 +109,14 @@
             class="custom-select-item-div w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap text-primaryFont"
           >
             {{ option[_displayKey] }}
+          </div>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="!_options.length">
+        <button type="button" class="px-4 custom-select-item text-center">
+          <div class="custom-select-item-div w-full py-2 whitespace-nowrap text-mediumGray">
+            {{ noOptionsText }}
           </div>
         </button>
       </ng-container>

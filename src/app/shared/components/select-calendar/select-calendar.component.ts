@@ -119,7 +119,14 @@ export class SelectCalendarComponent {
       return;
     }
     this.date = val;
-    this._onChange(this.date?.singleDate?.jsDate);
+    if (val?.singleDate?.jsDate instanceof Date) {
+      const newDate = new Date(this.date.singleDate.jsDate);
+      newDate.setMinutes(-newDate.getTimezoneOffset());
+      console.log(newDate);
+      this._onChange(newDate);
+    } else {
+      this._onChange(null);
+    }
   }
 
   calendarOpenChanged(val: number) {

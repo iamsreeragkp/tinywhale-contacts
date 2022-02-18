@@ -1,14 +1,14 @@
 <form [formGroup]="productForm" (ngSubmit)="$event.preventDefault(); saveProductForm()">
   <div class="fixed z-50 font-baloo fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
-      <header class="header leading-9 font-normal not-italic flex items-center">
+      <header class="header truncate leading-9 font-normal not-italic flex items-center">
         <span
           class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"
           *ngIf="isGettingStarted && !editMode"
         >
           2
         </span>
-        <span class="text-4xl">
+        <span class="text-4xl truncate">
           {{ productForm?.get('title')?.value || (editMode ? 'Edit a Service' : 'Add a Service') }}
         </span>
       </header>
@@ -248,7 +248,7 @@
                   >
                     <div class="w-36">
                       <app-dropdown
-                        [options]="weekDaySlots.get('slot_options')?.value"
+                        [options]="weekDaySlots.get('slot_options')?.value ?? []"
                         [idKey]="'value'"
                         [emitId]="true"
                         [placeholder]="'Start Time'"
