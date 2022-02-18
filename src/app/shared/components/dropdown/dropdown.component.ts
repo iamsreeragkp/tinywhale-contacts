@@ -110,6 +110,8 @@ export class DropdownComponent {
   @Input() set closableChip(val: boolean) {
     this._closableChip = false;
   }
+  // No Options Text
+  @Input() noOptionsText = 'No Options';
 
   // component properties
   open = false;
