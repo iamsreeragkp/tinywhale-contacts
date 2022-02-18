@@ -120,8 +120,9 @@ export class SelectCalendarComponent {
     }
     this.date = val;
     if (val?.singleDate?.jsDate instanceof Date) {
-      const newDate = new Date(this.date?.singleDate);
+      const newDate = new Date(this.date.singleDate.jsDate);
       newDate.setMinutes(-newDate.getTimezoneOffset());
+      console.log(newDate);
       this._onChange(newDate);
     } else {
       this._onChange(null);
