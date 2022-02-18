@@ -71,8 +71,9 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Service*</label></div>
         <div class="w-form">
-          <span [ngClass]="editMode ? 'pointer-events-none bg-green-100' : ''">
+          <span>
             <app-dropdown
+              [ngClass]="editMode ? 'pointer-events-none' : ''"
               [options]="classData"
               placeholder="Enter service name"
               [displayKey]="'title'"
@@ -149,7 +150,7 @@
               </label>
             </div>
             <div class="w-full p-3 mt-3 rounded-lg input-section-info text-center">
-              💡 Upon registration a settled invoice email will be the sent to the walk-in guest.
+              💡 Upon registration a settled invoice will be emailed to the walk-in customer.
             </div>
           </div>
         </div>

@@ -22,33 +22,6 @@
       color: #64c2bc;
     }
   }
-  .cancel-button {
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    color: #00a4b7;
-  }
-  .save-button {
-    background-color: #00a4b7;
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:disabled {
-      background-color: #d6e1e3;
-    }
-  }
-  .save-button-secondary {
-    background-color: #fff;
-    border: 2px solid #00a4b7;
-    color: #00a4b7;
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:disabled {
-      border-color: #d6e1e3;
-      color: #d6e1e3;
-    }
-  }
 }
 .add-info {
   padding-top: 4.75rem;

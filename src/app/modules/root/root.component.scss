@@ -1,0 +1,24 @@
+.rotate {
+  animation: spin 1s infinite, ping 1s infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ping {
+  from {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
