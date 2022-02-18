@@ -88,6 +88,8 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   isNodata: boolean = false;
   orderType: any;
   customerCurrency?: Currency;
+  currentCount?: number;
+  isLoadMore = false;
 
   constructor(
     private store: Store<IServiceState>,
@@ -106,7 +108,15 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.filterForm = this.createFilterForm();
     this.page = appConfig.defaultStartPage;
     this.limit = appConfig.defaultPageLimit;
-    store.dispatch(getServiceList({ filters: { page: this.page, limit: this.limit } }));
+    store.dispatch(
+      getServiceList({
+        filters: {
+          page: this.page,
+          limit: this.limit,
+          order_type: this.orderType ? this.orderType : '',
+        },
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -131,12 +141,17 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.copyStatus = 'Copied';
   }
 
+  validateCount(count: any) {
+    if (count >= 5) {
+      this.isLoadMore = true;
+    }
+  }
   subscriptions() {
     this.productList$.subscribe(data => {
       if (data?.status && data?.products) {
         this.productsList = data.products;
-
         this.productsCount = data.productsCount;
+        this.validateCount(this.productsCount);
       } else {
         console.log(data?.error);
       }
@@ -160,7 +175,13 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   fetchServiceList() {
     this.store.dispatch(
       getServiceList({
-        filters: { ...this.constructFilterPayload(), page: this.page, limit: this.limit },
+        filters: {
+          ...this.constructFilterPayload(),
+          page: this.page,
+          limit: this.limit,
+          order_by: 'NAME',
+          order_type: this.orderType ? this.orderType : '',
+        },
       })
     );
   }
