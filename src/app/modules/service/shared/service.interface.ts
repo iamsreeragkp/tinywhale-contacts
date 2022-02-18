@@ -104,4 +104,11 @@ export interface ServiceListFilter {
   location_type?: LocationType;
   days_of_week?: string;
   pricing_type?: string;
+  order_by?: string;
+  order_type?: SortOrder;
+}
+
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
 }
