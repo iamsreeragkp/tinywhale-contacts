@@ -184,6 +184,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
               ),
               { emitEvent: false }
             );
+            this.updateTimeSlotOptionsOfAWeekDay();
             this.productForm.setControl(
               'price_package',
               this._fb.array(
@@ -255,6 +256,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       capacity: [val?.class?.capacity ?? null, [Validators.required]],
       duration: [val?.class?.duration_in_minutes ?? null, Validators.required],
     });
+    this.updateTimeSlotOptionsOfAWeekDay();
     if (val?.product_id) {
       this.productForm.addControl('product_id', this._fb.control(val.product_id));
     }
@@ -306,7 +308,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       end_time_label: [{ value: convert24HrsFormatToAmPm(val?.end_time), disabled: true }],
       is_deleted: [false],
       slot_options: [
-        { value: this.getTimeSlotOptions(val?.day_of_week, timeRangeId), disabled: false },
+        { value: this.getTimeSlotOptions(val?.day_of_week, timeRangeId), disabled: true },
       ],
     });
   }
@@ -344,6 +346,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   addTimeRangeToWeekDay(dayOfWeek: WeekDay) {
     this.timeRanges.push(this.createTimeRanges({ day_of_week: dayOfWeek }));
+    this.updateTimeSlotOptionsOfAWeekDay(dayOfWeek);
     this.productFormSubscriptions();
   }
 
