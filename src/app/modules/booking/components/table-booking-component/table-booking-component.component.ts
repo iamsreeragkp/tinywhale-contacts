@@ -26,8 +26,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   filterForm!: FormGroup;
   page: number;
   limit: number;
-  defaultFilter :any= null;
-  filterStatus:any;
+  defaultFilter: any = null;
+  filterStatus: any;
 
   status = [
     {
@@ -50,7 +50,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     },
   ];
 
-  threeDotsActions = ['Reshedule'];
+  threeDotsActions = ['Reschedule'];
   serviceList: any;
 
   constructor(
@@ -78,24 +78,20 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions();
-    this._route.queryParamMap.subscribe( param => {
+    this._route.queryParamMap.subscribe(param => {
       this.defaultFilter = param.get('filter');
-    if(this.defaultFilter){
-
-  
-     const filter =   [{
-          title: 'Upcoming',
-          value: 'UPCOMING',
-        }]
-        console.log(filter,"filter");
-      
-      this.filterForm.get('status')?.patchValue('UPCOMING')
-
-    }
-     });
-     this.clearParam();
+      if (this.defaultFilter) {
+        const filter = [
+          {
+            title: 'Upcoming',
+            value: 'UPCOMING',
+          },
+        ];
+        this.filterForm.get('status')?.patchValue('UPCOMING');
+      }
+    });
+    this.clearParam();
   }
-
 
   clearParam() {
     if (this._route.snapshot.queryParams?.['filter']) {
@@ -148,7 +144,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   handleAction(event: string, index: number, orderId: any) {
-    if (event === 'Reshedule') {
+    if (event === 'Reschedule') {
       this.router.navigateByUrl(`/booking/edit-booking/${orderId}`);
     }
   }

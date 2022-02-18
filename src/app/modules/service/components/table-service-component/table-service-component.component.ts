@@ -13,6 +13,7 @@ import {
   Product,
   ProductType,
   ServiceListFilter,
+  SortOrder,
   VisibilityType,
 } from '../../shared/service.interface';
 import { changeVisibility, deleteServiceList, getServiceList } from '../../store/service.actions';
@@ -77,6 +78,10 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   dashboardInfos: any;
+  public current: string = SortOrder.asc;
+  isdata: boolean = true;
+  isNodata: boolean = false;
+  orderType: any;
 
   constructor(
     private store: Store<IServiceState>,
@@ -250,6 +255,40 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   filterClear(event: any) {
     if (event === true) {
       this.filterForm.reset();
+    }
+  }
+
+  sortDatad() {
+    if (this.current === SortOrder.asc) {
+      this.current = SortOrder.desc;
+      this.isdata = true;
+      const order_by = 'NAME';
+      this.orderType = this.current;
+      this.store.dispatch(
+        getServiceList({
+          filters: {
+            order_by: order_by,
+            order_type: this.orderType,
+            page: this.page,
+            limit: this.limit,
+          },
+        })
+      );
+    } else if (this.current === SortOrder.desc) {
+      this.isdata = false;
+      this.current = SortOrder.asc;
+      const order_by = 'NAME';
+      this.orderType = this.current;
+      this.store.dispatch(
+        getServiceList({
+          filters: {
+            order_by: order_by,
+            order_type: this.orderType,
+            page: this.page,
+            limit: this.limit,
+          },
+        })
+      );
     }
   }
 

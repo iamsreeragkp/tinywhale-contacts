@@ -163,17 +163,29 @@
   <table class="table-auto w-full">
     <thead>
       <tr class="bg-gray-100 border-b border-white border-solid">
-        <th class="px-2 py-3 text-left font-semibold">
+        <th class="px-2 py-3 text-left font-semibold cursor-pointer" (click)="sortDatad()">
           <div class="flex items-center">
             <span> Service Name </span>
-            <!-- <div class="ml-2">
-              <img
-                src="../../../../../assets/images/icons/sort.svg"
-                alt=""
-                srcset=""
-                class="transform rotate-180"
-              />
-            </div> -->
+            <div class="flex">
+              <div class="ml-2 cursor-pointer">
+                <img
+                  src="../../../../../assets/images/icons/sort.svg"
+                  alt=""
+                  srcset=""
+                  class="transform rotate-180"
+                  *ngIf="current === 'asc' && productsList?.length"
+                />
+              </div>
+              <div class="cursor-pointer">
+                <img
+                  src="../../../../../assets/images/icons/sort.svg"
+                  alt=""
+                  srcset=""
+                  class="transform rotate-{180}"
+                  *ngIf="current === 'desc' && productsList?.length"
+                />
+              </div>
+            </div>
           </div>
         </th>
         <th class="px-2 py-3 text-left font-semibold">Schedule</th>
@@ -397,16 +409,18 @@
           <td class="align-top px-2 py-3"></td>
         </tr>
       </ng-container>
-      <tr>
-        <td colspan="7">
-          <div
-            class="w-full h-12 mt-8 flex justify-center items-center"
-            *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
-          >
-            <button class="noborder-button" (click)="loadMore()">Load More</button>
-          </div>
-        </td>
-      </tr>
+      <ng-container *ngIf="(productsCount ?? 0 >= 5) && isFilterEmpty">
+        <tr>
+          <td colspan="7">
+            <div
+              class="w-full h-12 mt-8 flex justify-center items-center"
+              *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
+            >
+              <button class="noborder-button" (click)="loadMore()">Load More</button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
       <tr>
         <td colspan="7">
           <div class="w-full" *ngIf="isFilterEmpty && !productsList?.length">
