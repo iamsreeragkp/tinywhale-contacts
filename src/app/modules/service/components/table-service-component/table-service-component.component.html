@@ -412,7 +412,7 @@
           <td class="align-top px-2 py-3"></td>
         </tr>
       </ng-container>
-      <ng-container *ngIf="(productsCount ?? 0 >= 5) && isFilterEmpty">
+      <ng-container *ngIf="isLoadMore && isFilterEmpty">
         <tr>
           <td colspan="7">
             <div

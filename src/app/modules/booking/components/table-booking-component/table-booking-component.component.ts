@@ -101,6 +101,12 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   orderSession: any;
   bookData: any;
+  isLoadMore = false;
+  validateCount(count: any) {
+    if (count >= 5) {
+      this.isLoadMore = true;
+    }
+  }
   subscriptions() {
     this.bookingData$
       .pipe(
@@ -112,6 +118,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
           this.formatData(data);
           this.bookingData = this.formatData(data);
           this.bookingsCount = data.bookingsCount;
+          this.validateCount(this.bookingsCount);
           for (let i = 0; i < this.bookingData.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }

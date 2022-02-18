@@ -242,13 +242,10 @@
           </td>
         </tr>
       </ng-container>
-      <ng-container *ngIf="bookingData?.length >= 5 && isFilterEmpty">
+      <ng-container *ngIf="isLoadMore && isFilterEmpty">
         <tr>
           <td colspan="7">
-            <div
-              class="w-full h-12 mt-8 flex justify-center items-center"
-              *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)"
-            >
+            <div class="w-full h-12 mt-8 flex justify-center items-center">
               <button class="noborder-button" (click)="loadMore()">Load More</button>
             </div>
           </td>
