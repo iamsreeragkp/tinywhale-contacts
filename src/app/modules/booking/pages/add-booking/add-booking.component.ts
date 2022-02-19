@@ -4,16 +4,14 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { convert24HrsFormatToAmPm, getTimeRangeSerialized } from 'src/app/shared/utils';
+import { WeekDay } from 'src/app/modules/service/shared/service.interface';
+import { getServiceStatus } from 'src/app/modules/service/store/service.selectors';
+import { convert24HrsFormatToAmPm, convertDateToDateString } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
-import {
-  addBooking,
-  getBookableSlots,
-  getBookingById,
-  initBooking,
-} from '../../store/booking.actions';
+import { addBooking, getBookableSlots, getBookingById } from '../../store/booking.actions';
+
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
 import { IBookingState } from '../../store/booking.reducers';
 import {
@@ -21,6 +19,7 @@ import {
   getBookingByIds,
   getBookingInfo,
 } from '../../store/booking.selectors';
+import { IAppState } from 'src/app/modules/core/reducers';
 @Component({
   selector: 'app-add-booking',
   templateUrl: './add-booking.component.html',
@@ -33,28 +32,30 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   //   placeholder: 'Select date',
   // };
   classData: any;
-  classTimeRanges: any;
   times: any;
   classTimerangeId: any;
   ngUnsubscribe = new Subject<any>();
   editMode = false;
   bookingData$: Observable<any>;
+  serviceData$!: Observable<any>;
   orderId!: number;
-  classTimeRanged: any;
+  classTimeRanged: any = [];
   isToastError = false;
   slotNow: any;
 
   filledSlotsData$!: Observable<
     { response?: FilledSlotDetails; status: boolean; error?: string } | undefined
   >;
-  filledSlots?: any;
 
+  filledSlots: FilledSlotDetails = [];
   disabledWeekdays: any[] = [];
-  disabledDates: any[] = [];
+  today = new Date();
+  productInfos: any;
+  selectableSlots: any[] = [];
 
   constructor(
     private authService: AuthService,
-    private store: Store<IBookingState>,
+    private store: Store<IAppState>,
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
@@ -63,7 +64,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   ) {
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
-    this.getDataDate();
+    this.serviceData$ = store.pipe(select(getServiceStatus));
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
       .pipe(
@@ -88,7 +89,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm
       .get('service')
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(val => {
+      .subscribe((val: number) => {
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.class?.class_time_ranges) {
           this.isFree = false;
@@ -98,10 +99,12 @@ export class AddBookingComponent implements OnInit, OnDestroy {
               convert24HrsFormatToAmPm(classTimeRange?.start_time) +
               ' - ' +
               convert24HrsFormatToAmPm(classTimeRange?.end_time),
+            day_of_week: classTimeRange?.day_of_week,
+            start_time: classTimeRange?.start_time,
           }));
-          // this.updateSelectableSlots();
+          // this.store.dispatch(getBookableSlots({ productId: val }));
+          this.disabledWeekdays = this.getDisabledWeekdays();
           this.store.dispatch(getBookableSlots({ productId: val }));
-
           this.classTimerangeId = this.classTimeRanged?.id;
         }
 
@@ -109,6 +112,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
           this.isFree = true;
         }
       });
+    this.bookingForm
+      .get('date')
+      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(val => this.updateSelectableSlots());
     this.subscriptions();
   }
 
@@ -126,56 +133,28 @@ export class AddBookingComponent implements OnInit, OnDestroy {
           console.log(data?.error);
         }
       });
-  }
-  disableDated: any;
-  getDataDate() {
-    this.bookingForm
-      .get('service')
-      ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data: any) => {
-        this.store.select(getBookableSlotsStatus).subscribe((data: any) => {
-          console.log(data, 'kkk');
 
+    this.store
+      .select(getBookableSlotsStatus)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe((data: any) => {
+        if (data?.status && data?.response) {
+          this.filledSlots = data?.response;
           this.disableDated = data?.response
             ?.filter((item: any) => !item?.is_date_selectable)
             .map((slot: any) => {
               const [year, month, day] = slot?.date?.split('-');
               return { year: +year, month: +month, day: +day };
             });
-          console.log(this.classTimeRanged, 'classTimeranged');
-          const dt = this.classTimeRanged?.map((dt: any) => {
-            return dt?.id;
-          });
-          console.log('dt', dt);
-          const filledSlots = data?.response?.filter(
-            (item: any) => item?.filled_slots?.class_time_range_id
-          );
-        });
+          this.updateSelectableSlots();
+        } else {
+        }
       });
   }
-
-  // updateSelectableSlots() {
-  //   // this.sessions?.controls?.forEach(session => {
-  //   //   session.get('selectableSlots')?.patchValue(this.getSelectableSlots(session.get('id')?.value));
-  //   // });
-  //   this.disabledDates = this.getDisabledDates();
-  // }
-
-  // getDisabledDates() {
-  //   return [
-  //     ...[this.filledSlots]
-  //       .filter((slot: any) => !slot?.is_date_selectable)
-  //       .map((slot: any) => {
-  //         const [year, month, day] = slot?.date?.split('-');
-  //         return { year: +year, month: +month, day: +day };
-  //       }),
-  //     // ...this.getAllSlotsUsedDates(),
-  //   ];
-  // }
-
-  updateDate(event: any) {
-    // console.log(event, 'eeeee');
-  }
+  disableDated: any = [];
 
   initializeBookingForm(val?: any) {
     const timeRanges = val?.order_session?.[0]?.session?.class_time_range;
@@ -221,7 +200,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.classData = data?.data;
-        this.classTimeRanges = data?.Classes;
       });
   }
 
@@ -318,8 +296,60 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  get sessions() {
-    return this.bookingForm.get('slot');
+  // get sessions() {
+  //   return this.bookingForm.get('slot');
+  // }
+
+  /**
+   * Function which sets the disabled weekdays in which no slots are available.
+   * Called when booking data is loaded
+   * @returns {Array.<WeekDayMyDpStr>} disabledWeekdays
+   */
+  getDisabledWeekdays() {
+    type WeekDayMyDpStr = 'su' | 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa';
+    const weekDayMyDpStrArr: WeekDayMyDpStr[] = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+    const weekDayMyDpStringToWeekDayNumberMap: { [k in WeekDayMyDpStr]: WeekDay } = {
+      su: WeekDay.Sunday,
+      mo: WeekDay.Monday,
+      tu: WeekDay.Tuesday,
+      we: WeekDay.Wednesday,
+      th: WeekDay.Thursday,
+      fr: WeekDay.Friday,
+      sa: WeekDay.Saturday,
+    };
+    const selectedService = this.classData?.find(
+      (classD: any) => classD.product_id === this.bookingForm.get('service')?.value
+    );
+    return weekDayMyDpStrArr.filter(
+      weekDay =>
+        !selectedService?.class?.class_time_ranges?.some(
+          (timeRange: any) => timeRange.day_of_week === weekDayMyDpStringToWeekDayNumberMap[weekDay]
+        )
+    );
+  }
+
+  updateSelectableSlots() {
+    this.selectableSlots = this.getSelectableSlots();
+  }
+
+  getSelectableSlots() {
+    return this.classTimeRanged.filter((timeRange: any) => {
+      const selectedDate = this.bookingForm.get('date')?.value;
+      if (!selectedDate) {
+        return false;
+      }
+      const weekDay = `${selectedDate?.getDay() + 1}`;
+      if (timeRange.day_of_week !== weekDay) {
+        return false;
+      }
+      const isToday = new Date().toDateString() === selectedDate?.toDateString();
+      if (isToday && +timeRange.label < +`${new Date().getHours()}${new Date().getMinutes()}`) {
+        return false;
+      }
+      return this.filledSlots
+        ?.find(slot => slot.date === convertDateToDateString(selectedDate))
+        ?.filled_class_time_range_ids.includes(timeRange.class_time_range_id);
+    });
   }
 
   onCancelBooking() {

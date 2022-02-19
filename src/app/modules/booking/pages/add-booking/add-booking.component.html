@@ -95,8 +95,9 @@
             formControlName="date"
             placeholder="Enter Date"
             class="show-error"
-            [disabled]="disableDated"
-            (ngModelChange)="updateDate($event)"
+            [disableWeekdays]="disabledWeekdays"
+            [disableDates]="disableDated"
+            [disableUntil]="today"
           ></app-select-calendar>
         </div>
       </div>
@@ -104,7 +105,7 @@
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Slot*</label></div>
         <div class="w-form">
           <app-dropdown
-            [options]="classTimeRanged"
+            [options]="selectableSlots"
             placeholder="Select Slot"
             formControlName="slot"
             class="show-error"

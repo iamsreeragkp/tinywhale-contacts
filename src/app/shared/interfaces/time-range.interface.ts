@@ -12,3 +12,10 @@ export interface SlotRange {
   end_time: string;
   end_time_label: string;
 }
+
+export interface TimeRange {
+  class_time_range_id?: number | null;
+  day_of_week: WeekDay;
+  start_time?: string | null;
+  end_time?: string | null;
+}
