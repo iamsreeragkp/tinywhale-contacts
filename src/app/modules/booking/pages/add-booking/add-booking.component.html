@@ -73,11 +73,10 @@
         <div class="w-form">
           <span>
             <app-dropdown
-              [ngClass]="editMode ? 'pointer-events-none' : ''"
               [options]="classData"
               placeholder="Enter service name"
               [displayKey]="'title'"
-              [disabled]="editMode"
+              [editMode]="editMode"
               [emitId]="true"
               [idKey]="'product_id'"
               class="show-error"

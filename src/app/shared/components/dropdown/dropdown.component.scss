@@ -34,7 +34,7 @@
       }
     }
     &.disabled {
-      @apply bg-veryLightGray cursor-not-allowed;
+      @apply bg-veryLightGray pointer-events-none;
     }
   }
   &-placeholder {
