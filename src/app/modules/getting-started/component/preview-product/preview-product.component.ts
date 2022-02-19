@@ -21,7 +21,7 @@ export class PreviewProductComponent {
   constructor(authService: AuthService) {
     const userData = authService.decodeUserToken();
     this.customerCurrency = currencyList.find(
-      currency => currency.id === userData?.dashboardInfos?.currency
+      currency => currency.id === userData?.dashboardInfos?.default_currency
     );
   }
 

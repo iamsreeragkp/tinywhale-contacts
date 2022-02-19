@@ -123,7 +123,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
     this.customerCurrency = currencyList.find(
-      currency => currency.id === userData?.dashboardInfos?.currency
+      currency => currency.id === userData?.dashboardInfos?.default_currency
     );
     this.customUsername = userData.dashboardInfos.customUsername;
     this.dashboardInfos = userData.dashboardInfos;
