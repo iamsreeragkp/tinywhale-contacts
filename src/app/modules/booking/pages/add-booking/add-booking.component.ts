@@ -4,28 +4,22 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { WeekDay } from 'src/app/modules/service/shared/service.interface';
-import { getService } from 'src/app/modules/service/store/service.actions';
-import { getServiceStatus } from 'src/app/modules/service/store/service.selectors'
-import { convert24HrsFormatToAmPm, getTimeRangeSerialized } from 'src/app/shared/utils';
+import { getServiceStatus } from 'src/app/modules/service/store/service.selectors';
+import { convert24HrsFormatToAmPm, convertDateToDateString } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
-import {
-  addBooking,
-  getBookableSlots,
-  getBookingById,
-  initBooking,
-} from '../../store/booking.actions';
+import { addBooking, getBookableSlots, getBookingById } from '../../store/booking.actions';
 
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
 import { IBookingState } from '../../store/booking.reducers';
-import { IServiceState } from 'src/app/modules/service/store/service.reducers';
 import {
   getBookableSlotsStatus,
   getBookingByIds,
   getBookingInfo,
 } from '../../store/booking.selectors';
+import { IAppState } from 'src/app/modules/core/reducers';
 @Component({
   selector: 'app-add-booking',
   templateUrl: './add-booking.component.html',
@@ -38,7 +32,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   //   placeholder: 'Select date',
   // };
   classData: any;
-  classTimeRanges: any;
   times: any;
   classTimerangeId: any;
   ngUnsubscribe = new Subject<any>();
@@ -46,26 +39,23 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   bookingData$: Observable<any>;
   serviceData$!: Observable<any>;
   orderId!: number;
-  classTimeRanged: any;
+  classTimeRanged: any = [];
   isToastError = false;
   slotNow: any;
-  
 
   filledSlotsData$!: Observable<
     { response?: FilledSlotDetails; status: boolean; error?: string } | undefined
   >;
-  
+
   filledSlots: FilledSlotDetails = [];
   disabledWeekdays: any[] = [];
-  disabledDates: any[] = [];
   today = new Date();
   productInfos: any;
-  classPackages: any;
+  selectableSlots: any[] = [];
 
   constructor(
     private authService: AuthService,
-    private store: Store<IBookingState>,
-    private serviceStore: Store<IServiceState>,
+    private store: Store<IAppState>,
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
@@ -74,8 +64,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   ) {
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
-    this.getDataDate();
-    this.serviceData$ = serviceStore.pipe(select(getServiceStatus));
+    this.serviceData$ = store.pipe(select(getServiceStatus));
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
       .pipe(
@@ -100,8 +89,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm
       .get('service')
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((val:number) => {
-        console.log("SERVICE SELECTED",val);
+      .subscribe((val: number) => {
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.class?.class_time_ranges) {
           this.isFree = false;
@@ -111,51 +99,12 @@ export class AddBookingComponent implements OnInit, OnDestroy {
               convert24HrsFormatToAmPm(classTimeRange?.start_time) +
               ' - ' +
               convert24HrsFormatToAmPm(classTimeRange?.end_time),
+            day_of_week: classTimeRange?.day_of_week,
+            start_time: classTimeRange?.start_time,
           }));
-          // this.updateSelectableSlots();
-         this.serviceStore.dispatch(getService({product_id: val}));
-         
-          this.serviceData$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        filter(val => !!val)
-      )
-      .subscribe(data => {
-        console.log("DATAAAA",data);
-        
-        if (data) {
-          console.log("Product Infos ",data);
-          this.classData = data.product.class;
-          this.productInfos = data.product;
-          this.classPackages = [];
-          this.classPackages.push({
-            id: undefined,
-            label: `${this.productInfos.price ? '$ ' + this.productInfos.price : 'FREE'} / 1 Session`,
-            session: 1,
-          });
-          this.classPackages.push(
-            ...(this.productInfos.class?.class_packages?.map((classPckg: any) => ({
-              id: classPckg?.class_package_id,
-              label:
-                (classPckg?.price ? '$ ' + classPckg.price : 'FREE') +
-                ' / ' +
-                classPckg?.no_of_sessions +
-                ' ' +
-                'Sessions',
-              session: classPckg?.no_of_sessions,
-            })) ?? [])
-          );
-          console.log("class packages", this.classPackages);
-          
-         
-          this.disabledWeekdays = this.getDisabledWeekdays();
-        } else {
-          console.log(data?.error);
-        }
-      });
-          
           // this.store.dispatch(getBookableSlots({ productId: val }));
-
+          this.disabledWeekdays = this.getDisabledWeekdays();
+          this.store.dispatch(getBookableSlots({ productId: val }));
           this.classTimerangeId = this.classTimeRanged?.id;
         }
 
@@ -163,83 +112,49 @@ export class AddBookingComponent implements OnInit, OnDestroy {
           this.isFree = true;
         }
       });
+    this.bookingForm
+      .get('date')
+      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(val => this.updateSelectableSlots());
     this.subscriptions();
   }
 
   subscriptions() {
-    console.log("SUBSCRIPTION");
-    
     this.bookingData$
       .pipe(
         takeUntil(this.ngUnsubscribe),
         filter(val => !!val)
       )
       .subscribe(data => {
-        console.log("DATAAAA",data);
-        
         if (data) {
-          console.log("Product Infos ",data);
-          
-          this.productInfos = data;
-          this.disabledWeekdays = this.getDisabledWeekdays();
           this.orderId = data?.order_id;
           this.initializeBookingForm(data);
         } else {
           console.log(data?.error);
         }
       });
-  }
-  disableDated: any;
-  getDataDate() {
-    this.bookingForm
-      .get('service')
-      ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data: any) => {
-        // console.log("SERVICE SELECTED",data);
-        
-        this.store.select(getBookableSlotsStatus).subscribe((data: any) => {
-          console.log(data, 'kkk');
 
+    this.store
+      .select(getBookableSlotsStatus)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe((data: any) => {
+        if (data?.status && data?.response) {
+          this.filledSlots = data?.response;
           this.disableDated = data?.response
             ?.filter((item: any) => !item?.is_date_selectable)
             .map((slot: any) => {
               const [year, month, day] = slot?.date?.split('-');
               return { year: +year, month: +month, day: +day };
             });
-          console.log(this.classTimeRanged, 'classTimeranged');
-          const dt = this.classTimeRanged?.map((dt: any) => {
-            return dt?.id;
-          });
-          console.log('dt', dt);
-          const filledSlots = data?.response?.filter(
-            (item: any) => item?.filled_slots?.class_time_range_id
-          );
-        });
+          this.updateSelectableSlots();
+        } else {
+        }
       });
   }
-
-  // updateSelectableSlots() {
-  //   // this.sessions?.controls?.forEach(session => {
-  //   //   session.get('selectableSlots')?.patchValue(this.getSelectableSlots(session.get('id')?.value));
-  //   // });
-  //   this.disabledDates = this.getDisabledDates();
-  // }
-
-  // getDisabledDates() {
-  //   return [
-  //     ...[this.filledSlots]
-  //       .filter((slot: any) => !slot?.is_date_selectable)
-  //       .map((slot: any) => {
-  //         const [year, month, day] = slot?.date?.split('-');
-  //         return { year: +year, month: +month, day: +day };
-  //       }),
-  //     // ...this.getAllSlotsUsedDates(),
-  //   ];
-  // }
-
-  updateDate(event: any) {
-    // console.log(event, 'eeeee');
-  }
+  disableDated: any = [];
 
   initializeBookingForm(val?: any) {
     const timeRanges = val?.order_session?.[0]?.session?.class_time_range;
@@ -285,7 +200,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.classData = data?.data;
-        this.classTimeRanges = data?.Classes;
       });
   }
 
@@ -403,27 +317,40 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       fr: WeekDay.Friday,
       sa: WeekDay.Saturday,
     };
+    const selectedService = this.classData?.find(
+      (classD: any) => classD.product_id === this.bookingForm.get('service')?.value
+    );
     return weekDayMyDpStrArr.filter(
       weekDay =>
-        !this.productInfos?.class?.class_time_ranges.some(
+        !selectedService?.class?.class_time_ranges?.some(
           (timeRange: any) => timeRange.day_of_week === weekDayMyDpStringToWeekDayNumberMap[weekDay]
         )
     );
   }
 
-  getDisabledDates() {
-    return [
-      ...this.filledSlots
-        .filter(slot => !slot.is_date_selectable)
-        .map(slot => {
-          const [year, month, day] = slot.date.split('-');
-          return { year: +year, month: +month, day: +day };
-        })
-    ];
+  updateSelectableSlots() {
+    this.selectableSlots = this.getSelectableSlots();
   }
 
-  
-
+  getSelectableSlots() {
+    return this.classTimeRanged.filter((timeRange: any) => {
+      const selectedDate = this.bookingForm.get('date')?.value;
+      if (!selectedDate) {
+        return false;
+      }
+      const weekDay = `${selectedDate?.getDay() + 1}`;
+      if (timeRange.day_of_week !== weekDay) {
+        return false;
+      }
+      const isToday = new Date().toDateString() === selectedDate?.toDateString();
+      if (isToday && +timeRange.label < +`${new Date().getHours()}${new Date().getMinutes()}`) {
+        return false;
+      }
+      return this.filledSlots
+        ?.find(slot => slot.date === convertDateToDateString(selectedDate))
+        ?.filled_class_time_range_ids.includes(timeRange.class_time_range_id);
+    });
+  }
 
   onCancelBooking() {
     this.router.navigateByUrl('booking/view-booking');
@@ -437,5 +364,3 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 function getBookings(getBookings: any): import('rxjs').OperatorFunction<IBookingState, any> {
   throw new Error('Function not implemented.');
 }
-
-

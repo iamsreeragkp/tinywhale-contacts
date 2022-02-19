@@ -172,3 +172,11 @@ export const locationFilterOptions = [
     label: 'Business Location',
   },
 ];
+
+export function convertDateToDateString(date?: Date | string | null) {
+  const dateObj = new Date(date ?? new Date());
+  return `${dateObj.getFullYear()}-${`${dateObj.getMonth() + 1}`.padStart(
+    2,
+    '0'
+  )}-${`${dateObj.getDate()}`.padStart(2, '0')}`;
+}

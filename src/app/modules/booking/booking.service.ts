@@ -38,8 +38,9 @@ export class BookingService {
     const {
       dashboardInfos: { businessId },
     } = userData;
-    const params = new HttpParams().set('business_id', businessId).set('product_type', 'CLASS');
-    return this.http.get(`${this.bookingApi}/dashboard/service`, { params: params });
+    const paramsObj = { product_type: 'CLASS', is_active: true };
+    const params = new HttpParams({ fromObject: paramsObj });
+    return this.http.get(`${this.bookingApi}/dashboard/service`, { params });
   }
 
   getBookingList(filters: any) {
