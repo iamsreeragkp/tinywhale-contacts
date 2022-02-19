@@ -301,6 +301,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
             order_type: this.orderType,
             page: this.page,
             limit: this.limit,
+            ...this.constructFilterPayload(),
           },
         })
       );
@@ -316,6 +317,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
             order_type: this.orderType,
             page: this.page,
             limit: this.limit,
+            ...this.constructFilterPayload(),
           },
         })
       );
