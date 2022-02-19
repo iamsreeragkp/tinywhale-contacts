@@ -350,19 +350,31 @@
           </td>
           <td class="align-top px-2 py-3">
             <div class="flex flex-col">
-              <span class="whitespace-nowrap"
+              <span
+                class="whitespace-nowrap"
+                *ngIf="product?.price || (product?.price ?? 'booo') === 'booo'; else priceZero"
                 >{{ customerCurrency?.symbol ?? '$' }} {{ product?.price ?? '-'
                 }}{{ product?.product_type === ProductType.CLASS ? ' / session' : '' }}</span
               >
+              <ng-template #priceZero>
+                <span class="whitespace-nowrap">FREE</span>
+              </ng-template>
               <ng-container *ngIf="product.product_type === ProductType.CLASS">
                 <ng-container *ngFor="let sessionPrice of product?.class?.class_packages">
-                  <span
-                    class="whitespace-nowrap"
-                    *ngIf="sessionPrice?.no_of_sessions && sessionPrice?.price"
+                  <ng-container
+                    *ngIf="
+                      sessionPrice?.no_of_sessions && (sessionPrice?.price ?? 'booo') !== 'booo'
+                    "
                   >
-                    {{ customerCurrency?.symbol ?? '$' }} {{ sessionPrice.price }} /
-                    {{ sessionPrice.no_of_sessions }} sessions
-                  </span>
+                    <span class="whitespace-nowrap">
+                      {{
+                        !sessionPrice.price
+                          ? 'FREE'
+                          : (customerCurrency?.symbol ?? '$') + ' ' + sessionPrice.price
+                      }}
+                      / {{ sessionPrice.no_of_sessions }} sessions
+                    </span>
+                  </ng-container>
                 </ng-container>
               </ng-container>
               <!-- <span class=" whitespace-nowrap">$ xxx / 4 sessions</span> -->

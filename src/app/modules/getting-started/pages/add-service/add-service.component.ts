@@ -175,25 +175,29 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             } else {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
-            this.productForm.setControl(
-              'time_ranges',
-              this._fb.array(
-                (data.response.time_ranges?.length ? data.response.time_ranges : []).map(
-                  (time_range: TimeRange) => this.createTimeRanges(time_range)
-                )
-              ),
-              { emitEvent: false }
-            );
+            if (data.response.time_ranges?.length) {
+              this.productForm.setControl(
+                'time_ranges',
+                this._fb.array(
+                  data.response.time_ranges.map((time_range: TimeRange) =>
+                    this.createTimeRanges(time_range)
+                  )
+                ),
+                { emitEvent: false }
+              );
+            }
             this.updateTimeSlotOptionsOfAWeekDay();
-            this.productForm.setControl(
-              'price_package',
-              this._fb.array(
-                (data.response.price_package?.length ? data.response.price_package : []).map(
-                  (pricePkg: PricePackage) => this.createPricePackages(pricePkg)
-                )
-              ),
-              { emitEvent: false }
-            );
+            if (data.response.price_package?.length) {
+              this.productForm.setControl(
+                'price_package',
+                this._fb.array(
+                  data.response.price_package.map((pricePkg: PricePackage) =>
+                    this.createPricePackages(pricePkg)
+                  )
+                ),
+                { emitEvent: false }
+              );
+            }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
             if (this.editMode) {
@@ -410,7 +414,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   addPricePackage() {
-    this.pricePackages.push(this.createPricePackages());
+    this.pricePackages.push(this.createPricePackages(), { emitEvent: false });
   }
 
   async handleFileInput(event: Event, index: number) {
