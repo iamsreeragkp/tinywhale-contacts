@@ -1,14 +1,14 @@
 <form [formGroup]="productForm" (ngSubmit)="$event.preventDefault(); saveProductForm()">
   <div class="fixed z-50 font-baloo fixed-header">
     <div class="website-page-heading bg-white py-4 px-8 flex justify-between w-full">
-      <header class="header leading-9 font-normal not-italic flex items-center">
+      <header class="header truncate leading-9 font-normal not-italic flex items-center">
         <span
           class="one -pb-4 font-normal not-italic text-7xl leading-6 mr-3"
           *ngIf="isGettingStarted && !editMode"
         >
           2
         </span>
-        <span class="text-4xl">
+        <span class="text-4xl truncate">
           {{ productForm?.get('title')?.value || (editMode ? 'Edit a Service' : 'Add a Service') }}
         </span>
       </header>
@@ -248,12 +248,7 @@
                   >
                     <div class="w-36">
                       <app-dropdown
-                        [options]="
-                          getTimeSlotOptions(
-                            weekDay.value,
-                            weekDaySlots.get('class_time_range_id')?.value
-                          )
-                        "
+                        [options]="weekDaySlots.get('slot_options')?.value ?? []"
                         [idKey]="'value'"
                         [emitId]="true"
                         [placeholder]="'Start Time'"
@@ -356,7 +351,7 @@
               type="number"
               min="0"
               class="input w-24 py-3 px-4 focus:outline-none"
-              placeholder="$ 50"
+              placeholder="{{ customerCurrency?.symbol ?? '$' }} 50"
               formControlName="price"
             />
             <span
@@ -379,32 +374,38 @@
           <label for="">Package Price (Session Bundle)</label>
         </div>
         <div class="w-form" formArrayName="price_package">
-          <div
-            class="w-full flex items-center mb-2"
-            *ngFor="let sessionPrice of pricePackages.controls; let i = index"
-            [formGroupName]="i"
-          >
-            <input
-              class="input w-24 py-3 px-4 focus:outline-none"
-              placeholder="$ 100"
-              formControlName="price"
-              type="number"
-              min="0"
-            />
-            <span class="input-field-secondary-text mx-3">for</span>
-            <input
-              type="number"
-              class="input w-20 py-3 px-4 focus:outline-none"
-              placeholder="2"
-              formControlName="no_of_sessions"
-              [preventDecimal]="true"
-              min="2"
-            />
-            <span class="input-field-secondary-text mx-3">sessions</span>
-            <button type="button" class="h-full flex items-center" (click)="deletePricePackage(i)">
-              <img src="../../../../../assets/images/icons/delete.svg" alt="" />
-            </button>
-          </div>
+          <ng-container *ngFor="let sessionPrice of pricePackages.controls; let i = index">
+            <div
+              class="w-full flex items-center mb-2"
+              *ngIf="!sessionPrice.get('is_deleted')?.value"
+              [formGroupName]="i"
+            >
+              <input
+                class="input w-24 py-3 px-4 focus:outline-none"
+                placeholder="{{ customerCurrency?.symbol ?? '$' }} 100"
+                formControlName="price"
+                type="number"
+                min="0"
+              />
+              <span class="input-field-secondary-text mx-3">for</span>
+              <input
+                type="number"
+                class="input w-20 py-3 px-4 focus:outline-none"
+                placeholder="2"
+                formControlName="no_of_sessions"
+                [preventDecimal]="true"
+                min="2"
+              />
+              <span class="input-field-secondary-text mx-3">sessions</span>
+              <button
+                type="button"
+                class="h-full flex items-center"
+                (click)="deletePricePackage(i)"
+              >
+                <img src="../../../../../assets/images/icons/delete.svg" alt="" />
+              </button>
+            </div>
+          </ng-container>
           <button type="button" class="noborder-button px-0 mt-2" (click)="addPricePackage()">
             + Add Another Package Price
           </button>
@@ -444,7 +445,7 @@
           [duration]="productForm.get('duration')?.value"
           [price]="productForm.get('price')?.value"
           [packages]="previewablePricePackages"
-          [product_type]="productForm.get('productForm')?.value"
+          [product_type]="productForm.get('product_type')?.value"
         >
         </app-preview-product>
       </div>

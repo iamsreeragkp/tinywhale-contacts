@@ -22,7 +22,9 @@ export class NumberDirective {
   // ];
 
   constructor(private _el: ElementRef) {
-    this.preventNegative = +this.inputElement?.min >= 0;
+    if (this.inputElement?.min) {
+      this.preventNegative = +this.inputElement.min >= 0;
+    }
   }
   @Input() preventDecimal = false;
   @HostListener('keydown', ['$event'])

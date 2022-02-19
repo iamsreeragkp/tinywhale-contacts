@@ -16,13 +16,13 @@
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
       <div class="flex items-center border-b border-gray-300 border-solid pb-3">
         <h3 class="font-bold text-primaryFont mr-4">Overview</h3>
-        <button class="noborder-button px-0 font-bold mr-4 text-xs" (click)="onClickMtd()">
+        <button [ngClass]="overviewType === 'MTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium ' "  class="  mr-4 text-xs" (click)="onClickMtd('MTD')">
           MTD
         </button>
-        <button class="text-primaryFont font-medium mr-4 text-xs" (click)="onClickQtd()">
+        <button [ngClass]="overviewType === 'QTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium' "  class="  mr-4 text-xs" (click)="onClickQtd('QTD')">
           QTD
         </button>
-        <button class="text-primaryFont font-medium mr-4 text-xs" (click)="onClickYtd()">
+        <button [ngClass]="overviewType === 'YTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium' "  class="  mr-4 text-xs" (click)="onClickYtd('YTD')">
           YTD
         </button>
       </div>
@@ -39,15 +39,15 @@
           </div>
           <div class="flex items-center">
             <h3 class="text-primaryFont font-bold font-baloo text-tworem">
-              S$ {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
+              {{customerCurrency?.symbol ?? '$'}} {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
             </h3>
 
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center ml-6">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">S$ {{ currentMonthGross || '0' }}</span>
-              <!-- <span class="red-text ml-3">S$ 80</span> -->
+              <span class="green-text ml-3">{{customerCurrency?.symbol ?? '$'}} {{ currentMonthGross || '0' }}</span>
+              <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
@@ -83,7 +83,7 @@
           *ngFor="let dashboard of [dashboardInfos]"
         >
           <div
-            class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid"
+            class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid dashboard-new-hovervalue cursor-pointer"  [routerLink]="['/booking/view-booking']"
           >
             <div class="flex items-center pb-4">
               <h4 class="text-primaryFont mr-3.5 font-medium">Booked Sessions</h4>
@@ -111,7 +111,7 @@
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">{{ bookingGross || '0' }}</span>
-              <!-- <span class="red-text ml-3">S$ 80</span> -->
+              <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
@@ -131,7 +131,7 @@
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">{{ percentage || '0' }}%</span>
-              <!-- <span class="red-text ml-3">S$ 80</span> -->
+              <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
@@ -142,11 +142,11 @@
       class="w-full grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 font-poppins"
       *ngFor="let dashboard of [dashboardInfos]"
     >
-      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
+      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center value-hover dashboard-new-hovervalue cursor-pointer"  [routerLink]="['/service/home']">
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Active Services</h4>
         </div>
-        <div class="flex items-center dashboard-new-hovervalue cursor-pointer">
+        <div class="flex items-center ">
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
@@ -167,11 +167,11 @@
           {{ dashboard?.total_customers || '0' }}
         </h3>
       </div>
-      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center">
+      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center dashboard-new-hovervalue cursor-pointer duration-500"  [routerLink]="['/account/view-payment']">
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Pending Payments</h4>
         </div>
-        <div class="flex items-center dashboard-new-hovervalue cursor-pointer duration-500">
+        <div class="flex items-center ">
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
@@ -222,17 +222,18 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex justify-center items-center mt-4">
+  
+          <div class="w-full flex justify-center items-center mt-4" *ngIf="upcomingSessions?.length >=5">
             <button class="noborder-button" (click)="navagateToBooking()">View All</button>
           </div>
         </ng-container>
-        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions">
+        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions?.length">
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
             <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
             <p class="text-primaryFont mt-3 text-center mb-6">
               You don’t have any upcoming sessions yet. Share your services and get bookings.
             </p>
-            <button class="secondary-button w-48" (click)="navagateToBooking()">
+            <button class="secondary-button w-48" (click)="navagateToService()">
               <span>Go to Services</span>
             </button>
           </div>

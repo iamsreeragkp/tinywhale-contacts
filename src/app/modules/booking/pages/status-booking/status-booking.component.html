@@ -15,7 +15,7 @@
   *ngIf="!settledInvoice"
 >
   <img src="../../../../../assets/images/icons/check.svg" alt="" class="w-6" />
-  <span class="ml-4 text-white">Settled invoice email has been sent to the walk-in guest.</span>
+  <span class="ml-4 text-white">Settled invoice email has been sent to the walk-in customer.</span>
 </div>
 <ng-container *ngFor="let stdata of [statusData]">
   <div class="add-info flex w-full text-primaryFont">
@@ -81,7 +81,13 @@
                   ? 'A$'
                   : ''
 
-              }}{{ stdata?.invoice?.due_amount || '---' }} (Off Platform)</span
+
+
+              }}{{
+                stdata?.invoice?.due_amount || '---'
+              }}
+              ({{stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase
+              }})</span
             >
             <div class="relative">
               <img

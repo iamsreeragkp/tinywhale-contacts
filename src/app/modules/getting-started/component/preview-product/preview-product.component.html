@@ -18,15 +18,30 @@
   {{ description ?? 'Description' }}
 </p>
 <p class="text font-poppins mb-3" *ngIf="price">
-  $ {{ price + (product_type === ProductType.CLASS ? ' for 1 session ' : '') }}
+  {{ customerCurrency?.symbol ?? '$' }}
+  {{ price + (product_type === ProductType.CLASS ? ' for 1 session ' : '') }}
   {{ product_type === ProductType.CLASS && duration ? '(' + duration + ' minutes)' : '' }}
 </p>
-<p class="text font-poppins mb-3" *ngIf="!price">Price per session</p>
+<ng-container *ngIf="!price">
+  <p class="text font-poppins mb-3" *ngIf="price === null || price === undefined; else priceZero">
+    Price per session
+  </p>
+  <ng-template #priceZero>
+    <p class="text font-poppins mb-3">FREE</p>
+  </ng-template>
+</ng-container>
 <ng-container *ngIf="product_type === ProductType.CLASS">
   <p class="text font-poppins mb-3" *ngIf="!packages?.length">Package Price for N sessions</p>
   <p class="text font-poppins mb-3" *ngFor="let pricePackage of packages">
-    $ {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
-    {{ duration ? '(' + duration + ' minutes each)' : '' }}
+    <ng-container
+      *ngIf="pricePackage?.no_of_sessions && (pricePackage?.price ?? 'booo') !== 'booo'"
+    >
+      {{
+        pricePackage?.price ? (customerCurrency?.symbol ?? '$') + ' ' + pricePackage.price : 'FREE'
+      }}
+      for {{ pricePackage?.no_of_sessions }} sessions
+      {{ duration ? '(' + duration + ' minutes each)' : '' }}
+    </ng-container>
   </p>
 </ng-container>
 <!-- <p class="text mb-3">$ 380 for 6 session (1 hour each)</p> -->

@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
-import { convert24HrsFormatToAmPm } from 'src/app/shared/utils';
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import { convert24HrsFormatToAmPm, Currency, currencyList } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
@@ -47,6 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   baseURL = environment.tinyWhaleBaseUrl;
+  overviewType: string = 'MTD';
 
   colorScheme: Color = {
     name: 'primary',
@@ -76,9 +78,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   potential: any;
   upcomingSessions: any;
   orderLineItem: any;
+  customerCurrency?: Currency;
   ngUnsubscribe = new Subject<any>();
 
-  constructor(private store: Store<IRootState>, private router: Router) {
+  constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
+    const userData = authService.decodeUserToken();
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.default_currency
+    );
     this.dashboard$ = store.pipe(
       select(getDashboardData),
       takeUntil(this.ngUnsubscribe),
@@ -156,7 +163,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.processingFee = (sumOfGatewayAndProcessingFee / paymentFeeCurrent) * 100;
 
       this.priceData = this.dashboardInfos?.price_data;
-      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions[1];
+      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions?.[1];
       for (let i = 0; i < this.priceData?.length; i++) {
         this.priceLineData = this.priceData[i];
         this.chart1 = [
@@ -214,17 +221,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onClickQtd() {
-    const QTD = 'QTD';
-    this.store.dispatch(getDashboard({ filters: { filter_type: QTD } }));
+  onClickQtd(type: string) {
+    this.overviewType = type;
+    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
   }
 
-  onClickYtd() {
-    const YTD = 'YTD';
-    this.store.dispatch(getDashboard({ filters: { filter_type: YTD } }));
+  onClickYtd(type: string) {
+    this.overviewType = type;
+    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
   }
 
-  onClickMtd() {
+  onClickMtd(type: string) {
+    this.overviewType = type;
     this.store.dispatch(getDashboard({ filters: {} }));
   }
 
@@ -266,7 +274,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   navagateToBooking() {
-    this.router.navigateByUrl('booking/view-booking');
+    this.router.navigate(['booking/view-booking'], {
+      queryParams: { filter: 'upcoming' },
+    });
+  }
+  navagateToService() {
+    this.router.navigateByUrl('/service/home');
   }
   convert24HrsFormatToAmPm(time?: string | null) {
     if (!time) {

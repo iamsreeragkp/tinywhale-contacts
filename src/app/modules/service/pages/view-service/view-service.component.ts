@@ -12,7 +12,7 @@ import { Product, ProductType, VisibilityType, WeekDay } from '../../shared/serv
 import { getServiceStatus } from '../../store/service.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeRangeSerialized } from 'src/app/shared/interfaces/time-range.interface';
-import { getTimeRangeSerialized } from 'src/app/shared/utils';
+import { Currency, currencyList, getTimeRangeSerialized } from 'src/app/shared/utils';
 import { TitleCasePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth/auth.service';
@@ -35,6 +35,8 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   baseURL = environment.tinyWhaleBaseUrl;
   copyURL: string = '';
   customUsername!: string;
+  customerCurrency?: Currency;
+  domainActive = false;
 
   constructor(
     private store: Store<IAppState>,
@@ -51,6 +53,10 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
+    this.domainActive = userData?.dashboardInfos?.domainActive;
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.default_currency
+    );
     this.customUsername = userData.dashboardInfos.customUsername;
   }
 

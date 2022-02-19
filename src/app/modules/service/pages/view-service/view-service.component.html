@@ -1,11 +1,16 @@
 <div class="flex flex-col min-h-full rounded-5 overflow-hidden">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
-    <header class="header leading-9 font-normal not-italic">
-      <span class="text-4xl">{{ productObj?.title ?? '' }}</span>
+    <header class="header leading-9 font-normal not-italic truncate">
+      <span class="text-4xl truncate">{{ productObj?.title ?? '' }}</span>
     </header>
     <div class="flex">
       <div class="relative">
-        <button type="button" class="secondary-button mr-2 px-8" (click)="copyViewBox()">
+        <button
+          type="button"
+          [disabled]="!domainActive"
+          class="secondary-button mr-2 px-8"
+          (click)="copyViewBox()"
+        >
           <span>Share</span>
         </button>
         <ng-container *ngIf="copyView">
@@ -18,7 +23,7 @@
       ></app-three-dots>
     </div>
   </div>
-  <hr class="line" />
+  <hr class="line bg-[#e5e5e5]" />
   <div class="flex">
     <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-bl-3xl flex-1">
       <main>
@@ -62,7 +67,7 @@
             </div>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Session Duration</span>
           </div>
@@ -70,7 +75,7 @@
             <span>{{ productObj?.class?.duration_in_minutes ?? '-' }} min</span>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Time</span>
           </div>
@@ -101,7 +106,7 @@
             </div>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Location</span>
           </div>
@@ -118,7 +123,7 @@
             <span *ngIf="!productObj?.class?.location_type">-</span>
           </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-4" *ngIf="productObj?.product_type === ProductType.CLASS">
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Capacity</span>
           </div>
@@ -133,15 +138,18 @@
           <div class="flex-1 py-3 pl-4">
             <p>
               {{
-                productObj?.price
-                  ? '$ ' +
-                    productObj?.price +
-                    (productObj?.product_type === ProductType.CLASS
-                      ? ' for 1 session ' +
-                        (productObj?.class?.duration_in_minutes
-                          ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
-                          : '')
-                      : '')
+                (productObj?.price ?? 'booo') !== 'booo'
+                  ? !productObj?.price
+                    ? 'FREE'
+                    : (customerCurrency?.symbol ?? '$') +
+                      ' ' +
+                      productObj?.price +
+                      (productObj?.product_type === ProductType.CLASS
+                        ? ' for 1 session ' +
+                          (productObj?.class?.duration_in_minutes
+                            ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
+                            : '')
+                        : '')
                   : '-'
               }}
             </p>
@@ -150,12 +158,17 @@
                 class="text font-poppins mb-3"
                 *ngFor="let pricePackage of productObj?.class?.class_packages"
               >
-                $ {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
-                {{
-                  productObj?.class?.duration_in_minutes
-                    ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'
-                    : ''
-                }}
+                <ng-container
+                  *ngIf="pricePackage?.no_of_sessions && (pricePackage?.price ?? 'booo') !== 'booo'"
+                >
+                  {{ !pricePackage?.price ? 'FREE' : customerCurrency?.symbol ?? '$' }}
+                  {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
+                  {{
+                    productObj?.class?.duration_in_minutes
+                      ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'
+                      : ''
+                  }}
+                </ng-container>
               </p>
             </ng-container>
           </div>
@@ -165,7 +178,7 @@
             <span class="font-medium text-right">Visibility</span>
           </div>
           <div class="flex-1 py-3 pl-4 flex">
-            <span>{{ productObj?.visibility ?? '-' | titlecase }} min</span>
+            <span>{{ productObj?.visibility ?? '-' | titlecase }}</span>
           </div>
         </div>
       </main>

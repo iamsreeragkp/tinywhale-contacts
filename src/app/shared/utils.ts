@@ -10,7 +10,14 @@ export const timeOptions = ['AM', 'PM'].flatMap(amPm =>
   )
 );
 
-export const currencyList = [
+export interface Currency {
+  id: string;
+  name: string;
+  symbol: string;
+  country: string;
+}
+
+export const currencyList: Currency[] = [
   {
     id: 'SGD',
     name: 'Singapore Dollar (SGD)',

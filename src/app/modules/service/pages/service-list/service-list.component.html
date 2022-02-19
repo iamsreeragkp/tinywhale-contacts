@@ -3,11 +3,15 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Services</span>
     </header>
-    <button *ngIf="hasStarted" class="primary-button px-12" [routerLink]="['../add-service']">
+    <button
+      *ngIf="hasStarted || productCount > 0"
+      class="primary-button px-12"
+      [routerLink]="['../add-service']"
+    >
       Add A Service
     </button>
   </div>
-  <hr class="line" />
+  <hr class="line bg-[#e5e5e5]" />
   <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
     <main>
       <app-table-service-component class="flex flex-1"></app-table-service-component>

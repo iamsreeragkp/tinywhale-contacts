@@ -33,6 +33,9 @@
         width: 10px;
       }
     }
+    &.disabled {
+      @apply bg-veryLightGray pointer-events-none;
+    }
   }
   &-placeholder {
     color: #a2a3af;
@@ -59,4 +62,12 @@
 }
 .check-container {
   margin-bottom: 1rem !important;
+}
+
+:host(.ng-touched.ng-invalid.show-error) {
+  .custom-select {
+    .custom-select-box {
+      border-color: #ff725e;
+    }
+  }
 }

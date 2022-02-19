@@ -47,6 +47,7 @@ export class DropdownComponent {
   _closableChip = true;
   // Options
   @Input() set options(val: OptionsType) {
+    const previousSelectedValues = JSON.stringify(this.selectedValues());
     if (val?.length) {
       this._options = JSON.parse(JSON.stringify(val)).map((option: OptionType) => ({
         ...option,
@@ -58,6 +59,9 @@ export class DropdownComponent {
       }));
     } else {
       this._options = [];
+    }
+    if (previousSelectedValues !== JSON.stringify(this.selectedValues())) {
+      this.emitValues();
     }
   }
   // Whether multi select or not
@@ -106,6 +110,12 @@ export class DropdownComponent {
   @Input() set closableChip(val: boolean) {
     this._closableChip = false;
   }
+  // No Options Text
+  @Input() noOptionsText = 'No Options';
+  //to disable dropdown
+  @Input() set editMode(val: boolean) {
+    this._isDisabled = val;
+  }
 
   // component properties
   open = false;
@@ -118,7 +128,7 @@ export class DropdownComponent {
       return;
     }
     if (!this.dropdown.nativeElement.contains(target)) {
-      this.open = false;
+      this.openCloseDropdown();
     }
     // const dropDownSelector = 'div.' + this.dropdown.nativeElement.className.split(' ').join('.');
     // if (!target.closest(dropDownSelector)) {
@@ -161,6 +171,16 @@ export class DropdownComponent {
 
   // component functions
 
+  openCloseDropdown() {
+    if (this._isDisabled) {
+      return;
+    }
+    this.open = !this.open;
+    if (!this.open) {
+      this._onTouched();
+    }
+  }
+
   setPreviousValues(val: any) {
     if (val instanceof Array) {
       let valArr = val;
@@ -185,7 +205,7 @@ export class DropdownComponent {
 
   selectUnSelectValue(val: OptionType, emitEvent = true) {
     this._options.forEach(option => {
-      if (option[this._idKey] === val[this._idKey]) {
+      if (option?.[this._idKey] === val?.[this._idKey]) {
         option.dropdown_field_data!.selected =
           !option.dropdown_field_data?.selected || (!this._multiSelect && !this.showRadio);
       } else if (!this._multiSelect) {
@@ -193,8 +213,7 @@ export class DropdownComponent {
       }
     });
     if (emitEvent) {
-      this.selectedValue.emit(this.selectedValues());
-      this._onChange(this.selectedValues());
+      this.emitValues();
       this._onTouched();
     }
     if (!this._multiSelect) {
@@ -218,8 +237,7 @@ export class DropdownComponent {
       },
     };
     this._options.push(customValue);
-    this.selectedValue.emit(this.selectedValues());
-    this._onChange(this.selectedValues());
+    this.emitValues();
     this._onTouched();
     this.openAddCustomValue = false;
     this.customValueInput = '';
@@ -239,6 +257,12 @@ export class DropdownComponent {
       }
     }
     return values;
+  }
+
+  emitValues() {
+    const values = this.selectedValues();
+    this.selectedValue.emit(values);
+    this._onChange(values);
   }
 
   get selectedOption() {

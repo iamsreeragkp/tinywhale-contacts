@@ -3,8 +3,15 @@
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Bookings</span>
     </header>
+    <button
+      *ngIf="hasStarted || bookingCount > 0"
+      class="primary-button w-48"
+      [routerLink]="['../add-booking']"
+    >
+      Register A Walk-in
+    </button>
   </div>
-  <hr class="line" />
+  <hr class="line bg-[#e5e5e5]" />
   <div
     class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
     *ngIf="!true; else noWebsiteInfo"

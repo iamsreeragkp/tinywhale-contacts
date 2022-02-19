@@ -163,17 +163,29 @@
   <table class="table-auto w-full">
     <thead>
       <tr class="bg-gray-100 border-b border-white border-solid">
-        <th class="px-2 py-3 text-left font-semibold">
+        <th class="px-2 py-3 text-left font-semibold cursor-pointer" (click)="sortDatad()">
           <div class="flex items-center">
             <span> Service Name </span>
-            <!-- <div class="ml-2">
-              <img
-                src="../../../../../assets/images/icons/sort.svg"
-                alt=""
-                srcset=""
-                class="transform rotate-180"
-              />
-            </div> -->
+            <div class="flex">
+              <div class="ml-2 cursor-pointer">
+                <img
+                  src="../../../../../assets/images/icons/sort.svg"
+                  alt=""
+                  srcset=""
+                  class="transform rotate-180"
+                  *ngIf="current === 'asc' && productsList?.length"
+                />
+              </div>
+              <div class="cursor-pointer">
+                <img
+                  src="../../../../../assets/images/icons/sort.svg"
+                  alt=""
+                  srcset=""
+                  class="transform rotate-{180}"
+                  *ngIf="current === 'desc' && productsList?.length"
+                />
+              </div>
+            </div>
           </div>
         </th>
         <th class="px-2 py-3 text-left font-semibold">Schedule</th>
@@ -187,10 +199,12 @@
     <tbody>
       <ng-container *ngIf="!productsList.length && isFilterEmpty">
         <tr>
-          <td class="italic text-xs pt-5 pb-1 px-2" colspan="7">Sample Service Listing</td>
+          <td class="italic text-xs pt-5 pb-1 px-2 text-[#73959d]" colspan="7">
+            Sample Service Listing
+          </td>
         </tr>
         <tr
-          class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50"
+          class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
         >
           <td class="align-top px-2 py-3">
             <div class="flex items-start">
@@ -300,7 +314,7 @@
       <ng-container *ngFor="let product of productsList; let i = index">
         <tr
           [routerLink]="['../view-service', product.product_id]"
-          class="table-container-borderRow cursor-pointer hover:bg-veryLightGrey hover:bg-opacity-50"
+          class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
         >
           <td class="align-top px-2 py-3">
             <div class="flex">
@@ -323,26 +337,44 @@
           </td>
           <td class="align-top px-2 py-3">
             <div class="flex items-center">
-              <span *ngIf="product?.class?.class_time_ranges?.length">{{
-                product?.class?.class_time_ranges | groupWeekDays
-              }}</span>
-              <span *ngIf="!product?.class?.class_time_ranges?.length">Flexible</span>
+              <span *ngIf="product?.product_type === ProductType.SERVICE; else classTimeRangesView"
+                >Flexible</span
+              >
+              <ng-template #classTimeRangesView>
+                <span *ngIf="product?.class?.class_time_ranges?.length">{{
+                  product?.class?.class_time_ranges | groupWeekDays
+                }}</span>
+                <span *ngIf="!product?.class?.class_time_ranges?.length">-</span>
+              </ng-template>
             </div>
           </td>
           <td class="align-top px-2 py-3">
             <div class="flex flex-col">
-              <span class="whitespace-nowrap"
-                >$ {{ product?.price ?? '-'
+              <span
+                class="whitespace-nowrap"
+                *ngIf="product?.price || (product?.price ?? 'booo') === 'booo'; else priceZero"
+                >{{ customerCurrency?.symbol ?? '$' }} {{ product?.price ?? '-'
                 }}{{ product?.product_type === ProductType.CLASS ? ' / session' : '' }}</span
               >
+              <ng-template #priceZero>
+                <span class="whitespace-nowrap">FREE</span>
+              </ng-template>
               <ng-container *ngIf="product.product_type === ProductType.CLASS">
                 <ng-container *ngFor="let sessionPrice of product?.class?.class_packages">
-                  <span
-                    class="whitespace-nowrap"
-                    *ngIf="sessionPrice?.no_of_sessions && sessionPrice?.price"
+                  <ng-container
+                    *ngIf="
+                      sessionPrice?.no_of_sessions && (sessionPrice?.price ?? 'booo') !== 'booo'
+                    "
                   >
-                    $ {{ sessionPrice.price }} / {{ sessionPrice.no_of_sessions }} sessions
-                  </span>
+                    <span class="whitespace-nowrap">
+                      {{
+                        !sessionPrice.price
+                          ? 'FREE'
+                          : (customerCurrency?.symbol ?? '$') + ' ' + sessionPrice.price
+                      }}
+                      / {{ sessionPrice.no_of_sessions }} sessions
+                    </span>
+                  </ng-container>
                 </ng-container>
               </ng-container>
               <!-- <span class=" whitespace-nowrap">$ xxx / 4 sessions</span> -->
@@ -392,16 +424,18 @@
           <td class="align-top px-2 py-3"></td>
         </tr>
       </ng-container>
-      <tr>
-        <td colspan="7">
-          <div
-            class="w-full h-12 mt-8 flex justify-center items-center"
-            *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
-          >
-            <button class="noborder-button" (click)="loadMore()">Load More</button>
-          </div>
-        </td>
-      </tr>
+      <ng-container *ngIf="isLoadMore && isFilterEmpty">
+        <tr>
+          <td colspan="7">
+            <div
+              class="w-full h-12 mt-8 flex justify-center items-center"
+              *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
+            >
+              <button class="noborder-button" (click)="loadMore()">Load More</button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
       <tr>
         <td colspan="7">
           <div class="w-full" *ngIf="isFilterEmpty && !productsList?.length">

@@ -5,10 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
+import { AuthService } from 'src/app/modules/auth/auth.service';
 import { IAppState } from 'src/app/modules/core/reducers';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import {
   convert24HrsFormatToAmPm,
+  Currency,
+  currencyList,
   locationOptions,
   timeOptions,
   weekDayOptions,
@@ -68,6 +71,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   businessLocations$: Observable<
     { businessLocations?: BusinessLocation[]; status: boolean; error?: string } | undefined
   >;
+  customerCurrency?: Currency;
+
   constructor(
     private store: Store<IAppState>,
     private _fb: FormBuilder,
@@ -75,8 +80,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
-    public location: Location
+    public location: Location,
+    authService: AuthService
   ) {
+    const userData = authService.decodeUserToken();
+    this.customerCurrency = currencyList.find(
+      currency => currency.id === userData?.dashboardInfos?.default_currency
+    );
     this.initForms();
     store.dispatch(getBusinessLocations());
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
@@ -99,7 +109,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       });
     const productData = router.getCurrentNavigation()?.extras?.state?.['product'];
     if (productData) {
-      this.initForms(productData);
+      this.initForms(productData, true);
     }
     this.isGettingStarted = router.url.split('/').includes('home');
   }
@@ -161,18 +171,33 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             this.autoSaving = false;
             const productIdControl = this.productForm.get('product_id');
             if (productIdControl) {
-              productIdControl.patchValue(data.response.product_id);
+              productIdControl.patchValue(data.response.product_id, { emitEvent: false });
             } else {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
-            this.productForm.setControl(
-              'time_ranges',
-              this._fb.array(
-                (data.response.time_ranges?.length ? data.response.time_ranges : []).map(
-                  (time_range: TimeRange) => this.createTimeRanges(time_range)
-                )
-              )
-            );
+            if (data.response.time_ranges?.length) {
+              this.productForm.setControl(
+                'time_ranges',
+                this._fb.array(
+                  data.response.time_ranges.map((time_range: TimeRange) =>
+                    this.createTimeRanges(time_range)
+                  )
+                ),
+                { emitEvent: false }
+              );
+            }
+            this.updateTimeSlotOptionsOfAWeekDay();
+            if (data.response.price_package?.length) {
+              this.productForm.setControl(
+                'price_package',
+                this._fb.array(
+                  data.response.price_package.map((pricePkg: PricePackage) =>
+                    this.createPricePackages(pricePkg)
+                  )
+                ),
+                { emitEvent: false }
+              );
+            }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
             if (this.editMode) {
@@ -203,12 +228,14 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       .get('duration')
       ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
       .subscribe(duration => {
-        this.timeRanges.controls.forEach(timeRange => this.updateEndTime(timeRange, duration));
+        this.getTimeSlotsOfWeekday().forEach(timeRange =>
+          this.updateEndTimeAndOptions(timeRange, duration)
+        );
       });
     this.subscribeStartTimes();
   }
 
-  initForms(val?: Product) {
+  initForms(val?: Product, skipId = false) {
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
@@ -222,17 +249,18 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       location: [this.createLocation(val), Validators.required],
       price_package: this._fb.array(
         val?.class?.class_packages?.length
-          ? val.class.class_packages.map(pkg => this.createPricePackages(pkg))
+          ? val.class.class_packages.map(pkg => this.createPricePackages(pkg, skipId))
           : [this.createPricePackages()]
       ),
       time_ranges: this._fb.array(
         val?.class?.class_time_ranges?.length
-          ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range))
+          ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range, skipId))
           : []
       ),
       capacity: [val?.class?.capacity ?? null, [Validators.required]],
       duration: [val?.class?.duration_in_minutes ?? null, Validators.required],
     });
+    this.updateTimeSlotOptionsOfAWeekDay();
     if (val?.product_id) {
       this.productForm.addControl('product_id', this._fb.control(val.product_id));
     }
@@ -265,15 +293,17 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  createTimeRanges(val?: TimeRange) {
+  createTimeRanges(val?: TimeRange, skipId = false) {
     if (val?.day_of_week) {
       this.weekDayOptions.find(weekDay => weekDay.value === val.day_of_week)!.selected = true;
     }
+    const timeRangeId =
+      !skipId && val?.class_time_range_id ? val.class_time_range_id : Symbol('time_range');
     return this._fb.group({
       class_time_range_id: [
         {
-          value: val?.class_time_range_id ?? Symbol('time_range'),
-          disabled: !val?.class_time_range_id,
+          value: timeRangeId,
+          disabled: skipId || !val?.class_time_range_id,
         },
       ],
       day_of_week: [val?.day_of_week ?? null],
@@ -281,13 +311,23 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       end_time: [val?.end_time ?? ''],
       end_time_label: [{ value: convert24HrsFormatToAmPm(val?.end_time), disabled: true }],
       is_deleted: [false],
+      slot_options: [
+        { value: this.getTimeSlotOptions(val?.day_of_week, timeRangeId), disabled: true },
+      ],
     });
   }
 
-  createPricePackages(val?: PricePackage) {
+  createPricePackages(val?: PricePackage, skipId = false) {
     return this._fb.group({
+      class_package_id: [
+        {
+          value: !skipId && val?.class_package_id ? val.class_package_id : Symbol('class_package'),
+          disabled: skipId || !val?.class_package_id,
+        },
+      ],
       price: [val?.price ?? null],
       no_of_sessions: [val?.no_of_sessions ?? null, Validators.min(2)],
+      is_deleted: [false],
     });
   }
 
@@ -310,6 +350,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   addTimeRangeToWeekDay(dayOfWeek: WeekDay) {
     this.timeRanges.push(this.createTimeRanges({ day_of_week: dayOfWeek }));
+    this.updateTimeSlotOptionsOfAWeekDay(dayOfWeek);
     this.productFormSubscriptions();
   }
 
@@ -326,25 +367,33 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productFormSubscriptions();
   }
 
-  getTimeSlotsOfWeekday(dayOfWeek: string) {
+  getTimeSlotsOfWeekday(dayOfWeek?: string) {
     return this.timeRanges.controls.filter(
       weekDay =>
-        weekDay?.get('day_of_week')?.value === dayOfWeek && !weekDay.get('is_deleted')?.value
+        !weekDay.get('is_deleted')?.value &&
+        (!dayOfWeek || weekDay?.get('day_of_week')?.value === dayOfWeek)
     );
   }
 
   subscribeStartTimes() {
     // subscribing start date, patching end date with duration
-    this.timeRanges.controls.forEach(timeRange => {
-      timeRange
-        .get('start_time')
-        ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
-        .subscribe(() => this.updateEndTime(timeRange, this.productForm.get('duration')?.value));
-    });
+    this.timeRanges.controls
+      .filter(tR => !tR.get('is_deleted')?.value)
+      .forEach(timeRange => {
+        timeRange
+          .get('start_time')
+          ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
+          .subscribe(val => {
+            console.log(val);
+            this.updateEndTimeAndOptions(timeRange, this.productForm.get('duration')?.value);
+          });
+      });
   }
 
-  updateEndTime(timeRange: AbstractControl, duration: string) {
+  updateEndTimeAndOptions(timeRange: AbstractControl, duration: string) {
     if (!timeRange.get('start_time')?.value) {
+      timeRange.get('end_time')?.patchValue(null, { emitEvent: false });
+      timeRange.get('end_time_label')?.patchValue(null, { emitEvent: false });
       return;
     }
     const [hour, minute] = timeRange.get('start_time')?.value.match(/\d{2}/g);
@@ -353,15 +402,19 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       ?.patchValue(
         `${((+hour + Math.floor((+minute + (+duration ?? 0)) / 60)) % 24)
           .toString()
-          .padStart(2, '0')}${`${(+minute + (+duration ?? 0)) % 60}`.padStart(2, '0')}`
+          .padStart(2, '0')}${`${(+minute + (+duration ?? 0)) % 60}`.padStart(2, '0')}`,
+        { emitEvent: false }
       );
     timeRange
       .get('end_time_label')
-      ?.patchValue(convert24HrsFormatToAmPm(timeRange.get('end_time')?.value));
+      ?.patchValue(convert24HrsFormatToAmPm(timeRange.get('end_time')?.value), {
+        emitEvent: false,
+      });
+    this.updateTimeSlotOptionsOfAWeekDay(timeRange.get('day_of_week')?.value);
   }
 
   addPricePackage() {
-    this.pricePackages.push(this.createPricePackages());
+    this.pricePackages.push(this.createPricePackages(), { emitEvent: false });
   }
 
   async handleFileInput(event: Event, index: number) {
@@ -390,7 +443,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   deletePricePackage(index: number) {
-    this.pricePackages.removeAt(index);
+    const pricePackage = this.pricePackages.at(index);
+    if (pricePackage?.get('class_package_id')?.disabled) {
+      this.pricePackages.removeAt(index);
+    } else {
+      pricePackage.get('is_deleted')?.patchValue(true, { emitEvent: true });
+    }
   }
 
   expireSubscriptions() {
@@ -406,9 +464,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     Considering the duration of session, remove adjacent timeslots if necessary
     return timeslots array
   */
-  getTimeSlotOptions(dayOfWeek: WeekDay, id: Symbol) {
+  getTimeSlotOptions(dayOfWeek: WeekDay | null | undefined, id: symbol | number) {
+    if (!dayOfWeek) {
+      return timeOptions;
+    }
     const controlsOfSameWeekDay = this.timeRanges.controls.filter(
       timeRange =>
+        !timeRange.get('is_deleted')?.value &&
         timeRange.get('class_time_range_id')?.value !== id &&
         timeRange.get('day_of_week')?.value === dayOfWeek
     );
@@ -494,6 +556,21 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   productTypeChange(product_type: ProductType) {
     enableDisableFormFields.forEach(field => {
       this.productForm.get(field)?.[product_type === ProductType.CLASS ? 'enable' : 'disable']();
+    });
+  }
+
+  updateTimeSlotOptionsOfAWeekDay(day_of_week?: WeekDay) {
+    console.log('updatingTimeSlots');
+    this.getTimeSlotsOfWeekday(day_of_week).forEach(timeRange => {
+      timeRange
+        .get('slot_options')
+        ?.patchValue(
+          this.getTimeSlotOptions(
+            timeRange.get('day_of_week')?.value,
+            timeRange.get('class_time_range_id')?.value
+          ),
+          { emitEvent: false }
+        );
     });
   }
 
