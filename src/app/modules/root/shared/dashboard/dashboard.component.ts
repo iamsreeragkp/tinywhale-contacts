@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
     const userData = authService.decodeUserToken();
     this.customerCurrency = currencyList.find(
-      currency => currency.id === userData?.dashboardInfos?.currency
+      currency => currency.id === userData?.dashboardInfos?.default_currency
     );
     this.dashboard$ = store.pipe(
       select(getDashboardData),
