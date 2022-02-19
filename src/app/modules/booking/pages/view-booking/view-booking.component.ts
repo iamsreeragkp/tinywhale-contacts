@@ -36,7 +36,7 @@ export class ViewBookingComponent implements OnInit, OnDestroy {
   }
 
   get hasStarted() {
-    return this.dashboardInfos?.domainActive || this.dashboardInfos?.bookingInfo?.isStarted;
+    return this.dashboardInfos?.domainActive || this.dashboardInfos?.businessInfo?.isCompleted;
   }
 
   ngOnDestroy(): void {
