@@ -117,6 +117,7 @@ import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-pa
     WindowComponent,
     TextareaAutoresizeDirective,
     SelectCalendarComponent,
+    LoaderPageComponent,
   ],
 })
 export class SharedModule {}
