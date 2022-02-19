@@ -103,8 +103,11 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   bookData: any;
   isLoadMore = false;
   validateCount(count: any) {
+    console.log(count, 'count');
+
     if (count >= 5) {
       this.isLoadMore = true;
+      console.log(this.isLoadMore, 'lll');
     }
   }
   subscriptions() {
