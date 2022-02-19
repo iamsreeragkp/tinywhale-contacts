@@ -36,6 +36,7 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   customerCurrency?: Currency;
+  domainActive = false;
 
   constructor(
     private store: Store<IAppState>,
@@ -52,6 +53,7 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
     const userData = this.authService.decodeUserToken();
+    this.domainActive = userData?.dashboardInfos?.domainActive;
     this.customerCurrency = currencyList.find(
       currency => currency.id === userData?.dashboardInfos?.default_currency
     );

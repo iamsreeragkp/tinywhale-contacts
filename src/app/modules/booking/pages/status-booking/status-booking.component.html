@@ -90,8 +90,9 @@
 
 
 
+
               }}{{ stdata?.invoice?.due_amount || '---' }}
-              {{ stdata?.invoice?.payments?.[0]?.payment_mode || '' }}</span
+              {{ stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase }}</span
             >
             <span class="tooltip-right" *ngIf="stdata?.invoice?.status === 'SETTLED'">
               <span class="dashboard-new-i-blue cursor-help relative top-1"

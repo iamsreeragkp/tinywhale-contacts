@@ -112,6 +112,10 @@ export class DropdownComponent {
   }
   // No Options Text
   @Input() noOptionsText = 'No Options';
+  //to disable dropdown
+  @Input() set editMode(val: boolean) {
+    this._isDisabled = val;
+  }
 
   // component properties
   open = false;

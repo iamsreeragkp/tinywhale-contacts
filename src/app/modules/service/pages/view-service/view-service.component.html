@@ -5,7 +5,12 @@
     </header>
     <div class="flex">
       <div class="relative">
-        <button type="button" class="secondary-button mr-2 px-8" (click)="copyViewBox()">
+        <button
+          type="button"
+          [disabled]="!domainActive"
+          class="secondary-button mr-2 px-8"
+          (click)="copyViewBox()"
+        >
           <span>Share</span>
         </button>
         <ng-container *ngIf="copyView">
@@ -133,16 +138,18 @@
           <div class="flex-1 py-3 pl-4">
             <p>
               {{
-                productObj?.price
-                  ? (customerCurrency?.symbol ?? '$') +
-                    ' ' +
-                    productObj?.price +
-                    (productObj?.product_type === ProductType.CLASS
-                      ? ' for 1 session ' +
-                        (productObj?.class?.duration_in_minutes
-                          ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
-                          : '')
-                      : '')
+                (productObj?.price ?? 'booo') !== 'booo'
+                  ? !productObj?.price
+                    ? 'FREE'
+                    : (customerCurrency?.symbol ?? '$') +
+                      ' ' +
+                      productObj?.price +
+                      (productObj?.product_type === ProductType.CLASS
+                        ? ' for 1 session ' +
+                          (productObj?.class?.duration_in_minutes
+                            ? '(' + productObj?.class?.duration_in_minutes + ' minutes)'
+                            : '')
+                        : '')
                   : '-'
               }}
             </p>
@@ -151,13 +158,17 @@
                 class="text font-poppins mb-3"
                 *ngFor="let pricePackage of productObj?.class?.class_packages"
               >
-                {{ customerCurrency?.symbol ?? '$' }} {{ pricePackage?.price }} for
-                {{ pricePackage?.no_of_sessions }} sessions
-                {{
-                  productObj?.class?.duration_in_minutes
-                    ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'
-                    : ''
-                }}
+                <ng-container
+                  *ngIf="pricePackage?.no_of_sessions && (pricePackage?.price ?? 'booo') !== 'booo'"
+                >
+                  {{ !pricePackage?.price ? 'FREE' : customerCurrency?.symbol ?? '$' }}
+                  {{ pricePackage?.price }} for {{ pricePackage?.no_of_sessions }} sessions
+                  {{
+                    productObj?.class?.duration_in_minutes
+                      ? '(' + productObj?.class?.duration_in_minutes + ' minutes each)'
+                      : ''
+                  }}
+                </ng-container>
               </p>
             </ng-container>
           </div>
