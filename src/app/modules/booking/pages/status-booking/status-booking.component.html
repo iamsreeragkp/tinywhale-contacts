@@ -25,7 +25,7 @@
   <span class="ml-4 text-white">Settled invoice email has been sent to the walk-in customer.</span>
 </div>
 <ng-container *ngFor="let stdata of [statusData]">
-  <div class="add-info flex w-full text-primaryFont">
+  <div class="add-info flex w-full text-primaryFont min-h-full">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <div class="input-field flex mb-8">
         <div class="w-44 label text-right mr-6">
@@ -87,8 +87,6 @@
                   : stdata?.order_line_item?.[0]?.currency === 'AUD'
                   ? 'A$'
                   : ''
-
-
 
 
               }}{{ stdata?.invoice?.due_amount || '---' }}

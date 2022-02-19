@@ -31,8 +31,8 @@
   </div>
 </div>
 <div class="fixed-header-mask fixed z-40 left-0 top-0"></div>
-<form [formGroup]="bookingForm" autocomplete="off">
-  <div class="add-info flex w-full font-poppins">
+<div class="add-info w-full flex min-h-full font-poppins">
+  <form [formGroup]="bookingForm" autocomplete="off" class="w-full flex">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Email*</label></div>
@@ -162,5 +162,5 @@
     <div class="detail-section w-5/12">
       <div class="px-8 py-8 relative"></div>
     </div>
-  </div>
-</form>
+  </form>
+</div>
