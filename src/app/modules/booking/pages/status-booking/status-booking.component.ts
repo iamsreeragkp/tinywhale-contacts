@@ -30,15 +30,17 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
     this.route.queryParamMap.subscribe((data: any) => {
       if (data?.params?.fromList) {
         this.isVis = true;
+      } else {
+        setTimeout(() => {
+          this.settledInvoice = true;
+        }, 2000);
       }
     });
   }
 
   ngOnInit(): void {
     if (!this.isVis) {
-      setTimeout(() => {
-        this.settledInvoice = false;
-      }, 1000);
+      this.settledInvoice = false;
     }
     this.subscriptions();
   }

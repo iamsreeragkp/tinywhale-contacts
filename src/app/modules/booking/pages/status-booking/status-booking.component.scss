@@ -190,3 +190,11 @@
   border-style: solid;
   border-color: transparent #eaf3f6 transparent transparent;
 }
+.card-tooltip-text {
+  width: 17rem !important;
+  &::after {
+    content: '';
+    margin-top: -10px !important;
+    border-width: 8px !important;
+  }
+}

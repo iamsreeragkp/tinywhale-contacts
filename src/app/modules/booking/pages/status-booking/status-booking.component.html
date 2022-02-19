@@ -17,6 +17,13 @@
   <img src="../../../../../assets/images/icons/check.svg" alt="" class="w-6" />
   <span class="ml-4 text-white">Settled invoice email has been sent to the walk-in customer.</span>
 </div>
+<div
+  class="fixed z-50 booking-toast rounded-lg shadow py-5 px-4 flex items-center"
+  *ngIf="!settledInvoice"
+>
+  <img src="../../../../../assets/images/icons/check.svg" alt="" class="w-6" />
+  <span class="ml-4 text-white">Settled invoice email has been sent to the walk-in customer.</span>
+</div>
 <ng-container *ngFor="let stdata of [statusData]">
   <div class="add-info flex w-full text-primaryFont">
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
@@ -83,33 +90,27 @@
 
 
 
-              }}{{
-                stdata?.invoice?.due_amount || '---'
-              }}
-              ({{stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase
-              }})</span
+
+              }}{{ stdata?.invoice?.due_amount || '---' }}
+              {{ stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase }}</span
             >
-            <div class="relative">
-              <img
-                src="../../../../../assets/images/icons/check.svg"
-                alt=""
-                *ngIf="stdata?.invoice?.status === 'SETTLED'"
-              />
-              <img
-                src="../../../../../assets/images/icons/pending.svg"
-                alt=""
-                *ngIf="
-                  stdata?.invoice?.status === 'PENDING_PAYMENT' ||
-                  stdata?.invoice?.status === 'OPEN'
-                "
-              />
-              <div
-                class="absolute status-payment px-4 py-2 whitespace-nowrap rounded-lg"
-                *ngIf="stdata?.invoice?.status === 'SETTLED'"
-              >
-                <span class="text-white">Payment Complete</span>
-              </div>
-            </div>
+            <span class="tooltip-right" *ngIf="stdata?.invoice?.status === 'SETTLED'">
+              <span class="dashboard-new-i-blue cursor-help relative top-1"
+                ><img src="../../../../../assets/images/icons/check.svg" class="mb-2"
+              /></span>
+              <span class="tooltiptext card-tooltip-text">Payment Complete</span>
+            </span>
+            <span
+              class="tooltip-right"
+              *ngIf="
+                stdata?.invoice?.status === 'PENDING_PAYMENT' || stdata?.invoice?.status === 'OPEN'
+              "
+            >
+              <span class="dashboard-new-i-blue cursor-help relative top-1"
+                ><img src="../../../../../assets/images/icons/pending.svg" class="mb-2"
+              /></span>
+              <span class="tooltiptext card-tooltip-text">Payment Pending</span>
+            </span>
           </div>
         </div>
       </div>
