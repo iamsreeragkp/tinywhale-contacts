@@ -82,7 +82,12 @@
                   : ''
 
 
-              }}{{ stdata?.invoice?.due_amount || '---' }} (Off Platform)</span
+
+              }}{{
+                stdata?.invoice?.due_amount || '---'
+              }}
+              ({{stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase
+              }})</span
             >
             <div class="relative">
               <img

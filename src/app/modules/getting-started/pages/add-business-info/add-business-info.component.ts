@@ -286,7 +286,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
     return this.fb.group({
       // recognition_id: [val?.recognition_id ?? ''],
-      recognition_type: [val?.recognition_type ?? ''],
+      recognition_type: [val?.recognition_type ?? null],
       recognition_name: [val?.recognition_name ?? ''],
       expiry_date: [val?.expiry_date ? new Date(val?.expiry_date) : ''],
       photo_url: [val?.photo_url ?? ''],
@@ -648,13 +648,13 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     // });
   }
 
-  isSocialLinkFilled(){
+  isSocialLinkFilled() {
     const socialLinks = this.socialItems && this.socialItems.value;
-    return socialLinks.filter((data:any) => {    
-      console.log("URLL", typeof(data.url));
-      
-      return data.url
-    })
+    return socialLinks.filter((data: any) => {
+      console.log('URLL', typeof data.url);
+
+      return data.url;
+    });
   }
 
   isTestimonialFilled() {
