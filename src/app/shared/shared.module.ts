@@ -36,6 +36,7 @@ import { TextareaAutoresizeDirective } from './directives/auto-resize.directive'
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { SelectCalendarComponent } from './components/select-calendar/select-calendar.component';
 import { CalendarSvgComponent } from './svgs/calendarSvg/calendar-svg.component';
+import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-page.component';
 
 @NgModule({
   imports: [
@@ -79,6 +80,7 @@ import { CalendarSvgComponent } from './svgs/calendarSvg/calendar-svg.component'
     TextareaAutoresizeDirective,
     SelectCalendarComponent,
     CalendarSvgComponent,
+    LoaderPageComponent,
   ],
   exports: [
     CommonModule,
