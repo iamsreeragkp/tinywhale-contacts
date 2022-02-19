@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { WeekDay } from 'src/app/modules/service/shared/service.interface';
+import { getService } from 'src/app/modules/service/store/service.actions';
+import { getServiceStatus } from 'src/app/modules/service/store/service.selectors'
 import { convert24HrsFormatToAmPm, getTimeRangeSerialized } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
 import {
@@ -14,8 +17,10 @@ import {
   getBookingById,
   initBooking,
 } from '../../store/booking.actions';
+
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
 import { IBookingState } from '../../store/booking.reducers';
+import { IServiceState } from 'src/app/modules/service/store/service.reducers';
 import {
   getBookableSlotsStatus,
   getBookingByIds,
@@ -39,22 +44,28 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject<any>();
   editMode = false;
   bookingData$: Observable<any>;
+  serviceData$!: Observable<any>;
   orderId!: number;
   classTimeRanged: any;
   isToastError = false;
   slotNow: any;
+  
 
   filledSlotsData$!: Observable<
     { response?: FilledSlotDetails; status: boolean; error?: string } | undefined
   >;
-  filledSlots?: any;
-
+  
+  filledSlots: FilledSlotDetails = [];
   disabledWeekdays: any[] = [];
   disabledDates: any[] = [];
+  today = new Date();
+  productInfos: any;
+  classPackages: any;
 
   constructor(
     private authService: AuthService,
     private store: Store<IBookingState>,
+    private serviceStore: Store<IServiceState>,
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone,
@@ -64,6 +75,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
     this.getDataDate();
+    this.serviceData$ = serviceStore.pipe(select(getServiceStatus));
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
       .pipe(
@@ -88,7 +100,8 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm
       .get('service')
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(val => {
+      .subscribe((val:number) => {
+        console.log("SERVICE SELECTED",val);
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.class?.class_time_ranges) {
           this.isFree = false;
@@ -100,7 +113,48 @@ export class AddBookingComponent implements OnInit, OnDestroy {
               convert24HrsFormatToAmPm(classTimeRange?.end_time),
           }));
           // this.updateSelectableSlots();
-          this.store.dispatch(getBookableSlots({ productId: val }));
+         this.serviceStore.dispatch(getService({product_id: val}));
+         
+          this.serviceData$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
+      .subscribe(data => {
+        console.log("DATAAAA",data);
+        
+        if (data) {
+          console.log("Product Infos ",data);
+          this.classData = data.product.class;
+          this.productInfos = data.product;
+          this.classPackages = [];
+          this.classPackages.push({
+            id: undefined,
+            label: `${this.productInfos.price ? '$ ' + this.productInfos.price : 'FREE'} / 1 Session`,
+            session: 1,
+          });
+          this.classPackages.push(
+            ...(this.productInfos.class?.class_packages?.map((classPckg: any) => ({
+              id: classPckg?.class_package_id,
+              label:
+                (classPckg?.price ? '$ ' + classPckg.price : 'FREE') +
+                ' / ' +
+                classPckg?.no_of_sessions +
+                ' ' +
+                'Sessions',
+              session: classPckg?.no_of_sessions,
+            })) ?? [])
+          );
+          console.log("class packages", this.classPackages);
+          
+         
+          this.disabledWeekdays = this.getDisabledWeekdays();
+        } else {
+          console.log(data?.error);
+        }
+      });
+          
+          // this.store.dispatch(getBookableSlots({ productId: val }));
 
           this.classTimerangeId = this.classTimeRanged?.id;
         }
@@ -113,13 +167,21 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   }
 
   subscriptions() {
+    console.log("SUBSCRIPTION");
+    
     this.bookingData$
       .pipe(
         takeUntil(this.ngUnsubscribe),
         filter(val => !!val)
       )
       .subscribe(data => {
+        console.log("DATAAAA",data);
+        
         if (data) {
+          console.log("Product Infos ",data);
+          
+          this.productInfos = data;
+          this.disabledWeekdays = this.getDisabledWeekdays();
           this.orderId = data?.order_id;
           this.initializeBookingForm(data);
         } else {
@@ -133,6 +195,8 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .get('service')
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
+        // console.log("SERVICE SELECTED",data);
+        
         this.store.select(getBookableSlotsStatus).subscribe((data: any) => {
           console.log(data, 'kkk');
 
@@ -315,9 +379,48 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  get sessions() {
-    return this.bookingForm.get('slot');
+  // get sessions() {
+  //   return this.bookingForm.get('slot');
+  // }
+
+  /**
+   * Function which sets the disabled weekdays in which no slots are available.
+   * Called when booking data is loaded
+   * @returns {Array.<WeekDayMyDpStr>} disabledWeekdays
+   */
+  getDisabledWeekdays() {
+    type WeekDayMyDpStr = 'su' | 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa';
+    const weekDayMyDpStrArr: WeekDayMyDpStr[] = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+    const weekDayMyDpStringToWeekDayNumberMap: { [k in WeekDayMyDpStr]: WeekDay } = {
+      su: WeekDay.Sunday,
+      mo: WeekDay.Monday,
+      tu: WeekDay.Tuesday,
+      we: WeekDay.Wednesday,
+      th: WeekDay.Thursday,
+      fr: WeekDay.Friday,
+      sa: WeekDay.Saturday,
+    };
+    return weekDayMyDpStrArr.filter(
+      weekDay =>
+        !this.productInfos?.class?.class_time_ranges.some(
+          (timeRange: any) => timeRange.day_of_week === weekDayMyDpStringToWeekDayNumberMap[weekDay]
+        )
+    );
   }
+
+  getDisabledDates() {
+    return [
+      ...this.filledSlots
+        .filter(slot => !slot.is_date_selectable)
+        .map(slot => {
+          const [year, month, day] = slot.date.split('-');
+          return { year: +year, month: +month, day: +day };
+        })
+    ];
+  }
+
+  
+
 
   onCancelBooking() {
     this.router.navigateByUrl('booking/view-booking');
@@ -331,3 +434,5 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 function getBookings(getBookings: any): import('rxjs').OperatorFunction<IBookingState, any> {
   throw new Error('Function not implemented.');
 }
+
+

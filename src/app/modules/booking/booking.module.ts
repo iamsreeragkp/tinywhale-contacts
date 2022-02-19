@@ -8,11 +8,12 @@ import { RootService } from '../root/root.service';
 import { NoDataBookingComponentComponent } from './components/no-data-booking-component/no-data-booking-component.component';
 import { NoResultBookingComponentComponent } from './components/no-result-booking-component/no-result-booking-component.component';
 import { TableBookingComponentComponent } from './components/table-booking-component/table-booking-component.component';
+import { ServiceStoreModule } from '../service/store/service-store.module';
 import { BookingStoreModule } from './store/booking-store.module';
 import { StatusBookingComponent } from './pages/status-booking/status-booking.component';
 
 @NgModule({
-  imports: [BookingRoutingModule, SharedModule, BookingStoreModule],
+  imports: [BookingRoutingModule, SharedModule, BookingStoreModule, ServiceStoreModule],
   declarations: [
     BookingComponent,
     AddBookingComponent,
