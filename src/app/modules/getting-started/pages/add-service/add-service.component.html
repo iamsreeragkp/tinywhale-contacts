@@ -352,7 +352,16 @@
               min="0"
               class="input w-24 py-3 px-4 focus:outline-none"
               placeholder="{{ customerCurrency?.symbol ?? '$' }} 50"
+              *ngIf="productForm.get('product_type')?.value === 'CLASS'"
               formControlName="price"
+            />
+            <input
+              type="number"
+              min="0"
+              formControlName="price"
+              class="input w-full py-3 px-4 focus:outline-none"
+              placeholder="{{ customerCurrency?.symbol ?? '$' }} 50"
+              *ngIf="productForm.get('product_type')?.value !== 'CLASS'"
             />
             <span
               class="input-field-secondary-text mx-3"
