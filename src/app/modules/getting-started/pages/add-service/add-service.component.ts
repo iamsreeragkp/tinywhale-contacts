@@ -3,7 +3,6 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { symbol } from 'd3';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
 import { AuthService } from 'src/app/modules/auth/auth.service';
@@ -235,7 +234,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
       description: [val?.description ?? null, Validators.required],
-      price: [val?.price ?? null, Validators.required],
+      price: [val?.price ?? null],
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
       photos: this._fb.array(
