@@ -80,6 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   orderLineItem: any;
   customerCurrency?: Currency;
   ngUnsubscribe = new Subject<any>();
+  val: any;
 
   constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
     const userData = authService.decodeUserToken();
@@ -112,8 +113,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
-      console.log('dashboard', this.dashboardInfos);
-
       const fromCurrentMonth = this.dashboardInfos?.gross_earnings?.current_month;
       const fromLastMonth = this.dashboardInfos?.gross_earnings?.last_month;
       this.currentMonthGross = fromCurrentMonth - fromLastMonth;
@@ -163,7 +162,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.processingFee = (sumOfGatewayAndProcessingFee / paymentFeeCurrent) * 100;
 
       this.priceData = this.dashboardInfos?.price_data;
-      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions?.[1];
+      this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       for (let i = 0; i < this.priceData?.length; i++) {
         this.priceLineData = this.priceData[i];
         this.chart1 = [
