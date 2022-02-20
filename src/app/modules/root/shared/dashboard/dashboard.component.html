@@ -1,4 +1,4 @@
-<ng-container *ngIf="dashboardInfos?.domainActive; else card">
+<ng-container *ngIf="!dashboardInfos?.domainActive; else card">
   <div class="dashboard-new">
     <div class="header flex items-center justify-between mx-2 font-baloo">
       <div class="flex items-center">
@@ -84,7 +84,7 @@
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
             <ng-container *ngIf="chart1">
-              <ngx-charts-line-chart
+              <!-- <ngx-charts-line-chart
                 [scheme]="colorScheme"
                 [showXAxisLabel]="showXAxisLabel"
                 [autoScale]="true"
@@ -101,7 +101,22 @@
                 (activate)="onActivate($event)"
                 (deactivate)="onDeactivate($event)"
               >
-              </ngx-charts-line-chart>
+              </ngx-charts-line-chart> -->
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [stroke]="chartOptions.stroke"
+                [dataLabels]="chartOptions.dataLabels"
+                [yaxis]="chartOptions.yaxis"
+                [labels]="chartOptions.labels"
+                [legend]="chartOptions.legend"
+                [title]="chartOptions.title"
+                [subtitle]="chartOptions.subtitle"
+                [grid]="chartOptions.grid"
+                [fill]="chartOptions.fill"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
@@ -231,7 +246,7 @@
       <div class="bg-white h-full shadow-lg pt-6 pb-4 px-8 rounded-2xl">
         <h4 class="text-primaryFont font-bold">Upcoming Sessions</h4>
         <ng-container *ngIf="upcomingSessions">
-          <div class="w-full mt-3" *ngFor="let upcoming of [upcomingSessions]">
+          <div class="w-full mt-3" *ngFor="let upcoming of upcomingSessions">
             <div class="py-5 flex border-b border-gray-300 border-solid">
               <div class="w-4/12 h-full">
                 <p class="text-primaryFont">
@@ -288,13 +303,13 @@
               <span class="tooltiptext">Lifetime earnings / number of unique paying customers</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
+          <div class="w-full h-full flex flex-col items-center justify-center">
             <ng-container *ngIf="!chart2">
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
             <ng-container *ngIf="chart2">
-              <ngx-charts-line-chart
+              <!-- <ngx-charts-line-chart
                 [scheme]="colorSchemeCurve"
                 [showXAxisLabel]="showXAxisLabel"
                 [autoScale]="true"
@@ -309,7 +324,22 @@
                 (activate)="onActivate($event)"
                 (deactivate)="onDeactivate($event)"
               >
-              </ngx-charts-line-chart>
+              </ngx-charts-line-chart> -->
+              <apx-chart
+                [series]="chartOptions2.series"
+                [chart]="chartOptions2.chart"
+                [xaxis]="chartOptions2.xaxis"
+                [stroke]="chartOptions2.stroke"
+                [dataLabels]="chartOptions2.dataLabels"
+                [yaxis]="chartOptions2.yaxis"
+                [labels]="chartOptions2.labels"
+                [legend]="chartOptions2.legend"
+                [title]="chartOptions2.title"
+                [subtitle]="chartOptions2.subtitle"
+                [grid]="chartOptions2.grid"
+                [fill]="chartOptions2.fill"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
@@ -321,13 +351,13 @@
               <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
             </div>
           </div>
-          <div class="flex flex-col items-center justify-center">
+          <div class="w-full h-48 flex flex-col items-center justify-center">
             <ng-container *ngIf="!chart3">
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
             <ng-container *ngIf="chart3">
-              <ngx-charts-bar-vertical
+              <!-- <ngx-charts-bar-vertical
                 [scheme]="colorSchemeBar"
                 [results]="chart3"
                 [gradient]="gradient"
@@ -339,7 +369,23 @@
                 [showYAxisLabel]="false"
                 (select)="onSelect($event)"
               >
-              </ngx-charts-bar-vertical>
+              </ngx-charts-bar-vertical> -->
+              <apx-chart
+                [series]="chartOptions3.series"
+                [chart]="chartOptions3.chart"
+                [yaxis]="chartOptions3.yaxis"
+                [xaxis]="chartOptions3.xaxis"
+                [dataLabels]="chartOptions3.dataLabels"
+                [labels]="chartOptions3.labels"
+                [stroke]="chartOptions3.stroke"
+                [plotOptions]="chartOptions3.plotOptions"
+                [markers]="chartOptions3.markers"
+                [fill]="chartOptions3.fill"
+                [grid]="chartOptions3.grid"
+                [tooltip]="chartOptions3.tooltip"
+                [legend]="chartOptions3.legend"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
@@ -348,12 +394,8 @@
   </div>
 </ng-container>
 <ng-template #card>
-  <div *ngIf="dashboardInfos">
-    <app-card-getstarted> </app-card-getstarted>
-  </div>
-  <app-loader-page *ngIf="!dashboardInfos"></app-loader-page>
+  <app-card-getstarted></app-card-getstarted>
 </ng-template>
-
 <!-- share link div ends here -->
 
 <ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation()">
