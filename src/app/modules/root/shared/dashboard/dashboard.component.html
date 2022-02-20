@@ -1,4 +1,4 @@
-<ng-container *ngIf="!dashboardInfos?.domainActive; else card">
+<ng-container *ngIf="dashboardInfos?.domainActive; else card">
   <div class="dashboard-new">
     <div class="header flex items-center justify-between mx-2 font-baloo">
       <div class="flex items-center">
@@ -103,18 +103,18 @@
               >
               </ngx-charts-line-chart> -->
               <apx-chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [xaxis]="chartOptions.xaxis"
-                [stroke]="chartOptions.stroke"
-                [dataLabels]="chartOptions.dataLabels"
-                [yaxis]="chartOptions.yaxis"
-                [labels]="chartOptions.labels"
-                [legend]="chartOptions.legend"
-                [title]="chartOptions.title"
-                [subtitle]="chartOptions.subtitle"
-                [grid]="chartOptions.grid"
-                [fill]="chartOptions.fill"
+                [series]="chartOptions.series!"
+                [chart]="chartOptions.chart!"
+                [xaxis]="chartOptions.xaxis!"
+                [stroke]="chartOptions.stroke!"
+                [dataLabels]="chartOptions.dataLabels!"
+                [yaxis]="chartOptions.yaxis!"
+                [labels]="chartOptions.labels!"
+                [legend]="chartOptions.legend!"
+                [title]="chartOptions.title!"
+                [subtitle]="chartOptions.subtitle!"
+                [grid]="chartOptions.grid!"
+                [fill]="chartOptions.fill!"
                 class="w-full h-full"
               ></apx-chart>
             </ng-container>
@@ -326,18 +326,18 @@
               >
               </ngx-charts-line-chart> -->
               <apx-chart
-                [series]="chartOptions2.series"
-                [chart]="chartOptions2.chart"
-                [xaxis]="chartOptions2.xaxis"
-                [stroke]="chartOptions2.stroke"
-                [dataLabels]="chartOptions2.dataLabels"
-                [yaxis]="chartOptions2.yaxis"
-                [labels]="chartOptions2.labels"
-                [legend]="chartOptions2.legend"
-                [title]="chartOptions2.title"
-                [subtitle]="chartOptions2.subtitle"
-                [grid]="chartOptions2.grid"
-                [fill]="chartOptions2.fill"
+                [series]="chartOptions2.series!"
+                [chart]="chartOptions2.chart!"
+                [xaxis]="chartOptions2.xaxis!"
+                [stroke]="chartOptions2.stroke!"
+                [dataLabels]="chartOptions2.dataLabels!"
+                [yaxis]="chartOptions2.yaxis!"
+                [labels]="chartOptions2.labels!"
+                [legend]="chartOptions2.legend!"
+                [title]="chartOptions2.title!"
+                [subtitle]="chartOptions2.subtitle!"
+                [grid]="chartOptions2.grid!"
+                [fill]="chartOptions2.fill!"
                 class="w-full h-full"
               ></apx-chart>
             </ng-container>
@@ -371,19 +371,19 @@
               >
               </ngx-charts-bar-vertical> -->
               <apx-chart
-                [series]="chartOptions3.series"
-                [chart]="chartOptions3.chart"
-                [yaxis]="chartOptions3.yaxis"
-                [xaxis]="chartOptions3.xaxis"
-                [dataLabels]="chartOptions3.dataLabels"
-                [labels]="chartOptions3.labels"
-                [stroke]="chartOptions3.stroke"
-                [plotOptions]="chartOptions3.plotOptions"
-                [markers]="chartOptions3.markers"
-                [fill]="chartOptions3.fill"
-                [grid]="chartOptions3.grid"
-                [tooltip]="chartOptions3.tooltip"
-                [legend]="chartOptions3.legend"
+                [series]="chartOptions3.series!"
+                [chart]="chartOptions3.chart!"
+                [yaxis]="chartOptions3.yaxis!"
+                [xaxis]="chartOptions3.xaxis!"
+                [dataLabels]="chartOptions3.dataLabels!"
+                [labels]="chartOptions3.labels!"
+                [stroke]="chartOptions3.stroke!"
+                [plotOptions]="chartOptions3.plotOptions!"
+                [markers]="chartOptions3.markers!"
+                [fill]="chartOptions3.fill!"
+                [grid]="chartOptions3.grid!"
+                [tooltip]="chartOptions3.tooltip!"
+                [legend]="chartOptions3.legend!"
                 class="w-full h-full"
               ></apx-chart>
             </ng-container>
