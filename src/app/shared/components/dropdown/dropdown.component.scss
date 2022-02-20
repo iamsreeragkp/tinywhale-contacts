@@ -34,7 +34,7 @@
       }
     }
     &.disabled {
-      @apply bg-veryLightGray pointer-events-none;
+      @apply bg-veryLightGray pointer-events-none text-[#73959d];
     }
   }
   &-placeholder {
@@ -53,6 +53,9 @@
     border-radius: 8px;
     // width: 360px;
     color: #154f5b;
+    &.disabled {
+      @apply text-[#73959d];
+    }
   }
   .radio-input {
     &-border-b {
