@@ -78,18 +78,14 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
     this.search$
       .pipe(
         tap(() => {
-          this.isChecking = true;
+          this.isDomainAvailable = this.domain?.invalid!;
           this.domain?.markAsTouched();
+          this.isChecking = !this.isDomainAvailable;
         }),
+        debounceTime(500),
         filter(() => {
-          this.isDomainAvailable =
-            this.domain?.errors?.['required'] || this.domain?.errors?.['pattern'];
-          if (this.isDomainAvailable) {
-            this.isChecking = false;
-          }
           return !this.isDomainAvailable;
-        }),
-        debounceTime(500)
+        })
       )
       .subscribe(val => {
         if (val) {
