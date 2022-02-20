@@ -61,6 +61,7 @@ export interface PricePackage {
   class_package_id?: number | null;
   price?: number | null;
   no_of_sessions?: number | null;
+  is_deleted?: boolean;
 }
 
 export interface TimeRange {
@@ -68,6 +69,7 @@ export interface TimeRange {
   day_of_week: WeekDay;
   start_time?: string | null;
   end_time?: string | null;
+  is_deleted?: boolean;
 }
 
 export enum ProductType {

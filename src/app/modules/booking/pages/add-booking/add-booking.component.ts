@@ -189,7 +189,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       ]),
       phonenumber: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,}$/),
+        Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,15}$/),
       ]),
       customername: new FormControl('', Validators.required),
       service: new FormControl('', Validators.required),

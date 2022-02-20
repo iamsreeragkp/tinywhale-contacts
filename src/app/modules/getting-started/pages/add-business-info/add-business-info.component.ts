@@ -207,7 +207,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           logo: logo,
           social_links: this.isSocialLinkFilled(),
           recognitions: licenceitems,
-          phone_number: phone_number.toString(),
+          phone_number: phone_number,
           email: email,
           contact_type: contact_type,
           business_photos: [cover],
@@ -236,8 +236,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
       cover: [val?.business_photos?.[0] ?? ''],
-      email: [val?.email ?? ''],
-      phone_number: [val?.phone_number ?? ''],
+      email: [val?.email ?? '', Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+      phone_number: [val?.phone_number ?? '', Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,15}$/)],
       contact_type: [val?.contact_type ?? null],
       // photos: this.fb.array(
       //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
@@ -526,7 +526,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       logo: logo,
       social_links: this.isSocialLinkFilled(),
       recognitions: licenceitems,
-      phone_number: phone_number.toString(),
+      phone_number: phone_number,
       email: email,
       contact_type: contact_type,
       business_photos: [cover],
