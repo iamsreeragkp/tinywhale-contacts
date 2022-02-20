@@ -152,9 +152,8 @@
       <ng-container *ngFor="let bookData of bookingData; let i = index" (click)="showSubItem(i)">
         <tr
           class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
-          (click)="onNavigateToList(bookData?.order_id)"
         >
-          <td class="align-top px-2 py-3">
+          <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
             <div class="flex flex-col">
               <span class="whitespace-nowrap">{{
               bookData?.order_session?.[0]?.session?.date || '---'
@@ -168,7 +167,7 @@
               }}</span>
             </div>
           </td>
-          <td class="align-top px-2 py-3">
+          <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
             <div
               *ngIf="bookData.session_to_display?.status.toUpperCase() === 'COMPLETED'"
               class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
@@ -182,17 +181,17 @@
               <span>UPCOMING</span>
             </div>
           </td>
-          <td class="align-top px-2 py-3">
+          <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
             <div class="flex items-center">
               <span class="">{{ bookData?.account?.first_name || '---' }}</span>
             </div>
           </td>
-          <td class="align-top px-2 py-3">
+          <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
             <div class="flex items-center">
               <span class="">{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span>
             </div>
           </td>
-          <td class="align-top px-2 py-3">
+          <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
             <div class="flex flex-col">
               <div class="flex items-center">
                 <span class="mr-2"
@@ -231,7 +230,7 @@
             </div>
           </td>
           <td class="align-top px-2 py-3">
-            <div class="relative flex justify-end" (click)="$event.stopPropagation()">
+            <div class="relative flex justify-end">
               <ng-container *ngIf="bookData?.invoice?.status !== 'SETTLED'">
                 <app-three-dots
                   [actions]="threeDotsActions"
