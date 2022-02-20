@@ -69,3 +69,27 @@ export var single = [
         "value": 1
     },
 ];
+
+
+export const series = {
+    monthDataSeries1: {
+        prices: [
+            100, 20, 30, 40, 110, 40, 10, 80, 50, 40, 101, 201, 310
+        ],
+        dates: [
+            "13 Nov",
+            "14 Nov",
+            "15 Nov",
+            "16 Nov",
+            "17 Nov",
+            "20 Nov",
+            "21 Nov",
+            "22 Nov",
+            "23 Nov",
+            "24 Nov",
+            "27 Nov",
+            "28 Nov",
+            "29 Nov",
+        ]
+    },
+};

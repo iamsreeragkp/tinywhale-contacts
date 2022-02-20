@@ -54,7 +54,8 @@
             "scripts": [
               "src/assets/js/modernizr.js",
               "src/assets/js/gtm.js",
-              "node_modules/js-cookie/dist/js.cookie.min.js"
+              "node_modules/js-cookie/dist/js.cookie.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ],
             "serviceWorker": true,
             "ngswConfigPath": "src/ngsw-config.json",
@@ -155,7 +156,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "scripts": ["src/assets/js/modernizr.js", "src/assets/js/gtm.js"],
+            "scripts": [
+              "src/assets/js/modernizr.js",
+              "src/assets/js/gtm.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ],
             "styles": [
               "src/assets/css/reset.css",
               "src/assets/css/loading.css",

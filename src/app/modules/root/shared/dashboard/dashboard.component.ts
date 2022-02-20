@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
@@ -10,6 +10,44 @@ import { getDashboard, getDashboardList } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
 import { multi, single } from './data';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexStroke,
+  ApexYAxis,
+  ApexTitleSubtitle,
+  ApexLegend,
+  ApexFill,
+  ApexGrid,
+  ApexMarkers,
+  ApexTooltip,
+  ApexPlotOptions,
+} from "ng-apexcharts";
+
+
+import { series } from "./data";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  dataLabels: ApexDataLabels;
+  yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  labels: string[];
+  legend: ApexLegend;
+  subtitle: ApexTitleSubtitle;
+  fill: ApexFill;
+  colors: any[],
+  grid: ApexGrid,
+  markers: ApexMarkers,
+  plotOptions: ApexPlotOptions,
+  tooltip: ApexTooltip,
+};
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +55,12 @@ import { multi, single } from './data';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+  @ViewChild("chart") chart?: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+  public chartOptions2: Partial<ChartOptions>;
+  public chartOptions3: Partial<ChartOptions>;
+
   dashboard$: Observable<any>;
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
@@ -82,6 +126,200 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject<any>();
 
   constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
+
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "",
+          data: series.monthDataSeries1.prices
+        }
+      ],
+      chart: {
+        type: "area",
+        height: '100%',
+        width: '100%',
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ["#00a4b7"],
+      fill: {
+        colors: ['#1addf37a'],
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.9,
+          opacityTo: 0.8,
+          stops: [0, 100]
+        }
+      },
+      markers: {
+        colors: ['#00a4b7']
+      },
+
+      dataLabels: {
+        enabled: true,
+        formatter(val) {
+          return '.';
+        },
+        style: {
+          fontSize: '6px',
+          colors: ["#00a4b7"]
+        },
+        background: {
+          enabled: true,
+          borderRadius: 6,
+          padding: 3,
+          foreColor: '#00a4b7',
+          borderWidth: 0,
+        },
+      },
+      stroke: {
+        curve: "straight",
+        colors: ['#00a4b7'],
+        width: 3,
+      },
+      yaxis: {
+        show: true,
+        labels: {
+          show: true,
+          style: {
+            fontSize: '12px',
+            colors: '#73959d',
+            fontFamily: 'poppins',
+          }
+        }
+      },
+      xaxis: {
+        offsetX: 4,
+        labels: {
+          show: true,
+          style: {
+            fontSize: '12px',
+            colors: '#73959d',
+            fontFamily: 'poppins',
+          }
+        }
+      },
+      legend: {
+        show: false,
+      },
+      labels: series.monthDataSeries1.dates,
+    };
+
+    this.chartOptions2 = {
+      series: [
+        {
+          name: "",
+          data: series.monthDataSeries1.prices
+        }
+      ],
+      chart: {
+        type: "area",
+        height: '100%',
+        width: '100%',
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ["e1c700"],
+      fill: {
+        colors: ['#e7d14494'],
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.9,
+          opacityTo: 0.8,
+          stops: [0, 100]
+        }
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+        colors: ['#e1c700'],
+        width: 3,
+      },
+      yaxis: {
+        show: false,
+      },
+      xaxis: {
+        labels: {
+          show: false,
+        }
+      },
+      legend: {
+        show: false,
+      },
+      grid: {
+        show: false,
+      },
+      labels: series.monthDataSeries1.dates,
+    };
+
+    this.chartOptions3 = {
+      series: [
+        {
+          name: "TEAM A",
+          type: "column",
+          data: series.monthDataSeries1.prices
+        },
+        {
+          name: "TEAM B",
+          type: "area",
+          data: series.monthDataSeries1.prices
+        },
+      ],
+      chart: {
+        type: "line",
+        stacked: false,
+        height: '100%',
+        width: '100%',
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      stroke: {
+        width: [0],
+        curve: "smooth",
+        colors: ['transparent'],
+      },
+      colors: ['#ED9F7C'],
+      fill: {
+        colors: ['#ED9F7C', '#FDF5F2'],
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      yaxis: {
+        show: false,
+      },
+      xaxis: {
+        labels: {
+          show: false,
+        }
+      },
+      legend: {
+        show: false,
+      },
+      grid: {
+        show: false,
+      },
+    };
+
+
+
     const userData = authService.decodeUserToken();
     this.customerCurrency = currencyList.find(
       currency => currency.id === userData?.dashboardInfos?.default_currency
@@ -317,9 +555,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.ngUnsubscriber.complete();
   }
 
-  onSelect(eve: any) {}
+  onSelect(eve: any) { }
 
-  onActivate(eve: any) {}
+  onActivate(eve: any) { }
 
-  onDeactivate(eve: any) {}
+  onDeactivate(eve: any) { }
 }

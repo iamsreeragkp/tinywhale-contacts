@@ -1,4 +1,4 @@
-<ng-container *ngIf="dashboardInfos?.domainActive; else card">
+<ng-container *ngIf="!dashboardInfos?.domainActive; else card">
   <div class="dashboard-new">
     <div class="header flex items-center justify-between mx-2 font-baloo">
       <div class="flex items-center">
@@ -16,13 +16,37 @@
     <div class="bg-white shadow-lg p-5 pb-0 mt-5 rounded-2xl font-poppins">
       <div class="flex items-center border-b border-gray-300 border-solid pb-3">
         <h3 class="font-bold text-primaryFont mr-4">Overview</h3>
-        <button [ngClass]="overviewType === 'MTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium ' "  class="  mr-4 text-xs" (click)="onClickMtd('MTD')">
+        <button
+          [ngClass]="
+            overviewType === 'MTD'
+              ? 'noborder-button px-0 font-bold'
+              : 'text-primaryFont font-medium '
+          "
+          class="mr-4 text-xs"
+          (click)="onClickMtd('MTD')"
+        >
           MTD
         </button>
-        <button [ngClass]="overviewType === 'QTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium' "  class="  mr-4 text-xs" (click)="onClickQtd('QTD')">
+        <button
+          [ngClass]="
+            overviewType === 'QTD'
+              ? 'noborder-button px-0 font-bold'
+              : 'text-primaryFont font-medium'
+          "
+          class="mr-4 text-xs"
+          (click)="onClickQtd('QTD')"
+        >
           QTD
         </button>
-        <button [ngClass]="overviewType === 'YTD'? 'noborder-button px-0 font-bold' : 'text-primaryFont font-medium' "  class="  mr-4 text-xs" (click)="onClickYtd('YTD')">
+        <button
+          [ngClass]="
+            overviewType === 'YTD'
+              ? 'noborder-button px-0 font-bold'
+              : 'text-primaryFont font-medium'
+          "
+          class="mr-4 text-xs"
+          (click)="onClickYtd('YTD')"
+        >
           YTD
         </button>
       </div>
@@ -39,25 +63,28 @@
           </div>
           <div class="flex items-center">
             <h3 class="text-primaryFont font-bold font-baloo text-tworem">
-              {{customerCurrency?.symbol ?? '$'}} {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
+              {{ customerCurrency?.symbol ?? '$' }}
+              {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
             </h3>
 
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center ml-6">
               <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">{{customerCurrency?.symbol ?? '$'}} {{ currentMonthGross || '0' }}</span>
+              <span class="green-text ml-3"
+                >{{ customerCurrency?.symbol ?? '$' }} {{ currentMonthGross || '0' }}</span
+              >
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont">from last month</span>
             </div>
           </div>
           <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
-            <ng-container *ngIf="!chart1">
+            <ng-container *ngIf="chart1">
               <img src="../../../../../assets/images/nograph.svg" alt="" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ng-container *ngIf="chart1">
-              <ngx-charts-line-chart
+            <ng-container *ngIf="!chart1">
+              <!-- <ngx-charts-line-chart
                 [scheme]="colorScheme"
                 [showXAxisLabel]="showXAxisLabel"
                 [autoScale]="true"
@@ -74,7 +101,22 @@
                 (activate)="onActivate($event)"
                 (deactivate)="onDeactivate($event)"
               >
-              </ngx-charts-line-chart>
+              </ngx-charts-line-chart> -->
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [stroke]="chartOptions.stroke"
+                [dataLabels]="chartOptions.dataLabels"
+                [yaxis]="chartOptions.yaxis"
+                [labels]="chartOptions.labels"
+                [legend]="chartOptions.legend"
+                [title]="chartOptions.title"
+                [subtitle]="chartOptions.subtitle"
+                [grid]="chartOptions.grid"
+                [fill]="chartOptions.fill"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
@@ -83,7 +125,8 @@
           *ngFor="let dashboard of [dashboardInfos]"
         >
           <div
-            class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid dashboard-new-hovervalue cursor-pointer"  [routerLink]="['/booking/view-booking']"
+            class="h-36 w-full flex flex-col justify-start border-b border-gray-300 border-solid dashboard-new-hovervalue cursor-pointer"
+            [routerLink]="['/booking/view-booking']"
           >
             <div class="flex items-center pb-4">
               <h4 class="text-primaryFont mr-3.5 font-medium">Booked Sessions</h4>
@@ -142,11 +185,14 @@
       class="w-full grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 font-poppins"
       *ngFor="let dashboard of [dashboardInfos]"
     >
-      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center value-hover dashboard-new-hovervalue cursor-pointer"  [routerLink]="['/service/home']">
+      <div
+        class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center value-hover dashboard-new-hovervalue cursor-pointer"
+        [routerLink]="['/service/home']"
+      >
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Active Services</h4>
         </div>
-        <div class="flex items-center ">
+        <div class="flex items-center">
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
@@ -167,11 +213,14 @@
           {{ dashboard?.total_customers || '0' }}
         </h3>
       </div>
-      <div class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center dashboard-new-hovervalue cursor-pointer duration-500"  [routerLink]="['/account/view-payment']">
+      <div
+        class="bg-white h-36 shadow-lg p-5 rounded-2xl flex flex-col justify-center dashboard-new-hovervalue cursor-pointer duration-500"
+        [routerLink]="['/account/view-payment']"
+      >
         <div class="flex items-center pb-4">
           <h4 class="text-primaryFont mr-3.5 font-medium">Pending Payments</h4>
         </div>
-        <div class="flex items-center ">
+        <div class="flex items-center">
           <h3
             class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
           >
@@ -222,12 +271,18 @@
               </div>
             </div>
           </div>
-  
-          <div class="w-full flex justify-center items-center mt-4" *ngIf="upcomingSessions?.length >=5">
+
+          <div
+            class="w-full flex justify-center items-center mt-4"
+            *ngIf="upcomingSessions?.length >= 5"
+          >
             <button class="noborder-button" (click)="navagateToBooking()">View All</button>
           </div>
         </ng-container>
-        <div class="w-full h-full flex justify-center items-center" *ngIf="!upcomingSessions?.length">
+        <div
+          class="w-full h-full flex justify-center items-center"
+          *ngIf="!upcomingSessions?.length"
+        >
           <div class="w-8/12 h-full flex flex-col items-center justify-center">
             <img src="../../../../../assets/images/noupcoming.svg" alt="" class="h-56" />
             <p class="text-primaryFont mt-3 text-center mb-6">
@@ -248,13 +303,13 @@
               <span class="tooltiptext">Lifetime earnings / number of unique paying customers</span>
             </div>
           </div>
-          <div class="w-full flex flex-col items-center justify-center">
-            <ng-container *ngIf="!chart2">
+          <div class="w-full h-full flex flex-col items-center justify-center">
+            <ng-container *ngIf="chart2">
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ng-container *ngIf="chart2">
-              <ngx-charts-line-chart
+            <ng-container *ngIf="!chart2">
+              <!-- <ngx-charts-line-chart
                 [scheme]="colorSchemeCurve"
                 [showXAxisLabel]="showXAxisLabel"
                 [autoScale]="true"
@@ -269,7 +324,22 @@
                 (activate)="onActivate($event)"
                 (deactivate)="onDeactivate($event)"
               >
-              </ngx-charts-line-chart>
+              </ngx-charts-line-chart> -->
+              <apx-chart
+                [series]="chartOptions2.series"
+                [chart]="chartOptions2.chart"
+                [xaxis]="chartOptions2.xaxis"
+                [stroke]="chartOptions2.stroke"
+                [dataLabels]="chartOptions2.dataLabels"
+                [yaxis]="chartOptions2.yaxis"
+                [labels]="chartOptions2.labels"
+                [legend]="chartOptions2.legend"
+                [title]="chartOptions2.title"
+                [subtitle]="chartOptions2.subtitle"
+                [grid]="chartOptions2.grid"
+                [fill]="chartOptions2.fill"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
@@ -281,13 +351,13 @@
               <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
             </div>
           </div>
-          <div class="flex flex-col items-center justify-center">
-            <ng-container *ngIf="!chart3">
+          <div class="w-full h-48 flex flex-col items-center justify-center">
+            <ng-container *ngIf="chart3">
               <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ng-container *ngIf="chart3">
-              <ngx-charts-bar-vertical
+            <ng-container *ngIf="!chart3">
+              <!-- <ngx-charts-bar-vertical
                 [scheme]="colorSchemeBar"
                 [results]="chart3"
                 [gradient]="gradient"
@@ -299,7 +369,23 @@
                 [showYAxisLabel]="false"
                 (select)="onSelect($event)"
               >
-              </ngx-charts-bar-vertical>
+              </ngx-charts-bar-vertical> -->
+              <apx-chart
+                [series]="chartOptions3.series"
+                [chart]="chartOptions3.chart"
+                [yaxis]="chartOptions3.yaxis"
+                [xaxis]="chartOptions3.xaxis"
+                [dataLabels]="chartOptions3.dataLabels"
+                [labels]="chartOptions3.labels"
+                [stroke]="chartOptions3.stroke"
+                [plotOptions]="chartOptions3.plotOptions"
+                [markers]="chartOptions3.markers"
+                [fill]="chartOptions3.fill"
+                [grid]="chartOptions3.grid"
+                [tooltip]="chartOptions3.tooltip"
+                [legend]="chartOptions3.legend"
+                class="w-full h-full"
+              ></apx-chart>
             </ng-container>
           </div>
         </div>
