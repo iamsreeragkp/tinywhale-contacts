@@ -188,35 +188,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
         switchMap(value => of(value))
       )
       .subscribe(value => {
-        const {
-          companyname,
-          punchline,
-          socialitems,
-          email,
-          licenceitems,
-          testimonialitems,
-          logo,
-          phone_number,
-          contact_type,
-          cover,
-        } = value;
-
-        const businessPayload = {
-          company_name: companyname,
-          punchline: punchline,
-          logo: logo,
-          social_links: this.isSocialLinkFilled(),
-          recognitions: licenceitems,
-          phone_number: phone_number,
-          email: email,
-          contact_type: contact_type,
-          business_photos: [cover],
-          testimonials: this.isTestimonialFilled(),
-        };
-        if (this.businessInfoForm?.valid) {
-          this.store.dispatch(addBusiness({ businessData: businessPayload }));
-        }
-        return;
+        this.onSubmitBusiness(false);
       });
   }
 
@@ -495,18 +467,17 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSubmitBusiness(route = false) {
+  onSubmitBusiness(route = true) {
+    if (this.businessInfoForm.invalid) {
+      this.businessInfoForm.markAllAsTouched();
+      return;
+    }
     this.isSaving = true;
     this.fileNames = [];
     /*
       Extracting name of the images and prepending /businessname/type/,
       patching name into form and into an array to generate presigned URL
     */
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { customUsername: domain_name },
-    } = userData;
-    this.fileNames = [];
 
     const {
       companyname,
@@ -533,7 +504,9 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       testimonials: this.isTestimonialFilled(),
     };
     this.store.dispatch(addBusiness({ businessData: businessPayload }));
-    this.router.navigate(['../']);
+    if (route) {
+      this.router.navigate(['../']);
+    }
     return;
 
     // if (this.fileToUploadLogo) {
