@@ -90,6 +90,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .get('service')
       ?.valueChanges?.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((val: number) => {
+        this.bookingForm.get('date')?.patchValue(null);
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.class?.class_time_ranges) {
           this.isFree = false;
@@ -115,7 +116,11 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm
       .get('date')
       ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(val => this.updateSelectableSlots());
+      .subscribe(val => {
+        console.log('updating slots');
+
+        this.updateSelectableSlots();
+      });
     this.subscriptions();
   }
 
@@ -346,7 +351,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       if (isToday && +timeRange.label < +`${new Date().getHours()}${new Date().getMinutes()}`) {
         return false;
       }
-      return this.filledSlots
+      return !this.filledSlots
         ?.find(slot => slot.date === convertDateToDateString(selectedDate))
         ?.filled_class_time_range_ids.includes(timeRange.class_time_range_id);
     });
