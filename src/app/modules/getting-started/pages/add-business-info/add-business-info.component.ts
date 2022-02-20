@@ -472,7 +472,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.businessInfoForm.markAllAsTouched();
       return;
     }
-    this.isSaving = true;
+    this.isSaving = route;
     this.fileNames = [];
     /*
       Extracting name of the images and prepending /businessname/type/,
