@@ -360,7 +360,8 @@
                 <!-- <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker> -->
                 <app-select-calendar
                   [formControlName]="'expiry_date'"
-                  placeholder="Expiry Date"
+                  placeholder="Expiry date"
+                  [disableUntil]="today"
                 ></app-select-calendar>
               </div>
 

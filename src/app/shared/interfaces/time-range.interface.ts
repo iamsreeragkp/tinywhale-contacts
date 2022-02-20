@@ -6,6 +6,10 @@ export interface TimeRangeSerialized {
   day_of_week: WeekDay;
 }
 
+export interface TimeRangeSerializedDate extends TimeRangeSerialized {
+  id?: number | null;
+}
+
 export interface SlotRange {
   start_time: string;
   start_time_label: string;

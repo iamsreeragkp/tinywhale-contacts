@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { convert24HrsFormatToAmPm } from 'src/app/shared/utils';
+import { TimeRangeSerializedDate } from 'src/app/shared/interfaces/time-range.interface';
+import { convert24HrsFormatToAmPm, getTimeRangeSerializedBasedOnDate } from 'src/app/shared/utils';
 import { getBookingById, initBooking } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
 import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
@@ -16,11 +17,9 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   statusData: any;
   settledInvoice = true;
   orderId!: number;
-  classTimeRanged: any;
-  startTime: any;
-  endTime: any;
   ngUnsubscribe = new Subject<any>();
   isVis = false;
+  timeRangeSerialized?: TimeRangeSerializedDate[];
   constructor(
     private router: Router,
     private store: Store<IBookingState>,
@@ -49,24 +48,20 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
     this.store.pipe(select(getBookingByIds)).subscribe((data: any) => {
       this.statusData = data;
       this.orderId = data?.order_id;
-      this.startTime = convert24HrsFormatToAmPm(
-        this.statusData?.order_session?.[0]?.session?.class_time_range?.start_time
-      );
-      this.endTime = convert24HrsFormatToAmPm(
-        this.statusData?.order_session?.[0]?.session?.class_time_range?.end_time
-      );
-      this.classTimeRanged = this.startTime + ' - ' + this.endTime;
+      console.log(data);
+      if (this.statusData?.order_session?.length) {
+        this.timeRangeSerialized = getTimeRangeSerializedBasedOnDate(
+          this.statusData?.order_session?.map((oS: any) => ({
+            date: oS?.session?.date,
+            timeRange: oS?.session?.class_time_range,
+          }))
+        );
+        console.log(this.timeRangeSerialized);
+      }
     });
   }
   navigateToEdit() {
     this.router.navigateByUrl(`/booking/edit-booking/${this.orderId}`);
-  }
-
-  getDayName(date: any) {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const d = new Date(date);
-    const dayName = days[d.getDay()];
-    return dayName;
   }
 
   ngOnDestroy() {

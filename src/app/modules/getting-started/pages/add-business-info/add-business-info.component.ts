@@ -90,6 +90,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     format: 'yyyy-MM-dd',
     placeholder: 'Select date',
   };
+  today = new Date();
 
   constructor(
     private fb: FormBuilder,

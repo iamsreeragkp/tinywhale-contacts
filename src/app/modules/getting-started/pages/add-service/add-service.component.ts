@@ -177,20 +177,18 @@ export class AddServiceComponent implements OnInit, OnDestroy {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
             if (data.response.time_ranges?.length) {
-              data.response.time_ranges.forEach((timeRange: TimeRange) => {
-                this.timeRanges.controls
-                  .find(
-                    tR => tR.get('class_time_range_id')?.value === timeRange?.class_time_range_id
-                  )
+              data.response.time_ranges.forEach((timeRange: TimeRange, i: number) => {
+                this.timeRanges
+                  ?.at(i)
                   ?.get('class_time_range_id')
                   ?.patchValue(timeRange.class_time_range_id, { emitEvent: false });
               });
             }
             this.updateTimeSlotOptionsOfAWeekDay();
             if (data.response.price_package?.length) {
-              data.response.price_package.forEach((classPkg: PricePackage) => {
-                this.pricePackages.controls
-                  .find(tR => tR.get('class_package_id')?.value === classPkg?.class_package_id)
+              data.response.price_package.forEach((classPkg: PricePackage, i: number) => {
+                this.pricePackages
+                  ?.at(i)
                   ?.get('class_package_id')
                   ?.patchValue(classPkg.class_package_id, { emitEvent: false });
               });
