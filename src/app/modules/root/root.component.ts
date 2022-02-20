@@ -4,7 +4,13 @@ import { fadeIn } from 'ng-animate';
 import { Store } from '@ngrx/store';
 import { IRootState } from './store/root.reducers';
 import { getDashboard } from './store/root.actions';
-import { NavigationEnd, Router } from '@angular/router';
+import {
+  NavigationEnd,
+  RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router,
+  RouterEvent,
+} from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
 
 const sideNavDisableUrls = ['/home/add-business-info', '/home/add-service', '/home/add-payment'];
@@ -27,6 +33,7 @@ const sideNavDisableUrls = ['/home/add-business-info', '/home/add-service', '/ho
 export class RootComponent implements OnDestroy {
   sideNavDisabled = false;
   ngUnsubscriber = new Subject<void>();
+  loading!: boolean;
   constructor(private store: Store<IRootState>, private router: Router) {
     this.store.dispatch(getDashboard({ filters: {} }));
     router.events
@@ -39,6 +46,14 @@ export class RootComponent implements OnDestroy {
           (navEnd as NavigationEnd)?.urlAfterRedirects?.includes(url)
         );
       });
+    this.loading = false;
+    this.router.events.subscribe((events: RouterEvent | any) => {
+      if (events instanceof RouteConfigLoadStart) {
+        this.loading = true;
+      } else if (events instanceof RouteConfigLoadEnd) {
+        this.loading = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {

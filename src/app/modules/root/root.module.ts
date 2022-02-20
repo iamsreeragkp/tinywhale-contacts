@@ -14,7 +14,6 @@ import { RootStoreModule } from './store/root-store.module';
 // import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { LoaderPageComponent } from './pages/loader-page/loader-page.component';
 
 @NgModule({
   imports: [
@@ -33,7 +32,6 @@ import { LoaderPageComponent } from './pages/loader-page/loader-page.component';
     SideNavComponent,
     CardGetstartedComponent,
     DashboardComponent,
-    LoaderPageComponent,
     // RouterLinkDisabledDirective,
   ],
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],

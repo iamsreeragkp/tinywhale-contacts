@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
 import Swiper, { Navigation, Pagination } from 'swiper';
+import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -21,8 +22,17 @@ import Swiper, { Navigation, Pagination } from 'swiper';
 export class AuthComponent {
   slides = [1, 2, 3];
   @ViewChild('newSwiper') newSwiper: any;
-  constructor() {
+  loading!: boolean;
+  constructor(private router: Router) {
     Swiper.use([Navigation, Pagination]);
+    this.loading = false;
+    this.router.events.subscribe((events: RouterEvent | any) => {
+      if (events instanceof RouteConfigLoadStart) {
+        this.loading = true;
+      } else if (events instanceof RouteConfigLoadEnd) {
+        this.loading = false;
+      }
+    });
   }
 
   swipePrev() {
