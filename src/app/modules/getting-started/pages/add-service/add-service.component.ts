@@ -64,9 +64,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   productFormUnsubscriber$ = new Subject<void>();
   editMode = false;
   createAnother = false;
-  autoSaving = false;
   isGettingStarted = false;
-  addServiceStatus$: Observable<{ status: boolean; error?: string; response?: any } | undefined>;
+  addServiceStatus$: Observable<
+    { status: boolean; error?: string; response?: any; autoSave: boolean } | undefined
+  >;
   productData$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   businessLocations$: Observable<
     { businessLocations?: BusinessLocation[]; status: boolean; error?: string } | undefined
@@ -167,8 +168,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data?.status) {
-          if (this.autoSaving) {
-            this.autoSaving = false;
+          if (data.autoSave) {
             const productIdControl = this.productForm.get('product_id');
             if (productIdControl) {
               productIdControl.patchValue(data.response.product_id, { emitEvent: false });
@@ -200,6 +200,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
+            this.createAnother = false;
             if (this.editMode) {
               this.router.navigate(['/service/add-service'], {
                 replaceUrl: true,
@@ -221,8 +222,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productForm.valueChanges
       .pipe(debounceTime(3000), takeUntil(this.productFormUnsubscriber$))
       .subscribe(() => {
-        this.autoSaving = true;
-        this.saveProductForm();
+        this.saveProductForm(false, true);
       });
     this.productForm
       .get('duration')
@@ -414,7 +414,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   addPricePackage() {
-    this.pricePackages.push(this.createPricePackages(), { emitEvent: false });
+    this.pricePackages.push(this.createPricePackages());
   }
 
   async handleFileInput(event: Event, index: number) {
@@ -492,7 +492,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     return timeSlots;
   }
 
-  saveProductForm(createAnother = false) {
+  saveProductForm(createAnother = false, autoSave = false) {
     this.createAnother = createAnother;
     const {
       product_type,
@@ -520,9 +520,20 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     const photos: ProductPhoto[] =
       photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
     const price_package: PricePackage[] =
-      pricePackagesWithEmpty?.filter((pkg: PricePackage) => pkg.price || pkg.no_of_sessions) ?? [];
+      pricePackagesWithEmpty?.filter(({ ...pkg }: PricePackage) => {
+        if (pkg.class_package_id) {
+          pkg.is_deleted = true;
+        }
+        return pkg.price || pkg.no_of_sessions || pkg.class_package_id;
+      }) ?? [];
+
     const time_ranges: TimeRange[] =
-      timeRangesWithEmpty?.filter((tR: TimeRange) => tR.end_time || tR.start_time) ?? [];
+      timeRangesWithEmpty?.filter(({ ...tR }: TimeRange) => {
+        if (tR.class_time_range_id) {
+          tR.is_deleted = true;
+        }
+        return tR.end_time || tR.start_time || tR.class_time_range_id;
+      }) ?? [];
     const payload: ProductPayload = {
       product_id,
       product_type,
@@ -550,7 +561,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         ? !!time_ranges.length &&
           time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
         : true);
-    this.store.dispatch(addService({ productData: payload }));
+    this.store.dispatch(addService({ productData: payload, autoSave }));
   }
 
   productTypeChange(product_type: ProductType) {

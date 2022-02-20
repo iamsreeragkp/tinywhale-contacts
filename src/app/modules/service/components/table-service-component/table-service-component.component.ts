@@ -90,7 +90,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   customerCurrency?: Currency;
   currentCount?: number;
   isLoadMore = false;
-
+  checkVal: any;
   constructor(
     private store: Store<IServiceState>,
     private _fb: FormBuilder,
@@ -151,6 +151,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       if (data?.status && data?.products) {
         this.productsList = data.products;
         this.productsCount = data.productsCount;
+        this.checkVal = 1;
         this.validateCount(this.productsCount);
       } else {
         console.log(data?.error);

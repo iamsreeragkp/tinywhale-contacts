@@ -52,6 +52,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   threeDotsActions = ['Reschedule'];
   serviceList: any;
+  checkVal: any;
 
   constructor(
     private router: Router,
@@ -118,6 +119,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data) {
+          this.checkVal = 1;
           this.formatData(data);
           this.bookingData = this.formatData(data);
           this.bookingsCount = data.bookingsCount;

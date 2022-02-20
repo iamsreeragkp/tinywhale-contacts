@@ -169,15 +169,19 @@
             *ngFor="let item of socialItems.controls; let i = index; let isFirst = first"
           >
             <div [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
-              <input class="input py-3 px-4" placeholder="Enter URL" formControlName="url" />
+              <input
+                class="input py-3 px-4 show-error"
+                placeholder="Enter URL"
+                formControlName="url"
+              />
             </div>
           </ng-container>
-          <p
+          <!-- <p
             *ngIf="social?.valid === false ? true : false && social?.errors?.['pattern']"
             class="error font-normal text-xs"
           >
             Invalid URL
-          </p>
+          </p> -->
           <button
             class="noborder-button add-another"
             (click)="addSocialItem()"
@@ -243,15 +247,15 @@
             <div class="input-award flex flex-col px-4 py-4">
               <input
                 type="email"
-                class="input py-3 px-4 mb-3"
+                class="input py-3 px-4 mb-3 show-error"
                 placeholder="Enter Email Address"
                 formControlName="email"
               />
 
               <input
-                type="number"
+                type="text"
                 min="0"
-                class="input py-3 px-4"
+                class="input py-3 px-4 show-error"
                 placeholder="+XX XXXXXXXXXX"
                 formControlName="phone_number"
               />
@@ -352,7 +356,7 @@
                 <!-- <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker> -->
                 <app-select-calendar
                   [formControlName]="'expiry_date'"
-                  placeholder="Enter Date"
+                  placeholder="Expiry Date"
                 ></app-select-calendar>
               </div>
 
