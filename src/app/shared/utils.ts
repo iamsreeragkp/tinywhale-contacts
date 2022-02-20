@@ -1,5 +1,5 @@
 import { LocationType, TimeRange, WeekDay } from '../modules/service/shared/service.interface';
-import { TimeRangeSerialized } from './interfaces/time-range.interface';
+import { SlotRange, TimeRangeSerialized } from './interfaces/time-range.interface';
 
 export const timeOptions = ['AM', 'PM'].flatMap(amPm =>
   Array.from({ length: 12 }, (_, i) => (!i ? 12 : i)).flatMap(hour =>
@@ -78,46 +78,88 @@ export function findWeekDay(day: WeekDay) {
 }
 
 export const getTimeRangeSerialized = (timeRanges: TimeRange[]) => {
-  return timeRanges?.reduce((timeRangeSerialized: TimeRangeSerialized[], timeRange) => {
-    if (!timeRange.day_of_week || !timeRange.start_time || !timeRange.end_time) {
-      return timeRangeSerialized;
-    }
-    const existingTimeRange = timeRangeSerialized.find(
-      timeRangeSer => timeRangeSer.day_of_week === timeRange.day_of_week
-    );
-    if (!existingTimeRange) {
-      return timeRangeSerialized.concat({
-        label: findWeekDay(timeRange.day_of_week),
-        ranges: [
-          {
-            start_time: timeRange.start_time,
-            end_time: timeRange.end_time,
-            start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
-            end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
-          },
-        ],
-        day_of_week: timeRange.day_of_week,
-      });
-    }
-    const coincidingRange = existingTimeRange?.ranges.find(
-      range => range.start_time === timeRange?.end_time || range.end_time === timeRange?.start_time
-    );
-    if (coincidingRange) {
-      if (coincidingRange.start_time === timeRange?.end_time) {
-        coincidingRange.start_time = timeRange?.start_time;
-      } else {
-        coincidingRange.end_time = timeRange?.end_time;
+  return Object.entries(WeekDay).reduce(
+    (timeRangeSerialized: TimeRangeSerialized[], [weekDayName, weekDay]) => {
+      const timeRangesOfWeekDay = timeRanges
+        .filter(
+          timeRange =>
+            timeRange.day_of_week === weekDay &&
+            timeRange.day_of_week &&
+            timeRange.start_time &&
+            timeRange.end_time
+        )
+        .sort((a, b) => a.start_time?.localeCompare(b.start_time!)!);
+      if (!timeRangesOfWeekDay.length) {
+        return timeRangeSerialized;
       }
-    } else {
-      existingTimeRange.ranges.push({
-        start_time: timeRange.start_time,
-        end_time: timeRange.end_time,
-        start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
-        end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
+      return timeRangeSerialized.concat({
+        label: weekDayName,
+        ranges: timeRangesOfWeekDay.reduce((timeRangeArr: SlotRange[], timeRange) => {
+          const coincidingRange = timeRangeArr.find(
+            tR => tR.start_time === timeRange.end_time || tR.end_time === timeRange.start_time
+          );
+          if (!coincidingRange) {
+            return timeRangeArr.concat({
+              start_time: timeRange.start_time as string,
+              end_time: timeRange.end_time as string,
+              start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
+              end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
+            });
+          }
+          if (coincidingRange.start_time === timeRange?.end_time) {
+            coincidingRange.start_time = timeRange?.start_time!;
+            coincidingRange.start_time_label = convert24HrsFormatToAmPm(timeRange.start_time);
+          } else {
+            coincidingRange.end_time = timeRange?.end_time!;
+            coincidingRange.end_time_label = convert24HrsFormatToAmPm(timeRange.end_time);
+          }
+          return timeRangeArr;
+        }, []),
+        day_of_week: weekDay,
       });
-    }
-    return timeRangeSerialized;
-  }, []) as TimeRangeSerialized[];
+    },
+    []
+  );
+  // return timeRanges?.reduce((timeRangeSerialized: TimeRangeSerialized[], timeRange) => {
+  //   if (! || ! || !) {
+  //     return timeRangeSerialized;
+  //   }
+  //   const existingTimeRange = timeRangeSerialized.find(
+  //     timeRangeSer => timeRangeSer.day_of_week === timeRange.day_of_week
+  //   );
+  //   if (!existingTimeRange) {
+  //     return timeRangeSerialized.concat({
+  //       label: findWeekDay(timeRange.day_of_week),
+  //       ranges: [
+  //         {
+  //           start_time: timeRange.start_time,
+  //           end_time: timeRange.end_time,
+  //           start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
+  //           end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
+  //         },
+  //       ],
+  //       day_of_week: timeRange.day_of_week,
+  //     });
+  //   }
+  //   const coincidingRange = existingTimeRange?.ranges.find(
+  //     range => range.start_time === timeRange?.end_time || range.end_time === timeRange?.start_time
+  //   );
+  //   if (coincidingRange) {
+  //     if (coincidingRange.start_time === timeRange?.end_time) {
+  //       coincidingRange.start_time = timeRange?.start_time;
+  //     } else {
+  //       coincidingRange.end_time = timeRange?.end_time;
+  //     }
+  //   } else {
+  //     existingTimeRange.ranges.push({
+  //       start_time: timeRange.start_time,
+  //       end_time: timeRange.end_time,
+  //       start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
+  //       end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
+  //     });
+  //   }
+  //   return timeRangeSerialized;
+  // }, []) as TimeRangeSerialized[];
 };
 
 export function convert24HrsFormatToAmPm(time?: string | null) {
