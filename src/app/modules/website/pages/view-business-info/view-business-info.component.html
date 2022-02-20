@@ -168,6 +168,9 @@
     </main>
   </div>
   <ng-template #noWebsiteInfo>
-    <app-no-data-view-component class="flex flex-1"></app-no-data-view-component>
+    <div *ngIf="dashboardData">
+      <app-no-data-view-component class="flex flex-1"></app-no-data-view-component>
+    </div>
+    <app-loader-page *ngIf="!dashboardData"></app-loader-page>
   </ng-template>
 </div>

@@ -10,11 +10,11 @@ import {
 
 export const addService = createAction(
   '[ServiceModule] ADD SERVICE',
-  props<{ productData: ProductPayload }>()
+  props<{ productData: ProductPayload; autoSave: boolean }>()
 );
 export const addServiceStatus = createAction(
   '[ServiceModule] ADD SERVICE STATUS',
-  props<{ response?: any; status: boolean; error?: string }>()
+  props<{ response?: any; status: boolean; error?: string; autoSave: boolean }>()
 );
 
 export const getService = createAction(

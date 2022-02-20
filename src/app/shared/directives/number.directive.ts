@@ -65,6 +65,10 @@ export class NumberDirective {
       event.preventDefault();
     }
   }
+  @HostListener('wheel', ['$event'])
+  onWheel(eve: WheelEvent) {
+    eve.preventDefault();
+  }
 
   get inputElement() {
     return this._el.nativeElement as HTMLInputElement;
