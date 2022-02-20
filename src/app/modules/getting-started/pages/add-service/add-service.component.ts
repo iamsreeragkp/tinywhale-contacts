@@ -3,6 +3,7 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { symbol } from 'd3';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
 import { AuthService } from 'src/app/modules/auth/auth.service';
@@ -257,8 +258,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range, skipId))
           : []
       ),
-      capacity: [val?.class?.capacity ?? null, [Validators.required]],
-      duration: [val?.class?.duration_in_minutes ?? null, Validators.required],
+      capacity: [val?.class?.capacity ?? null, [Validators.required, Validators.min(0)]],
+      duration: [val?.class?.duration_in_minutes ?? null, [Validators.required, Validators.min(0)]],
     });
     this.updateTimeSlotOptionsOfAWeekDay();
     if (val?.product_id) {
@@ -493,6 +494,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   saveProductForm(createAnother = false, autoSave = false) {
+    console.log(this.productForm);
     this.createAnother = createAnother;
     const {
       product_type,
@@ -519,21 +521,20 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     }
     const photos: ProductPhoto[] =
       photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
-    const price_package: PricePackage[] =
-      pricePackagesWithEmpty?.filter(({ ...pkg }: PricePackage) => {
-        if (pkg.class_package_id) {
-          pkg.is_deleted = true;
-        }
+    const price_package: PricePackage[] = (
+      pricePackagesWithEmpty?.filter((pkg: PricePackage) => {
         return pkg.price || pkg.no_of_sessions || pkg.class_package_id;
-      }) ?? [];
+      }) ?? []
+    ).map(({ ...pkg }: PricePackage) => ({
+      ...pkg,
+      is_deleted: !pkg.price && !pkg.no_of_sessions,
+    }));
 
-    const time_ranges: TimeRange[] =
-      timeRangesWithEmpty?.filter(({ ...tR }: TimeRange) => {
-        if (tR.class_time_range_id) {
-          tR.is_deleted = true;
-        }
+    const time_ranges: TimeRange[] = (
+      timeRangesWithEmpty?.filter((tR: TimeRange) => {
         return tR.end_time || tR.start_time || tR.class_time_range_id;
-      }) ?? [];
+      }) ?? []
+    ).map(({ ...tR }: TimeRange) => ({ ...tR, is_deleted: !tR.end_time && !tR.start_time }));
     const payload: ProductPayload = {
       product_id,
       product_type,
@@ -566,7 +567,23 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   productTypeChange(product_type: ProductType) {
     enableDisableFormFields.forEach(field => {
-      this.productForm.get(field)?.[product_type === ProductType.CLASS ? 'enable' : 'disable']();
+      this.productForm
+        .get(field)
+        ?.[product_type === ProductType.CLASS ? 'enable' : 'disable']({ onlySelf: true });
+    });
+    this.timeRanges.controls.forEach(control => {
+      if (typeof control.get('class_time_range_id')?.value === 'symbol') {
+        control.get('class_time_range_id')?.disable();
+      } else {
+        control.get('class_time_range_id')?.enable();
+      }
+    });
+    this.pricePackages.controls.forEach(control => {
+      if (typeof control.get('class_package_id')?.value === 'symbol') {
+        control.get('class_package_id')?.disable();
+      } else {
+        control.get('class_package_id')?.enable();
+      }
     });
   }
 
