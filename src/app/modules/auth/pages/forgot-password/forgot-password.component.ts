@@ -18,7 +18,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   isOtpVisible = false;
   otpKey: any;
   fields = ['otp_0', 'otp_1', 'otp_2', 'otp_3', 'otp_4', 'otp_5'];
-  keyValue =null;
+  keyValue = null;
   copyValue = false;
   @ViewChildren('formRow') rows: any;
 
@@ -106,9 +106,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  
-  keysDown(event: any, index: any){
+  keysDown(event: any, index: any) {
     // if (event.keyCode === 8) { // for backspace key
     //   console.log(event.target.value[event.target.selectionStart - 1]);
     // } else if (event.keyCode === 46) { // for delete key
@@ -116,54 +114,40 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     // }
   }
 
-
-  keyUpEvent(event: any, index: any, field:string) {
+  keyUpEvent(event: any, index: any, field: string) {
     // @ts-ignore: Object is possibly 'null'.
 
-    
-    this.otpForm?.controls[field].valueChanges.subscribe(
-      (selectedValue) => {
-        if(!selectedValue){
-
-          this.keyValue =this.otpForm.value[field];
-        }
-      
+    this.otpForm?.controls[field].valueChanges.subscribe(selectedValue => {
+      if (!selectedValue) {
+        this.keyValue = this.otpForm.value[field];
       }
-  );
+    });
 
-   
-    
-    if(event?.code==='Backspace' || event?.code==='Delete'){
-    
+    if (event?.code === 'Backspace' || event?.code === 'Delete') {
       let pos = index;
       if (event.keyCode === 8 && event.which === 8) {
         pos = index - 1;
       } else {
         pos = index - 1;
       }
-      if(!this.keyValue){
-        if(this.copyValue){
+      if (!this.keyValue) {
+        if (this.copyValue) {
           if (pos > -1 && pos < this.fields.length) {
             this.rows._results[index].nativeElement.focus();
             this.otpForm?.get(this.fields[index])?.setValue(null);
-            this.keyValue= null;
+            this.keyValue = null;
             this.copyValue = false;
           }
-        }
-        else{
+        } else {
           if (pos > -1 && pos < this.fields.length) {
             this.rows._results[pos].nativeElement.focus();
             this.otpForm?.get(this.fields[pos])?.setValue(null);
-            this.keyValue= null;
+            this.keyValue = null;
           }
         }
-       
+      } else {
+        this.keyValue = null;
       }
-      else{
-        this.keyValue= null;
-          
-      }
-     
     }
 
     if (event?.code.includes('Digit')) {
@@ -172,8 +156,16 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         pos = index - 1;
       } else {
         pos = index + 1;
-        
-
+      }
+      if (pos > -1 && pos < this.fields.length) {
+        this.rows._results[pos].nativeElement.focus();
+      }
+    } else if (event?.code.includes('Numpad')) {
+      let pos = index;
+      if (event.keyCode === 8 && event.which === 8) {
+        pos = index - 1;
+      } else {
+        pos = index + 1;
       }
       if (pos > -1 && pos < this.fields.length) {
         this.rows._results[pos].nativeElement.focus();
@@ -184,7 +176,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   onPaste(event: ClipboardEvent) {
-    this.copyValue =true;
+    this.copyValue = true;
     let clipboardData = event.clipboardData || (<any>window).clipboardData;
     let pastedText = clipboardData.getData('text').split('').splice(0, 6);
     setTimeout(() => {
@@ -194,8 +186,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  onInput(content: string) {
-  }
+  onInput(content: string) {}
 
   backToReset() {
     this.isOtpVisible = false;
