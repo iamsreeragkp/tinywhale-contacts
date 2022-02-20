@@ -177,27 +177,23 @@ export class AddServiceComponent implements OnInit, OnDestroy {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
             if (data.response.time_ranges?.length) {
-              this.productForm.setControl(
-                'time_ranges',
-                this._fb.array(
-                  data.response.time_ranges.map((time_range: TimeRange) =>
-                    this.createTimeRanges(time_range)
+              data.response.time_ranges.forEach((timeRange: TimeRange) => {
+                this.timeRanges.controls
+                  .find(
+                    tR => tR.get('class_time_range_id')?.value === timeRange?.class_time_range_id
                   )
-                ),
-                { emitEvent: false }
-              );
+                  ?.get('class_time_range_id')
+                  ?.patchValue(timeRange.class_time_range_id, { emitEvent: false });
+              });
             }
             this.updateTimeSlotOptionsOfAWeekDay();
             if (data.response.price_package?.length) {
-              this.productForm.setControl(
-                'price_package',
-                this._fb.array(
-                  data.response.price_package.map((pricePkg: PricePackage) =>
-                    this.createPricePackages(pricePkg)
-                  )
-                ),
-                { emitEvent: false }
-              );
+              data.response.price_package.forEach((classPkg: PricePackage) => {
+                this.pricePackages.controls
+                  .find(tR => tR.get('class_package_id')?.value === classPkg?.class_package_id)
+                  ?.get('class_package_id')
+                  ?.patchValue(classPkg.class_package_id, { emitEvent: false });
+              });
             }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
