@@ -414,7 +414,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   addPricePackage() {
-    this.pricePackages.push(this.createPricePackages(), { emitEvent: false });
+    this.pricePackages.push(this.createPricePackages());
   }
 
   async handleFileInput(event: Event, index: number) {
@@ -520,7 +520,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     const photos: ProductPhoto[] =
       photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
     const price_package: PricePackage[] =
-      pricePackagesWithEmpty?.filter((pkg: PricePackage) => {
+      pricePackagesWithEmpty?.filter(({ ...pkg }: PricePackage) => {
         if (pkg.class_package_id) {
           pkg.is_deleted = true;
         }
@@ -528,7 +528,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       }) ?? [];
 
     const time_ranges: TimeRange[] =
-      timeRangesWithEmpty?.filter((tR: TimeRange) => {
+      timeRangesWithEmpty?.filter(({ ...tR }: TimeRange) => {
         if (tR.class_time_range_id) {
           tR.is_deleted = true;
         }
