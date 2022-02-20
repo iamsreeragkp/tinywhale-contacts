@@ -48,6 +48,7 @@ body {
   &.ng-invalid.ng-touched.show-error {
     border-color: #ff725e;
   }
+  @apply w-90 max-w-full;
 }
 
 .primary-button {

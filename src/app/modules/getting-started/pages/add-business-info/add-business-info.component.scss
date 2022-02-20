@@ -36,12 +36,8 @@
       line-height: 24px;
       color: #154f5b;
     }
-    .input {
-      background: #ffffff;
-      border: 2px solid #d6e1e3;
-      border-radius: 8px;
-      // width: 360px;
-      color: #154f5b;
+    .input-data {
+      @apply w-90;
     }
     .input-photo {
       background: #f6f9fa;
