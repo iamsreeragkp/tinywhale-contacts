@@ -314,10 +314,9 @@
       <ng-container *ngIf="checkVal">
         <ng-container *ngFor="let product of productsList; let i = index">
           <tr
-            [routerLink]="['../view-service', product.product_id]"
             class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
           >
-            <td class="align-top px-2 py-3">
+            <td class="align-top px-2 py-3" [routerLink]="['../view-service', product.product_id]">
               <div class="flex">
                 <div>
                   <div class="w-12 h-12 rounded overflow-hidden">
@@ -336,7 +335,7 @@
                 <span class="ml-2 cp">{{ product?.title ?? '-' }}</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3">
+            <td class="align-top px-2 py-3" [routerLink]="['../view-service', product.product_id]">
               <div class="flex items-center">
                 <span
                   *ngIf="product?.product_type === ProductType.SERVICE; else classTimeRangesView"
@@ -350,7 +349,7 @@
                 </ng-template>
               </div>
             </td>
-            <td class="align-top px-2 py-3">
+            <td class="align-top px-2 py-3" [routerLink]="['../view-service', product.product_id]">
               <div class="flex flex-col">
                 <span
                   class="whitespace-nowrap"
@@ -383,7 +382,7 @@
                 <!-- <span class=" whitespace-nowrap">$ xxx / 4 sessions</span> -->
               </div>
             </td>
-            <td class="align-top px-2 py-3">
+            <td class="align-top px-2 py-3" [routerLink]="['../view-service', product.product_id]">
               <div class="flex items-center">
                 <span class="">{{
                   product?.class?.location_type === LocationType.BUSINESS_LOCATION
@@ -392,7 +391,7 @@
                 }}</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3">
+            <td class="align-top px-2 py-3" [routerLink]="['../view-service', product.product_id]">
               <div class="flex items-center">
                 <span class="">{{ product?.visibility ?? '' | titlecase }}</span>
               </div>
@@ -415,7 +414,7 @@
                   </ng-container>
                 </div>
                 <!-- confrim popup -->
-                <div class="flex-1 flex justify-end" (click)="$event.stopPropagation()">
+                <div class="flex-1 flex justify-end">
                   <app-three-dots
                     [actions]="getActions(product)"
                     (actionTriggered)="handleAction($event, product)"

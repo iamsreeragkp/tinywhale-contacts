@@ -20,6 +20,7 @@ export interface IServiceState {
     response?: any;
     status: boolean;
     error?: string;
+    autoSave: boolean;
   };
   getService?: {
     product?: Product;
@@ -52,9 +53,9 @@ export const initialServiceState: IServiceState = {
 
 export const reducer = createReducer(
   initialServiceState,
-  on(addServiceStatus, (state, { response, status, error }) => ({
+  on(addServiceStatus, (state, { response, status, error, autoSave }) => ({
     ...state,
-    addService: { response, status, error },
+    addService: { response, status, error, autoSave },
   })),
   on(getServiceStatus, (state, { product, error, status }) => ({
     ...state,

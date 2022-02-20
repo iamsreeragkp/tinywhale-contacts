@@ -188,35 +188,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
         switchMap(value => of(value))
       )
       .subscribe(value => {
-        const {
-          companyname,
-          punchline,
-          socialitems,
-          email,
-          licenceitems,
-          testimonialitems,
-          logo,
-          phone_number,
-          contact_type,
-          cover,
-        } = value;
-
-        const businessPayload = {
-          company_name: companyname,
-          punchline: punchline,
-          logo: logo,
-          social_links: this.isSocialLinkFilled(),
-          recognitions: licenceitems,
-          phone_number: phone_number.toString(),
-          email: email,
-          contact_type: contact_type,
-          business_photos: [cover],
-          testimonials: this.isTestimonialFilled(),
-        };
-        if (this.businessInfoForm?.valid) {
-          this.store.dispatch(addBusiness({ businessData: businessPayload }));
-        }
-        return;
+        this.onSubmitBusiness(false);
       });
   }
 
@@ -236,8 +208,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       punchline: [val?.store?.punchline ?? ''],
       logo: [val?.logo ?? ''],
       cover: [val?.business_photos?.[0] ?? ''],
-      email: [val?.email ?? ''],
-      phone_number: [val?.phone_number ?? ''],
+      email: [val?.email ?? '', Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+      phone_number: [val?.phone_number ?? '', Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,15}$/)],
       contact_type: [val?.contact_type ?? null],
       // photos: this.fb.array(
       //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
@@ -495,18 +467,17 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSubmitBusiness(route = false) {
+  onSubmitBusiness(route = true) {
+    if (this.businessInfoForm.invalid) {
+      this.businessInfoForm.markAllAsTouched();
+      return;
+    }
     this.isSaving = true;
     this.fileNames = [];
     /*
       Extracting name of the images and prepending /businessname/type/,
       patching name into form and into an array to generate presigned URL
     */
-    const userData = this.authService.decodeUserToken();
-    const {
-      dashboardInfos: { customUsername: domain_name },
-    } = userData;
-    this.fileNames = [];
 
     const {
       companyname,
@@ -526,14 +497,16 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       logo: logo,
       social_links: this.isSocialLinkFilled(),
       recognitions: licenceitems,
-      phone_number: phone_number.toString(),
+      phone_number: phone_number,
       email: email,
       contact_type: contact_type,
       business_photos: [cover],
       testimonials: this.isTestimonialFilled(),
     };
     this.store.dispatch(addBusiness({ businessData: businessPayload }));
-    this.router.navigate(['../']);
+    if (route) {
+      this.router.navigate(['../']);
+    }
     return;
 
     // if (this.fileToUploadLogo) {
