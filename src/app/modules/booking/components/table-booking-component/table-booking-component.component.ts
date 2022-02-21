@@ -222,20 +222,21 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
       if (booking['order_session'].length > 1) {
         const sortedOrderList = booking['order_session'].slice().sort((a: any, b: any) => {
-          return (
-            +new Date(
-              this.convertToDate(
-                a['session']['date'],
-                a['session']['class_time_range']['start_time']
-              )
-            ) -
-            +new Date(
-              this.convertToDate(
-                a['session']['date'],
-                a['session']['class_time_range']['start_time']
-              )
-            )
-          );
+          return +new Date(a['session']['date']) - +new Date(b['session']['date']);
+          // return (
+          //   +new Date(
+          //     this.convertToDate(
+          //       a['session']['date'],
+          //       a['session']['class_time_range']['start_time']
+          //     )
+          //   ) -
+          //   +new Date(
+          //     this.convertToDate(
+          //       a['session']['date'],
+          //       a['session']['class_time_range']['start_time']
+          //     )
+          //   )
+          // );
         });
 
         sortedOrderList.map((order: any, index: number, data: any) => {
@@ -314,7 +315,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     const monthName = monthNames[monthIndex];
 
     const year = date.getFullYear();
-    const yearString = '`' + year.toString().slice(2);
+    const yearString = "'" + year.toString().slice(2);
     return `${day} ${monthName} ${yearString}`;
   }
 

@@ -177,19 +177,37 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             }
             if (data.response.time_ranges?.length) {
               data.response.time_ranges.forEach((timeRange: TimeRange, i: number) => {
-                this.timeRanges
-                  ?.at(i)
-                  ?.get('class_time_range_id')
-                  ?.patchValue(timeRange.class_time_range_id, { emitEvent: false });
+                const controlWithId = this.timeRanges.controls.find(
+                  tR => tR.get('class_time_range_id')?.value === timeRange.class_time_range_id
+                );
+                if (controlWithId) {
+                  return;
+                }
+                const controlAtIndex = this.timeRanges?.at(i);
+                if (controlAtIndex) {
+                  controlAtIndex
+                    ?.get('class_time_range_id')
+                    ?.patchValue(timeRange.class_time_range_id, { emitEvent: false });
+                  controlAtIndex.get('class_time_range_id')?.enable();
+                }
               });
             }
             this.updateTimeSlotOptionsOfAWeekDay();
             if (data.response.price_package?.length) {
               data.response.price_package.forEach((classPkg: PricePackage, i: number) => {
-                this.pricePackages
-                  ?.at(i)
-                  ?.get('class_package_id')
-                  ?.patchValue(classPkg.class_package_id, { emitEvent: false });
+                const controlWithId = this.pricePackages.controls.find(
+                  pkg => pkg.get('class_package_id')?.value === classPkg.class_package_id
+                );
+                if (controlWithId) {
+                  return;
+                }
+                const controlAtIndex = this.pricePackages?.at(i);
+                if (controlAtIndex) {
+                  controlAtIndex
+                    ?.get('class_package_id')
+                    ?.patchValue(classPkg.class_package_id, { emitEvent: false });
+                  controlAtIndex.get('class_package_id')?.enable();
+                }
               });
             }
             this.productFormSubscriptions();
