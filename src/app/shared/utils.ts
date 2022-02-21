@@ -83,6 +83,9 @@ export function findWeekDay(day: WeekDay) {
 }
 
 export const getTimeRangeSerializedBasedOnWeekday = (timeRanges: TimeRange[]) => {
+  if (!timeRanges) {
+    return [];
+  }
   return Object.entries(WeekDay).reduce(
     (timeRangeSerialized: TimeRangeSerialized[], [weekDayName, weekDay]) => {
       const timeRangesOfWeekDay = timeRanges
@@ -171,6 +174,9 @@ export const getTimeRangeSerializedBasedOnDate = (
   sessions: { date: string; timeRange: TimeRange }[],
   group = false
 ) => {
+  if (!sessions) {
+    return [];
+  }
   return sessions
     ?.sort((a, b) => a.date?.localeCompare(b.date))
     ?.reduce((timeRangeSerialized: TimeRangeSerializedDate[], { date, timeRange }) => {
