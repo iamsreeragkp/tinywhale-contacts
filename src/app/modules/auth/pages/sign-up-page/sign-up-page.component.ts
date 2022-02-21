@@ -97,6 +97,9 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
       });
     this.store.pipe(select(getDomainData), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       this.isChecking = false;
+      if (this.domain?.invalid) {
+        return;
+      }
       if (data && data?.Availability === false) {
         this.isDomainAvailable = true;
       } else {
