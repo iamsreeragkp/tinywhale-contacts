@@ -12,7 +12,7 @@ import { Product, ProductType, VisibilityType, WeekDay } from '../../shared/serv
 import { getServiceStatus } from '../../store/service.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeRangeSerialized } from 'src/app/shared/interfaces/time-range.interface';
-import { Currency, currencyList, getTimeRangeSerialized } from 'src/app/shared/utils';
+import { Currency, currencyList, getTimeRangeSerializedBasedOnWeekday } from 'src/app/shared/utils';
 import { TitleCasePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth/auth.service';
@@ -89,7 +89,7 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
           actionsArr.push('Use as Template', 'Delete');
           this.threeDotsActions = actionsArr;
           if (this.productObj?.class?.class_time_ranges?.length) {
-            this.timeRangeSerialized = getTimeRangeSerialized(
+            this.timeRangeSerialized = getTimeRangeSerializedBasedOnWeekday(
               this.productObj.class.class_time_ranges
             );
           }

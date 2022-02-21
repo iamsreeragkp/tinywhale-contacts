@@ -176,27 +176,21 @@ export class AddServiceComponent implements OnInit, OnDestroy {
               this.productForm.addControl('product_id', this._fb.control(data.response.product_id));
             }
             if (data.response.time_ranges?.length) {
-              this.productForm.setControl(
-                'time_ranges',
-                this._fb.array(
-                  data.response.time_ranges.map((time_range: TimeRange) =>
-                    this.createTimeRanges(time_range)
-                  )
-                ),
-                { emitEvent: false }
-              );
+              data.response.time_ranges.forEach((timeRange: TimeRange, i: number) => {
+                this.timeRanges
+                  ?.at(i)
+                  ?.get('class_time_range_id')
+                  ?.patchValue(timeRange.class_time_range_id, { emitEvent: false });
+              });
             }
             this.updateTimeSlotOptionsOfAWeekDay();
             if (data.response.price_package?.length) {
-              this.productForm.setControl(
-                'price_package',
-                this._fb.array(
-                  data.response.price_package.map((pricePkg: PricePackage) =>
-                    this.createPricePackages(pricePkg)
-                  )
-                ),
-                { emitEvent: false }
-              );
+              data.response.price_package.forEach((classPkg: PricePackage, i: number) => {
+                this.pricePackages
+                  ?.at(i)
+                  ?.get('class_package_id')
+                  ?.patchValue(classPkg.class_package_id, { emitEvent: false });
+              });
             }
             this.productFormSubscriptions();
           } else if (this.createAnother) {
@@ -240,7 +234,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       product_type: [val?.product_type ?? null, Validators.required],
       title: [val?.title ?? null, Validators.required],
       description: [val?.description ?? null, Validators.required],
-      price: [val?.price ?? null, Validators.required],
+      price: [val?.price ?? null],
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
       photos: this._fb.array(
@@ -257,8 +251,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range, skipId))
           : []
       ),
-      capacity: [val?.class?.capacity ?? null, [Validators.required]],
-      duration: [val?.class?.duration_in_minutes ?? null, Validators.required],
+      capacity: [val?.class?.capacity ?? null, [Validators.required, Validators.min(0)]],
+      duration: [val?.class?.duration_in_minutes ?? null, [Validators.required, Validators.min(0)]],
     });
     this.updateTimeSlotOptionsOfAWeekDay();
     if (val?.product_id) {
@@ -493,6 +487,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   saveProductForm(createAnother = false, autoSave = false) {
+    console.log(this.productForm);
     this.createAnother = createAnother;
     const {
       product_type,
@@ -519,21 +514,20 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     }
     const photos: ProductPhoto[] =
       photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
-    const price_package: PricePackage[] =
-      pricePackagesWithEmpty?.filter(({ ...pkg }: PricePackage) => {
-        if (pkg.class_package_id) {
-          pkg.is_deleted = true;
-        }
+    const price_package: PricePackage[] = (
+      pricePackagesWithEmpty?.filter((pkg: PricePackage) => {
         return pkg.price || pkg.no_of_sessions || pkg.class_package_id;
-      }) ?? [];
+      }) ?? []
+    ).map(({ ...pkg }: PricePackage) => ({
+      ...pkg,
+      is_deleted: !pkg.price && !pkg.no_of_sessions,
+    }));
 
-    const time_ranges: TimeRange[] =
-      timeRangesWithEmpty?.filter(({ ...tR }: TimeRange) => {
-        if (tR.class_time_range_id) {
-          tR.is_deleted = true;
-        }
+    const time_ranges: TimeRange[] = (
+      timeRangesWithEmpty?.filter((tR: TimeRange) => {
         return tR.end_time || tR.start_time || tR.class_time_range_id;
-      }) ?? [];
+      }) ?? []
+    ).map(({ ...tR }: TimeRange) => ({ ...tR, is_deleted: !tR.end_time && !tR.start_time }));
     const payload: ProductPayload = {
       product_id,
       product_type,
@@ -566,7 +560,23 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   productTypeChange(product_type: ProductType) {
     enableDisableFormFields.forEach(field => {
-      this.productForm.get(field)?.[product_type === ProductType.CLASS ? 'enable' : 'disable']();
+      this.productForm
+        .get(field)
+        ?.[product_type === ProductType.CLASS ? 'enable' : 'disable']({ onlySelf: true });
+    });
+    this.timeRanges.controls.forEach(control => {
+      if (typeof control.get('class_time_range_id')?.value === 'symbol') {
+        control.get('class_time_range_id')?.disable();
+      } else {
+        control.get('class_time_range_id')?.enable();
+      }
+    });
+    this.pricePackages.controls.forEach(control => {
+      if (typeof control.get('class_package_id')?.value === 'symbol') {
+        control.get('class_package_id')?.disable();
+      } else {
+        control.get('class_package_id')?.enable();
+      }
     });
   }
 

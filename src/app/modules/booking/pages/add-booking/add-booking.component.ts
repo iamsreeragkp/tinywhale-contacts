@@ -353,7 +353,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       }
       return !this.filledSlots
         ?.find(slot => slot.date === convertDateToDateString(selectedDate))
-        ?.filled_class_time_range_ids.includes(timeRange.class_time_range_id);
+        ?.filled_class_time_range_ids.includes(timeRange.id);
     });
   }
 

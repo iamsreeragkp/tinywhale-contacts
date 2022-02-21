@@ -14,6 +14,8 @@ import { RootStoreModule } from './store/root-store.module';
 // import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgApexchartsModule } from "ng-apexcharts";
+
 
 @NgModule({
   imports: [
@@ -23,6 +25,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     RootStoreModule,
     GettingStartedModule,
     NgxChartsModule,
+    NgApexchartsModule,
   ],
   declarations: [
     HomePageComponent,
@@ -37,4 +40,4 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],
 })
-export class RootModule {}
+export class RootModule { }

@@ -33,7 +33,7 @@
         </div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ stdata?.account?.User?.email || '---' }}</span>
+            <span>{{ stdata?.account?.User?.email || '-' }}</span>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
         <div class="w-44 label text-right mr-6"><label for="">Phone Number</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ stdata?.account?.phone_number || '---' }}</span>
+            <span>{{ stdata?.account?.phone_number || '-' }}</span>
           </div>
         </div>
       </div>
@@ -49,7 +49,18 @@
         <div class="w-44 label text-right mr-6"><label for="">Customer Name</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ stdata?.account?.first_name || '---' }}</span>
+            <span>{{
+              stdata?.account?.first_name +
+                (stdata?.account?.last_name ? ' ' + stdata?.account?.last_name : '') || '-'
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="input-field flex mb-8" *ngIf="stdata?.attendee_name">
+        <div class="w-44 label text-right mr-6"><label for="">Booked For*</label></div>
+        <div class="w-form">
+          <div class="flex items-center">
+            <span>{{ stdata?.attendee_name || '-' }}</span>
           </div>
         </div>
       </div>
@@ -57,16 +68,50 @@
         <div class="w-44 label text-right mr-6"><label for="">Service*</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ stdata?.order_line_item?.[0]?.product?.title || '---' }}</span>
+            <span>{{ stdata?.order_line_item?.[0]?.product?.title || '-' }}</span>
           </div>
         </div>
       </div>
       <div class="input-field flex mb-8">
-        <div class="w-44 label text-right mr-6"><label for="">Slot*</label></div>
+        <div class="w-44 label text-right mr-6"><label for="">Booking Date*</label></div>
         <div class="w-form">
           <div class="flex items-center">
-            <span>{{ getDayName(stdata?.order_session?.[0]?.session?.date) || '---' }}</span>
-            <span class="ml-8">{{ classTimeRanged || '---' }}</span>
+            <span>{{ stdata?.date_time ?? '' | date: 'MM/dd/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="input-field flex mb-8">
+        <div class="w-44 label text-right mr-6"><label for="">Date & Slot*</label></div>
+        <div class="w-form">
+          <!-- <div class="flex items-center">
+            <span>{{ getDayName(stdata?.order_session?.[0]?.session?.date) || '-' }}</span>
+            <span class="ml-8">{{ classTimeRanged || '-' }}</span>
+          </div> -->
+          <div class="flex-1">
+            <div
+              class="flex w-full gap-3"
+              [ngClass]="{ 'mb-3': !isLastTR }"
+              *ngFor="let timeRange of timeRangeSerialized; let isLastTR = last"
+            >
+              <div class="w-32">
+                <span>{{ timeRange?.label }}</span>
+              </div>
+              <div class="flex-1">
+                <div
+                  class="flex gap-3"
+                  [ngClass]="{ 'mb-3': !isLast }"
+                  *ngFor="let range of timeRange.ranges; let isLast = last"
+                >
+                  <div>
+                    <span>{{ range.start_time_label }}</span>
+                  </div>
+                  <span> - </span>
+                  <div>
+                    <span>{{ range.end_time_label }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -89,7 +134,17 @@
                   : ''
 
 
-              }}{{ stdata?.invoice?.due_amount || '---' }}
+
+
+
+
+
+
+
+
+
+
+              }}{{ stdata?.invoice?.due_amount || '-' }}
               {{ stdata?.invoice?.payments?.[0]?.payment_mode?.split('_')?.join(' ') ?? 'Online' | titlecase }}</span
             >
             <span class="tooltip-right" *ngIf="stdata?.invoice?.status === 'SETTLED'">

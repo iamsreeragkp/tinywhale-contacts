@@ -33,7 +33,11 @@
       <div class="input-field flex mb-8">
         <div class="w-36 label mt-4"><label for="">Company Name*</label></div>
         <div>
-          <input class="input py-3 px-4" placeholder="Company name" formControlName="companyname" />
+          <input
+            class="input-data py-3 px-4"
+            placeholder="Company name"
+            formControlName="companyname"
+          />
         </div>
       </div>
       <div class="input-field flex mb-8">
@@ -128,7 +132,7 @@
         <div class="w-36 label mt-4"><label for="">Punchline* </label></div>
         <!-- <div>
           <textarea
-            class="input py-3 px-4 punchline"
+            class="input-data py-3 px-4 punchline"
             placeholder="Eg: I help kids learn the basics of Music"
             formControlName="punchline"
             #punchline
@@ -136,10 +140,10 @@
           </textarea>
         </div> -->
 
-        <div class="textarea-wrapper relative input w-full p-0.5 focus-within:pb-4 mb-4">
+        <div class="textarea-wrapper relative input-data w-full p-0.5 focus-within:pb-4 mb-4">
           <textarea
             formControlName="punchline"
-            class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
+            class="focus:outline-none resize-none textarea-focus py-3 px-3.5 w-full"
             placeholder="Eg: I help kids learn the basics of Music"
             appTextareaAutoresize
             #punchline
@@ -155,7 +159,7 @@
         <div class="w-36 label mt-4"><label for="">About Me* </label></div>
         <div>
           <textarea
-            class="input py-3 px-4"
+            class="input-data py-3 px-4"
             placeholder="Tell a little about of yourself"
             formControlName="aboutme"
             rows="2"
@@ -170,7 +174,7 @@
           >
             <div [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
               <input
-                class="input py-3 px-4 show-error"
+                class="input-data py-3 px-4 show-error"
                 placeholder="Enter URL"
                 formControlName="url"
               />
@@ -247,7 +251,7 @@
             <div class="input-award flex flex-col px-4 py-4">
               <input
                 type="email"
-                class="input py-3 px-4 mb-3 show-error"
+                class="input-data py-3 px-4 mb-3 show-error"
                 placeholder="Enter Email Address"
                 formControlName="email"
               />
@@ -255,7 +259,7 @@
               <input
                 type="text"
                 min="0"
-                class="input py-3 px-4 show-error"
+                class="input-data py-3 px-4 show-error"
                 placeholder="+XX XXXXXXXXXX"
                 formControlName="phone_number"
               />
@@ -337,12 +341,12 @@
               </div>
 
               <input
-                class="input py-3 px-4 mb-4"
+                class="input-data py-3 px-4 mb-4"
                 placeholder="Enter name of Certificate / License"
                 formControlName="recognition_name"
               />
               <!-- <input
-                class="input py-3 px-4 mb-4"
+                class="input-data py-3 px-4 mb-4"
                 placeholder="Expiry date (MM/DD/YY)"
                 formControlName="expiry_date"
               /> -->
@@ -351,12 +355,13 @@
                 class="w-form calendar-1 font-poppins mb-4"
                 *ngIf="item.get('recognition_type')?.value !== 'AWARD'"
               >
-                <!-- <input type="date" class="input w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
+                <!-- <input type="date" class="input-data w-full py-3 px-4 focus:outline-none" placeholder="Enter Date"
                   formControlName="date" /> -->
                 <!-- <ngx-datepicker formControlName="expiry_date" [options]="options"></ngx-datepicker> -->
                 <app-select-calendar
                   [formControlName]="'expiry_date'"
-                  placeholder="Expiry Date"
+                  placeholder="Expiry date"
+                  [disableUntil]="today"
                 ></app-select-calendar>
               </div>
 
@@ -427,19 +432,19 @@
               [ngClass]="{ 'mt-3': !isFirst }"
             >
               <input
-                class="input py-3 px-4 mb-4"
+                class="input-data py-3 px-4 mb-4"
                 placeholder="Enter client name"
                 formControlName="name"
               />
               <!-- <input
-                class="input py-3 px-4 mb-4"
+                class="input-data py-3 px-4 mb-4"
                 placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
                 formControlName="title"
               /> -->
-              <div class="textarea-wrapper relative input w-full p-0.5 mb-4">
+              <div class="textarea-wrapper relative input-data w-full p-0.5 mb-4">
                 <textarea
                   formControlName="title"
-                  class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
+                  class="focus:outline-none resize-none textarea-focus py-3 px-3.5 w-full"
                   placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
                   appTextareaAutoresize
                   #title
@@ -452,15 +457,15 @@
                 >
               </div>
               <!-- <input
-                class="input py-3 px-4 mb-4"
+                class="input-data py-3 px-4 mb-4"
                 placeholder="Enter testimonial"
                 formControlName="testimonial"
               /> -->
 
-              <div class="textarea-wrapper relative input w-full p-0.5 mb-4">
+              <div class="textarea-wrapper relative input-data w-full p-0.5 mb-4">
                 <textarea
                   formControlName="testimonial"
-                  class="focus:outline-none resize-none textarea-focus py-3 px-2.5 w-full"
+                  class="focus:outline-none resize-none textarea-focus py-3 px-3.5 w-full"
                   placeholder="Enter testimonial"
                   appTextareaAutoresize
                   #box

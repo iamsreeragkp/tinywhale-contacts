@@ -1,8 +1,8 @@
-@import 'mixins';
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'swiper/scss';
-@import 'swiper/scss/navigation';
+@import "mixins";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "swiper/scss";
+@import "swiper/scss/navigation";
 
 a,
 .cp {
@@ -48,6 +48,7 @@ body {
   &.ng-invalid.ng-touched.show-error {
     border-color: #ff725e;
   }
+  @apply w-90 max-w-full;
 }
 
 .primary-button {
@@ -366,7 +367,7 @@ body {
           @apply text-[13px];
         }
         &:before {
-          content: '@';
+          content: "@";
           display: block;
           line-height: 10px;
           text-indent: -99999px;
@@ -450,7 +451,7 @@ body {
       border-radius: 4px;
       @apply absolute top-0 left-0 h-5 w-5 bg-transparent;
       &:after {
-        content: '';
+        content: "";
         left: 6px;
         top: 1px;
         width: 7px;
@@ -490,7 +491,7 @@ body {
       border: 1px solid #154f5b;
       @apply absolute  rounded-full w-5 h-5 left-4 top-4;
       &:after {
-        content: '';
+        content: "";
         top: 3px;
         left: 3px;
         border-radius: 50%;
@@ -510,7 +511,7 @@ body {
     left: calc(-10rem + 5px);
     @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
     &::after {
-      content: '';
+      content: "";
       margin-left: -5px;
       border-width: 5px;
       left: 50%;
@@ -533,7 +534,7 @@ body {
     left: 160%;
     @apply invisible text-white text-left rounded-2xl p-5 absolute z-10 opacity-0 duration-300;
     &::after {
-      content: '';
+      content: "";
       margin-top: -5px;
       border-width: 5px;
       right: 100%;
@@ -665,7 +666,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 .w-fit {
@@ -696,5 +697,68 @@ input[type='number'] {
   color: #73959d !important;
 }
 
+// graph ng-apexcharts
+.apexcharts-tooltip-text-y-label {
+  display: none;
+}
+.apexcharts-tooltip {
+  background-color: #6b9eb6 !important;
+  width: fit-content;
+  flex-direction: row-reverse !important;
+  border-radius: 1rem !important;
+  overflow: visible !important;
+  @apply flex items-center py-4 px-5;
+  &::before {
+    content: "";
+    margin-top: -6px;
+    border-width: 5px;
+    right: -10px;
+    top: 50%;
+    border-color: transparent transparent transparent #6b9eb6;
+    @apply absolute border-solid;
+  }
+  .apexcharts-tooltip-title {
+    background-color: transparent !important;
+    color: #fff !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    border-bottom: 0px solid transparent !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 500 !important;
+    font-family: poppins !important;
+    @apply ml-3;
+  }
+  .apexcharts-tooltip-marker {
+    background-color: #fff !important;
+    width: 6px !important;
+    height: 6px !important;
+    margin: 0 !important;
+  }
+  .apexcharts-tooltip-text {
+    color: #fff !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 500 !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    font-family: poppins !important;
+    @apply mr-3;
+    div {
+      padding: 0 !important;
+    }
+  }
+  .apexcharts-tooltip-series-group {
+    padding: 0 !important;
+    flex-direction: row-reverse !important;
+  }
+}
+.apexcharts-xaxistooltip {
+  display: none !important;
+}
+.apexcharts-xaxis-tick {
+  display: none !important;
+}
+
 // Last line should be this
-@import 'tailwindcss/utilities';
+@import "tailwindcss/utilities";
