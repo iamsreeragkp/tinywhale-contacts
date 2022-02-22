@@ -269,7 +269,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           ? val.class.class_time_ranges.map(time_range => this.createTimeRanges(time_range, skipId))
           : []
       ),
-      capacity: [val?.class?.capacity ?? null, [Validators.required, Validators.min(0)]],
+      capacity: [
+        val?.class?.capacity ?? null,
+        [Validators.required, Validators.pattern(/^([1-9]\d*)$/)],
+      ],
       duration: [val?.class?.duration_in_minutes ?? null, [Validators.required, Validators.min(0)]],
     });
     this.updateTimeSlotOptionsOfAWeekDay();
@@ -279,6 +282,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productFormSubscriptions();
   }
 
+  restrictZero(e: any) {
+    if (e.target.value.length === 0 && e.keyCode == 48) {
+      e?.preventDefault();
+    }
+  }
   createLocation(val?: Product): any {
     if (val?.class?.location_type) {
       if (val?.class?.location_type === 'BUSINESS_LOCATION') {
@@ -505,7 +513,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   saveProductForm(createAnother = false, autoSave = false) {
-    console.log(this.productForm);
     this.createAnother = createAnother;
     const {
       product_type,
