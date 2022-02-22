@@ -154,7 +154,7 @@
           <tr
             class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
           >
-            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id, bookData.session_to_display?.status)">
+            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div class="flex flex-col">
                 <span class="whitespace-nowrap">{{
                   bookData?.session_to_display?.displayDate
@@ -168,7 +168,7 @@
                 }}</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id, bookData.session_to_display?.status)">
+            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div
                 *ngIf="bookData.session_to_display?.status.toUpperCase() === 'COMPLETED'"
                 class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
@@ -182,17 +182,17 @@
                 <span>UPCOMING</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id, bookData.session_to_display?.status)">
+            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div class="flex items-center">
                 <span class="">{{ bookData?.account?.first_name || '---' }}</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id, bookData.session_to_display?.status)">
+            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div class="flex items-center">
                 <span class="">{{ bookData?.order_line_item?.[0]?.product?.title || '---' }}</span>
               </div>
             </td>
-            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id, bookData.session_to_display?.status)">
+            <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div class="flex flex-col">
                 <div class="flex items-center">
                   <span class="mr-2"
