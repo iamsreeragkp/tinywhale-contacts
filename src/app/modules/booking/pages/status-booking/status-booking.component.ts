@@ -19,6 +19,7 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   orderId!: number;
   ngUnsubscribe = new Subject<any>();
   isVis = false;
+  isSessionCompleted: boolean = true;
   timeRangeSerialized?: TimeRangeSerializedDate[];
   constructor(
     private router: Router,
@@ -33,6 +34,12 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.settledInvoice = true;
         }, 2000);
+      }
+      if (data?.params?.isCompleted.toUpperCase() === 'COMPLETED') {
+        this.isSessionCompleted = true
+      }
+      else {
+        this.isSessionCompleted = false
       }
     });
   }
