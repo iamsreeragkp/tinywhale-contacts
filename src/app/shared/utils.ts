@@ -58,23 +58,23 @@ export const currencyList: Currency[] = [
 export const countryList = [
   {
     id: 'SG',
-    name: 'Singapore (SG)',
+    name: 'Singapore',
   },
   {
     id: 'US',
-    name: 'United States of America (US)',
+    name: 'United States of America',
   },
   {
     id: 'GB',
-    name: 'United Kingdom (GB)',
+    name: 'United Kingdom',
   },
   {
     id: 'AU',
-    name: 'Australia (AU)',
+    name: 'Australia',
   },
   {
     id: 'IN',
-    name: 'India (IN)',
+    name: 'India',
   },
 ];
 
@@ -287,3 +287,38 @@ export function convertDateToDateString(date?: Date | string | null) {
     '0'
   )}-${`${dateObj.getDate()}`.padStart(2, '0')}`;
 }
+
+export const getTimeRangeSerializedBasedOnWeekdayWithoutCoinciding = (timeRanges: TimeRange[]) => {
+  if (!timeRanges) {
+    return [];
+  }
+  return Object.entries(WeekDay).reduce(
+    (timeRangeSerialized: TimeRangeSerialized[], [weekDayName, weekDay]) => {
+      const timeRangesOfWeekDay = timeRanges
+        .filter(
+          timeRange =>
+            timeRange.day_of_week === weekDay &&
+            timeRange.day_of_week &&
+            timeRange.start_time &&
+            timeRange.end_time
+        )
+        .sort((a, b) => a.start_time?.localeCompare(b.start_time!)!);
+      if (!timeRangesOfWeekDay.length) {
+        return timeRangeSerialized;
+      }
+      return timeRangeSerialized.concat({
+        label: weekDayName,
+        ranges: timeRangesOfWeekDay.reduce((timeRangeArr: SlotRange[], timeRange) => {
+          return timeRangeArr.concat({
+            start_time: timeRange.start_time as string,
+            end_time: timeRange.end_time as string,
+            start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
+            end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
+          });
+        }, []),
+        day_of_week: weekDay,
+      });
+    },
+    []
+  );
+};

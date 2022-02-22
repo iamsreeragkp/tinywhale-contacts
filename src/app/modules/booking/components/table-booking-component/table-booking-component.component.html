@@ -233,6 +233,7 @@
             <td class="align-top px-2 py-3">
               <div class="relative flex justify-end">
                 <app-three-dots
+                  [isDisabled]="bookData.session_to_display?.status.toUpperCase() === 'COMPLETED'"
                   [actions]="threeDotsActions"
                   (actionTriggered)="handleAction($event, i, bookData?.order_id)"
                 ></app-three-dots>

@@ -222,21 +222,20 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
       if (booking['order_session'].length > 1) {
         const sortedOrderList = booking['order_session'].slice().sort((a: any, b: any) => {
-          return +new Date(a['session']['date']) - +new Date(b['session']['date']);
-          // return (
-          //   +new Date(
-          //     this.convertToDate(
-          //       a['session']['date'],
-          //       a['session']['class_time_range']['start_time']
-          //     )
-          //   ) -
-          //   +new Date(
-          //     this.convertToDate(
-          //       a['session']['date'],
-          //       a['session']['class_time_range']['start_time']
-          //     )
-          //   )
-          // );
+          return (
+            +new Date(
+              this.convertToDate(
+                a['session']['date'],
+                a['session']['class_time_range']['start_time']
+              )
+            ) -
+            +new Date(
+              this.convertToDate(
+                b['session']['date'],
+                b['session']['class_time_range']['start_time']
+              )
+            )
+          );
         });
 
         sortedOrderList.map((order: any, index: number, data: any) => {
@@ -286,7 +285,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   convertToDate(dateString: string, timeString: string = '0000') {
     const dateArray = dateString.split('-');
     const date = new Date(+dateArray[0], +dateArray[1] - 1, +dateArray[2]);
-    const time = timeString;
     const minutes = parseInt(timeString.slice(2));
     const hours = parseInt(timeString.slice(0, 2));
     const totalTime = new Date(date.getTime() + minutes * 60000 + hours * 60 * 60000);
