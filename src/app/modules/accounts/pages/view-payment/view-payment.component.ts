@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/modules/auth/auth.service';
 import { getPayment } from '../../store/account.actions';
 import { IAccountState } from '../../store/account.reducers';
 import { getPayments } from '../../store/account.selectors';
+import { countryList } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-view-payment',
@@ -13,6 +14,8 @@ import { getPayments } from '../../store/account.selectors';
 })
 export class ViewPaymentComponent {
   paymentInfo: any;
+  countryList = countryList;
+
   constructor(
     private store: Store<IAccountState>,
     private authService: AuthService,
@@ -22,6 +25,10 @@ export class ViewPaymentComponent {
     store.pipe(select(getPayments)).subscribe(data => {
       this.paymentInfo = data;
     });
+  }
+
+  getCountryName(countryCode: string) {
+    return countryList.filter(country => country.id == countryCode)[0]?.name || countryCode;
   }
 
   onLogout() {

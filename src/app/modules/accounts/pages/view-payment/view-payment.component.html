@@ -24,7 +24,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.type || '-' }}
+          {{ payInfo?.type || '' }}
         </p>
       </div>
     </div>
@@ -34,7 +34,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.business_name || '-' }}
+          {{ payInfo?.business_name || '' }}
         </p>
       </div>
     </div>
@@ -45,7 +45,7 @@
           <p
             class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
           >
-            {{ payInfo?.first_name || '-' }}
+            {{ payInfo?.first_name || '' }}
           </p>
         </div>
       </div>
@@ -55,7 +55,7 @@
           <p
             class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
           >
-            {{ payInfo?.last_name || '-' }}
+            {{ payInfo?.last_name || '' }}
           </p>
         </div>
       </div>
@@ -66,18 +66,10 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{
-            (payInfo?.address_line_1 || '') +
-              ' ' +
-              (payInfo?.address_line_2 || '') +
-              ' ' +
-              (payInfo?.city || '') +
-              ' ' +
-              (payInfo?.state || '') +
-              ' -' +
-              ' ' +
-              (payInfo?.postal_code ? payInfo?.postal_code + ' Pincode' : '') || '-'
-          }}
+          {{(payInfo?.address_line_1 || '')}}<br>
+          {{(payInfo?.address_line_2 || '')}}<br>
+          {{(payInfo?.city || '')}} {{(payInfo?.state || '')}} {{(payInfo?.postal_code || '')}}<br>
+          {{( getCountryName(payInfo?.country) || '')}}
         </p>
       </div>
     </div>
@@ -87,7 +79,7 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{ payInfo?.default_currency || '-' }}
+          {{ payInfo?.default_currency || '' }}
         </p>
       </div>
     </div>
