@@ -238,9 +238,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
           );
         });
 
-        console.log("sortedOrderList", sortedOrderList);
-
-
         sortedOrderList.map((order: any, index: number, data: any) => {
           const sessionData = this.createDataStructure(order, index, data.length);
           timingArray.push(sessionData);
