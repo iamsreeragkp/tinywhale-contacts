@@ -98,6 +98,7 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
         }
       });
   }
+  visibilities: any;
 
   handleAction(event: string) {
     if (!this.productObj) {
@@ -108,11 +109,14 @@ export class ViewServiceComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
       });
     } else if (['Mark as Private', 'Mark as Public'].includes(event)) {
-      const visibility = event.includes('Public') ? VisibilityType.PRIVATE : VisibilityType.PUBLIC;
+      this.visibilities = event.includes('Private')
+        ? VisibilityType.PRIVATE
+        : VisibilityType.PUBLIC;
+
       this.store.dispatch(
         changeVisibility({
           productId: this.productObj?.product_id,
-          visibility: visibility,
+          visibility: { visibility: this.visibilities },
         })
       );
     } else if (event === 'Use as Template') {

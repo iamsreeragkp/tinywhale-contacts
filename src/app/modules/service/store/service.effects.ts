@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, of, mergeMap, merge } from 'rxjs';
+import { catchError, map, switchMap, of, mergeMap, merge, take } from 'rxjs';
 import { getDashboard } from '../../root/store/root.actions';
 
 import { ServiceService } from '../service.service';
@@ -101,6 +101,7 @@ export class ServiceEffects {
           mergeMap(response => [
             changeVisibilitySuccess({ products: response, status: true }),
             ...(filters ? [getServiceList({ filters })] : []),
+            getService({ product_id: productId }),
           ]),
           catchError(error =>
             of(
