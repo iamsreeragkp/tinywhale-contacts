@@ -58,23 +58,23 @@ export const currencyList: Currency[] = [
 export const countryList = [
   {
     id: 'SG',
-    name: 'Singapore (SG)',
+    name: 'Singapore',
   },
   {
     id: 'US',
-    name: 'United States of America (US)',
+    name: 'United States of America',
   },
   {
     id: 'GB',
-    name: 'United Kingdom (GB)',
+    name: 'United Kingdom',
   },
   {
     id: 'AU',
-    name: 'Australia (AU)',
+    name: 'Australia',
   },
   {
     id: 'IN',
-    name: 'India (IN)',
+    name: 'India',
   },
 ];
 
