@@ -146,7 +146,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
         filter(val => !!val)
       )
       .subscribe((data: any) => {
-        if (data?.status && data?.response) {
+        if (data?.response) {
           this.filledSlots = data?.response;
           this.disableDated = data?.response
             ?.filter((item: any) => !item?.is_date_selectable)
