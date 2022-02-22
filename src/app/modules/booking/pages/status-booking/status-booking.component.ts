@@ -19,6 +19,8 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   orderId!: number;
   ngUnsubscribe = new Subject<any>();
   isVis = false;
+  isSessionCompleted: boolean = true;
+  timingArray: any[] = []
   timeRangeSerialized?: TimeRangeSerializedDate[];
   constructor(
     private router: Router,
@@ -48,20 +50,60 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
     this.store.pipe(select(getBookingByIds)).subscribe((data: any) => {
       this.statusData = data;
       this.orderId = data?.order_id;
-      console.log(data);
       if (this.statusData?.order_session?.length) {
+        this.isSessionCompleted = this.checkIfCompleted(this.statusData?.order_session);
         this.timeRangeSerialized = getTimeRangeSerializedBasedOnDate(
           this.statusData?.order_session?.map((oS: any) => ({
             date: oS?.session?.date,
             timeRange: oS?.session?.class_time_range,
           }))
         );
-        console.log(this.timeRangeSerialized);
       }
     });
   }
   navigateToEdit() {
     this.router.navigateByUrl(`/booking/edit-booking/${this.orderId}`);
+  }
+
+  checkIfCompleted(sessions: any) {
+    let sortedSessions;
+
+    if (sessions.length > 1) {
+      sortedSessions = sessions.slice().sort((a: any, b: any) => {
+        return (
+          +new Date(
+            this.convertToDate(
+              b['session']['date'],
+              b['session']['class_time_range']['start_time']
+            )
+          ) -
+          +new Date(
+            this.convertToDate(
+              a['session']['date'],
+              a['session']['class_time_range']['start_time']
+            )
+          )
+        );
+      })
+    }
+    else {
+      sortedSessions = sessions
+    }
+    const finalSession = sortedSessions[0];
+    const finalSessionTime = this.convertToDate(finalSession['session']['date'], finalSession['session']['class_time_range']['start_time']);
+    console.log("Time", +new Date - +finalSessionTime);
+    return (+new Date - +finalSessionTime) > 1 ? true : false
+
+  }
+
+  convertToDate(dateString: string, timeString: string = '0000') {
+    const dateArray = dateString.split('-');
+    const date = new Date(+dateArray[0], +dateArray[1] - 1, +dateArray[2]);
+    const time = timeString;
+    const minutes = parseInt(timeString.slice(2));
+    const hours = parseInt(timeString.slice(0, 2));
+    const totalTime = new Date(date.getTime() + minutes * 60000 + hours * 60 * 60000);
+    return totalTime;
   }
 
   ngOnDestroy() {
