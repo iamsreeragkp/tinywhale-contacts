@@ -335,6 +335,7 @@
               class="input w-full py-3 px-4 focus:outline-none"
               placeholder="Enter number of students per session"
               formControlName="capacity"
+              (keydown)="restrictZero($event)"
             />
           </div>
         </div>
