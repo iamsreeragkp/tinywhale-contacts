@@ -12,7 +12,7 @@
   </div>
 </ng-template>
 
-<div class="hidden md:block">
+<div class="hidden lg:block">
   <router-outlet *ngIf="isOnline; else isOffline"></router-outlet>
 </div>
 <ng-template #isOffline>
@@ -25,7 +25,7 @@
   </ng-container>
 </ng-template>
 
-<div class="md:hidden">
+<div class="lg:hidden">
   <ng-container
     [ngTemplateOutlet]="temp"
     [ngTemplateOutletContext]="{ content: 'Open your TinyWhale dashboard on desktop' }"
