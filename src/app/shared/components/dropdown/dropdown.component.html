@@ -44,13 +44,13 @@
     </button>
   </div>
   <div
-    class="absolute top-full left-0 min-w-full z-10 rounded custom-select-drop"
+    class="absolute top-full left-0 min-w-full z-10 rounded-lg custom-select-drop"
     [ngClass]="{
       'max-h-0 overflow-hidden': _isDisabled || !open,
       'max-h-56 border border-gray-200 border-solid overflow-y-auto shadow-lg': !_isDisabled && open
     }"
   >
-    <div class="bg-white w-fit min-w-full flex flex-col">
+    <div class="bg-white w-fit min-w-full flex flex-col px-4 py-0.5">
       <!-- multi select -->
       <div
         class="w-full checkbox-input mt-2 px-4 cursor-auto"
@@ -79,7 +79,7 @@
         *ngIf="!_multiSelect && _showRadio && _options.length"
       >
         <label
-          class="radio-container py-3 radio-input-border-b"
+          class="radio-container py-4 radio-input-border-b location-radio-container"
           [for]="_label + i"
           *ngFor="let option of _options; let i = index"
         >
@@ -93,7 +93,7 @@
             [ngModel]="selectedOption?.[_idKey]"
             (ngModelChange)="selectUnSelectValue(option)"
           />
-          <span class="radiomark"></span>
+          <span class="radiomark location-radio"></span>
         </label>
       </div>
 
@@ -122,14 +122,17 @@
       </ng-container>
 
       <!-- add location -->
-      <div class="w-full relative px-4 my-3" *ngIf="_addCustomValue">
+      <div class="w-full relative py-3.5" *ngIf="_addCustomValue">
+        <ng-container>
         <button
           type="button"
           class="noborder-button px-0"
+          [ngClass]=" openAddCustomValue? 'hidden' : 'inline'"
           (click)="openAddCustomValue = !openAddCustomValue"
         >
           + Add New {{ _label | titlecase }}
         </button>
+      </ng-container>
         <ng-container *ngIf="openAddCustomValue">
           <div class="relative">
             <input

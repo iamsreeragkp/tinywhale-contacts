@@ -172,6 +172,7 @@ export class DropdownComponent {
   // component functions
 
   openCloseDropdown() {
+    this.openAddCustomValue = false
     if (this._isDisabled) {
       return;
     }
