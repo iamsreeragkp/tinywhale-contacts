@@ -115,45 +115,47 @@
           </app-dropdown>
         </div>
       </div>
-      <ng-container *ngIf="!isFree">
-        <div class="input-field flex mb-4" *ngIf="!editMode">
-          <div class="w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
-          <div class="w-form">
-            <div class="flex flex-col w-full rounded-lg radio-input">
-              <label class="radio-container py-3 radio-input-border-b" for="online">
-                <div class="flex flex-col">
-                  <p class="radio-container-name">Online</p>
-                  <p class="radio-container-descri">Email payment link</p>
-                </div>
-                <input
-                  type="radio"
-                  id="online"
-                  name="payment"
-                  value="ONLINE"
-                  formControlName="payment"
-                />
-                <span class="radiomark"></span>
-              </label>
-              <label class="radio-container py-3" for="cash">
-                <div class="flex flex-col">
-                  <p class="radio-container-name">Off Platform</p>
-                  <p class="radio-container-descri">Cash / Direct Transfer</p>
-                </div>
-                <input
-                  type="radio"
-                  id="cash"
-                  name="payment"
-                  value="OFFLINE"
-                  formControlName="payment"
-                />
-                <span class="radiomark"></span>
-              </label>
-            </div>
-            <div class="w-full p-3 mt-3 rounded-lg input-section-info text-center">
-              💡 Upon registration a settled invoice will be emailed to the walk-in customer.
+      <ng-container *ngIf="paymentData$ | async as paymentInfo">
+        <ng-container *ngIf="!isFree && paymentInfo?.payout_info?.connect_bank">
+          <div class="input-field flex mb-4" *ngIf="!editMode">
+            <div class="w-44 label text-right mt-4 mr-6"><label for="">Payment*</label></div>
+            <div class="w-form">
+              <div class="flex flex-col w-full rounded-lg radio-input">
+                <label class="radio-container py-3 radio-input-border-b" for="online">
+                  <div class="flex flex-col">
+                    <p class="radio-container-name">Online</p>
+                    <p class="radio-container-descri">Email payment link</p>
+                  </div>
+                  <input
+                    type="radio"
+                    id="online"
+                    name="payment"
+                    value="ONLINE"
+                    formControlName="payment"
+                  />
+                  <span class="radiomark"></span>
+                </label>
+                <label class="radio-container py-3" for="cash">
+                  <div class="flex flex-col">
+                    <p class="radio-container-name">Off Platform</p>
+                    <p class="radio-container-descri">Cash / Direct Transfer</p>
+                  </div>
+                  <input
+                    type="radio"
+                    id="cash"
+                    name="payment"
+                    value="OFFLINE"
+                    formControlName="payment"
+                  />
+                  <span class="radiomark"></span>
+                </label>
+              </div>
+              <div class="w-full p-3 mt-3 rounded-lg input-section-info text-center">
+                💡 Upon registration a settled invoice will be emailed to the walk-in customer.
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
       </ng-container>
       <ng-container *ngIf="isFree">
         <div class="w-full p-3 mt-3 rounded-lg input-section-info">💡 Free.</div>

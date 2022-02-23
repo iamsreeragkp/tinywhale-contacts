@@ -5,6 +5,7 @@ import { IWebsiteState, websiteReducer } from '../../website/store/website.reduc
 import { IServiceState, serviceReducer } from '../../service/store/service.reducers';
 import { bookingReducer, IBookingState } from '../../booking/store/booking.reducers';
 import { IRootState, rootReducer } from '../../root/store/root.reducers';
+import { IAccountState, accountReducer } from '../../accounts/store/account.reducers';
 
 export interface IAppState {
   user: IUserState;
@@ -13,6 +14,7 @@ export interface IAppState {
   website: IWebsiteState;
   service: IServiceState;
   booking: IBookingState;
+  account: IAccountState;
 }
 
 export const reducers: ActionReducerMap<IAppState> = {
@@ -22,5 +24,6 @@ export const reducers: ActionReducerMap<IAppState> = {
   website: websiteReducer,
   service: serviceReducer,
   booking: bookingReducer,
+  account: accountReducer
 };
 export const metaReducers: MetaReducer<IAppState>[] = [];
