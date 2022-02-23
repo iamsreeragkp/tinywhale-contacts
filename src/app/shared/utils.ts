@@ -59,22 +59,27 @@ export const countryList = [
   {
     id: 'SG',
     name: 'Singapore',
+    label: 'Singapore (SG)',
   },
   {
     id: 'US',
     name: 'United States of America',
+    label: 'United States of America (US)',
   },
   {
     id: 'GB',
     name: 'United Kingdom',
+    label: 'United Kingdom (GB)',
   },
   {
     id: 'AU',
     name: 'Australia',
+    label: 'Australia (AU)',
   },
   {
     id: 'IN',
     name: 'India',
+    label: 'India (IN)',
   },
 ];
 

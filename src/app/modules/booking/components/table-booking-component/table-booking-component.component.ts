@@ -26,7 +26,6 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   filterForm!: FormGroup;
   page: number;
   limit: number;
-  defaultFilter: any = null;
   filterStatus: any;
 
   status = [
@@ -80,15 +79,13 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions();
     this._route.queryParamMap.subscribe(param => {
-      this.defaultFilter = param.get('filter');
-      if (this.defaultFilter) {
-        const filter = [
-          {
-            title: 'Upcoming',
-            value: 'UPCOMING',
-          },
-        ];
-        this.filterForm.get('status')?.patchValue('UPCOMING');
+      const status = param.get('status');
+      const payment = param.get('payment');
+      if (status && this.status.some(option => option.value === status)) {
+        this.filterForm.get('status')?.patchValue(status);
+      }
+      if (payment && this.payment.some(option => option.value === payment)) {
+        this.filterForm.get('payment')?.patchValue(payment);
       }
     });
     this.clearParam();

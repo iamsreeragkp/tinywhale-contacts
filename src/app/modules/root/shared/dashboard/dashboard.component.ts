@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { convert24HrsFormatToAmPm, Currency, currencyList } from 'src/app/shared/utils';
+import { Currency, currencyList } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
-import { getDashboard, getDashboardList } from '../../store/root.actions';
+import { getDashboard } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
 import { getDashboardData } from '../../store/root.selectors';
 import { multi, single } from './data';
@@ -25,10 +24,7 @@ import {
   ApexMarkers,
   ApexTooltip,
   ApexPlotOptions,
-} from "ng-apexcharts";
-
-
-import { series } from "./data";
+} from 'ng-apexcharts';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -42,11 +38,11 @@ export type ChartOptions = {
   legend: ApexLegend;
   subtitle: ApexTitleSubtitle;
   fill: ApexFill;
-  colors: any[],
-  grid: ApexGrid,
-  markers: ApexMarkers,
-  plotOptions: ApexPlotOptions,
-  tooltip: ApexTooltip,
+  colors: any[];
+  grid: ApexGrid;
+  markers: ApexMarkers;
+  plotOptions: ApexPlotOptions;
+  tooltip: ApexTooltip;
 };
 
 @Component({
@@ -55,8 +51,7 @@ export type ChartOptions = {
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-
-  @ViewChild("chart") chart?: ChartComponent;
+  @ViewChild('chart') chart?: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   public chartOptions2: Partial<ChartOptions>;
   public chartOptions3: Partial<ChartOptions>;
@@ -83,9 +78,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   yAxisLabel: string = 'Population';
   timeline: boolean = false;
   barPadding: number = 50;
-  chart1: any;
-  chart2: any;
-  chart3: any;
+  chart1!: ApexAxisChartSeries;
+  chart2!: ApexAxisChartSeries;
+  chart3!: ApexAxisChartSeries;
   percentage: any;
   copyView: any = null;
   copyStatus: string = 'Copy';
@@ -93,25 +88,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   customUsername!: string;
   baseURL = environment.tinyWhaleBaseUrl;
   overviewType: string = 'MTD';
-
-  colorScheme: Color = {
-    name: 'primary',
-    selectable: true,
-    group: ScaleType.Linear,
-    domain: ['#00A4B7'],
-  };
-  colorSchemeBar = {
-    name: 'bar',
-    selectable: true,
-    group: ScaleType.Linear,
-    domain: ['#ED9F7C'],
-  };
-  colorSchemeCurve = {
-    name: 'curve',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#E1C700'],
-  };
 
   priceData: any;
   priceLineData = [];
@@ -125,41 +101,40 @@ export class DashboardComponent implements OnInit, OnDestroy {
   customerCurrency?: Currency;
   ngUnsubscribe = new Subject<any>();
   val: any;
+  chart1Labels: any[] = [];
 
   constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
-
-
     this.chartOptions = {
-      series: [
-        {
-          name: "",
-          data: series.monthDataSeries1.prices
-        }
-      ],
+      // series: [
+      //   {
+      //     name: '',
+      //     data: series.monthDataSeries1.prices,
+      //   },
+      // ],
       chart: {
-        type: "area",
+        type: 'area',
         height: '100%',
         width: '100%',
         zoom: {
-          enabled: false
+          enabled: false,
         },
         toolbar: {
           show: false,
         },
       },
-      colors: ["#00a4b7"],
+      colors: ['#00a4b7'],
       fill: {
         colors: ['#1addf37a'],
-        type: "gradient",
+        type: 'gradient',
         gradient: {
           shadeIntensity: 1,
           opacityFrom: 0.9,
           opacityTo: 0.8,
-          stops: [0, 100]
-        }
+          stops: [0, 100],
+        },
       },
       markers: {
-        colors: ['#00a4b7']
+        colors: ['#00a4b7'],
       },
 
       dataLabels: {
@@ -169,7 +144,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         style: {
           fontSize: '6px',
-          colors: ["#00a4b7"]
+          colors: ['#00a4b7'],
         },
         background: {
           enabled: true,
@@ -180,7 +155,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
       },
       stroke: {
-        curve: "straight",
+        curve: 'straight',
         colors: ['#00a4b7'],
         width: 3,
       },
@@ -192,8 +167,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             fontSize: '12px',
             colors: '#73959d',
             fontFamily: 'poppins',
-          }
-        }
+          },
+        },
       },
       xaxis: {
         offsetX: 4,
@@ -203,49 +178,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
             fontSize: '12px',
             colors: '#73959d',
             fontFamily: 'poppins',
-          }
-        }
+          },
+        },
       },
       legend: {
         show: false,
       },
-      labels: series.monthDataSeries1.dates,
+      // labels: series.monthDataSeries1.dates,
     };
 
     this.chartOptions2 = {
-      series: [
-        {
-          name: "",
-          data: series.monthDataSeries1.prices
-        }
-      ],
+      // series: [
+      //   {
+      //     name: '',
+      //     data: series.monthDataSeries1.prices,
+      //   },
+      // ],
       chart: {
-        type: "area",
+        type: 'area',
         height: '100%',
         width: '100%',
         zoom: {
-          enabled: false
+          enabled: false,
         },
         toolbar: {
           show: false,
         },
       },
-      colors: ["e1c700"],
+      colors: ['e1c700'],
       fill: {
         colors: ['#e7d14494'],
-        type: "gradient",
+        type: 'gradient',
         gradient: {
           shadeIntensity: 1,
           opacityFrom: 0.9,
           opacityTo: 0.8,
-          stops: [0, 100]
-        }
+          stops: [0, 100],
+        },
       },
       dataLabels: {
         enabled: false,
       },
       stroke: {
-        curve: "smooth",
+        curve: 'smooth',
         colors: ['#e1c700'],
         width: 3,
       },
@@ -255,7 +230,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       xaxis: {
         labels: {
           show: false,
-        }
+        },
       },
       legend: {
         show: false,
@@ -263,29 +238,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
       grid: {
         show: false,
       },
-      labels: series.monthDataSeries1.dates,
     };
 
     this.chartOptions3 = {
-      series: [
-        {
-          name: "TEAM A",
-          type: "column",
-          data: series.monthDataSeries1.prices
-        },
-        {
-          name: "TEAM B",
-          type: "area",
-          data: series.monthDataSeries1.prices
-        },
-      ],
+      // series: [
+      //   {
+      //     name: 'TEAM A',
+      //     type: 'column',
+      //     data: series.monthDataSeries1.prices,
+      //   },
+      //   {
+      //     name: 'TEAM B',
+      //     type: 'area',
+      //     data: series.monthDataSeries1.prices,
+      //   },
+      // ],
       chart: {
-        type: "line",
+        type: 'line',
         stacked: false,
         height: '100%',
         width: '100%',
         zoom: {
-          enabled: false
+          enabled: false,
         },
         toolbar: {
           show: false,
@@ -293,7 +267,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       },
       stroke: {
         width: [0],
-        curve: "smooth",
+        curve: 'smooth',
         colors: ['transparent'],
       },
       colors: ['#ED9F7C'],
@@ -309,7 +283,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       xaxis: {
         labels: {
           show: false,
-        }
+        },
       },
       legend: {
         show: false,
@@ -318,8 +292,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         show: false,
       },
     };
-
-
+    this.initializeCharts();
 
     const userData = authService.decodeUserToken();
     this.customerCurrency = currencyList.find(
@@ -333,6 +306,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(getDashboard({ filters: {} }));
     this.dashboard$ = store.pipe(select(getDashboardData));
+  }
+
+  initializeCharts() {
+    this.chart1 = [{ name: '', data: [] }];
+    this.chart2 = [{ name: '', data: [] }];
+    this.chart3 = [
+      { name: '', data: [], type: 'column' },
+      { name: '', data: [], type: 'area' },
+    ];
   }
 
   ngOnInit(): void {
@@ -351,28 +333,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
-      const fromCurrentMonth = this.dashboardInfos?.gross_earnings?.current_month;
-      const fromLastMonth = this.dashboardInfos?.gross_earnings?.last_month;
+      const fromCurrentMonth = this.getFieldValue('current', this.dashboardInfos?.gross_earnings);
+      const fromLastMonth = this.getFieldValue('last', this.dashboardInfos?.gross_earnings);
       this.currentMonthGross = fromCurrentMonth - fromLastMonth;
 
-      const fromCurrentMonthBooking = this.dashboardInfos?.bookings?.current_month;
-      const fromLastMonthBooking = this.dashboardInfos?.bookings?.last_month;
+      const fromCurrentMonthBooking = this.getFieldValue('current', this.dashboardInfos?.bookings);
+      const fromLastMonthBooking = this.getFieldValue('last', this.dashboardInfos?.bookings);
       this.bookingGross = fromCurrentMonthBooking - fromLastMonthBooking;
 
       const getewayFeeCurrent =
-        this.dashboardInfos?.processing_fee?.current_month?.gateway_fee || 0;
+        this.getFieldValue('current', this.dashboardInfos?.processing_fee)?.gateway_fee || 0;
 
       const paymentFeeCurrent =
-        this.dashboardInfos?.processing_fee?.current_month?.payment_amount || 0;
+        this.getFieldValue('current', this.dashboardInfos?.processing_fee)?.payment_amount || 0;
 
       const processFeeCurrent =
-        this.dashboardInfos?.processing_fee?.current_month?.platform_fee || 0;
+        this.getFieldValue('current', this.dashboardInfos?.processing_fee)?.platform_fee || 0;
 
-      const getewayFeeLast = this.dashboardInfos?.processing_fee?.last_month?.gateway_fee || 0;
+      const getewayFeeLast =
+        this.getFieldValue('last', this.dashboardInfos?.processing_fee)?.gateway_fee || 0;
 
-      const paymentFeeLast = this.dashboardInfos?.processing_fee?.last_month?.payment_amount || 0;
+      const paymentFeeLast =
+        this.getFieldValue('last', this.dashboardInfos?.processing_fee)?.payment_amount || 0;
 
-      const processFeeLast = this.dashboardInfos?.processing_fee?.last_month?.platform_fee || 0;
+      const processFeeLast =
+        this.getFieldValue('last', this.dashboardInfos?.processing_fee)?.platform_fee || 0;
 
       this.currentTotal = getewayFeeCurrent + paymentFeeCurrent + processFeeCurrent;
 
@@ -392,28 +377,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       }
 
-      //                      Gateway Fee + TinyWhale Fee
-      // Processing Fee % = ----------------------------- x 100
-      //                        Total Payment Amount
+      /**
+       *                      Gateway Fee + TinyWhale Fee
+       *  Processing Fee % = ----------------------------- x 100
+       *                          Total Payment Amount
+       */
 
       const sumOfGatewayAndProcessingFee = getewayFeeCurrent + processFeeCurrent;
       this.processingFee = (sumOfGatewayAndProcessingFee / paymentFeeCurrent) * 100;
 
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
+      this.initializeCharts();
       for (let i = 0; i < this.priceData?.length; i++) {
         this.priceLineData = this.priceData[i];
-        this.chart1 = [
-          {
-            name: 'Price Data',
-            series: [
-              {
-                name: this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date),
-                value: this.priceData[i]?.total,
-              },
-            ],
-          },
-        ];
+        this.chart1.map(chart => chart.data.push(this.priceData[i]?.total));
+        this.chart1Labels.push(
+          this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date)
+        );
+        // this.chart1 = [
+        //   {
+        //     name: 'Price Data',
+        //     series: [
+        //       {
+        //         name: this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date),
+        //         value: this.priceData[i]?.total,
+        //       },
+        //     ],
+        //   },
+        // ];
       }
       this.customerLifeTime = this.dashboardInfos?.customer_lifetime_value;
       for (let i = 0; i < this.customerLifeTime?.length; i++) {
@@ -421,18 +413,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const date = this.formatdate(this.customerLineData?.date);
         const total = this.customerLineData?.total;
         const uniqueCustomers = this.customerLineData?.unique_customers;
-        const value = total / uniqueCustomers;
-        this.chart2 = [
-          {
-            name: 'Customer life time',
-            series: [
-              {
-                name: this.formatdate(this.priceData[i]?.date_time),
-                value: value,
-              },
-            ],
-          },
-        ];
+        const value: any = total / uniqueCustomers;
+        this.chart2.map(chart => chart.data.push(value));
+        // this.chart2 = [
+        //   {
+        //     name: 'Customer life time',
+        //     series: [
+        //       {
+        //         name: this.formatdate(this.priceData[i]?.date_time),
+        //         value: value,
+        //       },
+        //     ],
+        //   },
+        // ];
       }
 
       this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
@@ -446,31 +439,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
           return accumulator + item?.capacity * item?.slot;
         }, 0);
 
-        const value = this.serviceUtilizationData[i]?.bookings / totalPrice;
-
-        this.chart3 = [
-          {
-            name: 'Service Utilization',
-            value: value,
-          },
-        ];
+        const value: any = this.serviceUtilizationData[i]?.bookings / totalPrice;
+        this.chart3.map(chart => chart.data.push(value));
+        // this.chart3 = [
+        //   {
+        //     name: 'Service Utilization',
+        //     value: value,
+        //   },
+        // ];
       }
     });
   }
 
-  onClickQtd(type: string) {
-    this.overviewType = type;
-    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
-  }
-
-  onClickYtd(type: string) {
-    this.overviewType = type;
-    this.store.dispatch(getDashboard({ filters: { filter_type: this.overviewType } }));
-  }
-
-  onClickMtd(type: string) {
-    this.overviewType = type;
-    this.store.dispatch(getDashboard({ filters: {} }));
+  togglePeriod(type?: string) {
+    this.overviewType = type ?? 'MTD';
+    this.store.dispatch(getDashboard({ filters: { ...(!!type && { filter_type: type }) } }));
   }
 
   formatdate(date: any) {
@@ -510,9 +493,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return dayName;
   }
 
-  navagateToBooking() {
+  navagateToBooking(filter: any) {
     this.router.navigate(['booking/view-booking'], {
-      queryParams: { filter: 'upcoming' },
+      queryParams: filter,
     });
   }
   navagateToService() {
@@ -554,9 +537,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.ngUnsubscriber.complete();
   }
 
-  onSelect(eve: any) { }
+  getFieldValue(currentOrPrevious: 'current' | 'last', obj: any) {
+    let returnVal = null;
+    if (this.overviewType === 'MTD') {
+      returnVal = obj?.[`${currentOrPrevious}_month`];
+    } else if (this.overviewType === 'QTD') {
+      returnVal = obj?.[`${currentOrPrevious}_quarter`];
+    } else if (this.overviewType === 'YTD') {
+      returnVal = obj?.[`${currentOrPrevious}_year`];
+    }
+    return returnVal;
+  }
 
-  onActivate(eve: any) { }
+  onSelect(eve: any) {}
 
-  onDeactivate(eve: any) { }
+  onActivate(eve: any) {}
+
+  onDeactivate(eve: any) {}
 }
