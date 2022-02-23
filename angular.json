@@ -34,7 +34,11 @@
                 "glob": "**/*",
                 "input": "src/assets/",
                 "output": "/assets/",
-                "ignore": ["base/*", "css/*", "js/*"]
+                "ignore": [
+                  "base/*",
+                  "css/*",
+                  "js/*"
+                ]
               },
               {
                 "glob": "**/*",
@@ -49,7 +53,9 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/app/shared/styles"]
+              "includePaths": [
+                "src/app/shared/styles"
+              ]
             },
             "scripts": [
               "src/assets/js/modernizr.js",
@@ -112,10 +118,32 @@
               "vendorChunk": false,
               "buildOptimizer": true
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": true
+              },
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
             "es": {
               "aot": true,
               "outputPath": "dist",
-              "localize": ["es"]
+              "localize": [
+                "es"
+              ]
             }
           },
           "defaultConfiguration": "local"
@@ -132,6 +160,9 @@
             "production": {
               "browserTarget": "tinywhale-dashboard-client:build:production"
             },
+            "staging": {
+              "browserTarget": "tinywhale-dashboard-client:build:staging"
+            },
             "es": {
               "browserTarget": "tinywhale-dashboard-client:build:es"
             }
@@ -146,7 +177,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         },
         "test": {
@@ -167,7 +201,9 @@
               "src/app/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/app/shared/styles"]
+              "includePaths": [
+                "src/app/shared/styles"
+              ]
             },
             "watch": false,
             "codeCoverage": true
@@ -183,6 +219,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "tinywhale-dashboard-client:serve:production"
+            },
+            "staging": {
+              "devServerTarget": "tinywhale-dashboard-client:serve:staging"
             }
           }
         },
@@ -194,6 +233,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "tinywhale-dashboard-client:serve:production"
+            },
+            "staging": {
+              "devServerTarget": "tinywhale-dashboard-client:serve:staging"
             }
           }
         },
