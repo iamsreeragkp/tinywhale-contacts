@@ -4,7 +4,7 @@
       <span class="text-4xl">Bookings</span>
     </header>
     <button
-      *ngIf="hasStarted || bookingCount > 0"
+      *ngIf="hasStarted && bookingCount > 0"
       class="primary-button w-48"
       [routerLink]="['../add-booking']"
     >
