@@ -497,7 +497,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       punchline: punchline,
       logo: logo,
       social_links: this.isSocialLinkFilled(),
-      recognitions: licenceitems,
+      recognitions: this.isLicenceItemFilled(),
       phone_number: phone_number,
       email: email,
       contact_type: contact_type,
@@ -628,6 +628,12 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       console.log('URLL', typeof data.url);
 
       return data.url;
+    });
+  }
+  isLicenceItemFilled(){
+    const licenseList = this.recognitions && this.recognitions.value
+    return licenseList.filter((data: any) => {
+      return data.recognition_type === "AWARD" ? data.recognition_type && data.recognition_name && data.photo_url : data.recognition_type && data.recognition_name && data.photo_url && data.expiry_date;
     });
   }
 
