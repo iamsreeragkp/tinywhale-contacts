@@ -53,6 +53,8 @@
             class="input-data w-full py-3 px-4 focus:outline-none show-error"
             [attr.disabled]="editMode ? '' : null"
             placeholder="+XX XXXXXXXXXX"
+            oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
+            maxlength="15"
             formControlName="phonenumber"
           />
         </div>
