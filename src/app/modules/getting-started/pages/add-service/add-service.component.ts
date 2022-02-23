@@ -437,6 +437,14 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.pricePackages.push(this.createPricePackages());
   }
 
+  isOneEmptyFormPresent() {
+    const onlyOneNonDeletedPackageExists: boolean = this.notDeletedPricePackages.length === 1;
+    const noOfSessionsIsNull: boolean = this.notDeletedPricePackages?.[0]?.no_of_sessions === null;
+    const priceIsNull: boolean = this.notDeletedPricePackages?.[0]?.price === null;
+
+    return onlyOneNonDeletedPackageExists && noOfSessionsIsNull && priceIsNull;
+  }
+
   async handleFileInput(event: Event, index: number) {
     try {
       const [file, url, fileKey] = await this.utilsService.handleFileInput(
@@ -468,6 +476,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       this.pricePackages.removeAt(index);
     } else {
       pricePackage.get('is_deleted')?.patchValue(true, { emitEvent: true });
+    }
+    if (this.notDeletedPricePackages?.length === 0) {
+      this.addPricePackage();
     }
   }
 
@@ -543,16 +554,20 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       pricePackagesWithEmpty?.filter((pkg: PricePackage) => {
         return pkg.price || pkg.no_of_sessions || pkg.class_package_id;
       }) ?? []
-    ).map(({ ...pkg }: PricePackage) => ({
-      ...pkg,
-      is_deleted: !pkg.price && !pkg.no_of_sessions,
-    }));
+    )
+    // .map(
+    //   ({ ...pkg }: PricePackage) => ({
+    //   ...pkg,
+    //   is_deleted: pkg.is_deleted || (!pkg.price && !pkg.no_of_sessions),
+    // })
+    // );
 
     const time_ranges: TimeRange[] = (
       timeRangesWithEmpty?.filter((tR: TimeRange) => {
         return tR.end_time || tR.start_time || tR.class_time_range_id;
       }) ?? []
-    ).map(({ ...tR }: TimeRange) => ({ ...tR, is_deleted: !tR.end_time && !tR.start_time }));
+    )
+    // .map(({ ...tR }: TimeRange) => ({ ...tR, is_deleted: tR.is_deleted || !tR.end_time && !tR.start_time }));
     const payload: ProductPayload = {
       product_id,
       product_type,
@@ -578,7 +593,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       !!photos.length &&
       (product_type === 'CLASS'
         ? !!time_ranges.length &&
-          time_ranges.every(timeRange => timeRange.start_time && timeRange.end_time)
+        time_ranges.every(timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted)
         : true);
     this.store.dispatch(addService({ productData: payload, autoSave }));
   }
@@ -639,6 +654,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       }
     }
     return undefined;
+  }
+
+  get notDeletedPricePackages() {
+    return this.pricePackages.value.filter(
+      (pricePackage: PricePackage) => pricePackage?.is_deleted === false
+    );
   }
 
   get previewablePricePackages() {

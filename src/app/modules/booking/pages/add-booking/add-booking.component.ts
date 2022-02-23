@@ -10,6 +10,8 @@ import { WeekDay } from 'src/app/modules/service/shared/service.interface';
 import { getServiceStatus } from 'src/app/modules/service/store/service.selectors';
 import { convert24HrsFormatToAmPm, convertDateToDateString } from 'src/app/shared/utils';
 import { BookingService } from '../../booking.service';
+import { getPayment } from 'src/app/modules/accounts/store/account.actions';
+import { getPayments } from 'src/app/modules/accounts/store/account.selectors';
 import { addBooking, getBookableSlots, getBookingById } from '../../store/booking.actions';
 
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
@@ -38,6 +40,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   editMode = false;
   bookingData$: Observable<any>;
   serviceData$!: Observable<any>;
+  paymentData$: Observable<any>;
   orderId!: number;
   classTimeRanged: any = [];
   isToastError = false;
@@ -62,8 +65,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     public location: Location,
     private bookingService: BookingService
   ) {
+    store.dispatch(getPayment());
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
+    this.paymentData$ = this.store.pipe(select(getPayments))
     this.serviceData$ = store.pipe(select(getServiceStatus));
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
@@ -230,7 +235,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
-      platform: payment,
+      platform: payment || "OFFLINE",
     };
 
     if (bookingPayload.phone_number === null) {
@@ -287,7 +292,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
-      platform: payment || 'ONLINE',
+      platform: payment || 'OFFLINE',
       order_id: this.orderId,
     };
 

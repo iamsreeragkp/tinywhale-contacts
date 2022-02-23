@@ -408,6 +408,7 @@
                 type="button"
                 class="h-full flex items-center"
                 (click)="deletePricePackage(i)"
+                *ngIf="!isOneEmptyFormPresent()"
               >
                 <img src="../../../../../assets/images/icons/delete.svg" alt="" />
               </button>

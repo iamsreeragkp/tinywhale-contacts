@@ -37,6 +37,7 @@
             class="input-data py-3 px-4 truncate"
             placeholder="Company name"
             formControlName="companyname"
+            maxlength="50"
           />
         </div>
       </div>
@@ -254,6 +255,7 @@
                 class="input-data py-3 px-4 mb-3 show-error"
                 placeholder="Enter Email Address"
                 formControlName="email"
+                maxlength="50"
               />
 
               <input
@@ -262,6 +264,8 @@
                 class="input-data py-3 px-4 show-error"
                 placeholder="+XX XXXXXXXXXX"
                 formControlName="phone_number"
+                oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
+                maxlength="15"
               />
               <div class="w-form input-field">
                 <p class="label py-4">Allow customers to contact you via</p>
@@ -344,6 +348,7 @@
                 class="input-data py-3 px-4 mb-4"
                 placeholder="Enter name of Certificate / License"
                 formControlName="recognition_name"
+                maxlength="50"
               />
               <!-- <input
                 class="input-data py-3 px-4 mb-4"
@@ -435,6 +440,7 @@
                 class="input-data py-3 px-4 mb-4"
                 placeholder="Enter client name"
                 formControlName="name"
+                maxlength="50"
               />
               <!-- <input
                 class="input-data py-3 px-4 mb-4"
