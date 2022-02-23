@@ -262,6 +262,8 @@
                 class="input-data py-3 px-4 show-error"
                 placeholder="+XX XXXXXXXXXX"
                 formControlName="phone_number"
+                oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
+                maxlength="15"
               />
               <div class="w-form input-field">
                 <p class="label py-4">Allow customers to contact you via</p>
