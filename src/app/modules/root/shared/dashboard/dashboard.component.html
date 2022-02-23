@@ -243,7 +243,7 @@
       </div>
     </div>
     <div class="w-full grid sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      <div class="bg-white h-full shadow-lg pt-6 pb-4 px-8 rounded-2xl">
+      <div class="bg-white h-full shadow-lg pt-6 pb-4 px-8 rounded-2xl font-poppins">
         <h4 class="text-primaryFont font-bold">Upcoming Sessions</h4>
         <ng-container *ngIf="upcomingSessions">
           <div class="w-full mt-3" *ngFor="let upcoming of upcomingSessions">
@@ -267,7 +267,12 @@
                   -
                   {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session.class_time_range?.end_time) }}
                 </p>
-                <p class="text-primaryFont">{{ upcoming?.order_line_item?.[0]?.product?.title }}</p>
+                <p
+                  class="text-primaryFont overflow-hidden"
+                  title="{{ upcoming?.order_line_item?.[0]?.product?.title }}"
+                >
+                  {{ upcoming?.order_line_item?.[0]?.product?.title }}
+                </p>
               </div>
             </div>
           </div>
