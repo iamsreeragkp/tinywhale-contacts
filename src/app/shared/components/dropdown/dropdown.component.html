@@ -47,10 +47,11 @@
     class="absolute top-full left-0 min-w-full z-10 rounded-lg custom-select-drop"
     [ngClass]="{
       'max-h-0 overflow-hidden': _isDisabled || !open,
-      'max-h-56 border border-gray-200 border-solid overflow-y-auto shadow-lg': !_isDisabled && open
+      'max-h-56 border-2 border-[#D6E1E3]  border-solid overflow-y-auto shadow-lg':
+        !_isDisabled && open
     }"
   >
-    <div class="bg-white w-fit min-w-full flex flex-col px-6 py-0.5">
+    <div class="bg-white w-fit min-w-full flex flex-col px-5 py-0.5">
       <!-- multi select -->
       <div
         class="w-full checkbox-input mt-2 px-4 cursor-auto"
@@ -124,19 +125,19 @@
       <!-- add location -->
       <div class="w-full relative py-3.5" *ngIf="_addCustomValue">
         <ng-container>
-        <button
-          type="button"
-          class="noborder-button px-0"
-          [ngClass]=" openAddCustomValue? 'hidden' : 'inline'"
-          (click)="openAddCustomValue = !openAddCustomValue"
-        >
-          + Add New {{ _label | titlecase }}
-        </button>
-      </ng-container>
+          <button
+            type="button"
+            class="noborder-button px-0"
+            [ngClass]="openAddCustomValue ? 'hidden' : 'inline'"
+            (click)="openAddCustomValue = !openAddCustomValue"
+          >
+            + Add New {{ _label | titlecase }}
+          </button>
+        </ng-container>
         <ng-container *ngIf="openAddCustomValue">
           <div class="relative">
             <input
-              class="input w-full py-3 pr-14 px-4 focus:outline-none truncate"
+              class="input w-full py-3 pr-16 px-4 focus:outline-none truncate"
               placeholder="Enter new {{ _label | lowercase }} name"
               [(ngModel)]="customValueInput"
               [maxlength]="50"
