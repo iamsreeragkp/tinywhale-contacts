@@ -18,6 +18,7 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   settledInvoice = true;
   orderId!: number;
   ngUnsubscribe = new Subject<any>();
+  productType: String = "SERVICE"
   isVis = false;
   isSessionCompleted: boolean = true;
   timingArray: any[] = []
@@ -49,6 +50,9 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.store.pipe(select(getBookingByIds)).subscribe((data: any) => {
       this.statusData = data;
+      if (data?.["order_line_item"].length) {
+        this.productType = this.getProductType(data?.["order_line_item"]?.[0])
+      }
       this.orderId = data?.order_id;
       if (this.statusData?.order_session?.length) {
         this.isSessionCompleted = this.checkIfCompleted(this.statusData?.order_session);
@@ -104,6 +108,10 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
     const hours = parseInt(timeString.slice(0, 2));
     const totalTime = new Date(date.getTime() + minutes * 60000 + hours * 60 * 60000);
     return totalTime;
+  }
+
+  getProductType(lineItem: any) {
+    return lineItem?.["product"]?.product_type ?? "SERVICE"
   }
 
   ngOnDestroy() {
