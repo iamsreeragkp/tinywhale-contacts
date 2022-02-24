@@ -75,6 +75,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     //     this.isOtpVisible = false;
     //   }
     // });
+    this.store.pipe(select(getKey), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      this.otpKey = data?.data?.key;
+    });
     this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       if (data) {
         this.isVerifiedOtp = false;
@@ -87,7 +90,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         else{
           this.otpMessage = "Incorrect OTP"
         }
-    });
+    }
+  );
     if (this.resetPasswordForm.valid) {
       this.isOtpVisible = true;
       this.store.dispatch(setOtp({ email: payload }));
