@@ -85,11 +85,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         console.log(data.staus,"sds");
         
         this.isVerifiedOtp = false;
-        if(data === 'Invalid OTP' || data === 'OTP expired' )
+        if(data === 'Incorrect OTP' || data === 'OTP expired' )
         this.otpMessage = data;
         }
         else{
-          this.otpMessage = "Invalid OTP"
+          this.otpMessage = "Incorrect OTP"
         }
     }
   );
