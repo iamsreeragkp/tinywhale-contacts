@@ -20,6 +20,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   fields = ['otp_0', 'otp_1', 'otp_2', 'otp_3', 'otp_4', 'otp_5'];
   keyValue = null;
   copyValue = false;
+  otpMessage = "Incorrect OTP!"
   @ViewChildren('formRow') rows: any;
 
   ngUnsubscribe = new Subject<any>();
@@ -74,17 +75,26 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     //     this.isOtpVisible = false;
     //   }
     // });
-    this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
-      if (data) {
-        this.isVerifiedOtp = false;
-      }
-    });
+   
     if (this.resetPasswordForm.valid) {
       this.isOtpVisible = true;
       this.store.dispatch(setOtp({ email: payload }));
+    }    
+    this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      if (data) {
+        console.log(data.staus,"sds");
+        
+        this.isVerifiedOtp = false;
+        if(data === 'Incorrect OTP' || data === 'OTP expired' )
+        this.otpMessage = data;
+        }
+        else{
+          this.otpMessage = "Incorrect OTP"
+        }
     }
+  );
   }
-
+  
   isVerifiedOtp = false;
 
   validateOtp() {
@@ -95,9 +105,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     });
     const validateOtpPayload = {
       email: this.email?.value,
-      key: this.otpKey,
+      key: !this.otpKey? '' : this.otpKey,
       otp: finalOtp,
     };
+    console.log(validateOtpPayload ," validateOtpPayload" );
+    
     this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
     this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       if (data) {
@@ -116,7 +128,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   keyUpEvent(event: any, index: any, field: string) {
     // @ts-ignore: Object is possibly 'null'.
-
+      if(!event.target.value && !( event?.code === 'Backspace' || event?.code === 'Delete' )){ 
+        return;
+      }
     this.otpForm?.controls[field].valueChanges.subscribe(selectedValue => {
       if (!selectedValue) {
         this.keyValue = this.otpForm.value[field];
@@ -184,6 +198,10 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         this.otpForm.get(val)?.setValue(pastedText[index]);
       });
     }, 0);
+    if(pastedText.length > 1){
+      const focus = pastedText.length != 6 ? pastedText.length : pastedText.length -1
+      this.rows._results[focus].nativeElement.focus();
+    }
   }
 
   onInput(content: string) {}

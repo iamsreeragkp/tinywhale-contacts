@@ -142,7 +142,11 @@ export class SignUpPageComponent implements OnInit, OnDestroy {
 
   createSignupForm() {
     return new FormGroup({
-      domain: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-]*$/)]),
+      domain: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9][a-z0-9-_]+[a-z0-9]$/),
+        Validators.maxLength(20),
+      ]),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
