@@ -3,7 +3,13 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
-import { Currency, currencyList } from 'src/app/shared/utils';
+import {
+  Currency,
+  currencyList,
+  getDaysInAMonth,
+  getNextOrPrevious12Months,
+  getQuarterMonths,
+} from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { getDashboard } from '../../store/root.actions';
 import { IRootState } from '../../store/root.reducers';
@@ -25,6 +31,7 @@ import {
   ApexTooltip,
   ApexPlotOptions,
 } from 'ng-apexcharts';
+import { DatePipe } from '@angular/common';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -49,6 +56,7 @@ export type ChartOptions = {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('chart') chart?: ChartComponent;
@@ -103,7 +111,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   val: any;
   chart1Labels: any[] = [];
 
-  constructor(private store: Store<IRootState>, private router: Router, authService: AuthService) {
+  constructor(
+    private store: Store<IRootState>,
+    private router: Router,
+    authService: AuthService,
+    private datePipe: DatePipe
+  ) {
     this.chartOptions = {
       // series: [
       //   {
@@ -310,6 +323,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   initializeCharts() {
     this.chart1 = [{ name: '', data: [] }];
+    this.chart1Labels = [];
     this.chart2 = [{ name: '', data: [] }];
     this.chart3 = [
       { name: '', data: [], type: 'column' },
@@ -388,67 +402,132 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
-      this.initializeCharts();
-      for (let i = 0; i < this.priceData?.length; i++) {
-        this.priceLineData = this.priceData[i];
-        this.chart1.map(chart => chart.data.push(this.priceData[i]?.total));
-        this.chart1Labels.push(
-          this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date)
-        );
-        // this.chart1 = [
-        //   {
-        //     name: 'Price Data',
-        //     series: [
-        //       {
-        //         name: this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date),
-        //         value: this.priceData[i]?.total,
-        //       },
-        //     ],
-        //   },
-        // ];
-      }
-      this.customerLifeTime = this.dashboardInfos?.customer_lifetime_value;
-      for (let i = 0; i < this.customerLifeTime?.length; i++) {
-        this.customerLineData = this.customerLifeTime[i];
-        const date = this.formatdate(this.customerLineData?.date);
-        const total = this.customerLineData?.total;
-        const uniqueCustomers = this.customerLineData?.unique_customers;
-        const value: any = total / uniqueCustomers;
-        this.chart2.map(chart => chart.data.push(value));
-        // this.chart2 = [
-        //   {
-        //     name: 'Customer life time',
-        //     series: [
-        //       {
-        //         name: this.formatdate(this.priceData[i]?.date_time),
-        //         value: value,
-        //       },
-        //     ],
-        //   },
-        // ];
-      }
-
-      this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
-
-      for (let i = 0; i < this.serviceUtilizationData?.length; i++) {
-        this.serviceUtilizationLineData = this.serviceUtilizationData[i];
-
-        this.potential = this.serviceUtilizationLineData?.potential;
-
-        const totalPrice = this.potential?.reduce(function (accumulator: any, item: any) {
-          return accumulator + item?.capacity * item?.slot;
-        }, 0);
-
-        const value: any = this.serviceUtilizationData[i]?.bookings / totalPrice;
-        this.chart3.map(chart => chart.data.push(value));
-        // this.chart3 = [
-        //   {
-        //     name: 'Service Utilization',
-        //     value: value,
-        //   },
-        // ];
-      }
+      this.populateChartData();
     });
+  }
+
+  populateChartData() {
+    let datesArray: string[] = [];
+    if (this.overviewType === 'MTD') {
+      datesArray.push(...getDaysInAMonth());
+    } else if (this.overviewType === 'QTD') {
+      datesArray.push(...getQuarterMonths());
+    } else if (this.overviewType === 'YTD') {
+      const startMonth = this.priceData.reduce(
+        (startMonth: string, lineItem: any) =>
+          +new Date(startMonth) > +new Date(lineItem.date) ? lineItem.date : startMonth,
+        this.priceData?.[0]?.date ?? new Date().toISOString()
+      );
+      datesArray.push(...getNextOrPrevious12Months('previous', startMonth));
+    } else {
+      return;
+    }
+    this.initializeCharts();
+    for (let [i, date] of datesArray.entries()) {
+      this.chart1.forEach(chart =>
+        chart.data.push(
+          this.priceData?.reduce((total: any, priceLineItem: any) => {
+            const formattedDate = this.getFormattedDateOfPreviewType(priceLineItem);
+            if (date === formattedDate) {
+              total += +priceLineItem?.total;
+            }
+            return total;
+          }, 0)
+        )
+      );
+      if (this.overviewType !== 'MTD' || i % 7 === 0 || i % 7 === 3) {
+        this.chart1Labels.push(date);
+      } else {
+        this.chart1Labels.push('');
+      }
+    }
+    // for (let i = 0; i < this.priceData?.length; i++) {
+    //   this.priceLineData = this.priceData[i];
+    //   this.chart1.map(chart => chart.data.push(this.priceData[i]?.total));
+    //   this.chart1Labels.push(
+    //     this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date)
+    //   );
+    //   // this.chart1 = [
+    //   //   {
+    //   //     name: 'Price Data',
+    //   //     series: [
+    //   //       {
+    //   //         name: this.formatdate(this.priceData[i]?.date_time || this.priceData[i]?.date),
+    //   //         value: this.priceData[i]?.total,
+    //   //       },
+    //   //     ],
+    //   //   },
+    //   // ];
+    // }
+    this.customerLifeTime = this.dashboardInfos?.customer_lifetime_value;
+    this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
+    console.log(this.customerLifeTime);
+    console.log(this.serviceUtilizationData);
+    const previous12Months = getNextOrPrevious12Months('previous');
+    for (let month of previous12Months) {
+      this.chart2.forEach(chart =>
+        chart.data.push(
+          this.customerLifeTime?.reduce((val: number, lifeTimeData: any) => {
+            if (month === this.datePipe.transform(lifeTimeData.date, 'MMM yyyy')) {
+              val += +(+lifeTimeData?.total / +lifeTimeData?.unique_customers).toFixed(2);
+            }
+            return val;
+          }, 0)
+        )
+      );
+      this.chart3.forEach(chart =>
+        chart.data.push(
+          this.serviceUtilizationData?.reduce((val: number, utilData: any) => {
+            if (month === this.datePipe.transform(utilData.date, 'MMM yyyy')) {
+              const potential = utilData?.potential;
+              const totalPrice = potential?.reduce(function (accumulator: any, item: any) {
+                return accumulator + item?.capacity * item?.slot;
+              }, 0);
+              val += +(+utilData?.bookings / +totalPrice).toFixed(2);
+            }
+            return val;
+          }, 0)
+        )
+      );
+    }
+    // for (let i = 0; i < this.customerLifeTime?.length; i++) {
+    //   this.customerLineData = this.customerLifeTime[i];
+    //   const date = this.formatdate(this.customerLineData?.date);
+    //   const total = this.customerLineData?.total;
+    //   const uniqueCustomers = this.customerLineData?.unique_customers;
+    //   const value: any = total / uniqueCustomers;
+    //   this.chart2.map(chart => chart.data.push(value));
+    //   // this.chart2 = [
+    //   //   {
+    //   //     name: 'Customer life time',
+    //   //     series: [
+    //   //       {
+    //   //         name: this.formatdate(this.priceData[i]?.date_time),
+    //   //         value: value,
+    //   //       },
+    //   //     ],
+    //   //   },
+    //   // ];
+    // }
+
+    // for (let i = 0; i < this.serviceUtilizationData?.length; i++) {
+    //   this.serviceUtilizationLineData = this.serviceUtilizationData[i];
+
+    //   this.potential = this.serviceUtilizationLineData?.potential;
+
+    //   const totalPrice = this.potential?.reduce(function (accumulator: any, item: any) {
+    //     return accumulator + item?.capacity * item?.slot;
+    //   }, 0);
+
+    //   const value: any = this.serviceUtilizationData[i]?.bookings / totalPrice;
+    //   this.chart3.map(chart => chart.data.push(value));
+    //   // this.chart3 = [
+    //   //   {
+    //   //     name: 'Service Utilization',
+    //   //     value: value,
+    //   //   },
+    //   // ];
+    // }
   }
 
   togglePeriod(type?: string) {
@@ -545,6 +624,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       returnVal = obj?.[`${currentOrPrevious}_quarter`];
     } else if (this.overviewType === 'YTD') {
       returnVal = obj?.[`${currentOrPrevious}_year`];
+    }
+    return returnVal;
+  }
+
+  getFormattedDateOfPreviewType(priceLineItem: { date_time?: string; date: string }) {
+    let returnVal = null;
+    if (this.overviewType === 'MTD') {
+      returnVal = this.datePipe.transform(priceLineItem.date_time, 'd MMM, yyyy');
+    } else if (this.overviewType === 'QTD') {
+      returnVal = this.datePipe.transform(priceLineItem.date, 'MMMM');
+    } else if (this.overviewType === 'YTD') {
+      returnVal = this.datePipe.transform(priceLineItem.date, 'MMM yyyy');
     }
     return returnVal;
   }
