@@ -296,6 +296,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productFormSubscriptions();
   }
 
+  restrictZero(e: any) {
+    if (e.target.value.length === 0 && e.keyCode == 48 || e.target.value.length === 0 && e.keyCode == 45) {
+      e?.preventDefault();
+    }
+  }
   createLocation(val?: Product): any {
     if (val?.class?.location_type) {
       if (val?.class?.location_type === 'BUSINESS_LOCATION') {
