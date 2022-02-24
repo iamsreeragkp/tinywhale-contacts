@@ -327,3 +327,53 @@ export const getTimeRangeSerializedBasedOnWeekdayWithoutCoinciding = (timeRanges
     []
   );
 };
+
+export function getDaysInAMonth(dateString?: string) {
+  const dates: string[] = [];
+  const tempDate = dateString ? new Date(dateString) : new Date();
+  if (tempDate.getTime()) {
+    const noOfDays = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).getDate();
+    tempDate.setDate(1);
+    for (let i = 1; i <= noOfDays; i++) {
+      dates.push(new DatePipe('en').transform(tempDate, 'd MMM, yyyy')!);
+      tempDate.setDate(i + 1);
+    }
+  }
+  return dates;
+}
+
+export function getNextOrPrevious12Months(
+  nextOrPrevious: 'next' | 'previous',
+  dateString?: string
+) {
+  const previous12Months: string[] = [];
+  const newDate = dateString ? new Date(dateString) : new Date();
+  if (nextOrPrevious === 'previous') {
+    newDate.setFullYear(newDate.getFullYear() - 1);
+    newDate.setMonth(newDate.getMonth() + 1);
+  }
+  if (newDate.getTime()) {
+    for (let i = 0; i < 12; i++) {
+      previous12Months.push(new DatePipe('en').transform(newDate, 'MMM yyyy')!);
+      newDate.setMonth(newDate.getMonth() + 1);
+    }
+  }
+  return previous12Months;
+}
+
+export function getQuarterMonths(dateString?: string) {
+  const quarterMonths: string[] = [];
+  const newDate = dateString ? new Date(dateString) : new Date();
+  if (newDate.getTime()) {
+    const firstMonthOfQuadrant = Math.floor(newDate.getMonth() / 3) * 3;
+    newDate.setMonth(firstMonthOfQuadrant);
+    quarterMonths.push(
+      ...Array.from({ length: 3 }, _ => {
+        const dateString = new DatePipe('en').transform(newDate, 'MMMM') as string;
+        newDate.setMonth(newDate.getMonth() + 1);
+        return dateString;
+      })
+    );
+  }
+  return quarterMonths;
+}
