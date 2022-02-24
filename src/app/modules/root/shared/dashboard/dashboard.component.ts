@@ -418,7 +418,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           +new Date(startMonth) > +new Date(lineItem.date) ? lineItem.date : startMonth,
         this.priceData?.[0]?.date ?? new Date().toISOString()
       );
-      datesArray.push(...getNextOrPrevious12Months('previous', startMonth));
+      datesArray.push(...getNextOrPrevious12Months('next', startMonth));
     } else {
       return;
     }
@@ -435,6 +435,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }, 0)
         )
       );
+      // this.chart1.forEach(chart =>
+      //   chart.data.push(
+      //     this.priceData?.reduce(
+      //       (total: { y: number; x: string }, priceLineItem: any) => {
+      //         const formattedDate = this.getFormattedDateOfPreviewType(priceLineItem);
+      //         if (date === formattedDate) {
+      //           total.y += +priceLineItem?.total;
+      //         }
+      //         return total;
+      //       },
+      //       { y: 0, x: date }
+      //     )
+      //   )
+      // );
       if (this.overviewType !== 'MTD' || i % 7 === 0 || i % 7 === 3) {
         this.chart1Labels.push(date);
       } else {
@@ -461,32 +475,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // }
     this.customerLifeTime = this.dashboardInfos?.customer_lifetime_value;
     this.serviceUtilizationData = this.dashboardInfos?.service_utilization_rate;
-    console.log(this.customerLifeTime);
-    console.log(this.serviceUtilizationData);
     const previous12Months = getNextOrPrevious12Months('previous');
     for (let month of previous12Months) {
       this.chart2.forEach(chart =>
         chart.data.push(
-          this.customerLifeTime?.reduce((val: number, lifeTimeData: any) => {
-            if (month === this.datePipe.transform(lifeTimeData.date, 'MMM yyyy')) {
-              val += +(+lifeTimeData?.total / +lifeTimeData?.unique_customers).toFixed(2);
-            }
-            return val;
-          }, 0)
+          this.customerLifeTime?.reduce(
+            (val: { y: number; x: string }, lifeTimeData: any) => {
+              if (month === this.datePipe.transform(lifeTimeData.date, 'MMM yyyy')) {
+                val.y += +(+lifeTimeData?.total / +lifeTimeData?.unique_customers).toFixed(2);
+              }
+              return val;
+            },
+            { y: 0, x: month }
+          )
         )
       );
       this.chart3.forEach(chart =>
         chart.data.push(
-          this.serviceUtilizationData?.reduce((val: number, utilData: any) => {
-            if (month === this.datePipe.transform(utilData.date, 'MMM yyyy')) {
-              const potential = utilData?.potential;
-              const totalPrice = potential?.reduce(function (accumulator: any, item: any) {
-                return accumulator + item?.capacity * item?.slot;
-              }, 0);
-              val += +(+utilData?.bookings / +totalPrice).toFixed(2);
-            }
-            return val;
-          }, 0)
+          this.serviceUtilizationData?.reduce(
+            (val: { y: number; x: string }, utilData: any) => {
+              if (month === this.datePipe.transform(utilData.date, 'MMM yyyy')) {
+                const potential = utilData?.potential;
+                const totalPrice = potential?.reduce(function (accumulator: any, item: any) {
+                  return accumulator + item?.capacity * item?.slot;
+                }, 0);
+                val.y += +(+utilData?.bookings / +totalPrice).toFixed(2);
+              }
+              return val;
+            },
+            { y: 0, x: month }
+          )
         )
       );
     }
