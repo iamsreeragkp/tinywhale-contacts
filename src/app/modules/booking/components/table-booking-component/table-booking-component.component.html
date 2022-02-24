@@ -1,5 +1,5 @@
 <div class="table-container w-full rounded-t-lg">
-  <form [formGroup]="filterForm" *ngIf="bookingData?.length || !isFilterEmpty">
+  <form [formGroup]="filterForm" *ngIf="bookingData?.length || isFilterEmpty">
     <div class="flex flex-wrap items-center mb-4">
       <div class="relative mb-2 mr-2">
         <!-- <div class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"> -->
@@ -101,7 +101,7 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngIf="!bookingData?.length && isFilterEmpty && checkVal">
+      <ng-container *ngIf="!bookingData?.length && !isFilterEmpty && checkVal">
         <tr>
           <td class="italic text-xs text-[#73959d] pt-5 pb-1 px-2" colspan="7">
             Sample Booking Listing
@@ -233,7 +233,7 @@
                       bookData?.payment_status === 'PENDING_PAYMENT' ||
                       bookData?.payment_status === 'OPEN'
                     "
-                  />
+                  /> 
                 </div>
                 <span *ngIf="bookData?.product_type === 'CLASS'" class="whitespace-nowrap">{{
                   displaySessions(bookData?.session_to_display?.totalSessions)
@@ -252,7 +252,7 @@
           </tr>
         </ng-container>
       </ng-container>
-      <ng-container *ngIf="isLoadMore && isFilterEmpty">
+      <ng-container *ngIf="isLoadMore">
         <tr>
           <td colspan="7">
             <div
@@ -266,19 +266,20 @@
       </ng-container>
       <tr>
         <td colspan="7">
-          <div class="w-full" *ngIf="isFilterEmpty && !bookingData?.length && checkVal">
+          <div class="w-full" *ngIf="!isFilterEmpty && !bookingData?.length && checkVal">
             <app-no-data-booking-component class="flex flex-1"></app-no-data-booking-component>
             <app-loader-page *ngIf="!checkVal"></app-loader-page>
           </div>
           <!-- <ng-template #noResult> -->
           <app-no-result-booking-component
             class="flex flex-1"
-            *ngIf="!isFilterEmpty && !bookingData?.length"
+            *ngIf="isFilterEmpty && !bookingData?.length && checkVal"
             (newItemEvent)="filterEvent($event)"
           ></app-no-result-booking-component>
           <!-- </ng-template> -->
         </td>
       </tr>
     </tbody>
+      <app-loader-page *ngIf="!checkVal"></app-loader-page>
   </table>
 </div>
