@@ -75,27 +75,24 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     //     this.isOtpVisible = false;
     //   }
     // });
-    this.store.pipe(select(getKey), takeUntil(this.ngUnsubscribe)).subscribe(data => {
-      this.otpKey = data?.data?.key;
-    });
+   
+    if (this.resetPasswordForm.valid) {
+      this.isOtpVisible = true;
+      this.store.dispatch(setOtp({ email: payload }));
+    }    
     this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       if (data) {
+        console.log(data.staus,"sds");
+        
         this.isVerifiedOtp = false;
-        if(data === 'Incorrect OTP' || data === 'OTP expired' )
+        if(data === 'Incorrect OTP' || data === 'OTP expired'|| data === 'Email does not exist' )
         this.otpMessage = data;
-        }
-        else if(!this.otpKey){
-          this.otpMessage = "Incorrect email"
         }
         else{
           this.otpMessage = "Incorrect OTP"
         }
     }
   );
-    if (this.resetPasswordForm.valid) {
-      this.isOtpVisible = true;
-      this.store.dispatch(setOtp({ email: payload }));
-    }
   }
   
   isVerifiedOtp = false;
@@ -108,9 +105,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     });
     const validateOtpPayload = {
       email: this.email?.value,
-      key: this.otpKey,
+      key: !this.otpKey? '' : this.otpKey,
       otp: finalOtp,
     };
+    console.log(validateOtpPayload ," validateOtpPayload" );
+    
     this.store.dispatch(verifyOtp({ data: validateOtpPayload }));
     this.store.pipe(select(getError), takeUntil(this.ngUnsubscribe)).subscribe(data => {
       if (data) {
