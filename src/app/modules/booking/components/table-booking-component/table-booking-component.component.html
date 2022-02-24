@@ -155,21 +155,26 @@
             class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
           >
             <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
-              <div *ngIf="bookData?.product_type === 'CLASS'" class="flex flex-col">
-                <span class="whitespace-nowrap">{{
-                  bookData?.session_to_display?.formattedDisplayDate
-                }}</span>
-                <span class="whitespace-nowrap">{{
-                  '(' +
-                    bookData?.session_to_display?.sessionNo +
-                    '/' +
-                    bookData?.session_to_display?.totalSessions +
-                    ')'
-                }}</span>
+              <div class="flex flex-col">
+                <ng-container *ngIf="bookData?.product_type === 'CLASS'  ; else noDate" class="flex flex-col">
+                  <span class="whitespace-nowrap">{{
+                    bookData?.session_to_display?.formattedDisplayDate
+                  }}</span>
+                  <span class="whitespace-nowrap">{{
+                    '(' +
+                      bookData?.session_to_display?.sessionNo +
+                      '/' +
+                      bookData?.session_to_display?.totalSessions +
+                      ')'
+                  }}</span>
+                </ng-container>
+                <ng-template #noDate>
+                  <span>---</span>
+                </ng-template>                  
               </div>
             </td>
             <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
-              <ng-container *ngIf="bookData?.product_type === 'CLASS'">
+              <ng-container *ngIf="bookData?.product_type === 'CLASS' ; else noStatus">
                 <div
                 *ngIf="bookData?.session_to_display?.status?.toUpperCase() === 'COMPLETED'"
                 class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
@@ -182,7 +187,10 @@
               >
                 <span>UPCOMING</span>
               </div>
-              </ng-container>                 
+              </ng-container>
+              <ng-template #noStatus>
+                ---
+              </ng-template>                    
             </td>
             <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
               <div class="flex items-center">
