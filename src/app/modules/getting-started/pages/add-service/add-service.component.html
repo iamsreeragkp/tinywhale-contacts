@@ -332,12 +332,11 @@
               type="number"
               [preventDecimal]="true"
               min="0"
-              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value=this.value.replace(/[^1-9]/g,'')"
               maxlength="6"
               class="input w-full py-3 px-4 focus:outline-none"
               placeholder="Enter number of students per session"
               formControlName="capacity"
-              (keydown)="restrictZero($event)"
             />
           </div>
         </div>

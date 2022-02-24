@@ -119,7 +119,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(id => {
         this.editMode = true;
-            this.store.dispatch(getService({ product_id: id }));
+        this.store.dispatch(getService({ product_id: id }));
       });
     const productData = router.getCurrentNavigation()?.extras?.state?.['product'];
     if (productData) {
@@ -296,11 +296,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productFormSubscriptions();
   }
 
-  restrictZero(e: any) {
-    if (e.target.value.length === 0 && e.keyCode == 48) {
-      e?.preventDefault();
-    }
-  }
   createLocation(val?: Product): any {
     if (val?.class?.location_type) {
       if (val?.class?.location_type === 'BUSINESS_LOCATION') {
