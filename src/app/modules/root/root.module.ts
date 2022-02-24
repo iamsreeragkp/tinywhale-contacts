@@ -13,9 +13,7 @@ import { RootService } from './root.service';
 import { RootStoreModule } from './store/root-store.module';
 // import { RouterLinkDisabledDirective } from 'src/app/shared/directives/router-link-disabled.directive';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { NgApexchartsModule } from "ng-apexcharts";
-
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   imports: [
@@ -24,7 +22,6 @@ import { NgApexchartsModule } from "ng-apexcharts";
     RootRoutingModule,
     RootStoreModule,
     GettingStartedModule,
-    NgxChartsModule,
     NgApexchartsModule,
   ],
   declarations: [
@@ -40,4 +37,4 @@ import { NgApexchartsModule } from "ng-apexcharts";
   exports: [HomePageComponent, Error404PageComponent, FooterComponent],
   providers: [RootService],
 })
-export class RootModule { }
+export class RootModule {}
