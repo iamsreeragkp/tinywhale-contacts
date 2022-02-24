@@ -418,7 +418,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           +new Date(startMonth) > +new Date(lineItem.date) ? lineItem.date : startMonth,
         this.priceData?.[0]?.date ?? new Date().toISOString()
       );
-      datesArray.push(...getNextOrPrevious12Months('previous', startMonth));
+      datesArray.push(...getNextOrPrevious12Months('next', startMonth));
     } else {
       return;
     }
