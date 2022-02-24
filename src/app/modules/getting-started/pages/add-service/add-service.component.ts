@@ -3,7 +3,16 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  delay,
+  filter,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { IAppState } from 'src/app/modules/core/reducers';
@@ -60,6 +69,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     label: string;
     selected: boolean;
   }[];
+  dataArrived$ = new Subject<[Product | undefined, boolean?]>();
   ngUnsubscribe = new Subject<void>();
   productFormUnsubscriber$ = new Subject<void>();
   editMode = false;
@@ -80,7 +90,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     private utilsService: UtilsHelperService,
     private router: Router,
     private route: ActivatedRoute,
-    private zone: NgZone,
     public location: Location,
     authService: AuthService
   ) {
@@ -93,6 +102,15 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
     this.productData$ = this.store.pipe(select(getServiceStatus));
     this.businessLocations$ = this.store.pipe(select(getBusinessLocationsStatus));
+    combineLatest([this.dataArrived$, this.businessLocations$])
+      .pipe(
+        filter(([initFormParams, locations]) => !!initFormParams && !!locations),
+        delay(10)
+      )
+      .subscribe(([initFormParams]) => {
+        console.log(initFormParams);
+        this.initForms(...initFormParams);
+      });
     route.params
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -100,17 +118,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         filter(val => !!val)
       )
       .subscribe(id => {
-        console.log(id);
         this.editMode = true;
-        this.zone.run(() => {
-          setTimeout(() => {
             this.store.dispatch(getService({ product_id: id }));
-          }, 100);
-        });
       });
     const productData = router.getCurrentNavigation()?.extras?.state?.['product'];
     if (productData) {
-      this.initForms(productData, true);
+      this.dataArrived$.next([productData, true]);
+      // this.initForms(productData, true);
     }
     this.isGettingStarted = router.url.split('/').includes('home');
   }
@@ -155,8 +169,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data?.status) {
-          this.initForms(data.product);
-          this.productFormSubscriptions();
+          this.dataArrived$.next([data.product]);
+          // this.initForms(data.product);
         } else {
           console.log(data?.error);
         }
@@ -485,6 +499,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   expireSubscriptions() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.dataArrived$.complete();
     this.productFormUnsubscriber$.next();
     this.productFormUnsubscriber$.complete();
   }
@@ -621,7 +636,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   updateTimeSlotOptionsOfAWeekDay(day_of_week?: WeekDay) {
-    console.log('updatingTimeSlots');
     this.getTimeSlotsOfWeekday(day_of_week).forEach(timeRange => {
       timeRange
         .get('slot_options')
