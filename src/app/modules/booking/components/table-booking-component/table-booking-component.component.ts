@@ -27,6 +27,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   page: number;
   limit: number;
   filterStatus: any;
+  isFilter =false;
 
   status = [
     {
@@ -121,10 +122,10 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
           this.bookingData = this.formatData(data);
           this.bookingsCount = data.bookingsCount;
           this.validateCount(this.bookingsCount);
-          for (let i = 0; i < this.bookingData.length; i++) {
+          for (let i = 0; i < this.bookingData?.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }
-          for (let i = 0; i < this.bookingData.length; i++) {
+          for (let i = 0; i < this.bookingData?.length; i++) {
             this.orderSession = this.bookingData[i].order_session;
           }
         } else {
@@ -133,6 +134,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       });
 
     this.filterForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      this.checkVal = 0;
       this.resetPage();
       // const productId = data?.service?.product_id;
       const productId = data?.service;
@@ -203,17 +205,25 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       this.visibleIndex = ind;
     }
   }
+  getCheckFilter(){
+   if( this.filterForm?.get("service")?.value || this.filterForm?.get("status")?.value || this.filterForm?.get("payment")?.value ) {
+    return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   onNavigateToList(id: any) {
     this.router.navigate([`../booking/status-booking/${id}`], { queryParams: { fromList: true } });
   }
 
   get isFilterEmpty() {
-    return this.filterForm.valid;
+    return this.getCheckFilter();
   }
 
   formatData(data: any) {
-    const sortedBookingList = data['bookingList'].map((booking: any) => {
+    const sortedBookingList = data['bookingList']?.map((booking: any) => {
       const timingArray: any[] = [];
       let displaySession: any = null;
 
@@ -335,6 +345,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
 
   filterEvent(event: any) {
     if (event === true) {
+      this.checkVal = 0;
       this.filterForm.reset();
     }
   }
@@ -351,6 +362,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   }
 
   loadMore() {
+    this.checkVal = 0;
     this.limit += this.appConfig.defaultPageLimit;
     this.fetchBookingList();
   }
