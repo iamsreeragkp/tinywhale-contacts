@@ -158,6 +158,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
       }
     });
     this.filterForm.valueChanges.subscribe(data => {
+      this.checkVal = 0;
       this.resetPage();
       this.fetchServiceList();
     });
@@ -169,6 +170,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   }
 
   loadMore() {
+    this.checkVal = 0;
     this.limit += this.appConfig.defaultPageLimit;
     this.fetchServiceList();
   }
@@ -284,6 +286,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     return actionsArr;
   }
   filterClear(event: any) {
+    this.checkVal = 0;
     if (event === true) {
       this.filterForm.reset();
     }
