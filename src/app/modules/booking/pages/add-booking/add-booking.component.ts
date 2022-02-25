@@ -10,7 +10,12 @@ import { convert24HrsFormatToAmPm, convertDateToDateString } from 'src/app/share
 import { BookingService } from '../../booking.service';
 import { getPayment } from 'src/app/modules/accounts/store/account.actions';
 import { getPayments } from 'src/app/modules/accounts/store/account.selectors';
-import { addBooking, getBookableSlots, getBookingById } from '../../store/booking.actions';
+import {
+  addBooking,
+  getBookableSlots,
+  getBookingById,
+  initBooking,
+} from '../../store/booking.actions';
 
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
 import {
@@ -229,7 +234,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     } else {
       lastName = lastName[2];
     }
-    const bookingPayload = {
+    const bookingPayload: any = {
       email: email,
       phone_number: phonenumber,
       first_name: customerName ? customerName : customername,
@@ -240,6 +245,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       platform: payment || 'OFFLINE',
     };
 
+    if (this.editMode) {
+      bookingPayload['order_id'] = this.orderId;
+    }
+
     if (bookingPayload.phone_number === null) {
       delete bookingPayload['phone_number'];
     }
@@ -249,12 +258,19 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.store.dispatch(addBooking({ bookingData: bookingPayload }));
     this.store
       .select(getBookingInfo)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(val => !!val)
+      )
       .subscribe((data: any) => {
         this.productId = data?.data?.order?.order_id;
-        if (data?.data?.user?.email) {
+        if (data) {
           this.isSaving = false;
-          this.router.navigate([`../booking/status-booking/${this.productId}`]);
+          if (!this.editMode) {
+            this.router.navigate([`../booking/status-booking/${this.productId}`]);
+          } else {
+            this.location.back();
+          }
         }
       });
 
@@ -283,44 +299,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
-  }
-
-  onUpdateBooking() {
-    if (this.isSaving) {
-      return;
-    }
-    this.isSaving = true;
-    const { email, phonenumber, customername, service, date, slot, payment } =
-      this.bookingForm.value;
-    const customerName = customername.split(' ').slice(0, -1).join(' ');
-    let lastName = customername.split(' ');
-
-    if (lastName[1]) {
-      lastName = lastName[1];
-    } else {
-      lastName = lastName[2];
-    }
-    const bookingPayload = {
-      email: email,
-      phone_number: phonenumber,
-      first_name: customerName ? customerName : customername,
-      last_name: lastName ? lastName : '',
-
-      date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
-      product_id: service,
-      booking_type: BookingType.BUSINESS_OWNER,
-      platform: payment || 'OFFLINE',
-      order_id: this.orderId,
-    };
-
-    if (bookingPayload.phone_number === null) {
-      delete bookingPayload['phone_number'];
-    }
-    if (bookingPayload.platform === null || bookingPayload.platform === '') {
-      delete bookingPayload['platform'];
-    }
-    this.store.dispatch(addBooking({ bookingData: bookingPayload }));
-    this.location.back();
   }
 
   // get sessions() {
@@ -384,7 +362,8 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
+    this.store.dispatch(initBooking());
   }
 }

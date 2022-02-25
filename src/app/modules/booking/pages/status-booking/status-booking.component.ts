@@ -6,7 +6,7 @@ import { TimeRangeSerializedDate } from 'src/app/shared/interfaces/time-range.in
 import { convert24HrsFormatToAmPm, getTimeRangeSerializedBasedOnDate } from 'src/app/shared/utils';
 import { getBookingById, initBooking } from '../../store/booking.actions';
 import { IBookingState } from '../../store/booking.reducers';
-import { getBookingByIds, getBookingInfo } from '../../store/booking.selectors';
+import { getBookingByIds } from '../../store/booking.selectors';
 
 @Component({
   selector: 'app-status-booking',
@@ -18,10 +18,10 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   settledInvoice = true;
   orderId!: number;
   ngUnsubscribe = new Subject<any>();
-  productType: String = "SERVICE"
+  productType: String = 'SERVICE';
   isVis = false;
   isSessionCompleted: boolean = true;
-  timingArray: any[] = []
+  timingArray: any[] = [];
   timeRangeSerialized?: TimeRangeSerializedDate[];
   constructor(
     private router: Router,
@@ -50,8 +50,8 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   subscriptions() {
     this.store.pipe(select(getBookingByIds)).subscribe((data: any) => {
       this.statusData = data;
-      if (data?.["order_line_item"].length) {
-        this.productType = this.getProductType(data?.["order_line_item"]?.[0])
+      if (data?.['order_line_item'].length) {
+        this.productType = this.getProductType(data?.['order_line_item']?.[0]);
       }
       this.orderId = data?.order_id;
       if (this.statusData?.order_session?.length) {
@@ -76,28 +76,23 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
       sortedSessions = sessions.slice().sort((a: any, b: any) => {
         return (
           +new Date(
-            this.convertToDate(
-              b['session']['date'],
-              b['session']['class_time_range']['start_time']
-            )
+            this.convertToDate(b['session']['date'], b['session']['class_time_range']['start_time'])
           ) -
           +new Date(
-            this.convertToDate(
-              a['session']['date'],
-              a['session']['class_time_range']['start_time']
-            )
+            this.convertToDate(a['session']['date'], a['session']['class_time_range']['start_time'])
           )
         );
-      })
-    }
-    else {
-      sortedSessions = sessions
+      });
+    } else {
+      sortedSessions = sessions;
     }
     const finalSession = sortedSessions[0];
-    const finalSessionTime = this.convertToDate(finalSession['session']['date'], finalSession['session']['class_time_range']['start_time']);
-    console.log("Time", +new Date - +finalSessionTime);
-    return (+new Date - +finalSessionTime) > 1 ? true : false
-
+    const finalSessionTime = this.convertToDate(
+      finalSession['session']['date'],
+      finalSession['session']['class_time_range']['start_time']
+    );
+    console.log('Time', +new Date() - +finalSessionTime);
+    return +new Date() - +finalSessionTime > 1 ? true : false;
   }
 
   convertToDate(dateString: string, timeString: string = '0000') {
@@ -111,7 +106,7 @@ export class StatusBookingComponent implements OnInit, OnDestroy {
   }
 
   getProductType(lineItem: any) {
-    return lineItem?.["product"]?.product_type ?? "SERVICE"
+    return lineItem?.['product']?.product_type ?? 'SERVICE';
   }
 
   ngOnDestroy() {

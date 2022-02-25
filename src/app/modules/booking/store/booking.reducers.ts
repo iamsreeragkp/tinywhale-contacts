@@ -32,7 +32,7 @@ export interface IBookingState {
 }
 
 export const initialBookingState: IBookingState = {
-  BookingInfo: [],
+  BookingInfo: undefined,
   error: '',
   getBooking: undefined,
   getBookingById: undefined,
