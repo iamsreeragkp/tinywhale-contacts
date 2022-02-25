@@ -24,8 +24,10 @@
     </div>
   </div>
   <hr class="line bg-[#e5e5e5]" />
-  <div class="flex">
-    <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-bl-3xl flex-1">
+  <div class="flex w-full">
+    <div
+      class="website-page bg-white p-8 font-poppins text-primaryFont rounded-bl-3xl w-7/12 min-h-full"
+    >
       <main>
         <div class="flex mb-4">
           <div class="w-44 py-3 flex justify-end pr-8">
@@ -39,7 +41,10 @@
           <div class="w-44 py-3 flex justify-end pr-8">
             <span class="font-medium text-right">Description</span>
           </div>
-          <div class="flex-1 py-3 pl-4 flex">
+          <div
+            class="flex-1 py-3 pl-4 flex line-clamp-punch"
+            title="{{ productObj?.description ?? '-' }}"
+          >
             <span>{{ productObj?.description ?? '-' }}</span>
           </div>
         </div>
@@ -183,7 +188,7 @@
         </div>
       </main>
     </div>
-    <div class="detail-section w-5/12">
+    <div class="detail-section w-5/12 min-h-full">
       <div class="p-8">
         <app-preview-product
           [title]="productObj?.title"

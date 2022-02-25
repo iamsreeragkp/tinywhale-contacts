@@ -33,3 +33,9 @@
   line-height: 24px;
   color: #154f5b;
 }
+.line-clamp-punch {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  @apply w-4/5 overflow-hidden;
+}
