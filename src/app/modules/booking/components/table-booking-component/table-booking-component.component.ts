@@ -115,9 +115,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         filter(val => !!val)
       )
-      .subscribe(data => {
-        console.log(data,"sjhdsjdh");
-        
+      .subscribe(data => {        
         if (data) {
           this.checkVal = 1;
           this.bookingData = this.formatDatas(data);
