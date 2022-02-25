@@ -107,7 +107,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
     );
     this.filterForm = this.createFilterForm();
     this.page = appConfig.defaultStartPage;
-    this.limit = appConfig.defaultPageLimit;
+    this.limit = appConfig.defaultPageLimit + 1; // Adjustment for demand scroll (load more)
     store.dispatch(
       getServiceList({
         filters: {
@@ -169,7 +169,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
 
   resetPage() {
     this.page = this.appConfig.defaultStartPage;
-    this.limit = this.appConfig.defaultPageLimit;
+    this.limit = this.appConfig.defaultPageLimit + 1; // Adjustment for demand scroll (load more)
   }
 
   loadMore() {
