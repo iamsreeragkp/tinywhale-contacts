@@ -382,17 +382,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const sum = this.currentTotal + this.lastTotal;
       // console.log('sum', sum);
-      if (this.currentTotal < this.lastTotal) {
-        const diff1 = this.lastTotal - this.currentTotal;
-        this.percentage = (diff1 * 100) / this.lastTotal;
-      } else if (this.currentTotal > this.lastTotal) {
-        const diff2 = this.currentTotal - this.lastTotal;
-        if (!this.lastTotal) {
-          this.percentage = diff2;
-        } else {
-          this.percentage = 0;
-        }
-      }
+      this.percentage = ((this.currentTotal - this.lastTotal) * 100) / this.lastTotal;
 
       /**
        *                      Gateway Fee + TinyWhale Fee
@@ -662,6 +652,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       returnVal = this.datePipe.transform(dateString, 'MMM yyyy');
     }
     return returnVal as string;
+  }
+
+  get Infinity() {
+    return Infinity;
   }
 
   onSelect(eve: any) {}

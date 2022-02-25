@@ -69,9 +69,23 @@
 
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center ml-6">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
-              <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3"
+              <img
+                src="../../../../../assets/images/icons/arrow-green.svg"
+                alt=""
+                *ngIf="currentMonthGross >= 0"
+              />
+              <img
+                src="../../../../../assets/images/icons/arrow-red.svg"
+                alt=""
+                class="transform rotate-180"
+                *ngIf="currentMonthGross < 0"
+              />
+              <span
+                class="ml-3"
+                [ngClass]="{
+                  'green-text': currentMonthGross >= 0,
+                  'red-text': currentMonthGross < 0
+                }"
                 >{{ customerCurrency?.symbol ?? '$' }} {{ currentMonthGross || '0' }}</span
               >
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
@@ -152,9 +166,22 @@
             </div>
             <!-- used hidden to occupy space of element when not showing -->
             <div class="flex items-center">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
-              <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">{{ bookingGross || '0' }}</span>
+              <img
+                src="../../../../../assets/images/icons/arrow-green.svg"
+                alt=""
+                *ngIf="bookingGross >= 0"
+              />
+              <img
+                src="../../../../../assets/images/icons/arrow-red.svg"
+                alt=""
+                class="transform rotate-180"
+                *ngIf="bookingGross < 0"
+              />
+              <span
+                class="ml-3"
+                [ngClass]="{ 'green-text': bookingGross >= 0, 'red-text': bookingGross < 0 }"
+                >{{ bookingGross || '0' }}</span
+              >
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont"
                 >from last {{ overviewTypeToPeriodTermMapper[overviewType] }}</span
@@ -173,10 +200,23 @@
               {{ processingFee || '0' }} %
             </h3>
             <!-- used hidden to occupy space of element when not showing -->
-            <div class="flex items-center">
-              <img src="../../../../../assets/images/icons/arrow-green.svg" alt="" />
-              <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
-              <span class="green-text ml-3">{{ percentage || '0' }}%</span>
+            <div class="flex items-center" *ngIf="percentage !== Infinity">
+              <img
+                src="../../../../../assets/images/icons/arrow-green.svg"
+                alt=""
+                *ngIf="percentage >= 0"
+              />
+              <img
+                src="../../../../../assets/images/icons/arrow-red.svg"
+                alt=""
+                class="transform rotate-180"
+                *ngIf="percentage < 0"
+              />
+              <span
+                class="ml-3"
+                [ngClass]="{ 'green-text': percentage >= 0, 'red-text': percentage < 0 }"
+                >{{ percentage || '0' }}%</span
+              >
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
               <span class="ml-2 text-primaryFont"
                 >from last {{ overviewTypeToPeriodTermMapper[overviewType] }}</span
