@@ -525,6 +525,7 @@
                   </div>
                 </div>
                 <button
+                  *ngIf="!isOneEmptyTestimonialPresent()"
                   class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
                   type="button"
                   (click)="deleteTestmonials(i)"

@@ -317,7 +317,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.logoImageUrl = url;
 
       this.businessInfoForm.get('logo')?.patchValue(fileKey);
-    } catch (ex) {}
+    } catch (ex) { }
   }
 
   async handleFileInputCover(event: Event) {
@@ -331,7 +331,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.fileToUploadCover = file;
       this.coverImageUrl = url;
       this.businessInfoForm.get('cover')?.patchValue({ photo_url: fileKey });
-    } catch (ex) {}
+    } catch (ex) { }
   }
 
   deleteLogo() {
@@ -426,6 +426,10 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.testimonialItem.removeAt(index);
     this.fileToUploadTestimonial?.splice(index, 1);
     this.arrayTestmonialImageUrl?.splice(index, 1);
+    if (this.testimonialItem.value.length === 0) {
+      this.addTestimonialItem()
+      this.isOneEmptyTestimonialPresent()
+    }
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
@@ -630,7 +634,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       return data.url;
     });
   }
-  isLicenceItemFilled(){
+  isLicenceItemFilled() {
     const licenseList = this.recognitions && this.recognitions.value
     return licenseList.filter((data: any) => {
       return data.recognition_type === "AWARD" ? data.recognition_type && data.recognition_name && data.photo_url : data.recognition_type && data.recognition_name && data.photo_url && data.expiry_date;
@@ -642,6 +646,13 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     return testimonialsList.filter((data: any) => {
       return data.name && data.photo_url && data.testimonial && data.title;
     });
+  }
+  isOneEmptyTestimonialPresent() {
+    return this.testimonialItem.length === 1 &&
+      this.testimonialItem?.controls?.[0]?.get('name')?.value === "" &&
+      this.testimonialItem?.controls?.[0]?.get('title')?.value === "" &&
+      this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === "" &&
+      this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === "";
   }
 
   get socialItems() {
