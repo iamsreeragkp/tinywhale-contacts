@@ -413,13 +413,20 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteAwardOrLicence(index: any) {
-    const remove = this.businessInfoForm.get('licenceitems') as FormArray;
-    remove.removeAt(index);
+    this.licenceItem.removeAt(index);
     this.fileToUploadLicence?.splice(index, 1);
     this.arrayLicenceImageUrl?.splice(index, 1);
+    if (this.licenceItem?.value?.length === 0) {
+      this.addLicenceItem();
+    }
   }
+
   get testimonialItem() {
     return this.businessInfoForm.get('testimonialitems') as FormArray;
+  }
+
+  get licenceItem() {
+    return this.businessInfoForm.get('licenceitems') as FormArray;
   }
 
   deleteTestmonials(index: any) {
@@ -428,7 +435,6 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.arrayTestmonialImageUrl?.splice(index, 1);
     if (this.testimonialItem.value.length === 0) {
       this.addTestimonialItem()
-      this.isOneEmptyTestimonialPresent()
     }
   }
 
@@ -647,12 +653,23 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       return data.name && data.photo_url && data.testimonial && data.title;
     });
   }
+
   isOneEmptyTestimonialPresent() {
-    return this.testimonialItem.length === 1 &&
-      this.testimonialItem?.controls?.[0]?.get('name')?.value === "" &&
-      this.testimonialItem?.controls?.[0]?.get('title')?.value === "" &&
-      this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === "" &&
-      this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === "";
+    const noName = this.testimonialItem?.controls?.[0]?.get('name')?.value === "" || this.testimonialItem?.controls?.[0]?.get('name')?.value === null;
+    const noTitle = this.testimonialItem?.controls?.[0]?.get('title')?.value === "" || this.testimonialItem?.controls?.[0]?.get('title')?.value === null;
+    const noTestimonial = this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === "" || this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === null;
+    const noPhoto = this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === "" || this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === null
+
+    return this.testimonialItem.length === 1 && noName && noTitle && noTestimonial && noPhoto
+  }
+
+  isOneEmptyLicenceOrAwardPresent() {
+    const noExpiryDate = this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === "" || this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === null;
+    const noPhoto = this.licenceItem?.controls?.[0]?.get('photo_url')?.value === "" || this.licenceItem?.controls?.[0]?.get('photo_url')?.value === null;
+    const noRecognitionName = this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === null;
+    const noRecognitionType = this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === null;
+
+    return this.licenceItem.length === 1 && noExpiryDate && noPhoto && noRecognitionName && noRecognitionType
   }
 
   get socialItems() {
