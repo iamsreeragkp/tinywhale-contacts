@@ -64,7 +64,7 @@
           <div class="flex items-center">
             <h3 class="text-primaryFont font-bold font-baloo text-tworem">
               {{ customerCurrency?.symbol ?? '$' }}
-              {{ dashboardInfos?.gross_earnings?.current_month || '0' }}
+              {{ getFieldValue('current', dashboardInfos?.gross_earnings) || '0' }}
             </h3>
 
             <!-- used hidden to occupy space of element when not showing -->
@@ -75,7 +75,9 @@
                 >{{ customerCurrency?.symbol ?? '$' }} {{ currentMonthGross || '0' }}</span
               >
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
-              <span class="ml-2 text-primaryFont">from last month</span>
+              <span class="ml-2 text-primaryFont"
+                >from last {{ overviewTypeToPeriodTermMapper[overviewType] }}</span
+              >
             </div>
           </div>
           <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
@@ -109,7 +111,6 @@
                 [stroke]="chartOptions.stroke!"
                 [dataLabels]="chartOptions.dataLabels!"
                 [yaxis]="chartOptions.yaxis!"
-                [labels]="chart1Labels"
                 [legend]="chartOptions.legend!"
                 [title]="chartOptions.title!"
                 [subtitle]="chartOptions.subtitle!"
@@ -141,7 +142,7 @@
               <h3
                 class="text-primaryFont font-bold font-baloo text-tworem mr-2.5 value-hover duration-500"
               >
-                {{ dashboard?.bookings?.current_month || '0' }}
+                {{ getFieldValue('current', dashboard?.bookings) || '0' }}
               </h3>
               <img
                 src="../../../../../assets/images/icons/right-blue.svg"
@@ -155,7 +156,9 @@
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">{{ bookingGross || '0' }}</span>
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
-              <span class="ml-2 text-primaryFont">from last month</span>
+              <span class="ml-2 text-primaryFont"
+                >from last {{ overviewTypeToPeriodTermMapper[overviewType] }}</span
+              >
             </div>
           </div>
           <div class="h-36 w-full flex flex-col justify-end">
@@ -175,7 +178,9 @@
               <!-- <img src="../../../../../assets/images/icons/arrow-red.svg" alt=""> -->
               <span class="green-text ml-3">{{ percentage || '0' }}%</span>
               <!-- <span class="red-text ml-3">{{customerCurrency?.symbol ?? '$'}} 80</span> -->
-              <span class="ml-2 text-primaryFont">from last month</span>
+              <span class="ml-2 text-primaryFont"
+                >from last {{ overviewTypeToPeriodTermMapper[overviewType] }}</span
+              >
             </div>
           </div>
         </div>
@@ -251,27 +256,24 @@
               <div class="w-4/12 h-full">
                 <p class="text-primaryFont">
                   {{
-                  isToday(upcoming?.order_session?.[0]?.session?.date)
-                    ? 'Today'
-                    : isTomorrow(upcoming?.order_session?.[0]?.session?.date)
-                    ? 'Tomorrow'
-                    : getDayName(upcoming?.order_session?.[0]?.session?.date) +
-                      ',' +
-                      formatdate(upcoming?.order_session?.[0]?.session?.date)
+                    isToday(upcoming?.date_time_col?.date_time?.date)
+                      ? 'Today'
+                      : isTomorrow(upcoming?.date_time_col?.date_time?.date)
+                      ? 'Tomorrow'
+                      : getDayName(upcoming?.date_time_col?.date_time?.date) +
+                        ',' +
+                        formatdate(upcoming?.date_time_col?.date_time?.date)
                   }}
                 </p>
               </div>
               <div class="w-8/12 h-full">
                 <p class="text-primaryFont">
-                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session?.class_time_range?.start_time) }}
+                  {{ convert24HrsFormatToAmPm(upcoming?.date_time_col?.date_time?.s_time) }}
                   -
-                  {{ convert24HrsFormatToAmPm(upcoming?.order_session?.[0]?.session?.class_time_range?.end_time) }}
+                  {{ convert24HrsFormatToAmPm(upcoming?.date_time_col?.date_time?.e_time) }}
                 </p>
-                <p
-                  class="text-primaryFont overflow-hidden"
-                  title="{{ upcoming?.order_line_item?.[0]?.product?.title }}"
-                >
-                  {{ upcoming?.order_line_item?.[0]?.product?.title }}
+                <p class="text-primaryFont overflow-hidden" title="{{ upcoming?.service_name }}">
+                  {{ upcoming?.service_name }}
                 </p>
               </div>
             </div>
