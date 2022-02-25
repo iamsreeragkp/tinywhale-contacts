@@ -369,7 +369,7 @@ export function getQuarterMonths(dateString?: string) {
     newDate.setMonth(firstMonthOfQuadrant);
     quarterMonths.push(
       ...Array.from({ length: 3 }, _ => {
-        const dateString = new DatePipe('en').transform(newDate, 'MMMM') as string;
+        const dateString = new DatePipe('en').transform(newDate, 'MMMM yyyy') as string;
         newDate.setMonth(newDate.getMonth() + 1);
         return dateString;
       })
