@@ -317,7 +317,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.logoImageUrl = url;
 
       this.businessInfoForm.get('logo')?.patchValue(fileKey);
-    } catch (ex) {}
+    } catch (ex) { }
   }
 
   async handleFileInputCover(event: Event) {
@@ -331,7 +331,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.fileToUploadCover = file;
       this.coverImageUrl = url;
       this.businessInfoForm.get('cover')?.patchValue({ photo_url: fileKey });
-    } catch (ex) {}
+    } catch (ex) { }
   }
 
   deleteLogo() {
@@ -413,19 +413,29 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteAwardOrLicence(index: any) {
-    const remove = this.businessInfoForm.get('licenceitems') as FormArray;
-    remove.removeAt(index);
+    this.licenceItem.removeAt(index);
     this.fileToUploadLicence?.splice(index, 1);
     this.arrayLicenceImageUrl?.splice(index, 1);
+    if (this.licenceItem?.value?.length === 0) {
+      this.addLicenceItem();
+    }
   }
+
   get testimonialItem() {
     return this.businessInfoForm.get('testimonialitems') as FormArray;
+  }
+
+  get licenceItem() {
+    return this.businessInfoForm.get('licenceitems') as FormArray;
   }
 
   deleteTestmonials(index: any) {
     this.testimonialItem.removeAt(index);
     this.fileToUploadTestimonial?.splice(index, 1);
     this.arrayTestmonialImageUrl?.splice(index, 1);
+    if (this.testimonialItem.value.length === 0) {
+      this.addTestimonialItem()
+    }
   }
 
   fileToUploadTestimonial: (File | undefined | null)[] = [];
@@ -630,7 +640,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       return data.url;
     });
   }
-  isLicenceItemFilled(){
+  isLicenceItemFilled() {
     const licenseList = this.recognitions && this.recognitions.value
     return licenseList.filter((data: any) => {
       return data.recognition_type === "AWARD" ? data.recognition_type && data.recognition_name && data.photo_url : data.recognition_type && data.recognition_name && data.photo_url && data.expiry_date;
@@ -642,6 +652,24 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     return testimonialsList.filter((data: any) => {
       return data.name && data.photo_url && data.testimonial && data.title;
     });
+  }
+
+  isOneEmptyTestimonialPresent() {
+    const noName = this.testimonialItem?.controls?.[0]?.get('name')?.value === "" || this.testimonialItem?.controls?.[0]?.get('name')?.value === null;
+    const noTitle = this.testimonialItem?.controls?.[0]?.get('title')?.value === "" || this.testimonialItem?.controls?.[0]?.get('title')?.value === null;
+    const noTestimonial = this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === "" || this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === null;
+    const noPhoto = this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === "" || this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === null
+
+    return this.testimonialItem.length === 1 && noName && noTitle && noTestimonial && noPhoto
+  }
+
+  isOneEmptyLicenceOrAwardPresent() {
+    const noExpiryDate = this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === "" || this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === null;
+    const noPhoto = this.licenceItem?.controls?.[0]?.get('photo_url')?.value === "" || this.licenceItem?.controls?.[0]?.get('photo_url')?.value === null;
+    const noRecognitionName = this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === null;
+    const noRecognitionType = this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === null;
+
+    return this.licenceItem.length === 1 && noExpiryDate && noPhoto && noRecognitionName && noRecognitionType
   }
 
   get socialItems() {

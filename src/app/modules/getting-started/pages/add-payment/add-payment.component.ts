@@ -86,9 +86,8 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data) {
           this.initializePaymentForm(data);
-          if (data?.payout_info?.connect_bank) {
+          if (data?.payout_info?.connect_bank && data?.payout_info?.beneficiary_id) {
             this.idStatus = true;
-            //   this.store.dispatch(addKyc());
           }
         } else {
           console.log(data?.error);
@@ -113,7 +112,9 @@ export class AddPaymentComponent implements OnInit, OnDestroy {
       state: new FormControl(val?.state),
       country: new FormControl(val?.country),
       currency: new FormControl(val?.default_currency),
-      connectbank: new FormControl(val?.payout_info?.connect_bank === false ? true : false),
+      connectbank: new FormControl(
+        val?.payout_info?.connect_bank === false || !val?.payout_info?.beneficiary_id ? true : false
+      ),
     });
     this.subscribeFormFieldChanges();
   }

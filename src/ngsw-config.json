@@ -26,7 +26,10 @@
           "/*.js",
           "/manifest.webmanifest"
         ]
-      }
+      },
+      "navigationUrls": [
+        "!/api/**"
+      ]
     },
     {
       "name": "assets",
