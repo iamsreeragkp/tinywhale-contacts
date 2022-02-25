@@ -87,7 +87,7 @@ export function findWeekDay(day: WeekDay) {
   return Object.keys(WeekDay).find(weekDay => WeekDay[weekDay as keyof typeof WeekDay] === day)!;
 }
 
-export const getTimeRangeSerializedBasedOnWeekday = (timeRanges: TimeRange[]) => {
+export const getTimeRangeSerializedBasedOnWeekday = (timeRanges: TimeRange[], grouping = false) => {
   if (!timeRanges) {
     return [];
   }
@@ -111,7 +111,7 @@ export const getTimeRangeSerializedBasedOnWeekday = (timeRanges: TimeRange[]) =>
           const coincidingRange = timeRangeArr.find(
             tR => tR.start_time === timeRange.end_time || tR.end_time === timeRange.start_time
           );
-          if (!coincidingRange) {
+          if (!coincidingRange || !grouping) {
             return timeRangeArr.concat({
               start_time: timeRange.start_time as string,
               end_time: timeRange.end_time as string,
@@ -292,41 +292,6 @@ export function convertDateToDateString(date?: Date | string | null) {
     '0'
   )}-${`${dateObj.getDate()}`.padStart(2, '0')}`;
 }
-
-export const getTimeRangeSerializedBasedOnWeekdayWithoutCoinciding = (timeRanges: TimeRange[]) => {
-  if (!timeRanges) {
-    return [];
-  }
-  return Object.entries(WeekDay).reduce(
-    (timeRangeSerialized: TimeRangeSerialized[], [weekDayName, weekDay]) => {
-      const timeRangesOfWeekDay = timeRanges
-        .filter(
-          timeRange =>
-            timeRange.day_of_week === weekDay &&
-            timeRange.day_of_week &&
-            timeRange.start_time &&
-            timeRange.end_time
-        )
-        .sort((a, b) => a.start_time?.localeCompare(b.start_time!)!);
-      if (!timeRangesOfWeekDay.length) {
-        return timeRangeSerialized;
-      }
-      return timeRangeSerialized.concat({
-        label: weekDayName,
-        ranges: timeRangesOfWeekDay.reduce((timeRangeArr: SlotRange[], timeRange) => {
-          return timeRangeArr.concat({
-            start_time: timeRange.start_time as string,
-            end_time: timeRange.end_time as string,
-            start_time_label: convert24HrsFormatToAmPm(timeRange.start_time),
-            end_time_label: convert24HrsFormatToAmPm(timeRange.end_time),
-          });
-        }, []),
-        day_of_week: weekDay,
-      });
-    },
-    []
-  );
-};
 
 export function getDaysInAMonth(dateString?: string) {
   const dates: string[] = [];

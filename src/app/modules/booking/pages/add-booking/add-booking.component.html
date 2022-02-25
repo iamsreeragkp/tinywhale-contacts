@@ -14,7 +14,7 @@
         <button
           class="primary-button w-52 ml-3"
           (click)="onBookingAndExit()"
-          [disabled]="!bookingForm?.valid"
+          [disabled]="!bookingForm?.valid || isSaving"
         >
           Register
         </button>
@@ -23,7 +23,11 @@
     <ng-template #editButton>
       <div class="flex justify-between items-center">
         <button class="noborder-button" (click)="onCancelBooking()">Cancel</button>
-        <button class="secondary-button w-52 mr-3 ml-6" (click)="onUpdateBooking()">
+        <button
+          class="secondary-button w-52 mr-3 ml-6"
+          (click)="onUpdateBooking()"
+          [disabled]="isSaving"
+        >
           <span>Save</span>
         </button>
       </div>
