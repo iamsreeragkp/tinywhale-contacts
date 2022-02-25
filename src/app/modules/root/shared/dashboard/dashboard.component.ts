@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   copyURL: string = '';
   customUsername!: string;
   baseURL = environment.tinyWhaleBaseUrl;
-  overviewType: string = 'MTD';
+  overviewType: 'MTD' | 'QTD' | 'YTD' = 'MTD';
 
   priceData: any;
   priceLineData = [];
@@ -109,7 +109,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   customerCurrency?: Currency;
   ngUnsubscribe = new Subject<any>();
   val: any;
-  chart1Labels: any[] = [];
+  overviewTypeToPeriodTermMapper = {
+    MTD: 'month',
+    QTD: 'quarter',
+    YTD: 'year',
+  };
 
   constructor(
     private store: Store<IRootState>,
@@ -184,7 +188,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
       },
       xaxis: {
-        offsetX: 4,
+        type: 'datetime',
         labels: {
           show: true,
           style: {
@@ -323,7 +327,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   initializeCharts() {
     this.chart1 = [{ name: '', data: [] }];
-    this.chart1Labels = [];
     this.chart2 = [{ name: '', data: [] }];
     this.chart3 = [
       { name: '', data: [], type: 'column' },
@@ -379,17 +382,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const sum = this.currentTotal + this.lastTotal;
       // console.log('sum', sum);
-      if (this.currentTotal < this.lastTotal) {
-        const diff1 = this.lastTotal - this.currentTotal;
-        this.percentage = (diff1 * 100) / this.lastTotal;
-      } else if (this.currentTotal > this.lastTotal) {
-        const diff2 = this.currentTotal - this.lastTotal;
-        if (!this.lastTotal) {
-          this.percentage = diff2;
-        } else {
-          this.percentage = 0;
-        }
-      }
+      this.percentage = ((this.currentTotal - this.lastTotal) * 100) / this.lastTotal;
 
       /**
        *                      Gateway Fee + TinyWhale Fee
@@ -424,36 +417,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.initializeCharts();
     for (let [i, date] of datesArray.entries()) {
-      this.chart1.forEach(chart =>
-        chart.data.push(
-          this.priceData?.reduce((total: any, priceLineItem: any) => {
-            const formattedDate = this.getFormattedDateOfPreviewType(priceLineItem);
-            if (date === formattedDate) {
-              total += +priceLineItem?.total;
-            }
-            return total;
-          }, 0)
-        )
-      );
       // this.chart1.forEach(chart =>
       //   chart.data.push(
-      //     this.priceData?.reduce(
-      //       (total: { y: number; x: string }, priceLineItem: any) => {
-      //         const formattedDate = this.getFormattedDateOfPreviewType(priceLineItem);
-      //         if (date === formattedDate) {
-      //           total.y += +priceLineItem?.total;
-      //         }
-      //         return total;
-      //       },
-      //       { y: 0, x: date }
-      //     )
+      //     this.priceData?.reduce((total: any, priceLineItem: any) => {
+      //       const formattedDate = this.getFormattedDateOfPreviewType(priceLineItem);
+      //       if (date === formattedDate) {
+      //         total += +priceLineItem?.total;
+      //       }
+      //       return total;
+      //     }, 0)
       //   )
       // );
-      if (this.overviewType !== 'MTD' || i % 7 === 0 || i % 7 === 3) {
-        this.chart1Labels.push(date);
-      } else {
-        this.chart1Labels.push('');
-      }
+      this.chart1.forEach(chart =>
+        chart.data.push(
+          this.priceData?.reduce(
+            (total: { y: number; x: string }, priceLineItem: any) => {
+              const formattedDate = this.getFormattedDateOfPreviewType(
+                priceLineItem?.[this.overviewType === 'MTD' ? 'date_time' : 'date']
+              );
+              if (date === formattedDate) {
+                total.y += +priceLineItem?.total;
+              }
+              return total;
+            },
+            { y: 0, x: date }
+          )
+        )
+      );
+      // this.chart1Labels
+      // if (this.overviewType !== 'MTD' || i % 7 === 0 || i % 7 === 3) {
+      //   this.chart1Labels.push(date);
+      // } else {
+      //   this.chart1Labels.push('');
+      // }
     }
     // for (let i = 0; i < this.priceData?.length; i++) {
     //   this.priceLineData = this.priceData[i];
@@ -548,7 +544,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // }
   }
 
-  togglePeriod(type?: string) {
+  togglePeriod(type?: 'MTD' | 'QTD' | 'YTD') {
     this.overviewType = type ?? 'MTD';
     this.store.dispatch(getDashboard({ filters: { ...(!!type && { filter_type: type }) } }));
   }
@@ -646,16 +642,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return returnVal;
   }
 
-  getFormattedDateOfPreviewType(priceLineItem: { date_time?: string; date: string }) {
+  getFormattedDateOfPreviewType(dateString: string, forLabel?: boolean) {
     let returnVal = null;
     if (this.overviewType === 'MTD') {
-      returnVal = this.datePipe.transform(priceLineItem.date_time, 'd MMM, yyyy');
+      returnVal = this.datePipe.transform(dateString, `d MMM${forLabel ? '' : ', yyyy'}`);
     } else if (this.overviewType === 'QTD') {
-      returnVal = this.datePipe.transform(priceLineItem.date, 'MMMM');
+      returnVal = this.datePipe.transform(dateString, 'MMMM yyyy');
     } else if (this.overviewType === 'YTD') {
-      returnVal = this.datePipe.transform(priceLineItem.date, 'MMM yyyy');
+      returnVal = this.datePipe.transform(dateString, 'MMM yyyy');
     }
-    return returnVal;
+    return returnVal as string;
+  }
+
+  get Infinity() {
+    return Infinity;
   }
 
   onSelect(eve: any) {}
