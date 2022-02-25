@@ -314,7 +314,8 @@
             </tr>
           </ng-container>
           <ng-container *ngIf="checkVal">
-            <ng-container *ngFor="let product of productsList; let i = index">
+            <!--slice is for  Adjustment  demand scroll (load more) -->
+            <ng-container *ngFor="let product of productsList.slice(0,limit-1); let i = index">
               <tr
                 class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
               >
@@ -455,9 +456,10 @@
           <ng-container *ngIf="isLoadMore && checkVal">
             <tr>
               <td colspan="7">
+                 <!-- "productsList?.length  === limit" is for  Adjustment  demand scroll (load more) -->
                 <div
                   class="w-full h-12 mt-8 flex justify-center items-center"
-                  *ngIf="(productsCount ?? 0) > (productsList?.length ?? 0)"
+                  *ngIf=" (productsList?.length  === limit) "
                 >
                   <button class="noborder-button" (click)="loadMore()">Load More</button>
                 </div>
