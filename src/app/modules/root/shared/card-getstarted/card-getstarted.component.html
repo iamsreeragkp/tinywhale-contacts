@@ -14,12 +14,14 @@
         (click)="iframeOpen()"
       >
         <span>{{ isCompleted() ? 'See TinyCard™ Template' : 'Preview Your TinyCard™' }}</span>
-        <ng-container
-          *ngTemplateOutlet="
-            tinyCard;
-            context: { tinyCardData: 'The template has dummy information for now.' }
-          "
-        ></ng-container>
+        <ng-container *ngIf="isCompleted()">
+          <ng-container
+            *ngTemplateOutlet="
+              tinyCard;
+              context: { tinyCardData: 'The template has dummy information for now.' }
+            "
+          ></ng-container>
+        </ng-container>
       </button>
     </span>
     <span class="group relative">
