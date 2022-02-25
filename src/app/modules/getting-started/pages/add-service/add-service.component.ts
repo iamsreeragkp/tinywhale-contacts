@@ -75,14 +75,13 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   editMode = false;
   createAnother = false;
   isGettingStarted = false;
-  addServiceStatus$: Observable<
-    { status: boolean; error?: string; response?: any; autoSave: boolean } | undefined
-  >;
+  addServiceStatus$: Observable<{ status: boolean; error?: string; response?: any } | undefined>;
   productData$: Observable<{ product?: Product; status: boolean; error?: string } | undefined>;
   businessLocations$: Observable<
     { businessLocations?: BusinessLocation[]; status: boolean; error?: string } | undefined
   >;
   customerCurrency?: Currency;
+  isSaving = false;
 
   constructor(
     private store: Store<IAppState>,
@@ -182,7 +181,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         if (data?.status) {
-          if (data.autoSave) {
+          if (!this.isSaving && !this.createAnother) {
             const productIdControl = this.productForm.get('product_id');
             if (productIdControl) {
               productIdControl.patchValue(data.response.product_id, { emitEvent: false });
@@ -238,6 +237,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             this.location.back();
           }
         } else {
+          this.isSaving = false;
           console.log(data?.error);
         }
       });
@@ -297,7 +297,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   restrictZero(e: any) {
-    if (e.target.value.length === 0 && e.keyCode == 48 || e.target.value.length === 0 && e.keyCode == 45) {
+    if (
+      (e.target.value.length === 0 && e.keyCode == 48) ||
+      (e.target.value.length === 0 && e.keyCode == 45)
+    ) {
       e?.preventDefault();
     }
   }
@@ -539,7 +542,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   saveProductForm(createAnother = false, autoSave = false) {
+    if (this.isSaving) {
+      return;
+    }
     this.createAnother = createAnother;
+    this.isSaving = !autoSave;
     const {
       product_type,
       product_id,
@@ -565,11 +572,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     }
     const photos: ProductPhoto[] =
       photosWithEmpty?.filter((photo: ProductPhoto) => photo.photo_url) ?? [];
-    const price_package: PricePackage[] = (
+    const price_package: PricePackage[] =
       pricePackagesWithEmpty?.filter((pkg: PricePackage) => {
         return pkg.price || pkg.no_of_sessions || pkg.class_package_id;
-      }) ?? []
-    )
+      }) ?? [];
     // .map(
     //   ({ ...pkg }: PricePackage) => ({
     //   ...pkg,
@@ -577,11 +583,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     // })
     // );
 
-    const time_ranges: TimeRange[] = (
+    const time_ranges: TimeRange[] =
       timeRangesWithEmpty?.filter((tR: TimeRange) => {
         return tR.end_time || tR.start_time || tR.class_time_range_id;
-      }) ?? []
-    )
+      }) ?? [];
     // .map(({ ...tR }: TimeRange) => ({ ...tR, is_deleted: tR.is_deleted || !tR.end_time && !tR.start_time }));
     const payload: ProductPayload = {
       product_id,
@@ -608,9 +613,11 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       !!photos.length &&
       (product_type === 'CLASS'
         ? !!time_ranges.length &&
-        time_ranges.every(timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted)
+          time_ranges.every(
+            timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted
+          )
         : true);
-    this.store.dispatch(addService({ productData: payload, autoSave }));
+    this.store.dispatch(addService({ productData: payload }));
   }
 
   productTypeChange(product_type: ProductType) {

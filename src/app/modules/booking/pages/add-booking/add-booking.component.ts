@@ -1,11 +1,9 @@
 import { Location } from '@angular/common';
-
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { filter, map, Observable, Subject, takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/modules/auth/auth.service';
+import { filter, map, Observable, skip, Subject, take, takeUntil } from 'rxjs';
 import { WeekDay } from 'src/app/modules/service/shared/service.interface';
 import { getServiceStatus } from 'src/app/modules/service/store/service.selectors';
 import { convert24HrsFormatToAmPm, convertDateToDateString } from 'src/app/shared/utils';
@@ -15,11 +13,11 @@ import { getPayments } from 'src/app/modules/accounts/store/account.selectors';
 import { addBooking, getBookableSlots, getBookingById } from '../../store/booking.actions';
 
 import { BookingType, FilledSlotDetails } from '../../store/booking.interface';
-import { IBookingState } from '../../store/booking.reducers';
 import {
   getBookableSlotsStatus,
   getBookingByIds,
   getBookingInfo,
+  getError,
 } from '../../store/booking.selectors';
 import { IAppState } from 'src/app/modules/core/reducers';
 @Component({
@@ -45,6 +43,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   classTimeRanged: any = [];
   isToastError = false;
   slotNow: any;
+  isSaving = false;
 
   filledSlotsData$!: Observable<
     { response?: FilledSlotDetails; status: boolean; error?: string } | undefined
@@ -57,7 +56,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   selectableSlots: any[] = [];
 
   constructor(
-    private authService: AuthService,
     private store: Store<IAppState>,
     private router: Router,
     private route: ActivatedRoute,
@@ -68,7 +66,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     store.dispatch(getPayment());
     this.bookingForm = this.createBookingForm();
     this.getDropdownData();
-    this.paymentData$ = this.store.pipe(select(getPayments))
+    this.paymentData$ = this.store.pipe(select(getPayments));
     this.serviceData$ = store.pipe(select(getServiceStatus));
     this.bookingData$ = this.store.pipe(select(getBookingByIds));
     route.url
@@ -217,6 +215,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   productId: any;
 
   onBookingAndExit() {
+    if (this.isSaving) {
+      return;
+    }
+    this.isSaving = true;
     const { email, phonenumber, customername, service, date, slot, payment } =
       this.bookingForm.value;
     const customerName = customername.split(' ').slice(0, -1).join(' ');
@@ -235,7 +237,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       date_time_range: [{ date: this.formatDate(date), class_time_range_id: slot }],
       product_id: service,
       booking_type: BookingType.BUSINESS_OWNER,
-      platform: payment || "OFFLINE",
+      platform: payment || 'OFFLINE',
     };
 
     if (bookingPayload.phone_number === null) {
@@ -251,7 +253,18 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.productId = data?.data?.order?.order_id;
         if (data?.data?.user?.email) {
+          this.isSaving = false;
           this.router.navigate([`../booking/status-booking/${this.productId}`]);
+        }
+      });
+
+    this.store
+      .select(getError)
+      .pipe(skip(1), take(1))
+      .subscribe(err => {
+        if (err) {
+          this.isSaving = false;
+          console.log(err);
         }
       });
 
@@ -273,6 +286,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   }
 
   onUpdateBooking() {
+    if (this.isSaving) {
+      return;
+    }
+    this.isSaving = true;
     const { email, phonenumber, customername, service, date, slot, payment } =
       this.bookingForm.value;
     const customerName = customername.split(' ').slice(0, -1).join(' ');
@@ -370,7 +387,4 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next(true);
   }
-}
-function getBookings(getBookings: any): import('rxjs').OperatorFunction<IBookingState, any> {
-  throw new Error('Function not implemented.');
 }

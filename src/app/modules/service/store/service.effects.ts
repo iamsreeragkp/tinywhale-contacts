@@ -28,10 +28,10 @@ export class ServiceEffects {
   addServiceInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addService),
-      switchMap(({ productData, autoSave }) =>
+      switchMap(({ productData }) =>
         this.productService.addServiceInfo(productData).pipe(
           mergeMap(response => [
-            addServiceStatus({ response: response.data, status: true, autoSave }),
+            addServiceStatus({ response: response.data, status: true }),
             getDashboard({ filters: {} }),
           ]),
           catchError(error =>
@@ -39,7 +39,6 @@ export class ServiceEffects {
               addServiceStatus({
                 status: false,
                 error: error?.error?.message ?? error?.message,
-                autoSave,
               })
             )
           )

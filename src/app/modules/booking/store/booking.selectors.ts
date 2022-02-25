@@ -23,3 +23,5 @@ export const getBookableSlotsStatus = createSelector(
   getBookingFeatureSelector,
   state => state?.getBookableSlots
 );
+
+export const getError = createSelector(getBookingFeatureSelector, state => state?.error);
