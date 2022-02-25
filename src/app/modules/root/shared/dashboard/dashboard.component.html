@@ -302,21 +302,24 @@
         </div>
       </div>
       <div class="grid grid-rows-2 grid-flow-col gap-4">
-        <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
-          <div class="flex items-center pb-4">
-            <h4 class="text-primaryFont mr-3.5 font-medium">Customer Lifetime Value</h4>
-            <div class="tooltip-top">
-              <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
-              <span class="tooltiptext">Lifetime earnings / number of unique paying customers</span>
+        <div class="bg-white w-full shadow-lg p-8 rounded-2xl">
+          <div class="flex flex-col">
+            <div class="flex items-center pb-4">
+              <h4 class="text-primaryFont mr-3.5 font-medium">Customer Lifetime Value</h4>
+              <div class="tooltip-top">
+                <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
+                <span class="tooltiptext"
+                  >Lifetime earnings / number of unique paying customers</span
+                >
+              </div>
             </div>
-          </div>
-          <div class="w-full h-full flex flex-col items-center justify-center">
-            <ng-container *ngIf="!chart2">
-              <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
-              <p class="dashboard-new-placeholder mt-3">No data available</p>
-            </ng-container>
-            <ng-container *ngIf="chart2">
-              <!-- <ngx-charts-line-chart
+            <div class="w-full min-h-full flex flex-col items-center justify-center chart-height">
+              <ng-container *ngIf="!chart2">
+                <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
+                <p class="dashboard-new-placeholder mt-3">No data available</p>
+              </ng-container>
+              <ng-container *ngIf="chart2">
+                <!-- <ngx-charts-line-chart
                 [scheme]="colorSchemeCurve"
                 [showXAxisLabel]="showXAxisLabel"
                 [autoScale]="true"
@@ -332,38 +335,40 @@
                 (deactivate)="onDeactivate($event)"
               >
               </ngx-charts-line-chart> -->
-              <apx-chart
-                [series]="chart2"
-                [chart]="chartOptions2.chart!"
-                [xaxis]="chartOptions2.xaxis!"
-                [stroke]="chartOptions2.stroke!"
-                [dataLabels]="chartOptions2.dataLabels!"
-                [yaxis]="chartOptions2.yaxis!"
-                [legend]="chartOptions2.legend!"
-                [title]="chartOptions2.title!"
-                [subtitle]="chartOptions2.subtitle!"
-                [grid]="chartOptions2.grid!"
-                [fill]="chartOptions2.fill!"
-                class="w-full h-full"
-              ></apx-chart>
-            </ng-container>
-          </div>
-        </div>
-        <div class="bg-white h-68 w-full shadow-lg p-8 rounded-2xl">
-          <div class="flex items-center pb-4">
-            <h4 class="text-primaryFont mr-3.5 font-medium">Services Utilization Rate</h4>
-            <div class="tooltip-top">
-              <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
-              <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
+                <apx-chart
+                  [series]="chart2"
+                  [chart]="chartOptions2.chart!"
+                  [xaxis]="chartOptions2.xaxis!"
+                  [stroke]="chartOptions2.stroke!"
+                  [dataLabels]="chartOptions2.dataLabels!"
+                  [yaxis]="chartOptions2.yaxis!"
+                  [legend]="chartOptions2.legend!"
+                  [title]="chartOptions2.title!"
+                  [subtitle]="chartOptions2.subtitle!"
+                  [grid]="chartOptions2.grid!"
+                  [fill]="chartOptions2.fill!"
+                  class="w-full h-full max-w-full"
+                ></apx-chart>
+              </ng-container>
             </div>
           </div>
-          <div class="w-full h-48 flex flex-col items-center justify-center">
-            <ng-container *ngIf="!chart3">
-              <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
-              <p class="dashboard-new-placeholder mt-3">No data available</p>
-            </ng-container>
-            <ng-container *ngIf="chart3">
-              <!-- <ngx-charts-bar-vertical
+        </div>
+        <div class="bg-white w-full shadow-lg p-8 rounded-2xl">
+          <div class="flex flex-col">
+            <div class="flex items-center pb-4">
+              <h4 class="text-primaryFont mr-3.5 font-medium">Services Utilization Rate</h4>
+              <div class="tooltip-top">
+                <span class="dashboard-new-i-blue cursor-help">ⓘ</span>
+                <span class="tooltiptext">Booked session/(slots*capacity per slot)</span>
+              </div>
+            </div>
+            <div class="w-full min-h-full flex flex-col items-center justify-center chart-height">
+              <ng-container *ngIf="!chart3">
+                <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
+                <p class="dashboard-new-placeholder mt-3">No data available</p>
+              </ng-container>
+              <ng-container *ngIf="chart3">
+                <!-- <ngx-charts-bar-vertical
                 [scheme]="colorSchemeBar"
                 [results]="chart3"
                 [gradient]="gradient"
@@ -376,22 +381,23 @@
                 (select)="onSelect($event)"
               >
               </ngx-charts-bar-vertical> -->
-              <apx-chart
-                [series]="chart3"
-                [chart]="chartOptions3.chart!"
-                [yaxis]="chartOptions3.yaxis!"
-                [xaxis]="chartOptions3.xaxis!"
-                [dataLabels]="chartOptions3.dataLabels!"
-                [stroke]="chartOptions3.stroke!"
-                [plotOptions]="chartOptions3.plotOptions!"
-                [markers]="chartOptions3.markers!"
-                [fill]="chartOptions3.fill!"
-                [grid]="chartOptions3.grid!"
-                [tooltip]="chartOptions3.tooltip!"
-                [legend]="chartOptions3.legend!"
-                class="w-full h-full"
-              ></apx-chart>
-            </ng-container>
+                <apx-chart
+                  [series]="chart3"
+                  [chart]="chartOptions3.chart!"
+                  [yaxis]="chartOptions3.yaxis!"
+                  [xaxis]="chartOptions3.xaxis!"
+                  [dataLabels]="chartOptions3.dataLabels!"
+                  [stroke]="chartOptions3.stroke!"
+                  [plotOptions]="chartOptions3.plotOptions!"
+                  [markers]="chartOptions3.markers!"
+                  [fill]="chartOptions3.fill!"
+                  [grid]="chartOptions3.grid!"
+                  [tooltip]="chartOptions3.tooltip!"
+                  [legend]="chartOptions3.legend!"
+                  class="w-full h-full max-w-full"
+                ></apx-chart>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>

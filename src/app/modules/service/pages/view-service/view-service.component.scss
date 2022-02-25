@@ -29,6 +29,12 @@
 .line {
   border: 1px solid #e5e5e5;
 }
+.line-clamp-punch {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  @apply w-4/5 overflow-hidden;
+}
 
 .detail-section {
   background-color: #eaf3f6;

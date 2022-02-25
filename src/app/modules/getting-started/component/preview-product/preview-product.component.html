@@ -14,7 +14,7 @@
 <h5 class="detail-section-subheading font-baloo font-bold my-3">
   {{ title ?? 'Title' }}
 </h5>
-<p class="text font-poppins mb-3">
+<p class="text font-poppins mb-3 line-clamp-punch" title="{{ description ?? 'Description' }}">
   {{ description ?? 'Description' }}
 </p>
 <p class="text font-poppins mb-3" *ngIf="price">
