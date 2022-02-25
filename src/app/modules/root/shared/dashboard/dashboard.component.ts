@@ -96,6 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   customUsername!: string;
   baseURL = environment.tinyWhaleBaseUrl;
   overviewType: 'MTD' | 'QTD' | 'YTD' = 'MTD';
+  showLoader = true;
 
   priceData: any;
   priceLineData = [];
@@ -347,6 +348,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   startTime: any;
   endTime: any;
   classTimeRanged: any;
+
   subscriptions() {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
@@ -396,6 +398,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       this.populateChartData();
+      if(this.dashboardInfos){
+        this.showLoader = false;
+      }
+      else{
+        this.showLoader = true;
+      }
     });
   }
 
