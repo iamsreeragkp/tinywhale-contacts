@@ -102,11 +102,11 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   bookData: any;
   isLoadMore = false;
   validateCount(count: any) {
-    console.log(count, 'count');
-
-    if (count >= 5) {
+    if (count >= 10) {
       this.isLoadMore = true;
-      console.log(this.isLoadMore, 'Display loadmore');
+    }
+    else{
+      this.isLoadMore = false; 
     }
   }
   subscriptions() {
@@ -116,13 +116,13 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         filter(val => !!val)
       )
       .subscribe(data => {
-        console.log(data,"naveens");
+        console.log(data,"sjhdsjdh");
         
         if (data) {
           this.checkVal = 1;
           this.bookingData = this.formatDatas(data);
           this.bookingsCount = data.bookingsCount;
-          this.validateCount(this.bookingsCount);
+          this.validateCount(this.bookingData?.length);
           for (let i = 0; i < this.bookingData?.length; i++) {
             this.orderLineItem = this.bookingData[i].order_line_item;
           }

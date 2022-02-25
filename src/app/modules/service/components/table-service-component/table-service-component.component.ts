@@ -142,8 +142,11 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
   }
 
   validateCount(count: any) {
-    if (count >= 5) {
+    if (count >= 10) {
       this.isLoadMore = true;
+    }
+    else{
+      this.isLoadMore = false;
     }
   }
   subscriptions() {
@@ -152,7 +155,7 @@ export class TableServiceComponentComponent implements OnInit, OnDestroy {
         this.productsList = data.products;
         this.productsCount = data.productsCount;
         this.checkVal = 1;
-        this.validateCount(this.productsCount);
+        this.validateCount(this.productsList?.length);
       } else {
         console.log(data?.error);
       }
