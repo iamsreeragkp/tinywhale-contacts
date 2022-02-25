@@ -178,7 +178,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.bookingForm.patchValue({
       email: val?.account?.User?.email,
       phonenumber: val?.account?.phone_number,
-      customername: `${val?.account?.first_name} ${val?.account?.last_name}`,
+      customername: `${val?.account?.first_name ?? ''} ${val?.account?.last_name ?? ''}`,
       service: val?.order_line_item[0]?.product?.product_id,
       date: new Date(val?.order_session[0]?.session?.date),
       slot: this.slotNow,
