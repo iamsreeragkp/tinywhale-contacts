@@ -167,8 +167,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   disableDated: any = [];
 
   initializeBookingForm(val?: any) {
-    console.log("VAL", val);
-
     const timeRanges = val?.order_session?.[0]?.session?.class_time_range;
     this.slotNow = {
       id: timeRanges?.class_time_range_id,
