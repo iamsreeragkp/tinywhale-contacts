@@ -1,7 +1,8 @@
 export const environment = {
   production: false,
   api_end_point: 'https://dashboard-dev.tinywhale.com/api/v1',
-  tinyWhaleBaseUrl: 'https://dev.tinycard.to'
+  tinyWhaleBaseUrl: 'https://dev.tinycard.to',
+  serviceWorker: false,
 };
 
 /*

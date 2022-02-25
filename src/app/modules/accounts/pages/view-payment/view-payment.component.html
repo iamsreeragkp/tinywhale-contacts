@@ -66,10 +66,11 @@
         <p
           class="not-italic font-normal font-poppins text-base leading-6 text-left text-primaryFont"
         >
-          {{(payInfo?.address_line_1 || '')}}<br>
-          {{(payInfo?.address_line_2 || '')}}<br>
-          {{(payInfo?.city || '')}} {{(payInfo?.state || '')}} {{(payInfo?.postal_code || '')}}<br>
-          {{( getCountryName(payInfo?.country) || '')}}
+          {{ payInfo?.address_line_1 || '' }}<br />
+          {{ payInfo?.address_line_2 || '' }}<br />
+          {{ payInfo?.city || '' }} {{ payInfo?.state || '' }} {{ payInfo?.postal_code || ''
+          }}<br />
+          {{ getCountryName(payInfo?.country) || '' }}
         </p>
       </div>
     </div>
@@ -94,7 +95,9 @@
         >
           <span
             class="ml-4"
-            *ngIf="payInfo?.payout_info?.connect_bank || payInfo?.payout_info?.beneficiary_id"
+            *ngIf="
+              payInfo?.payout_info?.connect_bank === true && payInfo?.payout_info?.beneficiary_id
+            "
             ><app-formright></app-formright
           ></span>
         </p>

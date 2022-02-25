@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   api_end_point: 'https://staging.business.tinywhale.com/api/v1',
   tinyWhaleBaseUrl: 'https://staging.tinycard.to',
+  serviceWorker: false,
 };
 
 /*

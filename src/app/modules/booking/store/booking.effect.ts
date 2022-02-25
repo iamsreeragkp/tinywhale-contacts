@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, switchMap, of } from 'rxjs';
+import { catchError, map, switchMap, of, mergeMap } from 'rxjs';
 import { IAppState } from '../../core/reducers';
 import { BookingService } from '../booking.service';
 import {
@@ -35,7 +35,10 @@ export class BookingEffects {
       ofType(addBooking),
       switchMap(({ bookingData }) =>
         this.bookingService.addBooking(bookingData).pipe(
-          map(response => addBookingSuccess({ response: response })),
+          mergeMap(response => [
+            addBookingSuccess({ response: response }),
+            getBookingList({ filters: {} }),
+          ]),
           catchError(error =>
             of(
               addBookingError({
@@ -61,14 +64,20 @@ export class BookingEffects {
   // );
 
   getBooking$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(getBookingList),
-    switchMap(({filters}) =>
-      this.bookingService.getBookingList(filters).pipe(
-        map((response: any) => getBookingListSuccess({ bookingList: response?.data , bookingsCount: response?.count, status: true})),
-        catchError(err => of(getBookingListError({ error: err, status: false })))
+    this.actions$.pipe(
+      ofType(getBookingList),
+      switchMap(({ filters }) =>
+        this.bookingService.getBookingList(filters).pipe(
+          map((response: any) =>
+            getBookingListSuccess({
+              bookingList: response?.data,
+              bookingsCount: response?.count,
+              status: true,
+            })
+          ),
+          catchError(err => of(getBookingListError({ error: err, status: false })))
+        )
       )
-    )
     )
   );
 
@@ -90,7 +99,11 @@ export class BookingEffects {
       switchMap(({ filters }) =>
         this.bookingService.getBookingList(filters).pipe(
           map((response: any) =>
-            getBookingListSuccess({ bookingList: response.data, bookingsCount: response.count, status: true })
+            getBookingListSuccess({
+              bookingList: response.data,
+              bookingsCount: response.count,
+              status: true,
+            })
           ),
           catchError(err => of(getBookingListError({ error: err, status: false })))
         )
