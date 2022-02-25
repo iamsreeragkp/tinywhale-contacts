@@ -20,7 +20,7 @@ registerLocaleData(localeEs, 'es');
     CommonModule,
     HttpClientModule,
     CoreModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     AppRoutingModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
