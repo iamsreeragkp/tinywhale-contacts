@@ -27,7 +27,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
   page: number;
   limit: number;
   filterStatus: any;
-  isFilter =false;
+  isFilter = false;
 
   status = [
     {
@@ -105,8 +105,8 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     if (count >= 10) {
       this.isLoadMore = true;
     }
-    else{
-      this.isLoadMore = false; 
+    else {
+      this.isLoadMore = false;
     }
   }
   subscriptions() {
@@ -115,7 +115,7 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         filter(val => !!val)
       )
-      .subscribe(data => {        
+      .subscribe(data => {
         if (data) {
           this.checkVal = 1;
           this.bookingData = this.formatDatas(data);
@@ -204,11 +204,11 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       this.visibleIndex = ind;
     }
   }
-  getCheckFilter(){
-   if( this.filterForm?.get("service")?.value || this.filterForm?.get("status")?.value || this.filterForm?.get("payment")?.value ) {
-    return true;
+  getCheckFilter() {
+    if (this.filterForm?.get("service")?.value || this.filterForm?.get("status")?.value || this.filterForm?.get("payment")?.value) {
+      return true;
     }
-    else{
+    else {
       return false;
     }
   }
@@ -289,13 +289,12 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
     };
     this.store.dispatch(
       getBookingList({
-        filters: { filterObj, page: this.page, limit: this.limit },
+        filters: { ...filterObj, page: this.page, limit: this.limit },
       })
     );
   }
 
   formatDatas(data: any) {
-    
     const formattedData = data?.["bookingList"].map((booking: any) => {
       if (booking?.["product_type"] === "CLASS") {
         const displayDate = booking?.["date_time_col"]?.["date_time"];
