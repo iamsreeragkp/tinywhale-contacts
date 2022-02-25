@@ -441,9 +441,13 @@
   </div>
 </ng-container>
 <ng-template #card>
-  <app-card-getstarted></app-card-getstarted>
+  <app-card-getstarted *ngIf="!showLoader"></app-card-getstarted>
 </ng-template>
 <!-- share link div ends here -->
+
+<div *ngIf="showLoader">
+  <app-loader-page></app-loader-page>
+</div>
 
 <ng-template #share let-copyLink="ShareLink" (click)="$event.stopPropagation()">
   <div
