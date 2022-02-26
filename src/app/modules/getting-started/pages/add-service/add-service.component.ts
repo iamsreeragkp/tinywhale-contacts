@@ -102,8 +102,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
     this.productData$ = this.store.pipe(select(getServiceStatus));
     this.businessLocations$ = this.store.pipe(select(getBusinessLocationsStatus));
-    combineLatest([this.dataArrived$, this.businessLocations$])
+    combineLatest([this.dataArrived$, this.businessLocations$.pipe(filter(val => !!val))])
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         filter(([initFormParams, locations]) => !!initFormParams && !!locations),
         delay(10),
         tap(([_, data]) => {
