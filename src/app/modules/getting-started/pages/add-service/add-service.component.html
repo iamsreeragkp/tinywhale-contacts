@@ -16,6 +16,7 @@
         <button class="noborder-button" type="button" (click)="location.back()">Cancel</button>
         <button
           class="secondary-button mr-3 ml-6 w-52"
+          [disabled]="isSaving"
           type="button"
           (click)="saveProductForm(true); scrollToTop()"
         >

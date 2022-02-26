@@ -250,6 +250,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             this.productFormSubscriptions();
           } else if (this.createAnother) {
             this.createAnother = false;
+            this.isSaving = false;
             if (this.editMode) {
               this.router.navigate(['/service/add-service'], {
                 replaceUrl: true,
