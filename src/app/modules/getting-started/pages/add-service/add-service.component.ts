@@ -106,8 +106,29 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       .pipe(
         filter(([initFormParams, locations]) => !!initFormParams && !!locations),
         delay(10),
-        tap(([_, locations]) => {
-          this.locationOptions = locations?.businessLocations ?? [];
+        tap(([_, data]) => {
+          // this.locationOptions = locations?.businessLocations ?? [];
+          if (data?.status && data?.businessLocations?.length) {
+            const locationArray = data?.businessLocations.filter(
+              (locationItem, index, self) =>
+                index ===
+                self.findIndex(locationData => {
+                  return locationData.location_name === locationItem.location_name;
+                })
+            );
+
+            this.locationOptions = [
+              ...locationOptions,
+              ...locationArray.map(({ location_id, location_name, address }) => ({
+                location_id,
+                location_name,
+                address,
+                location_type: LocationType.BUSINESS_LOCATION,
+              })),
+            ];
+          } else {
+            console.log(data?.error);
+          }
         })
       )
       .subscribe(([initFormParams]) => {
@@ -150,7 +171,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
                 return locationData.location_name === locationItem.location_name;
               })
           );
-
           this.locationOptions = [
             ...locationOptions,
             ...locationArray.map(({ location_id, location_name, address }) => ({
