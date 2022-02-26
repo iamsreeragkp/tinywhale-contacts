@@ -100,8 +100,13 @@ export class AddBookingComponent implements OnInit, OnDestroy {
       .subscribe((val: number) => {
         this.bookingForm.get('date')?.patchValue(null);
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
+        if (currClass?.price === 0) {
+          this.isFree = true
+        }
+        else {
+          this.isFree = false
+        }
         if (currClass?.class?.class_time_ranges) {
-          this.isFree = false;
           this.classTimeRanged = currClass?.class?.class_time_ranges.map((classTimeRange: any) => ({
             id: classTimeRange?.class_time_range_id,
             label:
@@ -115,10 +120,6 @@ export class AddBookingComponent implements OnInit, OnDestroy {
           this.disabledWeekdays = this.getDisabledWeekdays();
           this.store.dispatch(getBookableSlots({ productId: val }));
           this.classTimerangeId = this.classTimeRanged?.id;
-        }
-
-        if (currClass?.class?.class_packages?.[0]?.price === 0) {
-          this.isFree = true;
         }
       });
     this.bookingForm
