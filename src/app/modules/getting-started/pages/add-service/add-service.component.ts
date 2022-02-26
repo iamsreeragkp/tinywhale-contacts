@@ -12,6 +12,7 @@ import {
   Observable,
   Subject,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { BusinessLocation } from 'src/app/modules/accounts/store/account.interface';
 import { AuthService } from 'src/app/modules/auth/auth.service';
@@ -104,10 +105,12 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     combineLatest([this.dataArrived$, this.businessLocations$])
       .pipe(
         filter(([initFormParams, locations]) => !!initFormParams && !!locations),
-        delay(10)
+        delay(10),
+        tap(([_, locations]) => {
+          this.locationOptions = locations?.businessLocations ?? [];
+        })
       )
       .subscribe(([initFormParams]) => {
-        console.log(initFormParams);
         this.initForms(...initFormParams);
       });
     route.params
@@ -299,7 +302,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   restrictZero(e: any) {
     if (
       (e.target.value.length === 0 && e.keyCode == 48) ||
-      (e.target.value.length === 0 && e.keyCode == 45)
+      (e.target.value.length === 0 && e.keyCode == 45) ||
+      (e.target.value.length === 0 && e.keyCode == 96)
     ) {
       e?.preventDefault();
     }
@@ -421,7 +425,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
           .get('start_time')
           ?.valueChanges.pipe(takeUntil(this.productFormUnsubscriber$))
           .subscribe(val => {
-            console.log(val);
             this.updateEndTimeAndOptions(timeRange, this.productForm.get('duration')?.value);
           });
       });
@@ -476,7 +479,6 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     } catch (ex) {
       console.log(ex);
     }
-    console.log(this.productPhotos);
   }
 
   deletePhoto(index: number) {
