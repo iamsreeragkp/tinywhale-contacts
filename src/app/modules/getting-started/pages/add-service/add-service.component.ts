@@ -712,6 +712,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       (pricePackage: PricePackage) => pricePackage?.price && pricePackage?.no_of_sessions
     );
   }
+  onKeyUp(boxInput: any) {
+    return boxInput.value.length;
+  }
 
   scrollToTop() {
     window.scroll(0, 0);

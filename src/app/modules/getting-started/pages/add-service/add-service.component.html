@@ -117,12 +117,23 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Description*</label></div>
         <div class="w-form">
-          <textarea
-            rows="3"
-            formControlName="description"
-            class="input w-full py-3 px-4 focus:outline-none"
-            placeholder="Describe your service in detail"
-          ></textarea>
+          <div class="textarea-wrapper relative input-data w-full p-0.5 mb-4">
+            <textarea
+              formControlName="description"
+              class="focus:outline-none resize-none textarea-focus py-3 px-3.5 w-full min-h-[100px]"
+              placeholder="Describe your service in detail"
+              appTextareaAutoresize
+              #box
+              (onChange)="onKeyUp(box)"
+              maxlength="1000"
+            ></textarea>
+            <span
+              class="remaning absolute bottom-2 right-4 text-xs bg-white text-mediumGray italic"
+              >{{ box.value.length }}/1000</span
+            >
+          </div>
+
+
         </div>
       </div>
       <div class="input-field flex mb-4">
