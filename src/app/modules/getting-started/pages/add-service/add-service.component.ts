@@ -290,7 +290,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.productForm = this._fb.group({
       product_type: [val?.product_type ?? null],
       title: [val?.title ?? null, [Validators.required, Validators.maxLength(50)]],
-      description: [val?.description ?? null, [Validators.required, Validators.maxLength(1000)]],
+      description: [val?.description ?? null, Validators.maxLength(1000)],
       price: [val?.price ?? null],
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
@@ -669,7 +669,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   get isFormValid() {
-    return this.productForm?.get('title')?.valid && this.productForm?.get('description')?.valid;
+    return this.productForm?.get('title')?.valid;
   }
 
   updateTimeSlotOptionsOfAWeekDay(day_of_week?: WeekDay) {
