@@ -88,12 +88,16 @@ export class TableBookingComponentComponent implements OnInit, OnDestroy {
       if (payment && this.payment.some(option => option.value === payment)) {
         this.filterForm.get('payment')?.patchValue(payment);
       }
+      this.clearParam();
     });
-    this.clearParam();
+   
   }
 
   clearParam() {
-    if (this._route.snapshot.queryParams?.['filter']) {
+    if (this._route.snapshot.queryParams?.['status']) {
+      this.router.navigate(['.'], { relativeTo: this._route });
+    }
+   else if (this._route.snapshot.queryParams?.['payment']) {
       this.router.navigate(['.'], { relativeTo: this._route });
     }
   }
