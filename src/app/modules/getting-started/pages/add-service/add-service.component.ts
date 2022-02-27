@@ -102,19 +102,21 @@ export class AddServiceComponent implements OnInit, OnDestroy {
     this.addServiceStatus$ = store.pipe(select(getAddServiceStatus));
     this.productData$ = this.store.pipe(select(getServiceStatus));
     this.businessLocations$ = this.store.pipe(select(getBusinessLocationsStatus));
-    combineLatest([this.dataArrived$, this.businessLocations$.pipe(filter(val => !!val))])
+    combineLatest([this.dataArrived$.pipe(filter(val => !!val)), this.businessLocations$.pipe(filter(val => !!val))])
       .pipe(
         takeUntil(this.ngUnsubscribe),
         filter(([initFormParams, locations]) => !!initFormParams && !!locations),
         delay(10),
-        tap(([_, data]) => {
-          // this.locationOptions = locations?.businessLocations ?? [];
+        tap(([[service], data]) => {
           if (data?.status && data?.businessLocations?.length) {
             const locationArray = data?.businessLocations.filter(
               (locationItem, index, self) =>
                 index ===
                 self.findIndex(locationData => {
-                  return locationData.location_name === locationItem.location_name;
+                  if (locationItem?.location_name === service?.class?.business_location?.location_name) {
+                    return locationData?.location_id === service?.class?.business_location?.location_id;
+                  }
+                  return locationData.location_name === locationItem.location_name
                 })
             );
 
@@ -638,9 +640,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
       !!photos.length &&
       (product_type === 'CLASS'
         ? !!time_ranges.length &&
-          time_ranges.every(
-            timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted
-          )
+        time_ranges.every(
+          timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted
+        )
         : true);
 
     this.store.dispatch(addService({ productData: payload }));
