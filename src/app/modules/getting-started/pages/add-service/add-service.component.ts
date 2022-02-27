@@ -288,9 +288,9 @@ export class AddServiceComponent implements OnInit, OnDestroy {
 
   initForms(val?: Product, skipId = false) {
     this.productForm = this._fb.group({
-      product_type: [val?.product_type ?? null, Validators.required],
-      title: [val?.title ?? null, Validators.required],
-      description: [val?.description ?? null, Validators.required],
+      product_type: [val?.product_type ?? null],
+      title: [val?.title ?? null, [Validators.required, Validators.maxLength(50)]],
+      description: [val?.description ?? null, [Validators.required, Validators.maxLength(1000)]],
       price: [val?.price ?? null],
       // currency: [val?.currency ?? null],
       visibility: [val?.visibility ?? null, Validators.required],
@@ -566,7 +566,8 @@ export class AddServiceComponent implements OnInit, OnDestroy {
   }
 
   saveProductForm(createAnother = false, autoSave = false) {
-    if (this.isSaving) {
+    if (this.isSaving || !this.isFormValid) {
+      this.productForm.markAllAsTouched();
       return;
     }
     this.createAnother = createAnother;
@@ -641,6 +642,7 @@ export class AddServiceComponent implements OnInit, OnDestroy {
             timeRange => (timeRange.start_time && timeRange.end_time) || timeRange.is_deleted
           )
         : true);
+
     this.store.dispatch(addService({ productData: payload }));
   }
 
@@ -664,6 +666,10 @@ export class AddServiceComponent implements OnInit, OnDestroy {
         control.get('class_package_id')?.enable();
       }
     });
+  }
+
+  get isFormValid() {
+    return this.productForm?.get('title')?.valid && this.productForm?.get('description')?.valid;
   }
 
   updateTimeSlotOptionsOfAWeekDay(day_of_week?: WeekDay) {

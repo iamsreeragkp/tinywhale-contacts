@@ -108,7 +108,7 @@
         <div class="w-form">
           <input
             formControlName="title"
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input-data w-full py-3 px-4 focus:outline-none show-error"
             placeholder="Service name"
             [maxlength]="50"
           />
@@ -119,10 +119,15 @@
         <div class="w-form">
           <textarea
             rows="3"
+            #desc
             formControlName="description"
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input-data w-full py-3 px-4 focus:outline-none show-error"
             placeholder="Describe your service in detail"
+            [maxlength]="1000"
           ></textarea>
+          <span class="remaning bottom-2 right-4 text-xs bg-white text-mediumGray italic"
+            >{{ desc?.value?.length }}/1000</span
+          >
         </div>
       </div>
       <div class="input-field flex mb-4">
