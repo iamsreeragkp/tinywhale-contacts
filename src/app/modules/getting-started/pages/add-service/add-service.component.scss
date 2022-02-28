@@ -15,11 +15,10 @@
   border-top-right-radius: 20px;
   border-bottom: 2px solid #d6e1e3;
   .header {
-    font-family: Baloo !important;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont;
     .one {
-      font-family: Baloo;
       color: #64c2bc;
+      @apply font-baloo;
     }
   }
 }
@@ -30,67 +29,38 @@
     border-bottom-right-radius: 20px;
   }
   .add-another {
-    font-family: Baloo;
     color: #00a4b7;
+    @apply font-baloo;
   }
 }
 
 .input-section {
   border-bottom-left-radius: 20px;
   &-subheading {
-    color: #154f5b;
+    @apply text-primaryFont;
   }
   &-info {
-    color: #154f5b;
     background-color: #f6f5ea;
+    @apply text-primaryFont;
   }
   .input-field {
     &-secondary-text {
-      color: #154f5b;
+      @apply text-primaryFont;
     }
     .w-form {
       width: calc(100% - 11rem);
     }
     .label {
-      font-family: Poppins;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      color: #154f5b;
+      @apply font-poppins font-medium text-base leading-6 text-primaryFont;
     }
     .input {
-      background: #ffffff;
       border: 2px solid #d6e1e3;
-      border-radius: 8px;
-      // width: 360px;
-      color: #154f5b;
+      @apply bg-white rounded-lg text-primaryFont;
     }
     .input-photo {
       background: #f6f9fa;
       border: 2px dashed #d6e1e3;
-      border-radius: 8px;
-      @apply h-28 w-28;
-    }
-    .input-award {
-      background: #f6f9fa;
-      border: 1px solid #d6e1e3;
-      border-radius: 8px;
-      width: 360px;
-      .input {
-        background: #ffffff;
-        border: 2px solid #d6e1e3;
-        border-radius: 8px;
-        width: 300px;
-        color: #154f5b;
-      }
-      .input-photo {
-        background: #f6f9fa;
-        border: 2px dashed #d6e1e3;
-        border-radius: 8px;
-        width: 120px;
-        height: 120px;
-      }
+      @apply h-28 w-28 rounded-lg;
     }
   }
   .radio-input {

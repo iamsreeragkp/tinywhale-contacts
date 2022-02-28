@@ -22,7 +22,7 @@ registerLocaleData(localeEs, 'es');
     CoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     AppRoutingModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({ positionClass: 'toast-top-center' }),
     BrowserAnimationsModule,
   ],
   declarations: [AppComponent],
