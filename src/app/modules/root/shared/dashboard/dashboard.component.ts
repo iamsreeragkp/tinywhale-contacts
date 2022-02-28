@@ -180,6 +180,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       yaxis: {
         show: true,
         labels: {
+          formatter: val => {
+            return `${this.customerCurrency?.symbol ?? '$'} ${val}`;
+          },
           show: true,
           style: {
             fontSize: '12px',
@@ -398,10 +401,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       this.populateChartData();
-      if(this.dashboardInfos){
+      if (this.dashboardInfos) {
         this.showLoader = false;
-      }
-      else{
+      } else {
         this.showLoader = true;
       }
     });
