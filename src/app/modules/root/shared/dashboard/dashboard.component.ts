@@ -115,6 +115,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     QTD: 'quarter',
     YTD: 'year',
   };
+  noData = false;
 
   constructor(
     private store: Store<IRootState>,
@@ -401,6 +402,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       this.populateChartData();
+      this.noData = !this.dashboardInfos?.price_data?.length;
       if (this.dashboardInfos) {
         this.showLoader = false;
       } else {
