@@ -28,6 +28,7 @@ import {
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { ProductPhoto } from 'src/app/modules/service/shared/service.interface';
+import { countryList, currencyList } from 'src/app/shared/utils';
 import { addBusiness, getBusiness, initBusiness } from '../../../website/store/website.actions';
 import {
   BusinessInfo,
@@ -179,6 +180,19 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           console.log(data?.error);
         }
       });
+
+    this.businessInfoForm
+      .get('country')
+      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(val => {
+        if (val) {
+          this.businessInfoForm
+            .get('currency')
+            ?.patchValue(currencyList.find(currency => currency.country === val)?.id);
+        } else {
+          this.businessInfoForm.get('currency')?.patchValue(null);
+        }
+      });
   }
 
   addBasicInfoSubcription() {
@@ -230,6 +244,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           ? val?.testimonials?.map(this.createTestimonial.bind(this))
           : [this.createTestimonial()]
       ),
+      country: [val?.country ?? null],
+      currency: [val?.default_currency ?? null],
     });
     if (val?.logo) {
       this.logoImageUrl = val.logo;
@@ -317,7 +333,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.logoImageUrl = url;
 
       this.businessInfoForm.get('logo')?.patchValue(fileKey);
-    } catch (ex) { }
+    } catch (ex) {}
   }
 
   async handleFileInputCover(event: Event) {
@@ -331,7 +347,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       this.fileToUploadCover = file;
       this.coverImageUrl = url;
       this.businessInfoForm.get('cover')?.patchValue({ photo_url: fileKey });
-    } catch (ex) { }
+    } catch (ex) {}
   }
 
   deleteLogo() {
@@ -434,7 +450,7 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     this.fileToUploadTestimonial?.splice(index, 1);
     this.arrayTestmonialImageUrl?.splice(index, 1);
     if (this.testimonialItem.value.length === 0) {
-      this.addTestimonialItem()
+      this.addTestimonialItem();
     }
   }
 
@@ -501,6 +517,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       phone_number,
       contact_type,
       cover,
+      country,
+      currency: default_currency,
     } = this.businessInfoForm.value;
     const businessPayload = {
       company_name: companyname,
@@ -513,6 +531,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       contact_type: contact_type,
       business_photos: [cover],
       testimonials: this.isTestimonialFilled(),
+      country,
+      default_currency,
     };
     this.store.dispatch(addBusiness({ businessData: businessPayload }));
     if (route) {
@@ -641,9 +661,11 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
     });
   }
   isLicenceItemFilled() {
-    const licenseList = this.recognitions && this.recognitions.value
+    const licenseList = this.recognitions && this.recognitions.value;
     return licenseList.filter((data: any) => {
-      return data.recognition_type === "AWARD" ? data.recognition_type && data.recognition_name && data.photo_url : data.recognition_type && data.recognition_name && data.photo_url && data.expiry_date;
+      return data.recognition_type === 'AWARD'
+        ? data.recognition_type && data.recognition_name && data.photo_url
+        : data.recognition_type && data.recognition_name && data.photo_url && data.expiry_date;
     });
   }
 
@@ -655,21 +677,43 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   isOneEmptyTestimonialPresent() {
-    const noName = this.testimonialItem?.controls?.[0]?.get('name')?.value === "" || this.testimonialItem?.controls?.[0]?.get('name')?.value === null;
-    const noTitle = this.testimonialItem?.controls?.[0]?.get('title')?.value === "" || this.testimonialItem?.controls?.[0]?.get('title')?.value === null;
-    const noTestimonial = this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === "" || this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === null;
-    const noPhoto = this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === "" || this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === null
+    const noName =
+      this.testimonialItem?.controls?.[0]?.get('name')?.value === '' ||
+      this.testimonialItem?.controls?.[0]?.get('name')?.value === null;
+    const noTitle =
+      this.testimonialItem?.controls?.[0]?.get('title')?.value === '' ||
+      this.testimonialItem?.controls?.[0]?.get('title')?.value === null;
+    const noTestimonial =
+      this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === '' ||
+      this.testimonialItem?.controls?.[0]?.get('testimonial')?.value === null;
+    const noPhoto =
+      this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === '' ||
+      this.testimonialItem?.controls?.[0]?.get('photo_url')?.value === null;
 
-    return this.testimonialItem.length === 1 && noName && noTitle && noTestimonial && noPhoto
+    return this.testimonialItem.length === 1 && noName && noTitle && noTestimonial && noPhoto;
   }
 
   isOneEmptyLicenceOrAwardPresent() {
-    const noExpiryDate = this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === "" || this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === null;
-    const noPhoto = this.licenceItem?.controls?.[0]?.get('photo_url')?.value === "" || this.licenceItem?.controls?.[0]?.get('photo_url')?.value === null;
-    const noRecognitionName = this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === null;
-    const noRecognitionType = this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === "" || this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === null;
+    const noExpiryDate =
+      this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === '' ||
+      this.licenceItem?.controls?.[0]?.get('expiry_date')?.value === null;
+    const noPhoto =
+      this.licenceItem?.controls?.[0]?.get('photo_url')?.value === '' ||
+      this.licenceItem?.controls?.[0]?.get('photo_url')?.value === null;
+    const noRecognitionName =
+      this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === '' ||
+      this.licenceItem?.controls?.[0]?.get('recognition_name')?.value === null;
+    const noRecognitionType =
+      this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === '' ||
+      this.licenceItem?.controls?.[0]?.get('recognition_type')?.value === null;
 
-    return this.licenceItem.length === 1 && noExpiryDate && noPhoto && noRecognitionName && noRecognitionType
+    return (
+      this.licenceItem.length === 1 &&
+      noExpiryDate &&
+      noPhoto &&
+      noRecognitionName &&
+      noRecognitionType
+    );
   }
 
   get socialItems() {
@@ -713,6 +757,14 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   get social() {
     return this.businessInfoForm.get('socialitems');
+  }
+
+  get countryList() {
+    return countryList;
+  }
+
+  get currencyList() {
+    return currencyList;
   }
 
   ngOnDestroy() {
