@@ -95,11 +95,11 @@
             </div>
           </div>
           <div class="w-full h-96 flex flex-col items-center justify-center pr-5 graph-container">
-            <ng-container *ngIf="!chart1">
+            <ng-container *ngIf="noData">
               <img src="../../../../../assets/images/nograph.svg" alt="" />
               <p class="dashboard-new-placeholder mt-3">No data available</p>
             </ng-container>
-            <ng-container *ngIf="chart1">
+            <ng-container *ngIf="!noData">
               <!-- <ngx-charts-line-chart
                 [scheme]="colorScheme"
                 [showXAxisLabel]="showXAxisLabel"
@@ -356,11 +356,11 @@
               </div>
             </div>
             <div class="w-full min-h-full flex flex-col items-center justify-center chart-height">
-              <ng-container *ngIf="!chart2">
+              <ng-container *ngIf="noData">
                 <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
                 <p class="dashboard-new-placeholder mt-3">No data available</p>
               </ng-container>
-              <ng-container *ngIf="chart2">
+              <ng-container *ngIf="!noData">
                 <!-- <ngx-charts-line-chart
                 [scheme]="colorSchemeCurve"
                 [showXAxisLabel]="showXAxisLabel"
@@ -389,7 +389,7 @@
                   [subtitle]="chartOptions2.subtitle!"
                   [grid]="chartOptions2.grid!"
                   [fill]="chartOptions2.fill!"
-                  class="w-full h-full  chart-width"
+                  class="w-full h-full chart-width"
                 ></apx-chart>
               </ng-container>
             </div>
@@ -405,11 +405,11 @@
               </div>
             </div>
             <div class="w-full min-h-full flex flex-col items-center justify-center chart-height">
-              <ng-container *ngIf="!chart3">
+              <ng-container *ngIf="noData">
                 <img src="../../../../../assets/images/nograph.svg" alt="" class="h-32" />
                 <p class="dashboard-new-placeholder mt-3">No data available</p>
               </ng-container>
-              <ng-container *ngIf="chart3">
+              <ng-container *ngIf="!noData">
                 <!-- <ngx-charts-bar-vertical
                 [scheme]="colorSchemeBar"
                 [results]="chart3"
