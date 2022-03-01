@@ -1,29 +1,14 @@
 .website-page-heading {
   .header {
-    font-family: Baloo !important;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont;
     .one {
-      font-family: Baloo;
-      color: #64c2bc;
-    }
-  }
-  .cancel-button {
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    color: #00a4b7;
-  }
-  .save-button {
-    background-color: #00a4b7;
-
-    font-family: Baloo;
-    font-stretch: normal;
-    letter-spacing: normal;
-    &:disabled {
-      background-color: #d6e1e3;
+      @apply font-baloo text-[#64c2bc];
     }
   }
 }
 .line {
   border: 1px solid #e5e5e5;
+}
+.description-overflow {
+  overflow-wrap: anywhere;
 }
