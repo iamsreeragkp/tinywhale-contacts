@@ -305,6 +305,49 @@
           </ng-container>
         </div>
       </div>
+      <div class="input-field flex mb-8">
+        <div class="w-36 label text-right mt-4">
+          <label for="">Country*</label>
+        </div>
+        <div class="w-90 z-30">
+          <!-- <input
+            class="input w-full py-3 px-4 focus:outline-none"
+            placeholder="Country"
+            formControlName="country"
+          /> -->
+          <app-dropdown
+            placeholder="Select Country"
+            [options]="countryList"
+            [displayKey]="'label'"
+            [emitId]="true"
+            formControlName="country"
+          ></app-dropdown>
+        </div>
+      </div>
+
+      <div class="input-field flex mb-8">
+        <div class="w-36 label text-right mt-4"><label for="">Default Currency*</label></div>
+        <div class="w-90 z-20">
+          <!-- <select
+            class="input py-3 px-4 w-full"
+            type="select"
+            placeholder="Select location / venue of class"
+            [formControlName]="'currency'"
+          >
+            <option value="" disabled selected>Currency</option>
+            <option *ngFor="let currency of defaultCurrencies" [value]="currency.id">
+              {{ currency?.name }}
+            </option>
+          </select> -->
+          <app-dropdown
+            placeholder="Select Currency"
+            [options]="currencyList"
+            [displayKey]="'name'"
+            [emitId]="true"
+            formControlName="currency"
+          ></app-dropdown>
+        </div>
+      </div>
 
       <!-- Contact Details -->
 

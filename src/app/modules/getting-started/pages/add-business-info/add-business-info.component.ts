@@ -28,6 +28,7 @@ import {
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { UtilsHelperService } from 'src/app/modules/core/services/utils-helper.service';
 import { ProductPhoto } from 'src/app/modules/service/shared/service.interface';
+import { countryList, currencyList } from 'src/app/shared/utils';
 import { addBusiness, getBusiness, initBusiness } from '../../../website/store/website.actions';
 import {
   BusinessInfo,
@@ -179,6 +180,19 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           console.log(data?.error);
         }
       });
+
+    this.businessInfoForm
+      .get('country')
+      ?.valueChanges.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(val => {
+        if (val) {
+          this.businessInfoForm
+            .get('currency')
+            ?.patchValue(currencyList.find(currency => currency.country === val)?.id);
+        } else {
+          this.businessInfoForm.get('currency')?.patchValue(null);
+        }
+      });
   }
 
   addBasicInfoSubcription() {
@@ -233,6 +247,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
           ? val?.testimonials?.map(this.createTestimonial.bind(this))
           : [this.createTestimonial()]
       ),
+      country: [val?.country ?? null],
+      currency: [val?.default_currency ?? null],
     });
     if (val?.logo) {
       this.logoImageUrl = val.logo;
@@ -504,6 +520,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       phone_number,
       contact_type,
       cover,
+      country,
+      currency: default_currency,
     } = this.businessInfoForm.value;
     const businessPayload = {
       company_name: companyname,
@@ -516,6 +534,8 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       contact_type: contact_type,
       business_photos: [cover],
       testimonials: this.isTestimonialFilled(),
+      country,
+      default_currency,
     };
     this.store.dispatch(addBusiness({ businessData: businessPayload }));
     if (route) {
@@ -740,6 +760,14 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
 
   get social() {
     return this.businessInfoForm.get('socialitems');
+  }
+
+  get countryList() {
+    return countryList;
+  }
+
+  get currencyList() {
+    return currencyList;
   }
 
   get phoneNumber() {
