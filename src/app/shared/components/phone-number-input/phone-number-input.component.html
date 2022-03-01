@@ -1,0 +1,24 @@
+<form [formGroup]="phoneNumber">
+  <div class="flex gap-2 items-center">
+    <app-dropdown
+      displayKey="code"
+      placeholder="+XX"
+      idKey="code"
+      [emitId]="true"
+      label="Code"
+      formControlName="code"
+      [options]="countryCodeList"
+    >
+    </app-dropdown>
+    <input
+      type="text"
+      min="0"
+      class="input-data h-12 flex-1 px-4 show-error w-0"
+      placeholder="XXXXXXXX"
+      formControlName="number"
+      oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
+      maxlength="15"
+      (blur)="_onTouched()"
+    />
+  </div>
+</form>

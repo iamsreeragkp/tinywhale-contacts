@@ -60,26 +60,31 @@ export const countryList = [
     id: 'SG',
     name: 'Singapore',
     label: 'Singapore (SG)',
+    code: '+65',
   },
   {
     id: 'US',
     name: 'United States of America',
     label: 'United States of America (US)',
+    code: '+1',
   },
   {
     id: 'GB',
     name: 'United Kingdom',
     label: 'United Kingdom (GB)',
+    code: '+44',
   },
   {
     id: 'AU',
     name: 'Australia',
     label: 'Australia (AU)',
+    code: '+61',
   },
   {
     id: 'IN',
     name: 'India',
     label: 'India (IN)',
+    code: '+91',
   },
 ];
 
@@ -342,3 +347,9 @@ export function getQuarterMonths(dateString?: string) {
   }
   return quarterMonths;
 }
+
+export const escapeRegex = (string: string | null, flag: string | undefined = undefined) => {
+  let escapedString =
+    string?.replace(/([-\/\\*+?.()|[\]{}]|(?<!^)\^|\$(?!$))/g, '\\$&') ?? string ?? '';
+  return new RegExp(escapedString, flag);
+};

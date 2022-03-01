@@ -1,7 +1,6 @@
 .website-page-heading {
   .header {
-    font-family: Baloo !important;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont;
   }
 }
 .line {
@@ -11,12 +10,9 @@
   border-bottom-left-radius: 20px;
 
   .title {
-    font-family: Baloo;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont;
   }
   .content {
-    font-family: Poppins;
-    line-height: 26px;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont leading-[1.625rem];
   }
 }

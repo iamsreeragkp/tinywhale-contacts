@@ -20,7 +20,7 @@
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Company Name</span>
         </div>
-        <div class="flex-1 py-3 pl-4 flex truncate">
+        <div class="flex-1 py-3 pl-4 flex w-[75%] description-overflow">
           <span>{{ businessObj?.store?.company_name || '-' }}</span>
         </div>
       </div>
@@ -74,7 +74,7 @@
         <div class="w-44 py-3 flex justify-end pr-8">
           <span class="font-medium text-right">Punchline</span>
         </div>
-        <div class="flex-1 py-3 pl-4 flex truncate">
+        <div class="flex-1 py-3 pl-4 flex w-[75%] description-overflow">
           <span>{{ businessObj?.store?.punchline || '-' }}</span>
         </div>
       </div>
@@ -123,7 +123,9 @@
               />
             </div>
             <div class="flex flex-1 flex-col justify-center gap-2">
-              <div class="font-medium break-all w-3/4">{{ recognition?.recognition_name }}</div>
+              <div class="font-medium w-[75%] description-overflow">
+                {{ recognition?.recognition_name }}
+              </div>
               <span *ngIf="recognition?.expiry_date"
                 >Valid till {{ formatDate(recognition?.expiry_date) }}</span
               >
@@ -157,10 +159,10 @@
               />
             </div>
             <div class="flex flex-col gap-2 flex-1">
-              <div class="font-medium break-all lg:w-3/4">
+              <div class="font-medium w-[75%] description-overflow">
                 {{ testimonial?.name + (testimonial?.title ? ' / ' + testimonial.title : '') }}
               </div>
-              <div class="break-all lg:w-3/4">{{ testimonial?.testimonial }}</div>
+              <div class="w-[75%] description-overflow">{{ testimonial?.testimonial }}</div>
             </div>
           </div>
         </div>

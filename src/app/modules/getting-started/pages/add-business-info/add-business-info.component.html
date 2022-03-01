@@ -31,10 +31,10 @@
   <div class="add-info flex w-full">
     <div class="font-poppins input-section w-8/12 bg-white p-8 flex flex-col relative">
       <div class="input-field flex mb-8">
-        <div class="w-36 label mt-4"><label for="">Company Name*</label></div>
+        <div class="w-36 label mt-3"><label for="">Company Name*</label></div>
         <div>
           <input
-            class="input-data py-3 px-4 truncate"
+            class="input-data h-12 px-4 truncate"
             placeholder="Company name"
             formControlName="companyname"
             maxlength="50"
@@ -133,7 +133,7 @@
         <div class="w-36 label mt-4"><label for="">Punchline* </label></div>
         <!-- <div>
           <textarea
-            class="input-data py-3 px-4 punchline"
+            class="input-data h-12 px-4 punchline"
             placeholder="Eg: I help kids learn the basics of Music"
             formControlName="punchline"
             #punchline
@@ -160,7 +160,7 @@
         <div class="w-36 label mt-4"><label for="">About Me* </label></div>
         <div>
           <textarea
-            class="input-data py-3 px-4"
+            class="input-data h-12 px-4"
             placeholder="Tell a little about of yourself"
             formControlName="aboutme"
             rows="2"
@@ -168,14 +168,14 @@
         </div>
       </div> -->
       <div class="input-field flex mb-8 relative">
-        <div class="w-36 label mt-4"><label for="">Social Links* </label></div>
+        <div class="w-36 label mt-3"><label for="">Social Links* </label></div>
         <div class="flex flex-col" formArrayName="socialitems" #socialContainer>
           <ng-container
             *ngFor="let item of socialItems.controls; let i = index; let isFirst = first"
           >
             <div [formGroupName]="i" [ngClass]="{ 'mt-3': !isFirst }">
               <input
-                class="input-data py-3 px-4 show-error"
+                class="input-data h-12 px-4 show-error"
                 placeholder="Enter URL"
                 formControlName="url"
               />
@@ -252,21 +252,22 @@
             <div class="input-award flex flex-col px-4 py-4">
               <input
                 type="email"
-                class="input-data py-3 px-4 mb-3 show-error"
+                class="input-data h-12 px-4 mb-3 show-error"
                 placeholder="Enter Email Address"
                 formControlName="email"
                 maxlength="50"
               />
 
-              <input
+              <app-phone-number-input [formControl]="phoneNumber"></app-phone-number-input>
+              <!-- <input
                 type="text"
                 min="0"
-                class="input-data py-3 px-4 show-error"
+                class="input-data h-12 px-4 show-error"
                 placeholder="+XX XXXXXXXXXX"
                 formControlName="phone_number"
                 oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
                 maxlength="15"
-              />
+              /> -->
               <div class="w-form input-field">
                 <p class="label py-4">Allow customers to contact you via</p>
                 <div class="relative">
@@ -388,13 +389,13 @@
               </div>
 
               <input
-                class="input-data py-3 px-4 mb-4"
+                class="input-data h-12 px-4 mb-4"
                 placeholder="Enter name of Certificate / License"
                 formControlName="recognition_name"
                 maxlength="50"
               />
               <!-- <input
-                class="input-data py-3 px-4 mb-4"
+                class="input-data h-12 px-4 mb-4"
                 placeholder="Expiry date (MM/DD/YY)"
                 formControlName="expiry_date"
               /> -->
@@ -481,13 +482,13 @@
               [ngClass]="{ 'mt-3': !isFirst }"
             >
               <input
-                class="input-data py-3 px-4 mb-4"
+                class="input-data h-12 px-4 mb-4"
                 placeholder="Enter client name"
                 formControlName="name"
                 maxlength="50"
               />
               <!-- <input
-                class="input-data py-3 px-4 mb-4"
+                class="input-data h-12 px-4 mb-4"
                 placeholder="Client title eg ”Parents of John Doe” or “VP at Google"
                 formControlName="title"
               /> -->
@@ -507,7 +508,7 @@
                 >
               </div>
               <!-- <input
-                class="input-data py-3 px-4 mb-4"
+                class="input-data h-12 px-4 mb-4"
                 placeholder="Enter testimonial"
                 formControlName="testimonial"
               /> -->

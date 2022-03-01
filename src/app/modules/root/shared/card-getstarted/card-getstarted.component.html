@@ -30,14 +30,14 @@
         [disabled]="isCompleted()"
         (click)="publishWebsite()"
       >
-        Publish Your TinyCard™
+        Start Accepting Bookings
       </button>
       <ng-container
         *ngTemplateOutlet="
           tinyCard;
           context: {
             tinyCardData: isCompleted()
-              ? 'Publishing TinyCard™ is allowed after mandatory infomation is filled'
+              ? 'You can start accepting bookings after steps 1, 2 and 3 are completed'
               : 'After publishing, your TinyCard™ will be visible to everyone.'
           }
         "
@@ -92,7 +92,7 @@
 
           <span class="tooltip-right">
             <span class="dashboard-new-i-blue cursor-help relative top-1"
-              ><img src="../../../../../assets/images/tooltip-icon.svg"
+              ><img class="mb-1" src="../../../../../assets/images/tooltip-icon.svg"
             /></span>
             <span class="tooltiptext card-tooltip-text"
               >TinyCard™ is the modern business card of the service professionals. Showcase your web

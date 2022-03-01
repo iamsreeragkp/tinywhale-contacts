@@ -4,7 +4,7 @@ export interface BusinessInfo {
   logo?: string;
   cover?: string;
   email: string;
-  phone_number: number;
+  phone_number: string;
   contact_type: any;
   store: BusinessStore;
   links?: BusinessLinks[];

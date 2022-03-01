@@ -53,7 +53,9 @@
       <div class="input-field flex mb-4">
         <div class="w-44 label text-right mt-4 mr-6"><label for="">Phone Number</label></div>
         <div class="w-form">
-          <input
+          <app-phone-number-input [formControl]="phoneNumber" [disabled]="editMode">
+          </app-phone-number-input>
+          <!-- <input
             type="text"
             class="input-data w-full py-3 px-4 focus:outline-none show-error"
             [attr.disabled]="editMode ? '' : null"
@@ -61,7 +63,7 @@
             oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
             maxlength="15"
             formControlName="phonenumber"
-          />
+          /> -->
         </div>
       </div>
       <div class="input-field flex mb-4">
