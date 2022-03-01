@@ -9,6 +9,7 @@ import {
   getDaysInAMonth,
   getNextOrPrevious12Months,
   getQuarterMonths,
+  nFormatter,
 } from 'src/app/shared/utils';
 import { environment } from 'src/environments/environment';
 import { getDashboard } from '../../store/root.actions';
@@ -182,7 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         show: true,
         labels: {
           formatter: val => {
-            return `${this.customerCurrency?.symbol ?? '$'} ${val}`;
+            return `${this.customerCurrency?.symbol ?? '$'} ${nFormatter(val)}`;
           },
           show: true,
           style: {
@@ -402,7 +403,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.priceData = this.dashboardInfos?.price_data;
       this.upcomingSessions = this.dashboardInfos?.upcoming_sessions;
       this.populateChartData();
-      this.noData = !this.dashboardInfos?.price_data?.length;
+      this.noData = !this.dashboardInfos?.total_customers;
       if (this.dashboardInfos) {
         this.showLoader = false;
       } else {
