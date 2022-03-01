@@ -101,10 +101,9 @@ export class AddBookingComponent implements OnInit, OnDestroy {
         this.bookingForm.get('date')?.patchValue(null);
         const currClass = this.classData?.find((item: any) => item?.product_id === val);
         if (currClass?.price === 0) {
-          this.isFree = true
-        }
-        else {
-          this.isFree = false
+          this.isFree = true;
+        } else {
+          this.isFree = false;
         }
         if (currClass?.class?.class_time_ranges) {
           this.classTimeRanged = currClass?.class?.class_time_ranges.map((classTimeRange: any) => ({
@@ -360,6 +359,10 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 
   onCancelBooking() {
     this.router.navigateByUrl('booking/view-booking');
+  }
+
+  get phoneNumber() {
+    return this.bookingForm.get('phonenumber') as FormControl;
   }
 
   ngOnDestroy() {

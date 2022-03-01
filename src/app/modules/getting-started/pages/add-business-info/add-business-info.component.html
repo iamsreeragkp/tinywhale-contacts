@@ -258,7 +258,8 @@
                 maxlength="50"
               />
 
-              <input
+              <app-phone-number-input [formControl]="phoneNumber"></app-phone-number-input>
+              <!-- <input
                 type="text"
                 min="0"
                 class="input-data py-3 px-4 show-error"
@@ -266,7 +267,7 @@
                 formControlName="phone_number"
                 oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
                 maxlength="15"
-              />
+              /> -->
               <div class="w-form input-field">
                 <p class="label py-4">Allow customers to contact you via</p>
                 <div class="relative">
@@ -409,7 +410,7 @@
                   </div>
                 </div>
                 <button
-                *ngIf="!isOneEmptyLicenceOrAwardPresent()"
+                  *ngIf="!isOneEmptyLicenceOrAwardPresent()"
                   class="flex items-center text-secondaryBlue font-semibold gap-1 flex-grow-0 p-4"
                   type="button"
                   (click)="deleteAwardOrLicence(i)"

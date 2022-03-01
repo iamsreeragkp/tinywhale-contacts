@@ -37,6 +37,7 @@ import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { SelectCalendarComponent } from './components/select-calendar/select-calendar.component';
 import { CalendarSvgComponent } from './svgs/calendarSvg/calendar-svg.component';
 import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-page.component';
+import { PhoneNumberInputComponent } from './components/phone-number-input/phone-number-input.component';
 
 @NgModule({
   imports: [
@@ -81,6 +82,7 @@ import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-pa
     SelectCalendarComponent,
     CalendarSvgComponent,
     LoaderPageComponent,
+    PhoneNumberInputComponent,
   ],
   exports: [
     CommonModule,
@@ -118,6 +120,7 @@ import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-pa
     TextareaAutoresizeDirective,
     SelectCalendarComponent,
     LoaderPageComponent,
+    PhoneNumberInputComponent,
   ],
 })
 export class SharedModule {}
