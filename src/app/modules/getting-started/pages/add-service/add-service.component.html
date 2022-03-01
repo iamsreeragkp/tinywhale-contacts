@@ -104,11 +104,11 @@
     <div class="input-section w-7/12 bg-white py-8 px-12 flex flex-col">
       <h5 class="input-section-subheading font-bold mb-4">About the service</h5>
       <div class="input-field flex mb-4">
-        <div class="w-44 label text-right mt-4 mr-6"><label for="">Title*</label></div>
+        <div class="w-44 label text-right mt-3 mr-6"><label for="">Title*</label></div>
         <div class="w-form">
           <input
             formControlName="title"
-            class="input-data w-full py-3 px-4 focus:outline-none show-error"
+            class="input-data w-full h-12 px-4 focus:outline-none show-error"
             placeholder="Service name"
             [maxlength]="50"
           />
@@ -216,14 +216,14 @@
       </div>
       <ng-container *ngIf="productForm.get('product_type')?.value === 'CLASS'">
         <div class="input-field flex mb-4">
-          <div class="w-44 label text-right mt-4 mr-6"><label for="">Session Duration*</label></div>
+          <div class="w-44 label text-right mt-3 mr-6"><label for="">Session Duration*</label></div>
           <div class="w-form flex items-center">
             <input
               formControlName="duration"
               type="number"
               [preventDecimal]="true"
               min="0"
-              class="input w-24 py-3 px-4 focus:outline-none"
+              class="input w-24 h-12 px-4 focus:outline-none"
               placeholder="60"
               formControlName="duration"
             />
@@ -249,7 +249,7 @@
               <ng-container *ngIf="weekDay.selected" formArrayName="time_ranges">
                 <ng-container *ngFor="let weekDaySlots of timeRanges.controls; let i = index">
                   <div
-                    class="w-full flex items-center mb-4"
+                    class="w-full flex items-center mb-4 flex-wrap gap-1"
                     *ngIf="
                       weekDaySlots.get('day_of_week')?.value === weekDay.value &&
                       !weekDaySlots.get('is_deleted')?.value
@@ -268,11 +268,11 @@
                     </div>
                     <span class="input-field-secondary-text mx-3">to</span>
                     <input
-                      class="input w-36 py-3 px-4 focus:outline-none"
+                      class="input w-36 h-12 px-4 focus:outline-none"
                       formControlName="end_time_label"
                       placeholder="End time"
                     />
-                    <div class="h-full flex items-center mx-3">
+                    <div class="h-full flex items-center mx-3 shrink-0">
                       <button
                         type="button"
                         (click)="deleteTimeRangeFromWeekday(weekDay.value, i)"
@@ -355,7 +355,7 @@
       </ng-container>
       <h5 class="input-section-subheading font-bold mb-4 mt-8">Pricing</h5>
       <div class="input-field flex mb-4">
-        <div class="w-44 label text-right mt-4 mr-6">
+        <div class="w-44 label text-right mt-3 mr-6">
           <label for=""
             >{{ productForm.get('product_type')?.value === 'CLASS' ? 'Session ' : '' }}Price</label
           >
@@ -365,11 +365,11 @@
             <input
               type="number"
               min="0"
-              class="input w-24 py-3 px-4 focus:outline-none"
+              class="input w-24 h-12 px-4 focus:outline-none"
               placeholder="{{ customerCurrency?.symbol ?? '$' }} 50"
               formControlName="price"
               [ngClass]="{
-                'w-24': productForm.get('product_type')?.value === 'CLASS',
+                'w-24 ': productForm.get('product_type')?.value === 'CLASS',
                 'w-full': productForm.get('product_type')?.value !== 'CLASS'
               }"
             />
@@ -390,7 +390,7 @@
         </div>
       </div>
       <div class="input-field flex mb-4" *ngIf="productForm.get('product_type')?.value === 'CLASS'">
-        <div class="w-44 label text-right mt-4 mr-6">
+        <div class="w-44 label text-right mt-3 mr-6">
           <label for="">Package Price (Session Bundle)</label>
         </div>
         <div class="w-form" formArrayName="price_package">
@@ -401,7 +401,7 @@
               [formGroupName]="i"
             >
               <input
-                class="input w-24 py-3 px-4 focus:outline-none"
+                class="input w-24 h-12 px-4 focus:outline-none"
                 placeholder="{{ customerCurrency?.symbol ?? '$' }} 100"
                 formControlName="price"
                 type="number"
@@ -410,7 +410,7 @@
               <span class="input-field-secondary-text mx-3">for</span>
               <input
                 type="number"
-                class="input w-20 py-3 px-4 focus:outline-none"
+                class="input w-20 h-12 px-4 focus:outline-none"
                 placeholder="2"
                 formControlName="no_of_sessions"
                 [preventDecimal]="true"

@@ -60,10 +60,10 @@
         class="input-field flex mb-4"
         *ngIf="paymentForm.get('company')?.value === 'COMPANY'; else individualType"
       >
-        <div class="w-44 label text-right mt-4 mr-6"><label for="">Company Name*</label></div>
+        <div class="w-44 label text-right mt-3 mr-6"><label for="">Company Name*</label></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="Enter name of your company"
             formControlName="companyname"
           />
@@ -71,10 +71,10 @@
       </div>
       <ng-template #individualType>
         <div class="input-field flex mb-4">
-          <div class="w-44 label text-right mt-4 mr-6"><label for="">First Name*</label></div>
+          <div class="w-44 label text-right mt-3 mr-6"><label for="">First Name*</label></div>
           <div class="w-form">
             <input
-              class="input w-full py-3 px-4 focus:outline-none"
+              class="input w-full h-12 px-4 focus:outline-none"
               placeholder="Enter your First Name"
               formControlName="firstname"
               required
@@ -82,10 +82,10 @@
           </div>
         </div>
         <div class="input-field flex mb-4">
-          <div class="w-44 label text-right mt-4 mr-6"><label for="">Last Name*</label></div>
+          <div class="w-44 label text-right mt-3 mr-6"><label for="">Last Name*</label></div>
           <div class="w-form">
             <input
-              class="input w-full py-3 px-4 focus:outline-none"
+              class="input w-full h-12 px-4 focus:outline-none"
               placeholder="Enter your Last Name"
               formControlName="lastname"
               required
@@ -94,10 +94,10 @@
         </div>
       </ng-template>
       <div class="input-field flex mb-4">
-        <div class="w-44 label text-right mt-4 mr-6"><label for="">Address*</label></div>
+        <div class="w-44 label text-right mt-3 mr-6"><label for="">Address*</label></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="Address Line 1"
             formControlName="addressline1"
             required
@@ -108,7 +108,7 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="Address Line 2"
             formControlName="addressline2"
             required
@@ -119,7 +119,7 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="Postal Code"
             formControlName="postelcode"
           />
@@ -129,7 +129,7 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="City"
             formControlName="city"
           />
@@ -139,7 +139,7 @@
         <div class="w-44 label text-right mt-4 mr-6"></div>
         <div class="w-form">
           <input
-            class="input w-full py-3 px-4 focus:outline-none"
+            class="input w-full h-12 px-4 focus:outline-none"
             placeholder="State"
             formControlName="state"
           />
