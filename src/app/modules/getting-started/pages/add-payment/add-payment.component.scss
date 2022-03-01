@@ -12,11 +12,10 @@
   border-top-right-radius: 20px;
   border-bottom: 2px solid #d6e1e3;
   .header {
-    font-family: Baloo !important;
-    color: #154f5b;
+    @apply font-baloo text-primaryFont;
     .one {
-      font-family: Baloo;
       color: #64c2bc;
+      @apply font-baloo;
     }
   }
 }
@@ -26,36 +25,27 @@
     background-color: #eaf3f6;
     border-bottom-right-radius: 20px;
     &-subheading {
-      color: #154f5b;
+      @apply text-primaryFont;
     }
   }
   .heading {
-    font-family: Baloo;
-    color: #154f5b;
-    font-style: normal;
-    font-weight: normal;
     font-size: 36px;
-    line-height: 32px;
     letter-spacing: -1px;
+    @apply font-baloo text-primaryFont font-normal leading-8;
   }
   .text {
-    font-family: poppins;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #154f5b;
+    @apply font-poppins font-normal text-base leading-6 text-primaryFont;
   }
 }
 
 .input-section {
   border-bottom-left-radius: 20px;
   &-subheading {
-    color: #154f5b;
+    @apply text-primaryFont;
   }
   .input-field {
     &-secondary-text {
-      color: #154f5b;
+      @apply text-primaryFont;
     }
     .w-form {
       width: calc(100% - 11rem);
@@ -67,40 +57,11 @@
       font-size: 16px;
       line-height: 24px;
       color: #154f5b;
+      @apply font-poppins font-medium text-base leading-6 text-primaryFont;
     }
     .input {
-      background: #ffffff;
       border: 2px solid #d6e1e3;
-      border-radius: 8px;
-      // width: 360px;
-      color: #154f5b;
-    }
-    .input-photo {
-      background: #f6f9fa;
-      border: 2px dashed #d6e1e3;
-      border-radius: 8px;
-      width: 120px;
-      height: 120px;
-    }
-    .input-award {
-      background: #f6f9fa;
-      border: 1px solid #d6e1e3;
-      border-radius: 8px;
-      width: 360px;
-      .input {
-        background: #ffffff;
-        border: 2px solid #d6e1e3;
-        border-radius: 8px;
-        width: 300px;
-        color: #154f5b;
-      }
-      .input-photo {
-        background: #f6f9fa;
-        border: 2px dashed #d6e1e3;
-        border-radius: 8px;
-        width: 120px;
-        height: 120px;
-      }
+      @apply bg-white text-primaryFont rounded-lg;
     }
     .radio-input {
       border: 2px solid #d6e1e4;
@@ -108,64 +69,5 @@
         border-bottom: 2px solid #d6e1e4;
       }
     }
-
-    //  Hide the browser's default radio button
-    .radio-container input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    // Create a custom radio button
-    // .radiomark {
-    //   position: absolute;
-    //   top: 1rem;
-    //   left: 1rem;
-    //   height: 20px;
-    //   width: 20px;
-    //   background-color: #fff;
-    //   border: 1px solid #154f5b;
-    //   border-radius: 50%;
-    // }
-
-    //  When the radio button is checked, add a blue background /
-    .radio-container input:checked ~ .radiomark {
-      background-color: #fff;
-      border: 1px solid #00a4b7;
-    }
-
-    //  Create the indicator (the dot/circle - hidden when not checked) /
-    // .radiomark:after {
-    //   content: '';
-    //   position: absolute;
-    //   display: none;
-    // }
-
-    // Show the indicator (dot/circle) when checked /
-    .radio-container input:checked ~ .radiomark:after {
-      display: block;
-    }
-
-    // Style the indicator (dot/circle) /
-    // .radio-container .radiomark:after {
-    //   top: 3px;
-    //   left: 3px;
-    //   width: 12px;
-    //   height: 12px;
-    //   border-radius: 50%;
-    //   background: #00a4b7;
-    // }
   }
-}
-.tinytiptext::before {
-  content: '';
-  position: absolute;
-  top: 0%;
-  right: 100%;
-  border-width: 27px 24px;
-  border-style: solid;
-  border-color: transparent #eaf3f6 transparent transparent;
-}
-.connect-bank {
-  background-color: #00a4b7;
 }
