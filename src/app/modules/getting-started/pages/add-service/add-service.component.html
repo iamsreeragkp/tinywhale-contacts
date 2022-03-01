@@ -396,7 +396,7 @@
         <div class="w-form" formArrayName="price_package">
           <ng-container *ngFor="let sessionPrice of pricePackages.controls; let i = index">
             <div
-              class="w-full flex items-center mb-2"
+              class="w-full flex items-center mb-2 flex-wrap gap-1"
               *ngIf="!sessionPrice.get('is_deleted')?.value"
               [formGroupName]="i"
             >
@@ -423,7 +423,7 @@
                 (click)="deletePricePackage(i)"
                 *ngIf="!isOneEmptyFormPresent()"
               >
-                <img src="../../../../../assets/images/icons/delete.svg" alt="" />
+                <img src="../../../../../assets/images/icons/delete.svg" alt="d" />
               </button>
             </div>
           </ng-container>
