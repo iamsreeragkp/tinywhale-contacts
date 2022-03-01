@@ -6,6 +6,7 @@
     font-family: Baloo !important;
     font-size: 40px;
     color: #154f5b;
+    letter-spacing: -2px;
   }
   .content {
     font-family: Poppins !important;
@@ -26,6 +27,9 @@
     font-family: Baloo !important;
     background: #154f5b;
     cursor: pointer;
+  }
+  .rotate {
+    transform: rotate(180deg) !important;
   }
 }
 
