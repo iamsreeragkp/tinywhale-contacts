@@ -353,3 +353,26 @@ export const escapeRegex = (string: string | null, flag: string | undefined = un
     string?.replace(/([-\/\\*+?.()|[\]{}]|(?<!^)\^|\$(?!$))/g, '\\$&') ?? string ?? '';
   return new RegExp(escapedString, flag);
 };
+
+export function nFormatter(num: number) {
+  if (isNaN(num)) {
+    return num;
+  }
+  const lookup = [
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'k' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
+  ];
+  const item = lookup
+    .slice()
+    .reverse()
+    .find(item => num >= item.value);
+  if (item?.symbol) {
+    return (num / item.value).toFixed(1) + item.symbol;
+  }
+  return num;
+}
