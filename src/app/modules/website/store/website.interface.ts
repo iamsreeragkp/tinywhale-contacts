@@ -2,10 +2,10 @@ export interface BusinessInfo {
   business_id: number;
   business_name?: string;
   logo?: string;
-  cover?:string;
-  email:string;
-  phone_number :number;
-  contact_type:any;
+  cover?: string;
+  email: string;
+  phone_number: string;
+  contact_type: any;
   store: BusinessStore;
   links?: BusinessLinks[];
   recognitions?: Recognitions[];
