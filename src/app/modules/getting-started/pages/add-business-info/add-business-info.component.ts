@@ -210,7 +210,10 @@ export class AddBusinessInfoComponent implements OnInit, OnDestroy {
       logo: [val?.logo ?? ''],
       cover: [val?.business_photos?.[0] ?? ''],
       email: [val?.email ?? '', Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
-      phone_number: [val?.phone_number ?? '', Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,15}$/)],
+      phone_number: [
+        val?.phone_number?.replace(/(-| )/g, '') ?? '',
+        Validators.pattern(/^(\+\d{1,3})[ -]?\d{8,15}$/),
+      ],
       contact_type: [val?.contact_type ?? null],
       // photos: this.fb.array(
       //   Array.from({ length: 3 }, (_, i) => this.createPhotos(val?.business_photos?.[i]))
