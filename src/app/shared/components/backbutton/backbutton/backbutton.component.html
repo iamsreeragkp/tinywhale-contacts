@@ -1,0 +1,34 @@
+<div class="relative font-poppins" #threeDots>
+    <button [disabled]="isDisabled" class="secondary-button px-0 w-12" (click)="open = !open">
+
+    </button>
+    <!-- open more -->
+    <!-- <div
+      class="absolute top-full right-0 z-50 -mt-5 pop-over overflow-hidden text-primaryFont"
+       [ngClass]="{ 'max-h-0': !open, 'max-h-screen': open }" 
+    >
+      <div
+        class="bg-white w-fit min-w-full flex flex-col border-2 border-lightGrey border-solid shadow-lg rounded-lg"
+      >
+        <button
+          class="px-4 filter-item text-left hover:bg-gray-100"
+          *ngFor="let action of _actions; let isLast = last"
+        >
+          <div
+            class="w-full py-2 whitespace-nowrap"
+            [ngClass]="{ 'border-b border-gray-300 border-solid': !isLast }"
+            (click)="open = false; actionTriggered.emit(action)"
+          >
+            {{ action }}
+          </div>
+        </button>
+        <button
+          class="px-4 filter-item text-left hover:bg-gray-100"
+          disabled
+          *ngIf="!_actions.length"
+        >
+          <div class="w-full border-solid py-2 whitespace-nowrap">Delete</div>
+        </button>
+      </div>
+    </div>
+  </div> -->

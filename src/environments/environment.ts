@@ -1,7 +1,7 @@
 export const environment = {
-  production: false,
-  api_end_point: 'http://localhost:5000/api/v1',
-  tinyWhaleBaseUrl: 'https://dev.tinycard.to',
+  production: true,
+  api_end_point: 'https://staging.business.tinywhale.com/api/v1',
+  tinyWhaleBaseUrl: 'https://staging.tinycard.to',
   serviceWorker: false,
 };
 

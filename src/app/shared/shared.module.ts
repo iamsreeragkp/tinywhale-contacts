@@ -38,6 +38,8 @@ import { SelectCalendarComponent } from './components/select-calendar/select-cal
 import { CalendarSvgComponent } from './svgs/calendarSvg/calendar-svg.component';
 import { LoaderPageComponent } from '../modules/root/pages/loader-page/loader-page.component';
 import { PhoneNumberInputComponent } from './components/phone-number-input/phone-number-input.component';
+import { BackbuttonComponent } from './components/backbutton/backbutton/backbutton.component';
+
 
 @NgModule({
   imports: [
@@ -83,6 +85,8 @@ import { PhoneNumberInputComponent } from './components/phone-number-input/phone
     CalendarSvgComponent,
     LoaderPageComponent,
     PhoneNumberInputComponent,
+    BackbuttonComponent,
+    
   ],
   exports: [
     CommonModule,
@@ -121,6 +125,7 @@ import { PhoneNumberInputComponent } from './components/phone-number-input/phone
     SelectCalendarComponent,
     LoaderPageComponent,
     PhoneNumberInputComponent,
+    BackbuttonComponent,
   ],
 })
 export class SharedModule {}

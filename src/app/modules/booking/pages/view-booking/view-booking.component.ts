@@ -16,6 +16,8 @@ export class ViewBookingComponent implements OnInit, OnDestroy {
   ngUnsubscriber = new Subject<void>();
   dashboardInfos: any = undefined;
   bookingCount!: number;
+  viewDetailsDisplay = "none";
+  viewDetailsButton = "View Details"
   constructor(private store: Store<IRootState>) {
     this.dashboard$ = store.pipe(select(getDashboardData));
     this.store.dispatch(getBookingList({ filters: {} }));
@@ -24,7 +26,6 @@ export class ViewBookingComponent implements OnInit, OnDestroy {
       this.bookingCount = data?.bookingsCount;
     });
   }
-
   ngOnInit(): void {
     this.subscriptions();
   }
@@ -33,6 +34,16 @@ export class ViewBookingComponent implements OnInit, OnDestroy {
     this.dashboard$.pipe(takeUntil(this.ngUnsubscriber)).subscribe(data => {
       this.dashboardInfos = data;
     });
+  }
+
+  contactViewDetails(){
+    if(this.viewDetailsDisplay=="none"){
+      this.viewDetailsDisplay = "block";
+      this.viewDetailsButton = "Hide Details"
+    } else {
+      this.viewDetailsDisplay = "none";
+      this.viewDetailsButton = "View Details"
+    }
   }
 
   get hasStarted() {

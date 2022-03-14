@@ -1,4 +1,86 @@
-<div class="flex flex-col min-h-full rounded-5 overflow-hidden">
+<div class="flex flex-col min-h-full rounded-5 overflow-hidden ">
+  <div class="website-page-heading bsrc/app/modules/website/pages/view-business-info/view-business-info.component.htmlg-white py-4 px-8 flex justify-between bg-[#ffffff]">
+    <div class="flex">
+      <app-back-button></app-back-button>
+         <div class="flex mt-2">
+                <header class="header leading-9 font-normal not-italic">
+                    <span class="text-4xl ml-4">Mary Jane</span>
+                </header>
+                <span class="noborder-button pt-3 pl-3" (click)="contactViewDetails()">{{viewDetailsButton}}</span>
+          </div>         
+    </div>
+<!-- right side 2 buttons -->
+<div class="flex">
+    <button
+        class="secondary-button px-6 mr-2 relative ">
+        <!-- [ngClass]="{ 'primary-button': !isCompleted(), 'secondary-button group': isCompleted() }" -->
+        <!-- (click)="iframeOpen()" -->
+        <span>Register A Walk-in</span>
+        <ng-container >
+          <ng-container></ng-container>
+        </ng-container>
+    </button>
+    <button
+      *ngIf="hasStarted && bookingCount > 0"
+      class="primary-button w-48"
+      [routerLink]="['../add-booking']">
+     Email
+    </button>
+  </div>
+  </div>
+
+  <div class="bg-[#ffffff]" [style.display]="viewDetailsDisplay">
+    <div class="flex gap-x-6 mt-4">
+      <div class="w-1/5 text-right text-[#154f5b] font-semibold">Contact Type</div>
+      <div class="text-[#154f5b]">Customer</div>
+    </div>
+
+    <div class="flex gap-x-6 mt-7">
+      <div class="w-1/5 text-right text-[#154f5b] font-semibold">Contact Details</div>
+      <div class="text-[#154f5b]"><span>9734522234</span><span class="ml-3">vonnue@vonnue.com</span></div>
+    </div>
+
+    <div class="flex gap-x-6 mt-7">
+      <div class="w-1/5 text-right text-[#154f5b] font-semibold">Associated Attendees</div>
+      <div class="text-[#154f5b]"><span>John Doe,Alex Dart</span></div>
+    </div>
+
+    <div class="flex gap-x-6 mt-7">
+      <div class="w-1/5 text-right text-[#154f5b] font-semibold">Lifetime Value</div>
+      <div class="text-[#154f5b]"><span>$ 800</span></div>
+    </div>
+
+    <div class="flex gap-x-6 mt-7 mb-8">
+      <div class="w-1/5 text-right text-[#154f5b] font-semibold">Pending payments</div>
+      <div class="text-[#154f5b]"><span>---</span></div>
+    </div>
+  </div>
+
+
+
+
+  <hr class="line bg-[#e5e5e5]" />
+  <div
+    class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl"
+    *ngIf="!true; else noWebsiteInfo"
+  >
+    <main>
+      <app-contacts-table-booking-component class="flex flex-1"></app-contacts-table-booking-component>
+    </main>
+  </div>
+  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
+
+  <ng-template #noWebsiteInfo>
+    <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
+      <app-contacts-table-booking-component class="flex flex-1"> </app-contacts-table-booking-component>
+    </div>
+  </ng-template>
+</div>
+
+
+
+
+<!-- <div class="flex flex-col min-h-full rounded-5 overflow-hidden">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
     <header class="header leading-9 font-normal not-italic">
       <span class="text-4xl">Bookings</span>
@@ -20,11 +102,11 @@
       <app-table-booking-component class="flex flex-1"></app-table-booking-component>
     </main>
   </div>
-  <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
-
+   <app-no-data-service-component class="flex flex-1"></app-no-data-service-component> -->
+<!-- 
   <ng-template #noWebsiteInfo>
     <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
       <app-table-booking-component class="flex flex-1"> </app-table-booking-component>
     </div>
   </ng-template>
-</div>
+</div> --> 

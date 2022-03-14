@@ -1,0 +1,330 @@
+<div class="table-container w-full rounded-t-lg">
+    <form [formGroup]="filterForm" *ngIf="bookingData?.length || isFilterEmpty">
+      <div class="grid grid-cols-9 mb-6">
+
+        <div class="col-span-2 relative mb-2 mr-2">
+            <app-dropdown
+            [options]="status"
+            placeholder="Booking Status"
+            [displayKey]="'title'"
+            [idKey]="'value'"
+            [emitId]="true"
+            formControlName="status"
+            ></app-dropdown>
+            </div>
+
+            <div class="col-span-2 relative mb-2 mr-2">
+                <app-dropdown
+                [options]="status"
+                placeholder="Booked for"
+                [displayKey]="'title'"
+                [idKey]="'value'"
+                [emitId]="true"
+                formControlName="status"
+                ></app-dropdown>
+            </div>
+            
+           <div class="col-span-2 relative mb-2 mr-2">
+                    <app-dropdown
+                    [options]="payment"
+                    placeholder="Service Availed"
+                    [displayKey]="'title'"
+                    [idKey]="'value'"
+                    [emitId]="true"
+                    formControlName="payment"
+                    ></app-dropdown>
+            </div> 
+            <div class="col-span-2 relative mb-2 mr-2">
+                <app-dropdown
+                [options]="payment"
+                placeholder="Payment Status"
+                [displayKey]="'title'"
+                [idKey]="'value'"
+                [emitId]="true"
+                formControlName="payment"
+                ></app-dropdown>
+                </div> 
+                
+                <div class="col-span-1 items-center mb-2 ml-2 mt-2">
+                    <button class="noborder-button" (click)="clearFilter()">Clear Filters</button>
+                    </div>
+        
+          <!-- <div class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card"> -->
+          <!-- <span>Service</span>
+          <div class="flex items-center justify-center">
+            <img src="../../../../../assets/images/icons/down.svg" alt="">
+          </div> -->
+          <!-- <app-dropdown  placeholder="Service" [displayKey]="'title'" [emitId]="true" ></app-dropdown> -->
+  
+          
+          <!-- </div> -->
+          <!-- <div class="absolute top-full left-0 w-full z-50">
+          <div class="bg-white w-fit min-w-full flex flex-col border border-gray-200 border-solid shadow rounded">
+            <button class="px-4 filter-item text-left hover:bg-gray-100">
+              <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Piano for kids under 3
+                years</div>
+            </button>
+            <button class="px-4 filter-item text-left hover:bg-gray-100">
+              <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Piano for adults</div>
+            </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+              <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Piano for all</div>
+            </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+              <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Piano for St.Matthew’s
+                school - Class V</div>
+            </button><button class="px-4 filter-item text-left hover:bg-gray-100">
+              <div class="w-full border-b border-gray-300 border-solid py-2 whitespace-nowrap">Piano for kids under 4
+                years</div>
+            </button>
+          </div>
+        </div> -->
+        
+       
+          <!-- <div
+          class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+          <span>Status</span>
+          <div class="flex items-center justify-center">
+            <img src="../../../../../assets/images/icons/down.svg" alt="" />
+          </div>
+        </div> -->
+          
+        
+          <!-- <div
+          class="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-300 border-solid rounded-lg filter-card">
+          <span>Payment</span>
+          <div class="flex items-center justify-center">
+            <img src="../../../../../assets/images/icons/down.svg" alt="" />
+          </div>
+        </div> -->
+          
+
+        
+        
+      </div>
+    </form>
+    <div class="w-full">
+      <table class="table-auto w-full">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-2 py-3 text-left font-semibold">
+              <div class="flex items-center">
+                <span> Session Date </span>
+                <!-- <div class="ml-2">
+                <img
+                  src="../../../../../assets/images/icons/sort.svg"
+                  alt=""
+                  srcset=""
+                  class="transform rotate-180"
+                />
+              </div> -->
+              </div>
+            </th>
+            <th class="px-2 py-3 text-left font-semibold">Status</th>
+            <th class="px-2 py-3 text-left font-semibold">Customer</th>
+            <th class="px-2 py-3 text-left font-semibold">Service</th>
+            <th class="px-2 py-3 text-left font-semibold">Payment</th>
+            <th class="px-2 py-3 text-left font-semibold"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="!bookingData?.length && !isFilterEmpty && checkVal">
+            <tr>
+              <td class="italic text-xs text-[#73959d] pt-5 pb-1 px-2" colspan="7">
+                Sample Booking Listing
+              </td>
+            </tr>
+            <tr class="table-container-borderRow">
+              <td class="align-top px-2 py-3">
+                <div class="flex flex-col">
+                  <span class="italic whitespace-nowrap">19 Jan 22</span>
+                  <span class="italic whitespace-nowrap">(1/2)</span>
+                </div>
+              </td>
+              <td class="align-top px-2 py-3">
+                <div
+                  class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm"
+                >
+                  <span class="italic">Upcoming</span>
+                </div>
+              </td>
+              <td class="align-top px-2 py-3">
+                <div class="flex items-center">
+                  <span class="italic">Mary Jane</span>
+                </div>
+              </td>
+              <td class="align-top px-2 py-3">
+                <div class="flex items-center">
+                  <span class="italic">Piano for kids under 3 years</span>
+                </div>
+              </td>
+              <td class="align-top px-2 py-3">
+                <div class="flex flex-col">
+                  <div class="italic flex items-center">
+                    <span class="mr-2"> $100 </span>
+                    <img src="../../../../../assets/images/icons/check.svg" alt="" />
+                  </div>
+                  <span class="italic whitespace-nowrap">(2 sessions)</span>
+                </div>
+              </td>
+              <td class="align-top px-2 py-3">
+                <div class="relative flex justify-end">
+                  <ng-container>
+                    <app-three-dots [isDisabled]="true" [actions]="threeDotsActions"></app-three-dots>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="checkVal">
+            <ng-container
+              *ngFor="let bookData of bookingData; let i = index"
+              (click)="showSubItem(i)"
+            >
+              <tr
+                class="table-container-borderRow cursor-pointer hover:bg-veryLightGray hover:bg-opacity-50"
+              >
+                <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
+                  <div class="flex flex-col">
+                    <ng-container
+                      *ngIf="bookData?.product_type === 'CLASS'; else noDate"
+                      class="flex flex-col"
+                    >
+                      <span class="whitespace-nowrap">{{
+                        bookData?.session_to_display?.formattedDisplayDate
+                      }}</span>
+                      <span class="whitespace-nowrap">{{
+                        '(' +
+                          bookData?.session_to_display?.sessionNo +
+                          '/' +
+                          bookData?.session_to_display?.totalSessions +
+                          ')'
+                      }}</span>
+                    </ng-container>
+                    <ng-template #noDate>
+                      <span>---</span>
+                    </ng-template>
+                  </div>
+                </td>
+                <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
+                  <ng-container *ngIf="bookData?.product_type === 'CLASS'; else noStatus">
+                    <div
+                      *ngIf="bookData?.session_to_display?.status?.toUpperCase() === 'COMPLETED'"
+                      class="flex items-center w-fit px-3 rounded-full bg-green-100 text-green-500 py-1 text-sm"
+                    >
+                      <span>COMPLETED</span>
+                    </div>
+                    <div
+                      *ngIf="bookData?.session_to_display?.status?.toUpperCase() === 'UPCOMING'"
+                      class="flex items-center w-fit px-3 rounded-full bg-blue-100 text-blue-500 py-1 text-sm"
+                    >
+                      <span>UPCOMING</span>
+                    </div>
+                  </ng-container>
+                  <ng-template #noStatus> --- </ng-template>
+                </td>
+                <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
+                  <div class="flex items-center">
+                    <span class="">{{
+                      displayName(bookData?.first_name, bookData?.last_name) || '---'
+                    }}</span>
+                  </div>
+                </td>
+                <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
+                  <div class="flex items-center">
+                    <span class="">{{ bookData?.service_name || '---' }}</span>
+                  </div>
+                </td>
+                <td class="align-top px-2 py-3" (click)="onNavigateToList(bookData?.order_id)">
+                  <div class="flex flex-col">
+                    <ng-container *ngIf="bookData?.price !== 0; else free">
+                      <div class="flex items-center">
+                        <span class="mr-2"
+                          >{{
+                            bookData?.currency === 'INR'
+                              ? '₹'
+                              : bookData?.currency === 'USD'
+                              ? '$'
+                              : bookData?.currency === 'SGD'
+                              ? 'S$'
+                              : bookData?.currency === 'GBP'
+                              ? '£'
+                              : bookData?.currency === 'AUD'
+                              ? 'A$'
+                              : ''
+                          }}
+                          {{ bookData?.price || '---' }}</span
+                        >
+                        <img
+                          src="../../../../../assets/images/icons/check.svg"
+                          alt=""
+                          *ngIf="bookData?.payment_status === 'SETTLED'"
+                        />
+                        <img
+                          src="../../../../../assets/images/icons/pending.svg"
+                          alt=""
+                          *ngIf="
+                            bookData?.payment_status === 'PENDING_PAYMENT' ||
+                            bookData?.payment_status === 'OPEN'
+                          "
+                        />
+                      </div>
+                      <span *ngIf="bookData?.product_type === 'CLASS'" class="whitespace-nowrap">{{
+                        displaySessions(bookData?.session_to_display?.totalSessions)
+                      }}</span>
+                    </ng-container>
+                    <ng-template #free>
+                      <div class="flex items-center">
+                        <span class="mr-2">Free</span>
+                      </div>
+                      <span *ngIf="bookData?.product_type === 'CLASS'" class="whitespace-nowrap">{{
+                        displaySessions(bookData?.session_to_display?.totalSessions)
+                      }}</span>
+                    </ng-template>
+                  </div>
+                </td>
+                <td class="align-top px-2 py-3">
+                  <div class="relative flex justify-end">
+                    <app-three-dots
+                      [isDisabled]="
+                        bookData.session_to_display?.status.toUpperCase() === 'COMPLETED' ||
+                        bookData?.product_type === 'SERVICE'
+                      "
+                      [actions]="threeDotsActions"
+                      (actionTriggered)="handleAction($event, i, bookData?.order_id)"
+                    ></app-three-dots>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="isLoadMore && checkVal">
+            <tr>
+              <td colspan="7">
+                <div
+                  class="w-full h-12 mt-8 flex justify-center items-center"
+                  *ngIf="(bookingsCount ?? 0) > (bookingData?.length ?? 0)"
+                >
+                  <button class="noborder-button" (click)="loadMore()">Load More</button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <tr>
+            <td colspan="7">
+              <div class="w-full" *ngIf="!isFilterEmpty && !bookingData?.length && checkVal">
+                <app-no-data-booking-component class="flex flex-1"></app-no-data-booking-component>
+                <app-loader-page *ngIf="!checkVal"></app-loader-page>
+              </div>
+              <!-- <ng-template #noResult> -->
+              <app-no-result-booking-component
+                class="flex flex-1"
+                *ngIf="isFilterEmpty && !bookingData?.length && checkVal"
+                (newItemEvent)="filterEvent($event)"
+              ></app-no-result-booking-component>
+              <!-- </ng-template> -->
+            </td>
+          </tr>
+        </tbody>
+        <app-loader-page *ngIf="!checkVal"></app-loader-page>
+      </table>
+    </div>
+  </div>

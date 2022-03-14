@@ -11,6 +11,8 @@ import { TableBookingComponentComponent } from './components/table-booking-compo
 import { ServiceStoreModule } from '../service/store/service-store.module';
 import { BookingStoreModule } from './store/booking-store.module';
 import { StatusBookingComponent } from './pages/status-booking/status-booking.component';
+import { ContactsTableBookingComponent } from './components/contacts-table-booking-component/contacts-table-booking-component';
+
 
 @NgModule({
   imports: [BookingRoutingModule, SharedModule, BookingStoreModule, ServiceStoreModule],
@@ -22,6 +24,8 @@ import { StatusBookingComponent } from './pages/status-booking/status-booking.co
     TableBookingComponentComponent,
     NoResultBookingComponentComponent,
     StatusBookingComponent,
+    ContactsTableBookingComponent,
+
   ],
   providers: [RootService],
 })

@@ -11,6 +11,7 @@ import { TableServiceComponentComponent } from './components/table-service-compo
 import { ViewServiceComponent } from './pages/view-service/view-service.component';
 import { ServiceStoreModule } from './store/service-store.module';
 import { GettingStartedModule } from '../getting-started/getting-started.module';
+import { ContactlistDropdownComponentComponent } from './components/contacts-list-dropdown-component/contactlist-dropdown-component/contactlist-dropdown-component.component';
 // import { NoDataViewComponentComponent } from './components/no-data-view-component/no-data-view-component.component';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { GettingStartedModule } from '../getting-started/getting-started.module'
     TableServiceComponentComponent,
     NoResultServiceComponentComponent,
     ViewServiceComponent,
+    ContactlistDropdownComponentComponent,
   ],
   providers: [RootService],
 })

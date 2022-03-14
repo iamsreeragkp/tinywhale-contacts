@@ -1,21 +1,36 @@
 <div class="flex flex-col min-h-full rounded-5">
   <div class="website-page-heading bg-white py-4 px-8 flex justify-between">
+   <div class="flex">
     <header class="header leading-9 font-normal not-italic">
-      <span class="text-4xl">Services</span>
+      <span class="text-4xl">Contacts</span>
     </header>
+    <div class="border-2 rounded-lg border-solid border-[#d6e1e3]  flex align-middle ml-4">
+    <input type="text" placeholder="Search by customer name" class="text-base">
+  </div>
+</div>
+
+
     <button
-      *ngIf="hasStarted || productCount > 0"
       class="primary-button px-12"
-      [routerLink]="['../add-service']"
-    >
-      Add A Service
+      >
+      Add New Contact
     </button>
   </div>
-  <hr class="line bg-[#e5e5e5]" />
-  <div class="website-page bg-white p-8 font-poppins text-primaryFont rounded-b-3xl">
+  <hr class="line bg-[#f1f4f51]" />
+  <div class="flex">
+    <div>
+       <div class="flex">
+         <span class="text-primaryFont flex align-baseline m-8 mr-4">2 customer selected</span>
+         <button class="secondary-button m-5"><span>Sent Email</span></button>
+       </div>
+    </div>
+  </div>
+  <div class="website-page bg-white p-4 font-poppins text-primaryFont rounded-b-3xl">
     <main>
-      <app-table-service-component class="flex flex-1"></app-table-service-component>
+      <app-contactlist-dropdown-component class="flex flex-1"></app-contactlist-dropdown-component>
     </main>
+
+  
   </div>
   <!-- <app-no-data-service-component class="flex flex-1"></app-no-data-service-component>
 
